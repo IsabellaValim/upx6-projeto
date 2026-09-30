@@ -16,8 +16,7 @@ export default function video(id, ti, li) {
   const key = `${id}/${ti}/${li}`;
   const done = !!state.watched[key];
   const lessons = lessonsFor(t);
-  const next =
-    +li + 1 < lessons.length ? `#/video/${id}/${ti}/${+li + 1}` : null;
+  const next = +li + 1 < lessons.length ? urls.video(id, ti, +li + 1) : null;
   return {
     cls: "screen--nav",
     nav: "inicio",

@@ -4,6 +4,7 @@ import { icon } from "../icons.js";
 import { state } from "../core/state.js";
 import { LETTERS, esc, pct } from "../core/utils.js";
 import progresso from "./progresso.js";
+import { urls } from "../core/urls.js";
 
 export default function resultado(idx) {
   const r = state.results[+idx];
@@ -18,7 +19,7 @@ export default function resultado(idx) {
     html: `
         <div class="topbar topbar--split result-head">
           <div><h1>Resultado do quiz</h1><p class="kicker">Tema: ${s.name}</p></div>
-          <a class="icon-btn" href="#/home" aria-label="Fechar resultado">${icon("xBox")}</a>
+          <a class="icon-btn" href="${urls.home}" aria-label="Fechar resultado">${icon("xBox")}</a>
         </div>
         <div class="donut" role="img" aria-label="${p}% de aproveitamento">
           <svg viewBox="0 0 100 100"><circle class="track" cx="50" cy="50" r="42"/>
@@ -35,10 +36,10 @@ export default function resultado(idx) {
             weak
               ? `<p>Você teve mais dificuldade no tema “${esc(weak.title)}”.</p>
                <p>Você pode revisar este conteúdo antes de tentar novamente.</p>
-               <a class="btn btn--primary btn--sm" href="#/video/${r.subject}/${r.weakTopic}/0">${icon("video")}Assistir vídeo-aula recomendada</a>`
+               <a class="btn btn--primary btn--sm" href="${urls.video(r.subject, r.weakTopic, 0)}">${icon("video")}Assistir vídeo-aula recomendada</a>`
               : `<p>Você acertou todas as questões. Excelente trabalho!</p>
                <p>Continue praticando para manter o ritmo até a prova.</p>
-               <a class="btn btn--primary btn--sm" href="#/videos/${r.subject}">${icon("video")}Explorar vídeo-aulas</a>`
+               <a class="btn btn--primary btn--sm" href="${urls.videos(r.subject)}">${icon("video")}Explorar vídeo-aulas</a>`
           }
         </div>
         <details class="review">
@@ -54,7 +55,7 @@ export default function resultado(idx) {
             })
             .join("")}
         </details>
-        <a class="btn btn--outline" style="margin-top:1rem" href="#/quiz/${r.subject}">Refazer quiz</a>
+        <a class="btn btn--outline" style="margin-top:1rem" href="${urls.quiz(r.subject)}">Refazer quiz</a>
         <p class="small center" style="margin-top:1rem">Resumo do desempenho salvo no seu perfil.</p>`,
     after() {
       requestAnimationFrame(() => {

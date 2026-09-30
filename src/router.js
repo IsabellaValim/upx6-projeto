@@ -7,6 +7,7 @@ import { go } from "./core/utils.js";
 import { stopSpeaking } from "./core/speech.js";
 import { nav } from "./components/nav.js";
 import { screens } from "./screens/index.js";
+import { urls } from "./core/urls.js";
 
 const PUBLIC = new Set(["loading", "boas-vindas", "login", "cadastro"]);
 
@@ -17,7 +18,7 @@ function render() {
   let name = parts[0] || "loading";
   if (!screens[name]) name = state.user ? "home" : "boas-vindas";
   if (!PUBLIC.has(name) && !state.user) {
-    go("#/boas-vindas");
+    go(urls.boasVindas);
     return;
   }
   if (

@@ -5,6 +5,7 @@ import { store } from "../core/store.js";
 import { esc, go, initials } from "../core/utils.js";
 import { streakDays } from "../core/stats.js";
 import { historyList, subjectBars } from "../components/progress.js";
+import { urls } from "../core/urls.js";
 
 export default function perfil() {
   const u = state.user;
@@ -16,7 +17,7 @@ export default function perfil() {
     nav: "perfil",
     html: `
         <div class="topbar topbar--split">
-          <a class="icon-btn icon-btn--solid" href="#/home" aria-label="Voltar ao início">${icon("arrowLeft")}</a>
+          <a class="icon-btn icon-btn--solid" href="${urls.home}" aria-label="Voltar ao início">${icon("arrowLeft")}</a>
           <h1>Meu perfil</h1>
           <span style="width:2.25rem"></span>
         </div>
@@ -29,14 +30,14 @@ export default function perfil() {
         </div>
         <div class="card">${subjectBars()}</div>
         <h2 class="section-label">Histórico recente</h2>
-        ${state.results.length ? historyList(4) : `<div class="empty"><p>Seus quizzes vão aparecer aqui.</p><a class="btn btn--light" href="#/quiz/pt">Fazer um quiz</a></div>`}
-        <a class="btn btn--soft" style="margin-top:1.5rem" href="#/acessibilidade">${icon("access")}Opções de acessibilidade</a>
+        ${state.results.length ? historyList(4) : `<div class="empty"><p>Seus quizzes vão aparecer aqui.</p><a class="btn btn--light" href="${urls.quiz("pt")}">Fazer um quiz</a></div>`}
+        <a class="btn btn--soft" style="margin-top:1.5rem" href="${urls.acessibilidade}">${icon("access")}Opções de acessibilidade</a>
         <button class="btn btn--outline" style="margin-top:.75rem" id="logout">${icon("logout")}${u.guest ? "Sair do modo visitante" : "Sair da conta"}</button>`,
     after() {
       document.getElementById("logout").addEventListener("click", () => {
         state.user = null;
         store.remove("user");
-        go("#/boas-vindas");
+        go(urls.boasVindas);
       });
     },
   };

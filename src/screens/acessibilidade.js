@@ -4,6 +4,7 @@ import { state, save } from "../core/state.js";
 import { go } from "../core/utils.js";
 import { toast } from "../core/toast.js";
 import { speak } from "../core/speech.js";
+import { urls } from "../core/urls.js";
 
 export default function acessibilidade() {
   const a = state.a11y;
@@ -41,7 +42,7 @@ export default function acessibilidade() {
         <button class="btn btn--primary" style="margin-top:1.5rem" id="confirm">Confirmar e voltar</button>`,
     after() {
       const back = () =>
-        history.length > 1 ? history.back() : go("#/perfil");
+        history.length > 1 ? history.back() : go(urls.perfil);
       document.getElementById("back").addEventListener("click", back);
       document.getElementById("confirm").addEventListener("click", () => {
         toast("Preferências salvas");

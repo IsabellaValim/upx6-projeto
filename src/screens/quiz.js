@@ -6,6 +6,7 @@ import { state, save } from "../core/state.js";
 import { LETTERS, esc, go, shuffle } from "../core/utils.js";
 import { speak, stopSpeaking } from "../core/speech.js";
 import home from "./home.js";
+import { urls } from "../core/urls.js";
 
 export default function quiz(id) {
   const s = SUBJECTS[id];
@@ -37,7 +38,7 @@ function drawQuestion() {
   const box = document.getElementById("quiz");
   box.innerHTML = `
       <div class="quiz-top">
-        <a class="icon-btn" href="#/area/${q.subject}" aria-label="Sair do quiz">${icon("xBox")}</a>
+        <a class="icon-btn" href="${urls.area(q.subject)}" aria-label="Sair do quiz">${icon("xBox")}</a>
         <div class="progress" role="progressbar" aria-valuemin="1" aria-valuemax="${total}" aria-valuenow="${q.i + 1}" aria-label="Progresso do quiz"><i style="width:${((q.i + 1) / total) * 100}%"></i></div>
       </div>
       <h1 class="quiz-count">Questão ${q.i + 1} de ${total} — ${s.name}</h1>
@@ -139,5 +140,5 @@ function finishQuiz() {
   });
   save.results();
   q.finished = true;
-  go(`#/resultado/${state.results.length - 1}`);
+  go(urls.resultado(state.results.length - 1));
 }

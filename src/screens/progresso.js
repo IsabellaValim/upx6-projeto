@@ -1,6 +1,7 @@
 /* Progresso */
 import { state } from "../core/state.js";
 import { historyList, subjectBars } from "../components/progress.js";
+import { urls } from "../core/urls.js";
 
 export default function progresso() {
   const has = state.results.length > 0;
@@ -18,8 +19,8 @@ export default function progresso() {
             : `<div class="empty">
           <h2>Nenhum quiz feito ainda</h2>
           <p>Faça seu primeiro quiz para ver acertos, erros e o que revisar.</p>
-          <a class="btn btn--primary btn--sm" href="#/quiz/pt">Começar quiz de Português</a>
-          <a class="btn btn--outline btn--sm" href="#/quiz/mat">Começar quiz de Matemática</a>
+          <a class="btn btn--primary btn--sm" href="${urls.quiz("pt")}">Começar quiz de Português</a>
+          <a class="btn btn--outline btn--sm" href="${urls.quiz("mat")}">Começar quiz de Matemática</a>
         </div>`
         }`,
   };
