@@ -3,13 +3,11 @@
    ========================================================== */
 import { SUBJECTS, lessonsFor } from "./data.js";
 import { icon } from "./icons.js";
+import { $app, $sheetRoot, $toast } from "./core/dom.js";
 
 (() => {
   "use strict";
 
-  const $app = document.getElementById("app");
-  const $sheetRoot = document.getElementById("sheet-root");
-  const $toast = document.getElementById("toast");
   const LETTERS = ["A", "B", "C", "D"];
 
   /* ---------- Armazenamento local ---------- */
