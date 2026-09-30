@@ -3,7 +3,7 @@
    ========================================================== */
 import { SUBJECTS, lessonsFor } from "./data.js";
 import { icon } from "./icons.js";
-import { $app, $sheetRoot, $toast } from "./core/dom.js";
+import { $app, $sheetRoot } from "./core/dom.js";
 import {
   LETTERS,
   esc,
@@ -15,33 +15,13 @@ import {
 } from "./core/utils.js";
 import { store } from "./core/store.js";
 import { state, save, applyA11y } from "./core/state.js";
+import { toast } from "./core/toast.js";
+import { speak, stopSpeaking } from "./core/speech.js";
 
 (() => {
   "use strict";
 
   /* ---------- Utilidades ---------- */
-  function toast(msg) {
-    $toast.textContent = msg;
-    $toast.classList.add("show");
-    clearTimeout(toast.t);
-    toast.t = setTimeout(() => $toast.classList.remove("show"), 2600);
-  }
-
-  function speak(text) {
-    if (!("speechSynthesis" in window)) {
-      toast("Seu navegador não tem leitura em voz alta.");
-      return;
-    }
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text);
-    u.lang = "pt-BR";
-    u.rate = 0.9;
-    speechSynthesis.speak(u);
-  }
-  const stopSpeaking = () => {
-    if ("speechSynthesis" in window) speechSynthesis.cancel();
-  };
-
   function streakDays() {
     const days = new Set(
       state.results.map((r) => new Date(r.date).toDateString()),
