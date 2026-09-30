@@ -23,28 +23,12 @@ import {
   watchedCount,
   totalLessons,
 } from "./core/stats.js";
+import { backBtn, nav } from "./components/nav.js";
 
 (() => {
   "use strict";
 
   /* ---------- Pedaços de interface ---------- */
-  const backBtn = (href, label = "Voltar") =>
-    `<a class="icon-btn" href="${href}" aria-label="${label}">${icon("back")}</a>`;
-
-  function nav(active) {
-    const items = [
-      ["inicio", "#/home", "home", "Início"],
-      ["progresso", "#/progresso", "trend", "Progresso"],
-      ["perfil", "#/perfil", "user", "Perfil"],
-    ];
-    return `<nav class="bottom-nav" aria-label="Navegação principal">${items
-      .map(
-        ([id, href, ic, label]) =>
-          `<a href="${href}" ${id === active ? 'aria-current="page"' : ""}>${icon(ic)}<span>${label}</span></a>`,
-      )
-      .join("")}</nav>`;
-  }
-
   function openSheet(title, options) {
     $sheetRoot.innerHTML = `
       <div class="sheet-backdrop" data-close>
