@@ -4,11 +4,18 @@
 import { SUBJECTS, lessonsFor } from "./data.js";
 import { icon } from "./icons.js";
 import { $app, $sheetRoot, $toast } from "./core/dom.js";
+import {
+  LETTERS,
+  esc,
+  go,
+  pct,
+  initials,
+  formatDay,
+  shuffle,
+} from "./core/utils.js";
 
 (() => {
   "use strict";
-
-  const LETTERS = ["A", "B", "C", "D"];
 
   /* ---------- Armazenamento local ---------- */
   const store = {
@@ -77,23 +84,6 @@ import { $app, $sheetRoot, $toast } from "./core/dom.js";
   }
 
   /* ---------- Utilidades ---------- */
-  const esc = (s) =>
-    String(s).replace(
-      /[&<>"']/g,
-      (c) =>
-        ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;",
-        })[c],
-    );
-  const go = (hash) => {
-    location.hash = hash;
-  };
-  const pct = (a, b) => (b ? Math.round((a / b) * 100) : 0);
-
   function toast(msg) {
     $toast.textContent = msg;
     $toast.classList.add("show");
@@ -115,29 +105,6 @@ import { $app, $sheetRoot, $toast } from "./core/dom.js";
   const stopSpeaking = () => {
     if ("speechSynthesis" in window) speechSynthesis.cancel();
   };
-
-  function initials(name) {
-    return (
-      name
-        .trim()
-        .split(/\s+/)
-        .slice(0, 2)
-        .map((p) => p[0])
-        .join("")
-        .toUpperCase() || "E"
-    );
-  }
-
-  function formatDay(ts) {
-    const d = new Date(ts);
-    const today = new Date();
-    const diff = Math.round(
-      (new Date(today.toDateString()) - new Date(d.toDateString())) / 86400000,
-    );
-    if (diff === 0) return "Hoje";
-    if (diff === 1) return "Ontem";
-    return d.toLocaleDateString("pt-BR", { day: "2-digit", month: "short" });
-  }
 
   function streakDays() {
     const days = new Set(
@@ -685,15 +652,6 @@ import { $app, $sheetRoot, $toast } from "./core/dom.js";
   };
 
   /* Quiz */
-  function shuffle(arr) {
-    const a = arr.slice();
-    for (let i = a.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-  }
-
   screens.quiz = (id) => {
     const s = SUBJECTS[id];
     if (!s) return screens.home();
