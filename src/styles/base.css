@@ -1,0 +1,91 @@
+/* ==========================================================
+   Estudaê — base: tokens, reset e tipografia
+   Paleta tirada das telas do Figma: creme + lilás + ameixa
+   ========================================================== */
+:root {
+  --bg: #F6F1E9;
+  --surface: #FCFAF6;
+  --lilac: #DCCBE1;
+  --lilac-soft: #ECE2EE;
+  --lilac-line: #C6AFCF;
+  --plum: #7B5E8C;
+  --plum-dark: #4D3159;
+  --ink: #2F2335;
+  --muted: #6F6275;
+  --ok: #2E8A52;
+  --ok-soft: #DDF0E3;
+  --bad: #C23B34;
+  --bad-soft: #F7DEDC;
+  --on-plum: #FFFFFF;
+  --outer: #E4DAD0;
+
+  --serif: "Lora", Georgia, "Times New Roman", serif;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --r-s: 6px;
+  --r-m: 10px;
+  --r-l: 16px;
+  --pad: 1.25rem;
+  --nav-h: 4rem;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+html[data-contrast="alto"] {
+  --bg: #FFFFFF;
+  --surface: #FFFFFF;
+  --lilac: #E6D9EC;
+  --lilac-soft: #F3ECF6;
+  --lilac-line: #2A1335;
+  --plum: #3A1C49;
+  --plum-dark: #1C0826;
+  --ink: #000000;
+  --muted: #262626;
+  --ok: #15622F;
+  --bad: #9A1C15;
+  --outer: #FFFFFF;
+}
+
+html { font-size: 100%; -webkit-text-size-adjust: 100%; }
+html[data-font="grande"] { font-size: 112.5%; }
+html[data-font="extragrande"] { font-size: 125%; }
+
+*, *::before, *::after { box-sizing: border-box; }
+:root { padding-top: 0; }
+
+body {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--outer);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; margin: 0; line-height: 1.2; color: var(--ink); }
+p { margin: 0; }
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; }
+
+:focus-visible { outline: 3px solid var(--plum); outline-offset: 2px; border-radius: 4px; }
+[tabindex="-1"]:focus { outline: none; }
+
+.ico { width: 1.25rem; height: 1.25rem; flex: none; }
+
+[hidden] { display: none !important; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* ---------- Tipografia ---------- */
+.display { font-size: 2rem; }
+.title { font-size: 1.5rem; }
+.kicker { color: var(--plum); font-size: .875rem; font-weight: 500; }
+.lede { color: var(--muted); font-size: .9375rem; margin-top: .25rem; }
+.small { font-size: .8125rem; color: var(--muted); }
+.section-label {
+  font-family: var(--sans); font-size: .75rem; font-weight: 600; color: var(--muted);
+  letter-spacing: .04em; margin: 1.75rem 0 .75rem;
+}
+.center { text-align: center; }
+.spacer { flex: 1; }
+.stack > * + * { margin-top: .75rem; }
