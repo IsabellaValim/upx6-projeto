@@ -25,6 +25,7 @@ import {
 } from "./core/stats.js";
 import { backBtn, nav } from "./components/nav.js";
 import { chooseSubject } from "./components/sheet.js";
+import { historyList, subjectBars } from "./components/progress.js";
 
 (() => {
   "use strict";
@@ -677,39 +678,6 @@ import { chooseSubject } from "./components/sheet.js";
   };
 
   /* Progresso */
-  function historyList(limit) {
-    const list = state.results
-      .map((r, i) => ({ ...r, i }))
-      .reverse()
-      .slice(0, limit);
-    return `<div class="history">${list
-      .map((r) => {
-        const s = SUBJECTS[r.subject];
-        const p = pct(r.correct, r.total);
-        const good = p >= 60;
-        const label =
-          r.weakTopic !== null ? s.topics[r.weakTopic].title : "Todos os temas";
-        return `<a class="history-item ${good ? "ok" : "bad"}" href="#/resultado/${r.i}">
-        <span class="badge">${icon(good ? "check" : "x")}</span>
-        <span><strong>${s.name} — ${esc(label)}</strong><small>${formatDay(r.date)}</small></span>
-        <span class="pct">${p}%</span></a>`;
-      })
-      .join("")}</div>`;
-  }
-
-  function subjectBars() {
-    return ["pt", "mat"]
-      .map((id) => {
-        const sc = subjectScore(id);
-        return `<div class="bar-row">
-        <header><span>${SUBJECTS[id].name}</span><span>${sc === null ? "—" : sc + "%"}</span></header>
-        <div class="bar" role="progressbar" aria-label="Aproveitamento em ${SUBJECTS[id].name}" aria-valuenow="${sc ?? 0}" aria-valuemin="0" aria-valuemax="100"><i style="width:${sc ?? 0}%"></i></div>
-        <p class="small" style="margin-top:.375rem">${watchedCount(id)} de ${totalLessons(id)} vídeo-aulas concluídas</p>
-      </div>`;
-      })
-      .join("");
-  }
-
   screens.progresso = () => {
     const has = state.results.length > 0;
     return {
