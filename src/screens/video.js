@@ -6,6 +6,7 @@ import { esc } from "../core/utils.js";
 import { toast } from "../core/toast.js";
 import { speak, stopSpeaking } from "../core/speech.js";
 import home from "./home.js";
+import { urls } from "../core/urls.js";
 
 export default function video(id, ti, li) {
   const s = SUBJECTS[id];
@@ -15,15 +16,16 @@ export default function video(id, ti, li) {
   const key = `${id}/${ti}/${li}`;
   const done = !!state.watched[key];
   const lessons = lessonsFor(t);
-  const next = +li + 1 < lessons.length ? `#/video/${id}/${ti}/${+li + 1}` : null;
+  const next =
+    +li + 1 < lessons.length ? `#/video/${id}/${ti}/${+li + 1}` : null;
   return {
     cls: "screen--nav",
     nav: "inicio",
     html: `
         <div class="topbar topbar--split">
-          <a class="icon-btn icon-btn--solid" href="#/videos/${id}" aria-label="Voltar para as vídeo-aulas">${icon("arrowLeft")}</a>
+          <a class="icon-btn icon-btn--solid" href="${urls.videos(id)}" aria-label="Voltar para as vídeo-aulas">${icon("arrowLeft")}</a>
           <h1>Vídeo-aula</h1>
-          <a class="icon-btn icon-btn--solid" href="#/acessibilidade" aria-label="Opções de acessibilidade">${icon("access")}</a>
+          <a class="icon-btn icon-btn--solid" href="${urls.acessibilidade}" aria-label="Opções de acessibilidade">${icon("access")}</a>
         </div>
         <div class="player" aria-label="Player de vídeo">
           <button class="player-btn" id="play" aria-label="Reproduzir vídeo">${icon("play")}</button>
@@ -99,7 +101,9 @@ export default function video(id, ti, li) {
         else state.watched[key] = Date.now();
         save.watched();
         toast(
-          state.watched[key] ? "Aula marcada como concluída" : "Aula desmarcada",
+          state.watched[key]
+            ? "Aula marcada como concluída"
+            : "Aula desmarcada",
         );
         rerender();
       });

@@ -6,6 +6,7 @@ import { esc } from "../core/utils.js";
 import { watchedCount, totalLessons } from "../core/stats.js";
 import { backBtn } from "../components/nav.js";
 import home from "./home.js";
+import { urls } from "../core/urls.js";
 
 export default function videos(id) {
   const s = SUBJECTS[id];
@@ -23,7 +24,7 @@ export default function videos(id) {
           ${lessons
             .map((l, j) => {
               const done = state.watched[`${id}/${i}/${j}`];
-              return `<a class="lesson ${done ? "done" : ""}" href="#/video/${id}/${i}/${j}">
+              return `<a class="lesson ${done ? "done" : ""}" href="${urls.video(id, i, j)}">
               ${icon(done ? "check" : "playCircle")}<span>${l.kind}${done ? '<span class="sr-only"> (concluído)</span>' : ""}</span>
               <span class="dur">${l.min} min</span></a>`;
             })
@@ -36,7 +37,7 @@ export default function videos(id) {
     cls: "screen--nav",
     nav: "inicio",
     html: `
-        <div class="topbar">${backBtn(`#/area/${id}`)}</div>
+        <div class="topbar">${backBtn(urls.area(id))}</div>
         <p class="kicker">${s.name} (Encceja)</p>
         <h1 class="title">Vídeo-aulas</h1>
         <p class="small" style="margin-top:.25rem">${watchedCount(id)} de ${totalLessons(id)} aulas concluídas</p>
