@@ -2,6 +2,7 @@
 import { icon } from "../icons.js";
 import { state } from "../core/state.js";
 import { go } from "../core/utils.js";
+import { urls } from "../core/urls.js";
 
 export default function loading() {
   return {
@@ -14,7 +15,7 @@ export default function loading() {
     after() {
       setTimeout(() => {
         if (location.hash === "" || location.hash === "#/loading")
-          go(state.user ? "#/home" : "#/boas-vindas");
+          go(state.user ? urls.home : urls.boasVindas);
       }, 1600);
     },
   };

@@ -3,6 +3,7 @@ import { SUBJECTS } from "../data.js";
 import { icon } from "../icons.js";
 import { backBtn } from "../components/nav.js";
 import home from "./home.js";
+import { urls } from "../core/urls.js";
 
 export default function area(id) {
   const s = SUBJECTS[id];

@@ -5,6 +5,7 @@ import { state } from "../core/state.js";
 import { esc } from "../core/utils.js";
 import { subjectScore } from "../core/stats.js";
 import { chooseSubject } from "../components/sheet.js";
+import { urls } from "../core/urls.js";
 
 export default function home() {
   const first = state.user.name.split(" ")[0];
@@ -12,7 +13,7 @@ export default function home() {
   const tile = (id) => {
     const s = SUBJECTS[id];
     const score = subjectScore(id);
-    return `<a class="subject-tile" href="#/area/${id}">
+    return `<a class="subject-tile" href="${urls.area(id)}">
         ${icon(s.icon)}
         <strong>${s.name}</strong>
         <span>${esc(s.area)}</span>
@@ -31,14 +32,14 @@ export default function home() {
         <div class="action-list">
           <button class="action-row" data-choose="quiz">${icon("checkSquare")}Questões e quiz${icon("chevronRight", "chev")}</button>
           <button class="action-row" data-choose="videos">${icon("video")}Vídeo-aulas${icon("chevronRight", "chev")}</button>
-          <a class="action-row" href="#/progresso">${icon("clock")}Progresso${icon("chevronRight", "chev")}</a>
+          <a class="action-row" href="${urls.progresso}">${icon("clock")}Progresso${icon("chevronRight", "chev")}</a>
         </div>
         ${
           last
             ? `<div class="continue-card">
           <strong>Último quiz: ${SUBJECTS[last.subject].name}</strong>
           <p>Você acertou ${last.correct} de ${last.total}. Que tal tentar de novo e melhorar?</p>
-          <a class="btn btn--light" href="#/quiz/${last.subject}">Refazer quiz</a>
+          <a class="btn btn--light" href="${urls.quiz(last.subject)}">Refazer quiz</a>
         </div>`
             : ""
         }`,

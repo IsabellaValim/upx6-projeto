@@ -3,11 +3,12 @@ import { backBtn } from "../components/nav.js";
 import { state, save } from "../core/state.js";
 import { toast } from "../core/toast.js";
 import { go } from "../core/utils.js";
+import { urls } from "../core/urls.js";
 
 export default function cadastro() {
   return {
     html: `
-      <div class="topbar">${backBtn("#/boas-vindas")}</div>
+      <div class="topbar">${backBtn(urls.boasVindas)}</div>
       <h1 class="title">Entrar ou criar conta</h1>
       <p class="lede">Escolha como prefere continuar. Vamos enviar um código de verificação.</p>
       <div style="text-align:center"><div class="segmented" role="group" aria-label="Receber código por">
@@ -117,7 +118,7 @@ export default function cadastro() {
         };
         save.user();
         toast(`Conta criada. Bons estudos, ${name.split(" ")[0]}!`);
-        go("#/home");
+        go(urls.home);
       });
     },
   };

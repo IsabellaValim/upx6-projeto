@@ -2,6 +2,7 @@
 import { icon } from "../icons.js";
 import { $sheetRoot } from "../core/dom.js";
 import { esc } from "../core/utils.js";
+import { urls } from "../core/urls.js";
 
 export function openSheet(title, options) {
   $sheetRoot.innerHTML = `
@@ -42,12 +43,12 @@ export const chooseSubject = (kind) =>
       {
         label: "Português",
         icon: "pen",
-        href: kind === "quiz" ? "#/quiz/pt" : "#/videos/pt",
+        href: kind === "quiz" ? urls.quiz("pt") : urls.videos("pt"),
       },
       {
         label: "Matemática",
         icon: "percent",
-        href: kind === "quiz" ? "#/quiz/mat" : "#/videos/mat",
+        href: kind === "quiz" ? urls.quiz("mat") : urls.videos("mat"),
       },
     ],
   );

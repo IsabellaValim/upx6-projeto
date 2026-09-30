@@ -4,12 +4,13 @@ import { backBtn } from "../components/nav.js";
 import { state, save } from "../core/state.js";
 import { toast } from "../core/toast.js";
 import { go } from "../core/utils.js";
+import { urls } from "../core/urls.js";
 
 export default function login() {
   return {
     cls: "screen--lilac",
     html: `
-      <div class="topbar">${backBtn("#/boas-vindas")}</div>
+      <div class="topbar">${backBtn(urls.boasVindas)}</div>
       <div style="margin-top:2rem">
         <h1 class="display">Entrar</h1>
         <p class="lede">Acesse sua conta para continuar estudando.</p>
@@ -29,7 +30,7 @@ export default function login() {
         <button class="btn btn--primary" style="margin-top:1.5rem">Entrar</button>
       </form>
       <div class="divider">ou</div>
-      <p class="small center">Ainda não tem conta? <a class="link" href="#/cadastro">Criar conta</a></p>`,
+      <p class="small center">Ainda não tem conta? <a class="link" href="${urls.cadastro}">Criar conta</a></p>`,
     after() {
       const pass = document.getElementById("login-pass");
       const toggle = document.getElementById("toggle-pass");
@@ -74,7 +75,7 @@ export default function login() {
           login: raw,
         };
         save.user();
-        go("#/home");
+        go(urls.home);
       });
     },
   };

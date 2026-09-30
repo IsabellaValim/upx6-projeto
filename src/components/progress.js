@@ -3,11 +3,8 @@ import { SUBJECTS } from "../data.js";
 import { icon } from "../icons.js";
 import { state } from "../core/state.js";
 import { esc, formatDay, pct } from "../core/utils.js";
-import {
-  subjectScore,
-  watchedCount,
-  totalLessons,
-} from "../core/stats.js";
+import { subjectScore, watchedCount, totalLessons } from "../core/stats.js";
+import { urls } from "../core/urls.js";
 
 export function historyList(limit) {
   const list = state.results
@@ -21,7 +18,7 @@ export function historyList(limit) {
       const good = p >= 60;
       const label =
         r.weakTopic !== null ? s.topics[r.weakTopic].title : "Todos os temas";
-      return `<a class="history-item ${good ? "ok" : "bad"}" href="#/resultado/${r.i}">
+      return `<a class="history-item ${good ? "ok" : "bad"}" href="${urls.resultado(r.i)}">
         <span class="badge">${icon(good ? "check" : "x")}</span>
         <span><strong>${s.name} — ${esc(label)}</strong><small>${formatDay(r.date)}</small></span>
         <span class="pct">${p}%</span></a>`;
