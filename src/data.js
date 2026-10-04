@@ -1,44 +1,84 @@
 /* Conteúdo do Estudaê: áreas, temas, vídeo-aulas e questões */
-const LESSON_KINDS = [
+export const LESSON_KINDS = [
   { kind: "Vídeo introdutório", min: 4 },
   { kind: "Aprofundando", min: 13 },
   { kind: "Exercícios comentados", min: 9 },
   { kind: "Revisão rápida", min: 6 },
 ];
 
-const SUBJECTS = {
+export const SUBJECTS = {
   pt: {
     id: "pt",
     name: "Português",
     area: "Linguagens",
     icon: "pen",
     topics: [
-      { title: "Interpretação de texto", videos: 2, about: "Uma aula prática, com explicação calma e passo a passo, sobre técnicas para localizar a ideia principal em um texto e diferenciá-la de informações secundárias." },
-      { title: "Gramática e concordância", videos: 2, about: "Entenda como o verbo combina com o sujeito e como evitar os erros de concordância mais cobrados no Encceja." },
-      { title: "Produção textual", videos: 3, about: "Como organizar introdução, desenvolvimento e conclusão para escrever uma redação clara e bem argumentada." },
-      { title: "Encontro vocálico", videos: 2, about: "Ditongo, tritongo e hiato explicados com exemplos do dia a dia e dicas para separar sílabas sem medo." },
-      { title: "Concordância gramatical", videos: 4, about: "Concordância nominal e verbal com palavras como anexo, meio, bastante e obrigado, com exercícios resolvidos." },
+      {
+        title: "Interpretação de texto",
+        videos: 2,
+        about:
+          "Uma aula prática, com explicação calma e passo a passo, sobre técnicas para localizar a ideia principal em um texto e diferenciá-la de informações secundárias.",
+      },
+      {
+        title: "Gramática e concordância",
+        videos: 2,
+        about:
+          "Entenda como o verbo combina com o sujeito e como evitar os erros de concordância mais cobrados no Encceja.",
+      },
+      {
+        title: "Produção textual",
+        videos: 3,
+        about:
+          "Como organizar introdução, desenvolvimento e conclusão para escrever uma redação clara e bem argumentada.",
+      },
+      {
+        title: "Encontro vocálico",
+        videos: 2,
+        about:
+          "Ditongo, tritongo e hiato explicados com exemplos do dia a dia e dicas para separar sílabas sem medo.",
+      },
+      {
+        title: "Concordância gramatical",
+        videos: 4,
+        about:
+          "Concordância nominal e verbal com palavras como anexo, meio, bastante e obrigado, com exercícios resolvidos.",
+      },
     ],
     questions: [
       {
         topic: 0,
         text: "Em muitas cidades brasileiras, as feiras livres continuam resistindo aos supermercados. Mais do que comprar frutas e verduras, as pessoas vão à feira para conversar, pechinchar e reencontrar vizinhos. A feira é, assim, também um espaço de convivência.",
         ask: "A ideia central do texto é que a feira livre:",
-        options: ["É sempre mais barata que o supermercado.", "Deve desaparecer nos próximos anos.", "É também um lugar de encontro entre as pessoas.", "Vende apenas frutas e verduras."],
+        options: [
+          "É sempre mais barata que o supermercado.",
+          "Deve desaparecer nos próximos anos.",
+          "É também um lugar de encontro entre as pessoas.",
+          "Vende apenas frutas e verduras.",
+        ],
         answer: 2,
         why: "O texto termina afirmando que a feira é “também um espaço de convivência”. Essa é a ideia que amarra todas as outras informações.",
       },
       {
         topic: 1,
         ask: "Qual frase está escrita de acordo com a norma-padrão?",
-        options: ["Fazem dois anos que me mudei.", "Faz dois anos que me mudei.", "Houveram muitos problemas na reunião.", "Os aluno chegou cedo."],
+        options: [
+          "Fazem dois anos que me mudei.",
+          "Faz dois anos que me mudei.",
+          "Houveram muitos problemas na reunião.",
+          "Os aluno chegou cedo.",
+        ],
         answer: 1,
         why: "Quando indica tempo decorrido, o verbo “fazer” não tem sujeito e fica no singular: “faz dois anos”.",
       },
       {
         topic: 2,
         ask: "Em um texto dissertativo-argumentativo, a função da conclusão é:",
-        options: ["Apresentar o tema pela primeira vez.", "Retomar a tese e propor uma solução.", "Contar uma história pessoal do autor.", "Listar as fontes consultadas."],
+        options: [
+          "Apresentar o tema pela primeira vez.",
+          "Retomar a tese e propor uma solução.",
+          "Contar uma história pessoal do autor.",
+          "Listar as fontes consultadas.",
+        ],
         answer: 1,
         why: "A conclusão fecha o raciocínio: retoma o ponto de vista defendido e, no Encceja, costuma trazer uma proposta de solução.",
       },
@@ -64,11 +104,36 @@ const SUBJECTS = {
     area: "Números e cálculos",
     icon: "percent",
     topics: [
-      { title: "MMC", videos: 2, about: "Mínimo múltiplo comum com situações do cotidiano, como horários de ônibus e remédios, resolvidas passo a passo." },
-      { title: "Regra de sinais", videos: 2, about: "Como multiplicar, dividir, somar e subtrair números positivos e negativos sem confundir os sinais." },
-      { title: "MDC", videos: 3, about: "Máximo divisor comum para dividir coisas em partes iguais do maior tamanho possível." },
-      { title: "Equação de primeiro grau", videos: 2, about: "Transforme problemas escritos em equações e descubra o valor desconhecido com calma." },
-      { title: "Teorema de Pitágoras", videos: 4, about: "A relação entre os lados do triângulo retângulo, com exemplos de escadas, rampas e terrenos." },
+      {
+        title: "MMC",
+        videos: 2,
+        about:
+          "Mínimo múltiplo comum com situações do cotidiano, como horários de ônibus e remédios, resolvidas passo a passo.",
+      },
+      {
+        title: "Regra de sinais",
+        videos: 2,
+        about:
+          "Como multiplicar, dividir, somar e subtrair números positivos e negativos sem confundir os sinais.",
+      },
+      {
+        title: "MDC",
+        videos: 3,
+        about:
+          "Máximo divisor comum para dividir coisas em partes iguais do maior tamanho possível.",
+      },
+      {
+        title: "Equação de primeiro grau",
+        videos: 2,
+        about:
+          "Transforme problemas escritos em equações e descubra o valor desconhecido com calma.",
+      },
+      {
+        title: "Teorema de Pitágoras",
+        videos: 4,
+        about:
+          "A relação entre os lados do triângulo retângulo, com exemplos de escadas, rampas e terrenos.",
+      },
     ],
     questions: [
       {
@@ -110,6 +175,6 @@ const SUBJECTS = {
   },
 };
 
-function lessonsFor(topic) {
+export function lessonsFor(topic) {
   return LESSON_KINDS.slice(0, topic.videos);
 }

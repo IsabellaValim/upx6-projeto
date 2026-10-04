@@ -1,0 +1,57 @@
+/* ==========================================================
+   Estudaê — responsivo e movimento reduzido
+   ========================================================== */
+
+/* ---------- Movimento reduzido ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+html[data-motion="reduce"] *,
+html[data-motion="reduce"] *::before,
+html[data-motion="reduce"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+html[data-motion="reduce"] .spinner {
+  animation: spin 3s linear infinite !important;
+}
+
+/* No computador: o celular vira uma "moldura" com rolagem interna */
+@media (min-width: 520px) {
+  body {
+    padding: 24px 0;
+    height: 100dvh;
+    overflow: hidden;
+  }
+  .shell {
+    height: calc(100dvh - 48px);
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(60, 35, 70, 0.18);
+  }
+  #app {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+  }
+  .bottom-nav {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    transform: none;
+  }
+  .sheet-backdrop,
+  #toast {
+    position: absolute;
+  }
+}
