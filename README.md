@@ -49,6 +49,27 @@ src/
                         responsive
 ```
 
+## Pré-requisitos
+
+| Para quê | O que instalar |
+|---|---|
+| Rodar o frontend | Python 3 **ou** Node — qualquer servidor HTTP estático |
+| Rodar o banco de dados | Docker + Docker Compose v2 |
+| Backend | .NET 8 SDK — **ainda não necessário** (entra na fase 3) |
+
+Não é preciso instalar o PostgreSQL nem o `psql` na máquina: o banco roda em
+container e o cliente usado é o de dentro dele
+(`docker compose exec db psql`).
+
+No Windows, o caminho mais simples é o **Docker Desktop** com a integração do
+WSL habilitada (Settings → Resources → WSL integration). No Linux, basta o
+`docker-ce` com o plugin `docker-compose-v2`. Para conferir:
+
+```bash
+docker --version
+docker compose version   # precisa ser v2 — comando com espaço, não docker-compose
+```
+
 ## Como executar
 
 O app usa módulos ES, então precisa ser servido por HTTP (abrir o
@@ -64,6 +85,44 @@ npx serve .
 
 Depois acesse `http://localhost:8000`. Também funciona com a extensão
 **Live Server** do VS Code.
+
+## Banco de dados (desenvolvimento)
+
+O backend ainda não existe, mas o Postgres de desenvolvimento já está
+definido no `docker-compose.yml` da raiz. Precisa de Docker instalado.
+
+```bash
+docker compose up -d --wait   # sobe e espera ficar healthy
+docker compose ps             # STATUS deve mostrar (healthy)
+docker compose down           # para e remove o container (mantém os dados)
+docker compose down -v        # ATENÇÃO: apaga os dados também
+```
+
+Para abrir um `psql` dentro do container:
+
+```bash
+docker compose exec db psql -U estudae -d estudae
+```
+
+Dados de conexão (só desenvolvimento local):
+
+| | |
+|---|---|
+| Host / porta | `localhost:5432` (padrão — veja abaixo) |
+| Banco / usuário | `estudae` |
+| Senha | `estudae_dev` |
+
+**Se a porta 5432 já estiver ocupada** na sua máquina (é o caso de quem tem o
+PostgreSQL instalado nativamente), copie o `.env.example` e escolha outra:
+
+```bash
+cp .env.example .env
+# edite DB_PORT=5433
+```
+
+O `.env` não é comitado, então cada pessoa usa a porta que quiser sem mexer
+em arquivo versionado. Dentro do container o Postgres está sempre na 5432 —
+o que muda é só a porta publicada no host.
 
 ## Roadmap
 
