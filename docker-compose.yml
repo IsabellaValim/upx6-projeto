@@ -1,0 +1,61 @@
+# Banco de dados de desenvolvimento do Estudae.
+# Fase 1 do backend: por enquanto so o Postgres. A API entra aqui na fase 4.
+#
+# Subir:   docker compose up -d
+# Status:  docker compose ps          (espere STATUS = healthy)
+# Logs:    docker compose logs -f db
+# Parar:   docker compose down        (mantem os dados)
+#          docker compose down -v     (APAGA os dados)
+
+services:
+  db:
+    # Major fixado de proposito: trocar de major torna o diretorio de dados
+    # incompativel e exige pg_upgrade. Minor (16.15 -> 16.16) e seguro.
+    image: postgres:16
+    container_name: estudae-db
+
+    environment:
+      # Lidas pelo entrypoint da imagem APENAS na primeira inicializacao, ou seja,
+      # quando o volume ainda nao tem $PGDATA/PG_VERSION. Se o banco ja existe,
+      # mudar qualquer uma destas variaveis nao tem efeito nenhum.
+      POSTGRES_USER: estudae
+      POSTGRES_DB: estudae
+      # Apenas desenvolvimento local. Vai para um .env (nao comitado) na fase de secrets.
+      POSTGRES_PASSWORD: estudae_dev
+
+    ports:
+      # Formato host:container. Dentro do container o Postgres esta sempre na 5432;
+      # o que muda por maquina e a porta publicada no host.
+      #
+      # DB_PORT vem do .env (nao comitado) e cai para 5432 se nao estiver definida.
+      # Quem tem um Postgres nativo ocupando a 5432 define DB_PORT=5433 no .env.
+      # Veja .env.example.
+      #
+      # Preso em 127.0.0.1 de proposito: em WSL2 com mirrored networking, publicar
+      # em 0.0.0.0 deixaria o banco exposto na rede local com senha de desenvolvimento.
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+
+    volumes:
+      # Volume gerenciado pelo Docker. E o que faz os dados sobreviverem a
+      # destruicao do container (e ao docker compose down).
+      - pgdata:/var/lib/postgresql/data
+
+    healthcheck:
+      # -h 127.0.0.1 forca TCP de proposito: pelo socket unix o pg_isready pode
+      # responder "pronto" durante a inicializacao, enquanto o servidor temporario
+      # do initdb ainda esta no ar. O cliente real usa TCP, entao testamos TCP.
+      # -U/-d nao mudam o veredito (pg_isready nao autentica), mas evitam
+      # FATAL: role "root" does not exist no log.
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U estudae -d estudae"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      # Falhas dentro do start_period nao contam para o retries.
+      start_period: 30s
+
+    # Sem restart policy por enquanto, de proposito: politica de restart transforma
+    # erro de configuracao em crash loop que parece estar funcionando. Entra
+    # (restart: unless-stopped) quando o servico estiver validado.
+
+volumes:
+  pgdata:
