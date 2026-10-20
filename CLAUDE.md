@@ -160,6 +160,13 @@ lá, no mesmo commit da migration.
     poder embaralhar a ordem na exibição.
   - Todas as tentativas são guardadas, e `acertou` é gravado na hora da
     resposta.
+  - `Questao` tem `status` (`rascunho`/`publicada`; o site só mostra
+    publicada) e `prova_numero` (opcional). Ainda sem migration: entram na
+    do primeiro ticket de conteúdo, não na fase 3.
+- **Convenções de conteúdo** (matemática em LaTeX renderizado com KaTeX,
+  delimitadores `\( \)` e `\[ \]` em vez de `$`, tabelas como imagem,
+  fluxo de importação com script Python fora da app): ver a seção
+  "Convenções de conteúdo" em `ModelodeDados.md`.
 - **Convenções:** tabelas e colunas em português sem acento; `snake_case` no
   banco (via `EFCore.NamingConventions`) e `PascalCase` no C#. Chaves `int` no
   conteúdo, `bigint` em `Tentativa`, padrão do Identity no usuário. Datas em
@@ -201,7 +208,8 @@ voltado ao usuário (ex.: a coluna `prova_ano`, o conteúdo das questões).
    atualiza o Container App), com uma chamada a `/health` depois do deploy
    como *smoke test*
 7. **Primeiro ticket real** (uma feature de produto), já com testes,
-   passando pelo pipeline
+   passando pelo pipeline. Provavelmente as tabelas de conteúdo
+   (`Disciplina`, `Tema`, `Questao`...) mais o importador
 8. Próximos tickets e manutenção
 
 Por que essa ordem:

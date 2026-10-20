@@ -3,6 +3,9 @@
 > **Status:** v1 (18/10/2026). Fase 2 do roadmap concluída; os "Pontos a confirmar" no fim
 > continuam em aberto. Nenhuma tabela foi criada ainda.
 > As tabelas nascem por migration, uma de cada vez, conforme cada ticket precisar delas.
+> Adendo (19/10/2026): `questao.status` e `questao.prova_numero`, que nascem na migration do
+> primeiro ticket de conteúdo; e a seção "Convenções de conteúdo". As imagens do diagrama
+> (`.png`/`.svg`) ainda não mostram as duas colunas novas.
 
 ## O que o sistema guarda
 
@@ -70,6 +73,8 @@ erDiagram
         int prova_ano "opcional"
         string prova_edicao "opcional"
         string prova_nivel "opcional"
+        int prova_numero "opcional, numero na prova original"
+        string status "rascunho ou publicada"
         datetime criado_em
     }
 
@@ -115,6 +120,10 @@ Principais campos:
 - `resolucao`: explicação de como se chega à resposta.
 - `prova_ano`, `prova_edicao`, `prova_nivel`: só a origem da questão (ex.: "Encceja 2019, Médio").
   Todos opcionais, porque a prova inteira nunca é exibida ao aluno.
+- `prova_numero` (opcional): o número da questão na prova original, para conferir a questão
+  contra o PDF durante a revisão.
+- `status`: `rascunho` ou `publicada`. O site **só mostra questões publicadas**; o importador
+  grava tudo como `rascunho` e um administrador revisa antes de publicar.
 
 **Tentativa:** cada resposta dada por um aluno. **Todas** são guardadas, inclusive repetições
 da mesma questão. O desempenho (% de acertos por tema ou disciplina) é **calculado** a partir daqui.
@@ -161,6 +170,7 @@ O mapeamento é configurado na fase 3, **antes da primeira migration**.
 | `acertou` gravado na tentativa | O histórico não muda se o texto da questão for editado depois |
 | Guardar todas as tentativas | Permite ver evolução; o custo de armazenamento é baixo |
 | Só Ensino Médio por enquanto | Nível entra como atributo opcional, preparado para crescer |
+| Questão com `status` (`rascunho`/`publicada`) | Rascunhos extraídos com ajuda de IA precisam de revisão humana antes de chegar ao aluno |
 | Chaves `int` no conteúdo, `bigint` em tentativas, padrão do Identity no usuário | Simples e legível; dados pessoais protegidos por dono, não por segredo |
 
 ## Regras e cuidados
@@ -183,6 +193,18 @@ O mapeamento é configurado na fase 3, **antes da primeira migration**.
 - Cada mudança no modelo é uma **migration nova**; migrations já aplicadas em outro ambiente
   nunca são editadas.
 - Este documento e o diagrama são atualizados **no mesmo commit** da migration.
+
+## Convenções de conteúdo
+
+- **Fluxo de importação:** um script em **Python** extrai rascunhos de questões dos PDFs das
+  provas, com ajuda de IA; o **importador em C#** valida e grava como `rascunho`; um
+  administrador revisa e publica. O script Python fica **fora da aplicação publicada**.
+- **Matemática** é escrita em **LaTeX** dentro das colunas de texto (`enunciado`,
+  `alternativas`, `resolucao`) e renderizada no frontend com **KaTeX**.
+- **Delimitadores:** `\( ... \)` para fórmula na linha e `\[ ... \]` para fórmula em
+  bloco. **Não usar `$`**, porque as questões têm valores como "R$ 10,00".
+- Preferir `\dfrac` a `\frac` no meio do texto: a fração fica maior e mais fácil de ler.
+- **Tabelas** dentro de uma questão começam como imagem (`imagem_url`).
 
 ## Fora do escopo agora
 
