@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Estudae.Api/Estudae.Api.csproj" />
+    <Project Path="src/Estudae.Domain/Estudae.Domain.csproj" />
+    <Project Path="src/Estudae.Infra/Estudae.Infra.csproj" />
+  </Folder>
+</Solution>

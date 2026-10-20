@@ -1,8 +1,11 @@
 # Modelo de dados: Estudaê
 
 > **Status:** v1 (18/10/2026). Fase 2 do roadmap concluída; os "Pontos a confirmar" no fim
-> continuam em aberto. Nenhuma tabela foi criada ainda.
+> continuam em aberto. Só as tabelas do Identity existem (migration `InicialIdentity`, fase 3).
 > As tabelas nascem por migration, uma de cada vez, conforme cada ticket precisar delas.
+> Adendo (19/10/2026): `questao.status` e `questao.prova_numero`, que nascem na migration do
+> primeiro ticket de conteúdo; e a seção "Convenções de conteúdo". O diagrama fica em
+> `ModelodeDados.svg`.
 
 ## O que o sistema guarda
 
@@ -70,6 +73,8 @@ erDiagram
         int prova_ano "opcional"
         string prova_edicao "opcional"
         string prova_nivel "opcional"
+        int prova_numero "opcional, numero na prova original"
+        string status "rascunho ou publicada"
         datetime criado_em
     }
 
@@ -115,6 +120,10 @@ Principais campos:
 - `resolucao`: explicação de como se chega à resposta.
 - `prova_ano`, `prova_edicao`, `prova_nivel`: só a origem da questão (ex.: "Encceja 2019, Médio").
   Todos opcionais, porque a prova inteira nunca é exibida ao aluno.
+- `prova_numero` (opcional): o número da questão na prova original, para conferir a questão
+  contra o PDF durante a revisão.
+- `status`: `rascunho` ou `publicada`. O site **só mostra questões publicadas**; o importador
+  grava tudo como `rascunho` e um administrador revisa antes de publicar.
 
 **Tentativa:** cada resposta dada por um aluno. **Todas** são guardadas, inclusive repetições
 da mesma questão. O desempenho (% de acertos por tema ou disciplina) é **calculado** a partir daqui.
@@ -129,7 +138,8 @@ coluna padrão do Identity**: é uma propriedade nossa numa classe de usuário q
 
 Para seguir a regra de nomes em português, as tabelas do Identity são mapeadas para nomes
 próprios, em vez dos nomes que a convenção de `snake_case` geraria (`asp_net_users` etc.).
-O mapeamento é configurado na fase 3, **antes da primeira migration**.
+O mapeamento está em `Estudae.Infra/Persistence/EstudaeDbContext.cs` e entrou na primeira
+migration (`InicialIdentity`).
 
 | Tabela do Identity | Nome no banco |
 |---|---|
@@ -141,13 +151,31 @@ O mapeamento é configurado na fase 3, **antes da primeira migration**.
 | `AspNetUserTokens` | `usuario_token` |
 | `AspNetRoleClaims` | `papel_claim` |
 
-- As sete tabelas existem mesmo que não usemos todas: o `IdentityDbContext` com papéis inclui
-  todas no modelo, e o `UserStore` padrão consulta claims, logins e tokens. Remover uma delas
-  quebra o Identity em tempo de execução, então todas recebem nome em português.
+- **As sete tabelas ficam, mesmo as que ainda não usamos.** Isso foi verificado com um
+  experimento (fase 3), tirando cada grupo do modelo com `Ignore<>()`. Em nenhum caso o modelo
+  ou o cadastro quebram. O erro aparece **só em tempo de execução**, quando alguma funcionalidade
+  usa a tabela que falta (`Cannot create a DbSet for '...'`):
+
+  | Tabela removida | O que quebra |
+  |---|---|
+  | `usuario_claim` | **Todo login**: montar o cookie lê as claims do usuário |
+  | `usuario_papel` / `papel` / `papel_claim` | **Todo login** (o cookie também leva os papéis) e `AddToRole` |
+  | `usuario_token` | Autenticação em dois fatores (chave do autenticador) |
+  | `usuario_login` | Login externo (Google etc.) |
+
+  Ou seja, tirar claims ou papéis quebra o básico; tirar tokens ou logins cria uma falha
+  escondida que só aparece quando alguém ligar 2FA ou login externo. Uma tabela vazia custa
+  quase nada, então todas ficam. (O caminho suportado para não ter as tabelas de papéis seria
+  herdar de `IdentityUserContext`, mas nós usamos papéis.)
 - Só os **nomes das tabelas** são traduzidos. As **colunas** do Identity ficam com os nomes
   dele em `snake_case` (`password_hash`, `normalized_email`, `security_stamp`...). Traduzir
   coluna por coluna dá muita configuração para pouco ganho. Essa é a única exceção à regra
   de nomes em português.
+- O Identity dá nomes fixos a três índices (`EmailIndex`, `UserNameIndex`, `RoleNameIndex`), e a
+  convenção de `snake_case` não alcança esses nomes. Eles foram renomeados no DbContext para
+  `ix_usuario_normalized_email`, `ix_usuario_normalized_user_name` e `ix_papel_normalized_name`.
+- `usuario.nome` é `varchar(150)`, obrigatório.
+- A tabela de controle das migrations continua com o nome padrão do EF, `__EFMigrationsHistory`.
 
 ## Decisões e motivos
 
@@ -161,6 +189,7 @@ O mapeamento é configurado na fase 3, **antes da primeira migration**.
 | `acertou` gravado na tentativa | O histórico não muda se o texto da questão for editado depois |
 | Guardar todas as tentativas | Permite ver evolução; o custo de armazenamento é baixo |
 | Só Ensino Médio por enquanto | Nível entra como atributo opcional, preparado para crescer |
+| Questão com `status` (`rascunho`/`publicada`) | Rascunhos extraídos com ajuda de IA precisam de revisão humana antes de chegar ao aluno |
 | Chaves `int` no conteúdo, `bigint` em tentativas, padrão do Identity no usuário | Simples e legível; dados pessoais protegidos por dono, não por segredo |
 
 ## Regras e cuidados
@@ -183,6 +212,18 @@ O mapeamento é configurado na fase 3, **antes da primeira migration**.
 - Cada mudança no modelo é uma **migration nova**; migrations já aplicadas em outro ambiente
   nunca são editadas.
 - Este documento e o diagrama são atualizados **no mesmo commit** da migration.
+
+## Convenções de conteúdo
+
+- **Fluxo de importação:** um script em **Python** extrai rascunhos de questões dos PDFs das
+  provas, com ajuda de IA; o **importador em C#** valida e grava como `rascunho`; um
+  administrador revisa e publica. O script Python fica **fora da aplicação publicada**.
+- **Matemática** é escrita em **LaTeX** dentro das colunas de texto (`enunciado`,
+  `alternativas`, `resolucao`) e renderizada no frontend com **KaTeX**.
+- **Delimitadores:** `\( ... \)` para fórmula na linha e `\[ ... \]` para fórmula em
+  bloco. **Não usar `$`**, porque as questões têm valores como "R$ 10,00".
+- Preferir `\dfrac` a `\frac` no meio do texto: a fração fica maior e mais fácil de ler.
+- **Tabelas** dentro de uma questão começam como imagem (`imagem_url`).
 
 ## Fora do escopo agora
 

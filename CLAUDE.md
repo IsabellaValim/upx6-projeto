@@ -24,9 +24,10 @@ Docker, deploy e CI/CD. Ao trabalhar aqui:
 - **Frontend (`src/`, `index.html`):** todas as telas da SPA existem e
   funcionam, mas com **conteúdo placeholder** (`src/data.js`). Sem backend
   real ainda.
-- **Backend:** sem código de aplicação ainda. Fase 1 (Postgres em Docker) e
-  fase 2 (modelagem) concluídas. `backend/` só tem a documentação do modelo
-  de dados (`backend/DatabaseDocs/`).
+- **Backend:** fases 1 (Postgres em Docker), 2 (modelagem) e 3 (walking
+  skeleton) concluídas. `backend/` tem a solução .NET (API com `/health`,
+  Identity, primeira migration só com as tabelas do Identity) e a
+  documentação do modelo de dados (`backend/DatabaseDocs/`).
 - PRs já mergeados em `main`: #1 (componentização do frontend) e #2
   (Postgres de desenvolvimento via docker-compose).
 
@@ -86,17 +87,21 @@ http.server` ou `npx serve .`.
 - **Convenções:** comentários e nomes de tela/arquivo em pt-BR; sem
   TypeScript, sem framework, sem bundler.
 
-## Backend — planejado
+## Backend
 
-Ainda não implementado (nenhum código de aplicação em `backend/` ainda). Plano:
+Walking skeleton pronto (fase 3); o resto do plano segue abaixo.
 
 ### Stack decidida
-- **Backend:** ASP.NET Core Web API (.NET 8 LTS), EF Core + Npgsql
+- **Backend:** ASP.NET Core (.NET 10 LTS, suporte até nov/2028), EF Core 10
+  + Npgsql. O .NET 8 estava no plano original, mas o suporte dele termina em
+  nov/2026; a troca foi feita antes de existir código. `backend/global.json`
+  fixa o SDK em 10.0.x.
 - **Banco de dados:** PostgreSQL rodando em Docker
-- **Frontend:** as telas vanilla JS já existentes. *Onde* elas são servidas
-  (`wwwroot` da API ou container nginx separado) ainda está em aberto — ver
-  "Decisões em aberto".
-- **Auth:** ASP.NET Identity com autenticação por cookie (login e cadastro
+- **Frontend:** as telas vanilla JS já existentes, servidas pelo `wwwroot` da
+  própria API (mesma origem, um container só, sem CORS). Revisitar se surgir
+  um time de frontend separado ou um app mobile. Como o frontend chega ao
+  `wwwroot` (ele hoje está na raiz do repo) se decide na fase 4.
+- **Auth:** ASP.NET Identity com autenticação por cookie HttpOnly, não JWT (login e cadastro
   fazem parte do escopo desde o início). Dois papéis, via roles do Identity:
   **Administrador** (gerencia conteúdo; a área admin é um ticket próprio,
   mais adiante) e **Aluno**. Visitante usa o site sem conta e não grava nada
@@ -127,11 +132,11 @@ docker compose down -v                   # APAGA os dados
   desenvolvimento local; vai para um `.env` na fase de secrets.
 - **Volume:** `upx6-projeto_pgdata` (o Compose prefixa nomes de volume com o
   nome do projeto, que por padrão é o nome da pasta).
-- **A connection string depende de onde a API roda:** na fase 3 ela roda no
-  host e usa `Host=localhost;Port=<DB_PORT>` (5433 nesta máquina); na fase 4,
-  dentro do Compose, usa
-  `Host=db;Port=5432` — nome do serviço e porta interna. Dentro de um
-  container, `localhost` é o próprio container, não o banco.
+- **A connection string depende de onde a API roda:** no host (fase 3) usa
+  `Host=localhost;Port=<DB_PORT>` (5433 nesta máquina); dentro do Compose
+  (fase 4) usa `Host=db;Port=5432` — nome do serviço e porta interna. Dentro
+  de um container, `localhost` é o próprio container, não o banco. Como ela
+  chega na API: ver "Walking skeleton" abaixo.
 - O healthcheck usa `pg_isready -h 127.0.0.1` de propósito: pelo socket unix
   ele pode responder "pronto" enquanto o servidor temporário do `initdb` ainda
   está no ar. Na fase 4 isso permite `depends_on: condition: service_healthy`.
@@ -142,7 +147,7 @@ docker compose down -v                   # APAGA os dados
 ### Modelo de dados (fase 2 — concluída)
 
 **Fonte da verdade: `backend/DatabaseDocs/ModelodeDados.md`** (com o diagrama
-em `.png`/`.svg` ao lado). Aqui fica só o resumo; qualquer mudança vai para
+em `ModelodeDados.svg` ao lado). Aqui fica só o resumo; qualquer mudança vai para
 lá, no mesmo commit da migration.
 
 - **Entidades:** `Disciplina` → `Tema` → `Videoaula` e `Questao`; `Tentativa`
@@ -160,21 +165,37 @@ lá, no mesmo commit da migration.
     poder embaralhar a ordem na exibição.
   - Todas as tentativas são guardadas, e `acertou` é gravado na hora da
     resposta.
+  - `Questao` tem `status` (`rascunho`/`publicada`; o site só mostra
+    publicada) e `prova_numero` (opcional). Ainda sem migration: entram na
+    do primeiro ticket de conteúdo, não na fase 3.
+- **Convenções de conteúdo** (matemática em LaTeX renderizado com KaTeX,
+  delimitadores `\( \)` e `\[ \]` em vez de `$`, tabelas como imagem,
+  fluxo de importação com script Python fora da app): ver a seção
+  "Convenções de conteúdo" em `ModelodeDados.md`.
 - **Convenções:** tabelas e colunas em português sem acento; `snake_case` no
   banco (via `EFCore.NamingConventions`) e `PascalCase` no C#. Chaves `int` no
   conteúdo, `bigint` em `Tentativa`, padrão do Identity no usuário. Datas em
   UTC. O importador de conteúdo referencia disciplina e tema por **slug**,
   nunca por id, para o mesmo arquivo servir em qualquer ambiente.
 
-### Estrutura de solução proposta
+### Estrutura da solução
+O `src/` da raiz é o frontend, então o backend fica inteiro em `backend/`:
 ```
-estudae/
-├─ src/Estudae.Api/      (controllers, wwwroot com o frontend)
-├─ src/Estudae.Domain/   (entidades)
-├─ src/Estudae.Infra/    (EF Core, migrations)
-├─ docker-compose.yml
-└─ Dockerfile
+backend/
+├─ Estudae.slnx            formato novo de solução (padrão no .NET 10)
+├─ global.json             fixa o SDK em 10.0.x
+├─ dotnet-tools.json       dotnet-ef como ferramenta local (versão fixa)
+└─ src/
+   ├─ Estudae.Domain/      entidades; não depende de nada (vazio por enquanto)
+   ├─ Estudae.Infra/       → Domain. Usuario, EstudaeDbContext, migrations, AddInfra()
+   └─ Estudae.Api/         → Infra. Program.cs: Identity + cookie, /health
 ```
+- **Domain não depende de nada** (nem EF Core, nem ASP.NET). Por isso
+  `Usuario : IdentityUser` mora na Infra, e o Domain referencia o usuário só
+  por `UsuarioId` (string).
+- **Clean Architecture gradual:** sem projeto Application, MediatR, CQRS ou
+  repositório genérico por enquanto. O Application entra com o primeiro caso
+  de uso real (provavelmente o ticket de conteúdo).
 
 **Convenção de nomes:** tudo que criamos leva o nome do produto, *Estudaê*
 (container `estudae-db`, banco `estudae`, projetos `Estudae.*`). *Encceja* é o
@@ -186,12 +207,12 @@ voltado ao usuário (ex.: a coluna `prova_ano`, o conteúdo das questões).
    volume nomeado e healthcheck com `pg_isready` (detalhes acima)
 2. **Análise de features e modelagem de dados** — ✅ **concluída**: modelo
    em `backend/DatabaseDocs/ModelodeDados.md`. Nenhuma tabela foi criada.
-3. **Walking skeleton** — ⏭️ **próxima fase** (ver "Próxima tarefa"):
+3. **Walking skeleton** — ✅ **concluída** (ver "Walking skeleton" abaixo):
    estrutura de solução, API com `/health`, EF Core conectado ao Postgres,
-   primeira migration só com as tabelas do Identity (nenhuma tabela de
-   conteúdo ainda)
+   primeira migration só com as tabelas do Identity
 4. **Dockerfile multi-stage** (SDK builda, runtime executa) + compose
-   completo (API + Postgres conversando pelo nome do serviço)
+   completo (API + Postgres conversando pelo nome do serviço) — ⏭️ **próxima
+   fase**. Inclui decidir como o frontend da raiz chega ao `wwwroot`
 5. **CI com GitHub Actions:** build + dois testes pequenos — o endpoint
    `/health` via `WebApplicationFactory`, e aplicar todas as migrations num
    Postgres vazio subido como *service container* do job
@@ -201,7 +222,8 @@ voltado ao usuário (ex.: a coluna `prova_ano`, o conteúdo das questões).
    atualiza o Container App), com uma chamada a `/health` depois do deploy
    como *smoke test*
 7. **Primeiro ticket real** (uma feature de produto), já com testes,
-   passando pelo pipeline
+   passando pelo pipeline. Provavelmente as tabelas de conteúdo
+   (`Disciplina`, `Tema`, `Questao`...) mais o importador
 8. Próximos tickets e manutenção
 
 Por que essa ordem:
@@ -232,26 +254,44 @@ Por que essa ordem:
 - **O maior gargalo é conteúdo, não código:** cadastrar questões e
   resoluções. É preciso um mecanismo de import em massa (JSON/CSV).
 
-### Próxima tarefa: walking skeleton (fase 3)
+### Walking skeleton (fase 3 — concluída)
 
-Só começa com o "pode seguir". Objetivo: o mínimo de código que prova que
-API + EF Core + Postgres funcionam juntos.
+Comandos (rodar dentro de `backend/`, com o Postgres do compose de pé):
 
-- Criar a solução com `src/Estudae.Api`, `src/Estudae.Domain` e
-  `src/Estudae.Infra` (estrutura acima).
-- `GET /health` na API.
-- EF Core + Npgsql + `EFCore.NamingConventions` (snake_case) no
-  `Estudae.Infra`, conectado ao Postgres do compose
-  (`Host=localhost;Port=<DB_PORT>`).
-- ASP.NET Identity com cookie configurado, e a primeira migration contendo
-  **só as tabelas do Identity**. Disciplina, Tema etc. entram depois, cada
-  uma com o ticket que precisar dela.
-- Pronto quando: `dotnet run` sobe, `/health` responde, e
-  `dotnet ef database update` cria as tabelas do Identity no banco.
+```bash
+dotnet tool restore                      # instala o dotnet-ef local
+dotnet user-secrets set ConnectionStrings:Estudae \
+  "Host=localhost;Port=<DB_PORT>;Database=estudae;Username=estudae;Password=estudae_dev" \
+  --project src/Estudae.Api              # uma vez por máquina
+dotnet ef database update --project src/Estudae.Infra --startup-project src/Estudae.Api
+dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unhealthy
+```
+
+- **Connection string:** chave `ConnectionStrings:Estudae`, **nunca em
+  arquivo versionado**. O `dotnet run` não lê o `.env` (quem lê é o
+  `docker compose`). No host ela vem dos *user-secrets* (só no ambiente
+  Development, guardados em `~/.microsoft/usersecrets/`, fora do repo); em
+  container virá da variável `ConnectionStrings__Estudae`. Sem ela, a API
+  para na inicialização com uma mensagem dizendo o que configurar. A porta
+  fica repetida no `.env` e nos user-secrets (custo aceito).
+- **Migrations:** ficam em `Estudae.Infra/Persistence/Migrations`. O
+  `--startup-project` é a Api porque é de lá que o `dotnet ef` lê a
+  configuração. Nova migration:
+  `dotnet ef migrations add <Nome> --project src/Estudae.Infra --startup-project src/Estudae.Api --output-dir Persistence/Migrations`.
+- **`/health`:** `MapHealthChecks` + `AddDbContextCheck` (testa o banco pelo
+  mesmo DbContext do app). Resposta só com `Healthy`/`Unhealthy`. Na fase 6,
+  separar em `/health/live` (sem banco) e `/health/ready` (com banco), para
+  uma queda do Postgres não fazer a plataforma reiniciar a API à toa.
+- **Identity:** `AddIdentity<Usuario, IdentityRole>()` (cookie padrão).
+  Precisa também de `AddAuthorization()`, que o `AddIdentity` não registra.
+  Endpoints de login/cadastro e o comportamento 401 vs. redirecionamento
+  ficam para o ticket de autenticação.
 
 ### Decisões em aberto
-- Frontend em `wwwroot` (mesma origem, mais simples) ou num container nginx
-  separado (mais aprendizado: multi-container, CORS, JWT)
+- Registrar em `docs/decisoes/` (ADRs) as decisões "frontend no `wwwroot`
+  com cookie" e "Clean Architecture gradual". Formato combinado: Status /
+  Data / Contexto / Decisão / Alternativas consideradas / Consequências / O
+  que nos faria mudar de ideia. Preencher juntos.
 - `videoaula.tipo` é mesmo necessário?
 - `aula_assistida`: uma marca só por aluno e vídeo, ou manter histórico?
 - As questões terão imagens (`imagem_url`)?
@@ -266,5 +306,9 @@ API + EF Core + Postgres funcionam juntos.
   isso.
 - Não há testes automatizados nem linter configurado ainda.
 - Não há `package.json` na raiz (frontend não tem dependências de build).
-- `.gitignore` já cobre padrões de Node/JS e também artefatos de build do
-  .NET (`bin/`, `obj/`, `.vs/`, `*.user`) para quando o backend entrar.
+- `.gitignore` cobre padrões de Node/JS e artefatos de build do .NET
+  (`bin/`, `obj/`, `.vs/`, `*.user`), e também ignora
+  `appsettings.Development.json`.
+- O banco de desenvolvimento ainda tem a tabela `teste_persistencia`, que
+  sobrou do teste da fase 1. Ela não faz parte do modelo e pode ser apagada
+  (`DROP TABLE teste_persistencia;`).
