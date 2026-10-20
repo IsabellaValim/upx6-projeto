@@ -142,7 +142,7 @@ docker compose down -v                   # APAGA os dados
 ### Modelo de dados (fase 2 — concluída)
 
 **Fonte da verdade: `backend/DatabaseDocs/ModelodeDados.md`** (com o diagrama
-em `.png`/`.svg` ao lado). Aqui fica só o resumo; qualquer mudança vai para
+em `ModelodeDados.svg` ao lado). Aqui fica só o resumo; qualquer mudança vai para
 lá, no mesmo commit da migration.
 
 - **Entidades:** `Disciplina` → `Tema` → `Videoaula` e `Questao`; `Tentativa`

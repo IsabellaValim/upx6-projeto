@@ -4,8 +4,8 @@
 > continuam em aberto. Nenhuma tabela foi criada ainda.
 > As tabelas nascem por migration, uma de cada vez, conforme cada ticket precisar delas.
 > Adendo (19/10/2026): `questao.status` e `questao.prova_numero`, que nascem na migration do
-> primeiro ticket de conteúdo; e a seção "Convenções de conteúdo". As imagens do diagrama
-> (`.png`/`.svg`) ainda não mostram as duas colunas novas.
+> primeiro ticket de conteúdo; e a seção "Convenções de conteúdo". O diagrama fica em
+> `ModelodeDados.svg`.
 
 ## O que o sistema guarda
 
