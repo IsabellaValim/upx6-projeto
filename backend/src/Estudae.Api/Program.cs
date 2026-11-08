@@ -5,10 +5,13 @@ using Estudae.Infra.Identity;
 using Estudae.Infra.Persistence;
 using Microsoft.AspNetCore.Identity;
 
-// "dotnet Estudae.Api.dll importar ..." roda o importador de conteúdo e sai,
-// sem subir o servidor web (ver Cli/ImportarComando.cs).
+// Subcomandos: rodam e saem, sem subir o servidor web (ver Cli/).
+//   dotnet Estudae.Api.dll importar <arquivo.json> [--publicar] [--validar]
+//   dotnet Estudae.Api.dll migrar
 if (args is [ImportarComando.Nome, .. var argsImportar])
     return await ImportarComando.ExecutarAsync(argsImportar);
+if (args is [MigrarComando.Nome])
+    return await MigrarComando.ExecutarAsync();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,6 +52,16 @@ app.UseErrosPadronizados();
 
 if (app.Environment.IsDevelopment()) app.UseCors(CorsDev);
 
+// Front (index.html + src/) servido do wwwroot: na imagem, o Dockerfile copia
+// para lá os arquivos da raiz do repo. Mesma origem da API, então sem CORS.
+// no-cache = o navegador revalida (ETag/304) a cada carga: sem bundler gerando
+// nomes com hash, é o que garante que ninguém fica com o JS velho após um deploy.
+app.UseDefaultFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx => ctx.Context.Response.Headers.CacheControl = "no-cache",
+});
+
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -57,3 +70,6 @@ app.MapConteudo();
 
 app.Run();
 return 0;
+
+// Exposto para os testes de integração (WebApplicationFactory<Program>).
+public partial class Program;

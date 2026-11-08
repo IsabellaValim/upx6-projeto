@@ -51,8 +51,18 @@ WORKDIR /app
 # EXPOSE e documentacao: quem publica a porta e o "ports:" do compose.
 EXPOSE 8080
 
-# Unica coisa que vem do estagio de build: o resultado do publish.
+# Do estagio de build vem so o resultado do publish.
 COPY --from=build /app/publish .
+
+# Front (HTML/CSS/JS puro, sem build): direto do context para o wwwroot, que a
+# API serve com UseStaticFiles. Ficam depois do publish de proposito: mudar
+# so o front refaz so estas camadas, sem recompilar o C#.
+COPY index.html wwwroot/
+COPY src/ wwwroot/src/
+
+# JSONs de conteudo (sem os exemplos; ver .dockerignore), para importar com:
+#   docker compose run --rm api importar conteudo/matematica.json --publicar
+COPY conteudo/ conteudo/
 
 # Usuario sem privilegios que ja existe na imagem (APP_UID e definido nela).
 # Sem esta linha o processo rodaria como root.
