@@ -20,6 +20,11 @@ public static class MigrarComando
     {
         var builder = WebApplication.CreateBuilder();
         builder.Logging.AddFilter<Microsoft.Extensions.Logging.Console.ConsoleLoggerProvider>(null, LogLevel.Warning);
+        // Num banco vazio o EF tenta ler a __EFMigrationsHistory antes de criá-la e
+        // loga isso como "fail:", o que assusta no log do deploy sem ser erro. Uma
+        // falha de verdade continua aparecendo: vira exceção e o comando sai com código != 0.
+        builder.Logging.AddFilter<Microsoft.Extensions.Logging.Console.ConsoleLoggerProvider>(
+            "Microsoft.EntityFrameworkCore.Database.Command", LogLevel.None);
         builder.Services.AddInfra(builder.Configuration);
         await using var app = builder.Build();
         await using var scope = app.Services.CreateAsyncScope();
