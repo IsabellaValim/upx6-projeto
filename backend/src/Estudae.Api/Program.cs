@@ -1,7 +1,13 @@
+using Estudae.Api.Cli;
 using Estudae.Infra;
 using Estudae.Infra.Identity;
 using Estudae.Infra.Persistence;
 using Microsoft.AspNetCore.Identity;
+
+// "dotnet Estudae.Api.dll importar ..." roda o importador de conteúdo e sai,
+// sem subir o servidor web (ver Cli/ImportarComando.cs).
+if (args is [ImportarComando.Nome, .. var argsImportar])
+    return await ImportarComando.ExecutarAsync(argsImportar);
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,3 +36,4 @@ app.UseAuthorization();
 app.MapHealthChecks("/health");
 
 app.Run();
+return 0;
