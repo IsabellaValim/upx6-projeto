@@ -206,6 +206,20 @@ backend/
 nome do **exame**, não do produto — usar só para conceitos de domínio e texto
 voltado ao usuário (ex.: a coluna `prova_ano`, o conteúdo das questões).
 
+### API de conteúdo (MVP)
+
+Contrato completo para o front: **`docs/api.md`**. Código em
+`Estudae.Api/Endpoints/` (minimal APIs, `DbContext` direto, sem camada
+Application por enquanto).
+- `GET /api/disciplinas`, `GET /api/disciplinas/{d}/temas`,
+  `GET /api/disciplinas/{d}/temas/{t}/questoes`, `POST /api/questoes/{id}/resposta`.
+- Só conteúdo publicado; os GETs projetam para DTOs sem gabarito/resolução.
+  Alternativas embaralhadas no servidor. A correção normaliza o texto com
+  `LeitorConteudo.NormalizarTexto` (a mesma regra do importador). Nada é gravado.
+- Erros sempre `{ "erro": "..." }` (`Endpoints/Erros.cs`, com
+  `ThrowOnBadRequest` para JSON malformado também cair lá).
+- CORS só em Development, para origens `localhost`.
+
 ### Importador de conteúdo
 
 Formato, regras e comandos: **`conteudo/README.md`**. Resumo:
