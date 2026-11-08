@@ -1,0 +1,111 @@
+# CI do Estudae: roda em todo PR, em push na main e manualmente (aba Actions).
+# Dois jobs em paralelo:
+#   backend -> build, testes (unidade + integracao com Postgres) e validacao dos JSONs de conteudo
+#   compose -> sobe o docker compose de verdade num banco vazio e faz um smoke test
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Um push novo no mesmo PR/branch cancela a execucao anterior, que ficou obsoleta.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# O workflow so le o repositorio; nada de escrever com o token.
+permissions:
+  contents: read
+
+jobs:
+  backend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    # Postgres descartavel ao lado do job. O job so comeca depois do healthcheck.
+    # Senha so de CI: o banco morre junto com o job.
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: estudae
+          POSTGRES_PASSWORD: estudae_ci
+          POSTGRES_DB: estudae
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -h 127.0.0.1 -U estudae -d estudae"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    env:
+      # Os testes de integracao leem esta variavel e criam um banco proprio nela.
+      ConnectionStrings__Estudae: Host=localhost;Port=5432;Database=estudae;Username=estudae;Password=estudae_ci
+      DOTNET_NOLOGO: "true"
+      DOTNET_CLI_TELEMETRY_OPTOUT: "true"
+
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Instala o SDK que o global.json pede (o mesmo da maquina de dev).
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: backend/global.json
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Testes
+        run: dotnet test --no-build -c Release --logger "console;verbosity=normal"
+
+      # Todo JSON de conteudo precisa passar no importador. Um PR de conteudo com
+      # erro fica vermelho aqui, antes da revisao humana.
+      - name: Validar conteudo
+        run: |
+          shopt -s nullglob
+          arquivos=("$GITHUB_WORKSPACE"/conteudo/*.json)
+          if [ ${#arquivos[@]} -eq 0 ]; then echo "Nenhum JSON em conteudo/ ainda."; exit 0; fi
+          for f in "${arquivos[@]}"; do
+            dotnet run --no-build -c Release --project src/Estudae.Api -- importar "$f" --validar
+          done
+
+  compose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # O compose exige POSTGRES_PASSWORD no .env. Senha so de CI.
+      - name: Criar .env
+        run: |
+          printf 'POSTGRES_PASSWORD=estudae_ci\nDB_PORT=5432\nAPI_PORT=8080\n' > .env
+
+      # db (healthy) -> migrate (num banco VAZIO, entao aplica todas as migrations) -> api
+      - name: Subir o compose
+        run: docker compose up -d --build --wait --wait-timeout 180
+
+      - name: Smoke test
+        run: |
+          curl --fail --silent --show-error http://localhost:8080/health | grep -x Healthy
+          curl --fail --silent --show-error http://localhost:8080/ | grep -q 'src/main.js'
+          curl --fail --silent --show-error http://localhost:8080/api/disciplinas | grep -x '\[\]'
+          docker compose logs migrate | grep -q "Migrations aplicadas"
+
+      - name: Logs (se falhar)
+        if: failure()
+        run: docker compose logs
+
+      - name: Derrubar
+        if: always()
+        run: docker compose down -v

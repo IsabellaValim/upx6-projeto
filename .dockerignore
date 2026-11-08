@@ -1,0 +1,30 @@
+# Filtra o build context (a raiz do repo) do backend/Dockerfile.
+#
+# Lista de PERMISSAO: tudo fica de fora, e so entra o que o build precisa.
+# Arquivo novo no repo (inclusive segredo) fica fora por padrao.
+# Regras sao lidas em ordem; a ultima que casar com o caminho vence.
+
+# 1. Exclui tudo.
+*
+
+# 2. Libera so o necessario:
+#    - para compilar a API;
+!backend/global.json
+!backend/src/
+#    - o front, que vai para o wwwroot (o "src/" aqui e o da raiz, nao o do backend);
+!index.html
+!src/
+#    - os JSONs de conteudo, para o "importar" funcionar dentro do container.
+!conteudo/
+
+# 3. Volta a excluir, dentro do que foi liberado:
+#    bin/ e obj/ do host (obj/ traz caminhos da maquina e quebra o --no-restore);
+**/bin/
+**/obj/
+#    arquivos ignorados pelo Git (a imagem so leva o que o Git tem);
+**/appsettings.Development.json
+**/*.user
+#    os exemplos de conteudo (questoes inventadas nao vao para producao);
+conteudo/exemplos/
+#    e, por garantia, qualquer .env que apareca dentro das pastas liberadas.
+**/.env

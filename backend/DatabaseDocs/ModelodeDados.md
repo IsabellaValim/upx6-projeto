@@ -1,11 +1,15 @@
 # Modelo de dados: Estudaê
 
-> **Status:** v1 (18/10/2026). Fase 2 do roadmap concluída; os "Pontos a confirmar" no fim
-> continuam em aberto. Só as tabelas do Identity existem (migration `InicialIdentity`, fase 3).
+> **Status:** v2 (08/11/2026). Existem as tabelas do Identity (migration `InicialIdentity`) e as
+> de conteúdo: `disciplina`, `tema`, `videoaula` e `questao` (migration `Conteudo`).
+> `tentativa` e `aula_assistida` continuam só no papel: login e tentativas ficaram fora do MVP.
 > As tabelas nascem por migration, uma de cada vez, conforme cada ticket precisar delas.
-> Adendo (19/10/2026): `questao.status` e `questao.prova_numero`, que nascem na migration do
-> primeiro ticket de conteúdo; e a seção "Convenções de conteúdo". O diagrama fica em
-> `ModelodeDados.svg`.
+> O diagrama fica em `ModelodeDados.svg`, que **ainda é o da v1** (sem `codigo`): o bloco Mermaid
+> abaixo é a versão atual. Para regerar: colar o bloco em mermaid.live e exportar SVG.
+>
+> Histórico: v1 (18/10) modelo inicial; adendo (19/10) `questao.status`, `questao.prova_numero`
+> e "Convenções de conteúdo"; v2 (08/11) `questao.codigo`, índice único de vídeo por tema,
+> escopo do MVP e a migration `Conteudo`.
 
 ## O que o sistema guarda
 
@@ -18,7 +22,7 @@
 | Termo | Significado | Exemplo |
 |---|---|---|
 | Disciplina | Matéria que o aluno escolhe estudar | Matemática, Português |
-| Tema | Assunto dentro de uma disciplina | MMC, Interpretação de texto |
+| Tema | Assunto dentro de uma disciplina | Porcentagem e proporção, Interpretação de texto |
 | Questão | Pergunta de múltipla escolha de uma prova anterior | |
 | Vídeo-aula | Vídeo do YouTube ligado a um tema | |
 | Tentativa | Uma resposta dada por um aluno a uma questão | |
@@ -55,7 +59,7 @@ erDiagram
         int id PK
         int tema_id FK
         string titulo
-        string youtube_id "so o ID, nao a URL"
+        string youtube_id "so o ID; unico dentro do tema"
         string tipo "opcional"
         int duracao_segundos "opcional"
         int ordem
@@ -63,6 +67,7 @@ erDiagram
 
     QUESTAO {
         int id PK
+        string codigo UK "ex.: mat-porcentagem-001"
         int tema_id FK
         string texto_base "opcional"
         string enunciado
@@ -110,11 +115,16 @@ usado pelo importador de conteúdo no lugar do `id`.
 
 **Tema:** pertence a uma disciplina. Tem texto de apresentação (`sobre`) e `ordem` de exibição.
 
-**Videoaula:** pertence a um tema. Guardamos **só o ID do YouTube**; o player é montado com
-`https://www.youtube-nocookie.com/embed/{youtube_id}`. O vídeo em si nunca é hospedado por nós.
+**Videoaula:** pertence a um tema. Guardamos **só o ID do YouTube** (11 caracteres); o player é
+montado com `https://www.youtube-nocookie.com/embed/{youtube_id}`. O vídeo em si nunca é hospedado
+por nós. O par (`tema_id`, `youtube_id`) é único: é a chave que o importador usa para atualizar um
+vídeo já cadastrado em vez de duplicá-lo.
 
 **Questão:** pertence a um tema (a disciplina é descoberta pelo tema, sem ligação direta).
 Principais campos:
+- `codigo`: chave natural e única, legível por gente (`mat-porcentagem-001`). É por ela que o
+  importador reconhece uma questão que já existe: reimportar o mesmo código **atualiza**, não
+  duplica. O `id` continua sendo a chave usada nas FKs e na API.
 - `texto_base` (opcional) e `enunciado`: o texto de apoio e a pergunta em si.
 - `alternativas` e `resposta_correta`: o **texto** de cada alternativa, e o texto da certa.
 - `resolucao`: explicação de como se chega à resposta.
@@ -122,8 +132,10 @@ Principais campos:
   Todos opcionais, porque a prova inteira nunca é exibida ao aluno.
 - `prova_numero` (opcional): o número da questão na prova original, para conferir a questão
   contra o PDF durante a revisão.
-- `status`: `rascunho` ou `publicada`. O site **só mostra questões publicadas**; o importador
-  grava tudo como `rascunho` e um administrador revisa antes de publicar.
+- `status`: `rascunho` ou `publicada` (com `CHECK` no banco). O site **só mostra questões
+  publicadas**. Enquanto não há área admin, a revisão acontece **no arquivo JSON**, no PR, feita
+  por outra pessoa. O importador grava como `rascunho` por padrão e como `publicada` só com a
+  flag `--publicar`.
 
 **Tentativa:** cada resposta dada por um aluno. **Todas** são guardadas, inclusive repetições
 da mesma questão. O desempenho (% de acertos por tema ou disciplina) é **calculado** a partir daqui.
@@ -175,7 +187,9 @@ migration (`InicialIdentity`).
   convenção de `snake_case` não alcança esses nomes. Eles foram renomeados no DbContext para
   `ix_usuario_normalized_email`, `ix_usuario_normalized_user_name` e `ix_papel_normalized_name`.
 - `usuario.nome` é `varchar(150)`, obrigatório.
-- A tabela de controle das migrations continua com o nome padrão do EF, `__EFMigrationsHistory`.
+- A tabela de controle das migrations mantém o **nome** padrão do EF, `__EFMigrationsHistory`,
+  mas as **colunas** passam pela convenção de `snake_case`: `migration_id` e `product_version`
+  (e não `MigrationId`/`ProductVersion`). Isso importa para quem consultar a tabela à mão.
 
 ## Decisões e motivos
 
@@ -190,6 +204,9 @@ migration (`InicialIdentity`).
 | Guardar todas as tentativas | Permite ver evolução; o custo de armazenamento é baixo |
 | Só Ensino Médio por enquanto | Nível entra como atributo opcional, preparado para crescer |
 | Questão com `status` (`rascunho`/`publicada`) | Rascunhos extraídos com ajuda de IA precisam de revisão humana antes de chegar ao aluno |
+| `questao.codigo` único | Sem uma chave natural, rodar o importador duas vezes duplicaria tudo; o `id` muda entre ambientes |
+| Vídeo único por (`tema_id`, `youtube_id`) | Mesmo motivo, para os vídeos |
+| FKs de conteúdo com `ON DELETE RESTRICT` | Apagar um tema com questões dá erro, em vez de levar as questões junto sem aviso |
 | Chaves `int` no conteúdo, `bigint` em tentativas, padrão do Identity no usuário | Simples e legível; dados pessoais protegidos por dono, não por segredo |
 
 ## Regras e cuidados
@@ -215,15 +232,31 @@ migration (`InicialIdentity`).
 
 ## Convenções de conteúdo
 
-- **Fluxo de importação:** um script em **Python** extrai rascunhos de questões dos PDFs das
-  provas, com ajuda de IA; o **importador em C#** valida e grava como `rascunho`; um
-  administrador revisa e publica. O script Python fica **fora da aplicação publicada**.
+- **Fluxo de importação (MVP):** o texto da questão é extraído do PDF da prova, com ajuda de IA
+  no chat, para o formato JSON do importador; uma pessoa revisa o JSON no PR (resolvendo de novo
+  as de Matemática); o **importador em C#** valida e grava. Formato, validações e comandos: `conteudo/README.md`.
+- **Fluxo planejado (depois do MVP):** um script em **Python** extrai os rascunhos dos PDFs com
+  IA, fora da aplicação publicada, e o importador continua sendo a porta de entrada.
+- **Fonte:** toda questão do INEP leva `prova_ano`, `prova_edicao`, `prova_nivel` e
+  `prova_numero`, exibidos ao aluno como citação da fonte.
 - **Matemática** é escrita em **LaTeX** dentro das colunas de texto (`enunciado`,
   `alternativas`, `resolucao`) e renderizada no frontend com **KaTeX**.
 - **Delimitadores:** `\( ... \)` para fórmula na linha e `\[ ... \]` para fórmula em
   bloco. **Não usar `$`**, porque as questões têm valores como "R$ 10,00".
 - Preferir `\dfrac` a `\frac` no meio do texto: a fração fica maior e mais fácil de ler.
-- **Tabelas** dentro de uma questão começam como imagem (`imagem_url`).
+- **Tabelas** dentro de uma questão começam como imagem (`imagem_url`). **No MVP não entram
+  questões com figura, tabela ou gráfico**, então `imagem_url` fica vazio por enquanto.
+- **Usar o mínimo de LaTeX:** `5²`, `×` e `R$ 10,00` em texto puro bastam na maioria das questões,
+  e a leitura em voz alta lê texto puro direito.
+
+## Escopo do MVP
+
+- Ensino Médio, Português e Matemática, questões de provas do INEP sem figura nem tabela.
+- Quatro temas por disciplina (ajustáveis só no JSON de conteúdo):
+  - **Português:** `interpretacao-de-texto`, `generos-textuais`, `variacao-linguistica`, `gramatica`.
+  - **Matemática:** `porcentagem-e-proporcao`, `equacoes`, `geometria-plana`, `estatistica-basica`.
+- Quiz por tema. Sem login e sem gravação de tentativas: `tentativa` e `aula_assistida` ficam
+  para depois.
 
 ## Fora do escopo agora
 
@@ -235,6 +268,6 @@ migration (`InicialIdentity`).
 
 - [ ] `videoaula.tipo`: a tela precisa distinguir tipos (introdutório, aprofundando...) ou isso pode sair?
 - [ ] `aula_assistida`: basta marcar uma vez por aluno (modelo atual), ou queremos histórico de cada vez que ele assiste?
-- [ ] `questao.imagem_url`: já há questões com figura no conteúdo inicial?
+- [ ] `questao.imagem_url`: como hospedar as figuras quando elas entrarem (no MVP, não entram)?
 - [ ] `prova_edicao`: texto ou número? Conferir como o INEP identifica as edições.
 - [ ] Termos de uso das provas do INEP para reaproveitar as questões.

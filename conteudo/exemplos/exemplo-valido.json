@@ -1,0 +1,59 @@
+{
+  "disciplina": {
+    "slug": "matematica",
+    "nome": "Matemática",
+    "icone": "percent"
+  },
+  "temas": [
+    {
+      "slug": "porcentagem-e-proporcao",
+      "titulo": "Porcentagem e proporção",
+      "sobre": "Como calcular descontos, aumentos e partes de um total, com exemplos do dia a dia.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=AAAAAAAAAAA&t=30s",
+          "titulo": "Porcentagem no dia a dia (vídeo de exemplo)",
+          "duracao_segundos": 480
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "exemplo-mat-porcentagem-001",
+          "enunciado": "(Exemplo) Uma loja anunciou 20% de desconto em uma panela que custava R$ 150,00. Qual é o preço da panela com o desconto?",
+          "alternativas": ["R$ 30,00", "R$ 120,00", "R$ 130,00", "R$ 170,00"],
+          "resposta_correta": "R$ 120,00",
+          "resolucao": "20% de 150 é 0,20 × 150 = 30. Tirando o desconto do preço: 150 − 30 = 120. A panela sai por R$ 120,00.",
+          "prova_ano": 2024,
+          "prova_edicao": "EXEMPLO (não é do INEP)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 1
+        }
+      ]
+    },
+    {
+      "slug": "equacoes",
+      "titulo": "Equações",
+      "sobre": "Como transformar um problema em uma equação e descobrir o valor que falta, passo a passo.",
+      "videos": [
+        {
+          "youtube": "BBBBBBBBBBB",
+          "titulo": "Equações do primeiro grau (vídeo de exemplo)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "exemplo-mat-equacoes-001",
+          "texto_base": "Pensei em um número. Multipliquei esse número por 3 e somei 5 ao resultado. No final, obtive 20.",
+          "enunciado": "(Exemplo) Em que número eu pensei?",
+          "alternativas": ["3", "5", "15", "25"],
+          "resposta_correta": "5",
+          "resolucao": "Chamando o número de x, o texto diz que \\( 3x + 5 = 20 \\). Tirando 5 dos dois lados: \\( 3x = 15 \\). Dividindo por 3: \\( x = 5 \\).",
+          "prova_ano": 2024,
+          "prova_edicao": "EXEMPLO (não é do INEP)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 2
+        }
+      ]
+    }
+  ]
+}

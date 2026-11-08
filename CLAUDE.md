@@ -21,15 +21,18 @@ Docker, deploy e CI/CD. Ao trabalhar aqui:
 
 ## Estado atual do repositório
 
-- **Frontend (`src/`, `index.html`):** todas as telas da SPA existem e
-  funcionam, mas com **conteúdo placeholder** (`src/data.js`). Sem backend
-  real ainda.
-- **Backend:** fases 1 (Postgres em Docker), 2 (modelagem) e 3 (walking
-  skeleton) concluídas. `backend/` tem a solução .NET (API com `/health`,
-  Identity, primeira migration só com as tabelas do Identity) e a
-  documentação do modelo de dados (`backend/DatabaseDocs/`).
-- PRs já mergeados em `main`: #1 (componentização do frontend) e #2
-  (Postgres de desenvolvimento via docker-compose).
+- **Meta:** MVP até 09/11/2026 (segunda à noite). Deploy na segunda à
+  tarde: plano A é uma VM com compose + Caddy, e o plano B é o Render a partir do
+  Dockerfile. A decisão é da pessoa, na segunda.
+- **Frontend (`src/`, `index.html`):** todas as telas da SPA existem, ainda
+  com **conteúdo placeholder** (`src/data.js`). A integração com a API
+  (contrato em `docs/api.md`) está com a pessoa do front.
+- **Backend:** fases 1 a 5 concluídas, mais o primeiro ticket de conteúdo:
+  tabelas de conteúdo, importador, endpoints de leitura e correção,
+  Dockerfile, compose completo e CI. Fora do MVP: login e tentativas.
+- PRs já mergeados em `main`: #1 (componentização do frontend), #2
+  (Postgres de dev), #3 (modelo de dados) e #4 (walking skeleton). O MVP do
+  backend está na branch `feat/dockerfile-compose`.
 
 ## Frontend — arquitetura
 
@@ -71,9 +74,9 @@ http.server` ou `npx serve .`.
   - `estudae:watched`: mapa `"materia/tema/aula"` → timestamp. É um
     liga/desliga (desmarcar apaga a chave), ou seja, uma marca por aula,
     como o `AulaAssistida` atual.
-- **Pendência futura no frontend:** hoje o visitante grava progresso
-  (`results`, `watched`) no `localStorage`. A decisão é que **visitante não
-  grava nada** — mudar isso quando o frontend for ligado à API, não agora.
+- **Decisão do MVP para o frontend:** visitante não grava nada. Em vez de
+  adaptar Progresso e Perfil, **esconder as duas telas da navegação** e parar
+  de escrever `results`/`watched`. Quiz por tema, corrigido pelo `POST` da API.
 - **Componentes reutilizáveis:** `src/components/` — `nav.js` (bottom-nav +
   botão voltar), `sheet.js` (bottom-sheet de escolha rápida), `progress.js`
   (barras de aproveitamento + histórico, usados em Progresso e Perfil).
@@ -89,7 +92,7 @@ http.server` ou `npx serve .`.
 
 ## Backend
 
-Walking skeleton pronto (fase 3); o resto do plano segue abaixo.
+Fases 1 a 5 prontas, mais o conteúdo do MVP; o resto do plano segue abaixo.
 
 ### Stack decidida
 - **Backend:** ASP.NET Core (.NET 10 LTS, suporte até nov/2028), EF Core 10
@@ -99,8 +102,10 @@ Walking skeleton pronto (fase 3); o resto do plano segue abaixo.
 - **Banco de dados:** PostgreSQL rodando em Docker
 - **Frontend:** as telas vanilla JS já existentes, servidas pelo `wwwroot` da
   própria API (mesma origem, um container só, sem CORS). Revisitar se surgir
-  um time de frontend separado ou um app mobile. Como o frontend chega ao
-  `wwwroot` (ele hoje está na raiz do repo) se decide na fase 4.
+  um time de frontend separado ou um app mobile. O front continua na raiz
+  do repo; o **Dockerfile copia** `index.html` e `src/` para `/app/wwwroot`
+  (só existe dentro da imagem). Servido com `Cache-Control: no-cache` (ETag),
+  porque sem bundler não há nome de arquivo com hash.
 - **Auth:** ASP.NET Identity com autenticação por cookie HttpOnly, não JWT (login e cadastro
   fazem parte do escopo desde o início). Dois papéis, via roles do Identity:
   **Administrador** (gerencia conteúdo; a área admin é um ticket próprio,
@@ -108,18 +113,32 @@ Walking skeleton pronto (fase 3); o resto do plano segue abaixo.
   — não existe no banco.
 - **Containerização:** Docker (Dockerfile multi-stage) + docker-compose
 - **CI/CD:** GitHub Actions
-- **Hospedagem:** Azure, usando os US$100 de crédito gratuito
+- **Hospedagem:** **não** é mais Azure Container Apps. Plano A: VM com o
+  mesmo compose + Caddy (HTTPS automático). Plano B: Render a partir do
+  Dockerfile. Comparação e passo a passo na auditoria de 06/11.
 
-### Banco de dados de desenvolvimento (fase 1 — funcionando)
+### Docker Compose (fases 1 e 4)
 
-O `docker-compose.yml` da raiz sobe o Postgres de desenvolvimento:
+O `docker-compose.yml` da raiz tem três serviços: `db` → `migrate` → `api`.
 
 ```bash
-docker compose up -d --wait              # sobe e espera ficar healthy
+docker compose up -d --build --wait      # tudo: site + API em http://localhost:8080
+docker compose up -d --wait db           # só o banco (para dotnet run / dotnet test)
+docker compose run --rm api importar conteudo/matematica.json --publicar
 docker compose exec db psql -U estudae -d estudae
 docker compose down                      # mantém os dados
 docker compose down -v                   # APAGA os dados
 ```
+
+- **`migrate`:** a mesma imagem com `command: ["migrar"]` (subcomando da
+  API, `Cli/MigrarComando.cs`). Roda uma vez; a `api` só sobe com
+  `service_completed_successfully`. Escolhido no lugar do `efbundle` para
+  não precisar do `dotnet-ef` no build.
+- **Segredo:** `POSTGRES_PASSWORD` vem do `.env` e é obrigatória (`${...:?}`);
+  a connection string da API é montada no compose (`Host=db;Port=5432`).
+  `API_PORT` (padrão 8080) e `DB_PORT` também vêm do `.env`.
+- **Imagem:** leva o front no `wwwroot` e `conteudo/*.json` em
+  `/app/conteudo` (sem `conteudo/exemplos/`, barrado no `.dockerignore`).
 
 - **Host/porta:** `localhost:${DB_PORT}`, publicada só em `127.0.0.1`. A
   porta do host vem de `DB_PORT` no `.env` (não comitado; ver
@@ -128,18 +147,19 @@ docker compose down -v                   # APAGA os dados
   nativo do Windows. Dentro do container o Postgres continua sempre na 5432.
   Importante: `ss`/`netstat` dentro do WSL **não** mostram listeners do
   Windows, então conflito de porta só aparece na hora do bind.
-- **Banco / usuário / senha:** `estudae` / `estudae` / `estudae_dev` — só
-  desenvolvimento local; vai para um `.env` na fase de secrets.
+- **Banco / usuário:** `estudae` / `estudae`. Senha no `.env`
+  (`POSTGRES_PASSWORD`); o volume de dev desta máquina foi criado com
+  `estudae_dev`.
 - **Volume:** `upx6-projeto_pgdata` (o Compose prefixa nomes de volume com o
   nome do projeto, que por padrão é o nome da pasta).
 - **A connection string depende de onde a API roda:** no host (fase 3) usa
   `Host=localhost;Port=<DB_PORT>` (5433 nesta máquina); dentro do Compose
-  (fase 4) usa `Host=db;Port=5432` — nome do serviço e porta interna. Dentro
+  usa `Host=db;Port=5432` — nome do serviço e porta interna. Dentro
   de um container, `localhost` é o próprio container, não o banco. Como ela
   chega na API: ver "Walking skeleton" abaixo.
 - O healthcheck usa `pg_isready -h 127.0.0.1` de propósito: pelo socket unix
   ele pode responder "pronto" enquanto o servidor temporário do `initdb` ainda
-  está no ar. Na fase 4 isso permite `depends_on: condition: service_healthy`.
+  está no ar. É o que sustenta o `depends_on: condition: service_healthy`.
 - As variáveis `POSTGRES_*` só valem na **primeira** inicialização do volume.
   Mudar a senha no compose não altera nada num banco que já existe — é preciso
   `down -v` (que apaga tudo) ou um `ALTER ROLE`.
@@ -166,8 +186,12 @@ lá, no mesmo commit da migration.
   - Todas as tentativas são guardadas, e `acertou` é gravado na hora da
     resposta.
   - `Questao` tem `status` (`rascunho`/`publicada`; o site só mostra
-    publicada) e `prova_numero` (opcional). Ainda sem migration: entram na
-    do primeiro ticket de conteúdo, não na fase 3.
+    publicada), `prova_numero` (opcional) e `codigo` (texto único, chave
+    natural do importador: reimportar o mesmo código atualiza, não duplica).
+    `videoaula` é única por (`tema_id`, `youtube_id`).
+- **Tabelas existentes:** Identity (migration `InicialIdentity`) e conteúdo
+  — `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`).
+  `tentativa` e `aula_assistida` ainda não existem (fora do MVP).
 - **Convenções de conteúdo** (matemática em LaTeX renderizado com KaTeX,
   delimitadores `\( \)` e `\[ \]` em vez de `$`, tabelas como imagem,
   fluxo de importação com script Python fora da app): ver a seção
@@ -185,22 +209,55 @@ backend/
 ├─ Estudae.slnx            formato novo de solução (padrão no .NET 10)
 ├─ global.json             fixa o SDK em 10.0.x
 ├─ dotnet-tools.json       dotnet-ef como ferramenta local (versão fixa)
-└─ src/
-   ├─ Estudae.Domain/      entidades; não depende de nada (vazio por enquanto)
-   ├─ Estudae.Infra/       → Domain. Usuario, EstudaeDbContext, migrations, AddInfra()
-   └─ Estudae.Api/         → Infra. Program.cs: Identity + cookie, /health
+├─ Dockerfile            multi-stage; build context = raiz do repo
+├─ src/
+│  ├─ Estudae.Domain/      entidades de conteúdo (Conteudo/); não depende de nada
+│  ├─ Estudae.Infra/       → Domain. Usuario, EstudaeDbContext, Configuracoes/,
+│  │                         migrations, Importacao/, AddInfra()
+│  └─ Estudae.Api/         → Infra. Program.cs, Endpoints/, Cli/ (importar, migrar)
+└─ tests/
+   └─ Estudae.Tests/       xUnit: unidade (importador) + integração (API, Postgres)
 ```
 - **Domain não depende de nada** (nem EF Core, nem ASP.NET). Por isso
   `Usuario : IdentityUser` mora na Infra, e o Domain referencia o usuário só
   por `UsuarioId` (string).
 - **Clean Architecture gradual:** sem projeto Application, MediatR, CQRS ou
-  repositório genérico por enquanto. O Application entra com o primeiro caso
-  de uso real (provavelmente o ticket de conteúdo).
+  repositório genérico por enquanto. O plano era o Application entrar com o
+  ticket de conteúdo, mas pelo prazo do MVP o importador ficou na Infra e os
+  endpoints usam o `DbContext` direto. Revisitar depois do MVP.
 
 **Convenção de nomes:** tudo que criamos leva o nome do produto, *Estudaê*
 (container `estudae-db`, banco `estudae`, projetos `Estudae.*`). *Encceja* é o
 nome do **exame**, não do produto — usar só para conceitos de domínio e texto
 voltado ao usuário (ex.: a coluna `prova_ano`, o conteúdo das questões).
+
+### API de conteúdo (MVP)
+
+Contrato completo para o front: **`docs/api.md`**. Código em
+`Estudae.Api/Endpoints/` (minimal APIs, `DbContext` direto, sem camada
+Application por enquanto).
+- `GET /api/disciplinas`, `GET /api/disciplinas/{d}/temas`,
+  `GET /api/disciplinas/{d}/temas/{t}/questoes`, `POST /api/questoes/{id}/resposta`.
+- Só conteúdo publicado; os GETs projetam para DTOs sem gabarito/resolução.
+  Alternativas embaralhadas no servidor. A correção normaliza o texto com
+  `LeitorConteudo.NormalizarTexto` (a mesma regra do importador). Nada é gravado.
+- Erros sempre `{ "erro": "..." }` (`Endpoints/Erros.cs`, com
+  `ThrowOnBadRequest` para JSON malformado também cair lá).
+- CORS só em Development, para origens `localhost`.
+
+### Importador de conteúdo
+
+Formato, regras e comandos: **`conteudo/README.md`**. Resumo:
+- Um JSON por disciplina em `conteudo/`; exemplos (válido e inválidos) em
+  `conteudo/exemplos/`, usados também pelos testes.
+- É um subcomando da API (vai junto na imagem):
+  `dotnet run --project src/Estudae.Api -- importar "$PWD/../conteudo/x.json" [--publicar] [--validar]`.
+  Caminho absoluto, porque o `dotnet run` roda a partir da pasta do projeto.
+- Código: leitura/normalização/validação/gravação em `Estudae.Infra/Importacao/`;
+  a linha de comando em `Estudae.Api/Cli/ImportarComando.cs`.
+- Qualquer erro aborta tudo (lista todos, com questão e campo). Reimportar
+  atualiza por chave natural (`codigo`, slug, `youtube_id`); nada é apagado.
+  Sem `--publicar` grava como rascunho, inclusive o que já estava publicado.
 
 ### Ordem de trabalho (fases)
 1. **Postgres em Docker** — ✅ **concluída**: `docker-compose.yml` na raiz,
@@ -210,41 +267,38 @@ voltado ao usuário (ex.: a coluna `prova_ano`, o conteúdo das questões).
 3. **Walking skeleton** — ✅ **concluída** (ver "Walking skeleton" abaixo):
    estrutura de solução, API com `/health`, EF Core conectado ao Postgres,
    primeira migration só com as tabelas do Identity
-4. **Dockerfile multi-stage** (SDK builda, runtime executa) + compose
-   completo (API + Postgres conversando pelo nome do serviço) — ⏭️ **próxima
-   fase**. Inclui decidir como o frontend da raiz chega ao `wwwroot`
-5. **CI com GitHub Actions:** build + dois testes pequenos — o endpoint
-   `/health` via `WebApplicationFactory`, e aplicar todas as migrations num
-   Postgres vazio subido como *service container* do job
-6. **Primeiro deploy do skeleton no Azure** — manual primeiro
-   (Container Registry, Container Apps, Postgres gerenciado criados à mão),
-   depois automatizado com CD (pipeline builda, publica no registry e
-   atualiza o Container App), com uma chamada a `/health` depois do deploy
-   como *smoke test*
-7. **Primeiro ticket real** (uma feature de produto), já com testes,
-   passando pelo pipeline. Provavelmente as tabelas de conteúdo
-   (`Disciplina`, `Tema`, `Questao`...) mais o importador
-8. Próximos tickets e manutenção
+4. **Dockerfile multi-stage + compose completo** — ✅ **concluída**
+   (`db` → `migrate` → `api`, front no `wwwroot`, senha no `.env`)
+5. **CI com GitHub Actions** — ✅ **concluída** (`.github/workflows/ci.yml`):
+   job `backend` (build, testes com Postgres como *service container*,
+   `--validar` de `conteudo/*.json`) e job `compose` (sobe o compose num
+   banco vazio e faz smoke test de `/health`, `/` e `/api/disciplinas`)
+6. **Primeiro deploy** — ⏭️ **segunda à tarde**. Plano A (VM + compose +
+   Caddy) ou B (Render); a decisão é da pessoa. Smoke test `/health` depois do
+   deploy. CD automatizado fica para depois do MVP
+7. **Primeiro ticket real** — ✅ **adiantado para o MVP**: tabelas de
+   conteúdo, importador e API de leitura/correção, com testes
+8. Próximos tickets: integração do front, login, tentativas, manutenção
 
 Por que essa ordem:
-- O primeiro deploy é do *skeleton*, não de uma feature: o objetivo é
-  provar que o caminho do código até produção funciona com o mínimo de
-  código possível — assim, se algo quebrar, é claramente infraestrutura e
-  não lógica de negócio.
+- (Plano original) o primeiro deploy seria do *skeleton*, para provar o
+  caminho até produção com o mínimo de código. Com o prazo do MVP, o deploy
+  veio depois do conteúdo; o smoke test do compose no CI cobre parte desse risco.
 - CI/CD vem antes do primeiro ticket real: toda feature já nasce com testes
   e pipeline, em vez de ganhá-los depois de já existir sem nenhum dos dois.
 - O modelo de dados completo é desenhado com antecedência (fase 2), mas as
   tabelas só são criadas quando um ticket realmente precisa delas, uma
   migration por vez — é assim que o schema cresce em projetos reais.
 
-### Notas sobre Azure e custo
-- Azure Container Apps (escala a zero) + Azure Container Registry (tier
-  Basic)
-- PostgreSQL Flexible Server (Burstable) é o item mais caro — estimar pela
-  calculadora de preços da Azure. Um container de Postgres com volume é mais
-  barato, mas os backups passam a ser manuais.
-- Configurar um alerta de orçamento desde o primeiro dia e apagar recursos
-  quando não estiverem em uso.
+### Notas sobre deploy e custo
+- **Plano A (VM):** o mesmo compose de dev + um serviço Caddy nas portas
+  80/443 (HTTPS automático; dá para usar `<ip>.sslip.io` sem domínio). O
+  banco não publica porta. Backup é manual: cron com `pg_dump`, e testar uma
+  restauração. Por ser uma VM só, a operação (atualizações, backup) fica com a gente.
+- **Plano B (Render):** usa só o Dockerfile. O Postgres grátis expira em 30
+  dias e o serviço grátis "dorme" sem tráfego. As migrations rodariam pelo
+  `migrar` antes do start.
+- Em qualquer caso: alerta de orçamento desde o primeiro dia.
 
 ### Requisitos e restrições
 - **Acessibilidade é prioridade:** fontes grandes, alto contraste, fluxo
@@ -279,8 +333,8 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
   configuração. Nova migration:
   `dotnet ef migrations add <Nome> --project src/Estudae.Infra --startup-project src/Estudae.Api --output-dir Persistence/Migrations`.
 - **`/health`:** `MapHealthChecks` + `AddDbContextCheck` (testa o banco pelo
-  mesmo DbContext do app). Resposta só com `Healthy`/`Unhealthy`. Na fase 6,
-  separar em `/health/live` (sem banco) e `/health/ready` (com banco), para
+  mesmo DbContext do app). Resposta só com `Healthy`/`Unhealthy`. No deploy,
+  avaliar separar em `/health/live` (sem banco) e `/health/ready` (com banco), para
   uma queda do Postgres não fazer a plataforma reiniciar a API à toa.
 - **Identity:** `AddIdentity<Usuario, IdentityRole>()` (cookie padrão).
   Precisa também de `AddAuthorization()`, que o `AddIdentity` não registra.
@@ -294,7 +348,7 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
   que nos faria mudar de ideia. Preencher juntos.
 - `videoaula.tipo` é mesmo necessário?
 - `aula_assistida`: uma marca só por aluno e vídeo, ou manter histórico?
-- As questões terão imagens (`imagem_url`)?
+- As questões terão imagens (`imagem_url`)? (No MVP, não.)
 - Formato de `prova_edicao` (texto ou número)
 - Termos de uso do INEP para reaproveitar provas anteriores, e a fonte e o
   formato de importação das questões
@@ -304,11 +358,14 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 - O conteúdo do frontend é placeholder (`src/data.js`) — poucas questões por
   matéria. Qualquer feature que dependa de volume de conteúdo real vai expor
   isso.
-- Não há testes automatizados nem linter configurado ainda.
+- Testes: `backend/tests/Estudae.Tests` (xUnit, `dotnet test`). Os de
+  integração (`Api/`) precisam de Postgres: o `ApiFixture` usa
+  `ConnectionStrings__Estudae` ou os user-secrets da Api e cria/apaga um
+  banco `estudae_teste_<guid>`. Sem linter.
+- O SVG do modelo de dados ainda é o da v1 (o Mermaid do `.md` é o atual).
+- A imagem loga `Cannot load library libgssapi_krb5.so.2`: é o Npgsql
+  procurando Kerberos, e não afeta nada.
 - Não há `package.json` na raiz (frontend não tem dependências de build).
 - `.gitignore` cobre padrões de Node/JS e artefatos de build do .NET
   (`bin/`, `obj/`, `.vs/`, `*.user`), e também ignora
   `appsettings.Development.json`.
-- O banco de desenvolvimento ainda tem a tabela `teste_persistencia`, que
-  sobrou do teste da fase 1. Ela não faz parte do modelo e pode ser apagada
-  (`DROP TABLE teste_persistencia;`).

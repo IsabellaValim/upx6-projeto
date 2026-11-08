@@ -1,7 +1,17 @@
+using Estudae.Api.Cli;
+using Estudae.Api.Endpoints;
 using Estudae.Infra;
 using Estudae.Infra.Identity;
 using Estudae.Infra.Persistence;
 using Microsoft.AspNetCore.Identity;
+
+// Subcomandos: rodam e saem, sem subir o servidor web (ver Cli/).
+//   dotnet Estudae.Api.dll importar <arquivo.json> [--publicar] [--validar]
+//   dotnet Estudae.Api.dll migrar
+if (args is [ImportarComando.Nome, .. var argsImportar])
+    return await ImportarComando.ExecutarAsync(argsImportar);
+if (args is [MigrarComando.Nome])
+    return await MigrarComando.ExecutarAsync();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,11 +32,44 @@ builder.Services
     .AddHealthChecks()
     .AddDbContextCheck<EstudaeDbContext>();
 
+builder.Services.AddErrosPadronizados();
+
+// Só em desenvolvimento: libera o front servido em outra porta do localhost
+// (python -m http.server, npx serve). Em produção o front sai do wwwroot da
+// própria API, mesma origem, e CORS não é necessário.
+const string CorsDev = "front-local";
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddCors(o => o.AddPolicy(CorsDev, p => p
+        .SetIsOriginAllowed(origem => Uri.TryCreate(origem, UriKind.Absolute, out var u) && u.IsLoopback)
+        .AllowAnyHeader()
+        .AllowAnyMethod()));
+}
+
 var app = builder.Build();
+
+app.UseErrosPadronizados();
+
+if (app.Environment.IsDevelopment()) app.UseCors(CorsDev);
+
+// Front (index.html + src/) servido do wwwroot: na imagem, o Dockerfile copia
+// para lá os arquivos da raiz do repo. Mesma origem da API, então sem CORS.
+// no-cache = o navegador revalida (ETag/304) a cada carga: sem bundler gerando
+// nomes com hash, é o que garante que ninguém fica com o JS velho após um deploy.
+app.UseDefaultFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx => ctx.Context.Response.Headers.CacheControl = "no-cache",
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHealthChecks("/health");
+app.MapConteudo();
 
 app.Run();
+return 0;
+
+// Exposto para os testes de integração (WebApplicationFactory<Program>).
+public partial class Program;

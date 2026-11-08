@@ -1,3 +1,4 @@
+using Estudae.Infra.Importacao;
 using Estudae.Infra.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +24,8 @@ public static class DependencyInjection
         services.AddDbContext<EstudaeDbContext>(options => options
             .UseNpgsql(connectionString)
             .UseSnakeCaseNamingConvention());
+
+        services.AddScoped<ImportadorConteudo>();
 
         return services;
     }

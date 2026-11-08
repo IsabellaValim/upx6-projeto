@@ -1,0 +1,59 @@
+{
+  "disciplina": {
+    "slug": "Matemática",
+    "nome": "Matemática"
+  },
+  "temas": [
+    {
+      "slug": "porcentagem-e-proporcao",
+      "titulo": "Porcentagem e proporção",
+      "sobre": "Arquivo com erros de propósito, para testar o importador. Cada questão quebra uma regra.",
+      "videos": [
+        { "youtube": "https://vimeo.com/123456", "titulo": "Link que não é do YouTube" },
+        { "youtube": "https://youtu.be/AAAAAAAAAAA?si=abc", "titulo": "Vídeo válido" },
+        { "youtube": "AAAAAAAAAAA", "titulo": "Mesmo vídeo de novo" }
+      ],
+      "questoes": [
+        {
+          "codigo": "exemplo-erro-resposta",
+          "enunciado": "A resposta correta não bate com nenhuma alternativa (tem um espaço a mais no meio).",
+          "alternativas": ["R$ 30,00", "R$ 120,00", "R$ 130,00", "R$ 170,00"],
+          "resposta_correta": "R$  120,00",
+          "resolucao": "-",
+          "prova_ano": 2024, "prova_edicao": "EXEMPLO", "prova_nivel": "Ensino Médio", "prova_numero": 1
+        },
+        {
+          "codigo": "exemplo-erro-alternativas",
+          "enunciado": "Alternativa repetida (só muda maiúscula) e alternativa que cita outra pela posição.",
+          "alternativas": ["Sim", "sim", "As alternativas A e B", "Nenhuma das anteriores"],
+          "resposta_correta": "Sim",
+          "resolucao": "-",
+          "prova_ano": 2024, "prova_edicao": "EXEMPLO", "prova_nivel": "Ensino Médio", "prova_numero": 2
+        },
+        {
+          "codigo": "exemplo-erro-latex",
+          "enunciado": "Usa $ como delimitador de fórmula: quanto é $x^2$ quando x = 3? (R$ 9,00 é permitido.)",
+          "alternativas": ["6", "9"],
+          "resposta_correta": "9",
+          "resolucao": "-",
+          "prova_ano": 2024, "prova_edicao": "EXEMPLO", "prova_nivel": "Ensino Médio", "prova_numero": 3
+        },
+        {
+          "codigo": "exemplo-erro-fonte",
+          "enunciado": "Falta o número da questão na prova, o ano é anterior ao primeiro Encceja e só há uma alternativa.",
+          "alternativas": ["Única"],
+          "resposta_correta": "Única",
+          "resolucao": "-",
+          "prova_ano": 1999, "prova_edicao": "EXEMPLO", "prova_nivel": "Ensino Médio"
+        },
+        {
+          "codigo": "exemplo-erro-resposta",
+          "enunciado": "Código repetido no mesmo arquivo e sem resolução.",
+          "alternativas": ["1", "2"],
+          "resposta_correta": "1",
+          "prova_ano": 2024, "prova_edicao": "EXEMPLO", "prova_nivel": "Ensino Médio", "prova_numero": 5
+        }
+      ]
+    }
+  ]
+}

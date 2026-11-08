@@ -1,0 +1,20 @@
+{
+  "disciplina": { "slug": "matematica", "nome": "Matemática" },
+  "temas": [
+    {
+      "slug": "equacoes",
+      "titulo": "Equações",
+      "sobre": "O campo resposta_correta está escrito errado; o importador precisa recusar o arquivo.",
+      "questoes": [
+        {
+          "codigo": "exemplo-erro-digitacao",
+          "enunciado": "Quanto é 2 + 2?",
+          "alternativas": ["3", "4"],
+          "resposta_corecta": "4",
+          "resolucao": "2 + 2 = 4.",
+          "prova_ano": 2024, "prova_edicao": "EXEMPLO", "prova_nivel": "Ensino Médio", "prova_numero": 1
+        }
+      ]
+    }
+  ]
+}

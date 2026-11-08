@@ -4,4 +4,7 @@
     <Project Path="src/Estudae.Domain/Estudae.Domain.csproj" />
     <Project Path="src/Estudae.Infra/Estudae.Infra.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Estudae.Tests/Estudae.Tests.csproj" />
+  </Folder>
 </Solution>
