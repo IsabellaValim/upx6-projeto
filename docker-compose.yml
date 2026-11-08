@@ -1,11 +1,28 @@
-# Banco de dados de desenvolvimento do Estudae.
-# Fase 1 do backend: por enquanto so o Postgres. A API entra aqui na fase 4.
+# Estudae: banco + migrations + API (que tambem serve o front).
 #
-# Subir:   docker compose up -d
-# Status:  docker compose ps          (espere STATUS = healthy)
-# Logs:    docker compose logs -f db
-# Parar:   docker compose down        (mantem os dados)
-#          docker compose down -v     (APAGA os dados)
+# Antes da primeira vez:  cp .env.example .env   (e defina POSTGRES_PASSWORD)
+#
+# Tudo:          docker compose up -d --build --wait   -> http://localhost:8080
+# So o banco:    docker compose up -d --wait db        (para rodar a API com dotnet run)
+# Status:        docker compose ps
+# Logs:          docker compose logs -f api
+# Importar:      docker compose run --rm api importar conteudo/matematica.json --publicar
+# Parar:         docker compose down        (mantem os dados)
+#                docker compose down -v     (APAGA os dados)
+#
+# Ordem de subida (depends_on):  db (healthy) -> migrate (terminou ok) -> api
+
+# Mesma imagem para "migrate" e "api": o build e um so (o segundo vem do cache).
+x-imagem-api: &imagem-api
+  build:
+    context: .                 # raiz do repo: o Dockerfile copia backend/, src/ e conteudo/
+    dockerfile: backend/Dockerfile
+  image: estudae-api
+
+# Connection string montada aqui, a partir do .env. Dentro da rede do Compose
+# o banco e "db" na porta 5432 (nome do servico e porta interna), nao localhost.
+x-conexao: &conexao
+  ConnectionStrings__Estudae: "Host=db;Port=5432;Database=estudae;Username=estudae;Password=${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env (veja .env.example)}"
 
 services:
   db:
@@ -20,19 +37,16 @@ services:
       # mudar qualquer uma destas variaveis nao tem efeito nenhum.
       POSTGRES_USER: estudae
       POSTGRES_DB: estudae
-      # Apenas desenvolvimento local. Vai para um .env (nao comitado) na fase de secrets.
-      POSTGRES_PASSWORD: estudae_dev
+      # Segredo: vem do .env (nao comitado). Sem ele o Compose se recusa a subir.
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?defina POSTGRES_PASSWORD no .env (veja .env.example)}
 
     ports:
-      # Formato host:container. Dentro do container o Postgres esta sempre na 5432;
-      # o que muda por maquina e a porta publicada no host.
-      #
-      # DB_PORT vem do .env (nao comitado) e cai para 5432 se nao estiver definida.
-      # Quem tem um Postgres nativo ocupando a 5432 define DB_PORT=5433 no .env.
-      # Veja .env.example.
+      # Formato host:container. So para desenvolvimento (dotnet run e psql no
+      # host); a API do Compose fala com o banco pela rede interna, sem porta.
+      # DB_PORT vem do .env e cai para 5432 se nao estiver definida.
       #
       # Preso em 127.0.0.1 de proposito: em WSL2 com mirrored networking, publicar
-      # em 0.0.0.0 deixaria o banco exposto na rede local com senha de desenvolvimento.
+      # em 0.0.0.0 deixaria o banco exposto na rede local.
       - "127.0.0.1:${DB_PORT:-5432}:5432"
 
     volumes:
@@ -53,9 +67,35 @@ services:
       # Falhas dentro do start_period nao contam para o retries.
       start_period: 30s
 
-    # Sem restart policy por enquanto, de proposito: politica de restart transforma
-    # erro de configuracao em crash loop que parece estar funcionando. Entra
-    # (restart: unless-stopped) quando o servico estiver validado.
+    restart: unless-stopped
+
+  # Roda uma vez e termina: aplica as migrations pendentes. Se falhar, a API nao
+  # sobe (melhor do que subir com o banco pela metade).
+  migrate:
+    <<: *imagem-api
+    container_name: estudae-migrate
+    command: ["migrar"]
+    environment:
+      <<: *conexao
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: "no"
+
+  api:
+    <<: *imagem-api
+    container_name: estudae-api
+    environment:
+      <<: *conexao
+    ports:
+      # So em 127.0.0.1: em producao quem fica na frente e o proxy (Caddy).
+      - "127.0.0.1:${API_PORT:-8080}:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
+    restart: unless-stopped
 
 volumes:
   pgdata:
