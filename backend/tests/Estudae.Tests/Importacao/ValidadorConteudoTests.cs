@@ -1,0 +1,243 @@
+using System.Text;
+using System.Text.Json.Nodes;
+using Estudae.Infra.Importacao;
+
+namespace Estudae.Tests.Importacao;
+
+// Cada teste parte do exemplo válido da documentação (conteudo/exemplos/), muda
+// UM campo e confere que aparece O erro esperado (questão + campo).
+public class ValidadorConteudoTests
+{
+    private static readonly string PastaExemplos = AcharPastaExemplos();
+
+    private static string AcharPastaExemplos()
+    {
+        for (var dir = new DirectoryInfo(AppContext.BaseDirectory); dir is not null; dir = dir.Parent)
+        {
+            var candidata = Path.Combine(dir.FullName, "conteudo", "exemplos");
+            if (Directory.Exists(candidata)) return candidata;
+        }
+        throw new DirectoryNotFoundException("Pasta conteudo/exemplos não encontrada acima de " + AppContext.BaseDirectory);
+    }
+
+    private static string Exemplo(string nome) => File.ReadAllText(Path.Combine(PastaExemplos, nome));
+
+    private static List<ErroImportacao> Validar(string json)
+    {
+        var (arquivo, erro) = LeitorConteudo.Ler(json);
+        return erro is not null ? [erro] : ValidadorConteudo.Validar(arquivo!);
+    }
+
+    // Exemplo válido com a primeira questão alterada.
+    private static List<ErroImportacao> ValidarComQuestao(Action<JsonObject> mudar)
+    {
+        var raiz = JsonNode.Parse(Exemplo("exemplo-valido.json"))!.AsObject();
+        mudar(raiz["temas"]![0]!["questoes"]![0]!.AsObject());
+        return Validar(raiz.ToJsonString());
+    }
+
+    private static void AssertUnicoErro(List<ErroImportacao> erros, string campo)
+    {
+        var erro = Assert.Single(erros);
+        Assert.Equal(campo, erro.Campo);
+        Assert.Contains("exemplo-mat-porcentagem-001", erro.Onde);
+    }
+
+    [Fact]
+    public void Exemplo_valido_nao_tem_erros()
+    {
+        Assert.Empty(Validar(Exemplo("exemplo-valido.json")));
+    }
+
+    [Fact]
+    public void Exemplo_invalido_aponta_cada_questao_e_campo()
+    {
+        var erros = Validar(Exemplo("exemplo-invalido.json")).Select(e => (e.Onde, e.Campo)).ToList();
+
+        Assert.Contains(("disciplina", "slug"), erros);
+        Assert.Contains(("tema \"porcentagem-e-proporcao\", vídeo nº 1", "youtube"), erros);
+        Assert.Contains(("tema \"porcentagem-e-proporcao\", vídeo nº 3", "youtube"), erros);
+        Assert.Contains(("questão \"exemplo-erro-resposta\"", "resposta_correta"), erros);
+        Assert.Contains(("questão \"exemplo-erro-alternativas\"", "alternativas[1]"), erros);
+        Assert.Contains(("questão \"exemplo-erro-alternativas\"", "alternativas[2]"), erros);
+        Assert.Contains(("questão \"exemplo-erro-alternativas\"", "alternativas[3]"), erros);
+        Assert.Contains(("questão \"exemplo-erro-latex\"", "enunciado"), erros);
+        Assert.Contains(("questão \"exemplo-erro-fonte\"", "alternativas"), erros);
+        Assert.Contains(("questão \"exemplo-erro-fonte\"", "prova_ano"), erros);
+        Assert.Contains(("questão \"exemplo-erro-fonte\"", "prova_numero"), erros);
+        Assert.Contains(("questão \"exemplo-erro-resposta\"", "codigo"), erros);
+        Assert.Contains(("questão \"exemplo-erro-resposta\"", "resolucao"), erros);
+        Assert.Equal(13, erros.Count);
+    }
+
+    [Fact]
+    public void Campo_desconhecido_e_recusado_na_leitura()
+    {
+        var erro = Assert.Single(Validar(Exemplo("exemplo-campo-desconhecido.json")));
+        Assert.Contains("resposta_corecta", erro.Campo);
+        Assert.Contains("campo desconhecido", erro.Mensagem);
+    }
+
+    [Fact]
+    public void Tipo_errado_vira_erro_com_caminho()
+    {
+        var erros = ValidarComQuestao(q => q["prova_ano"] = "2019");
+        var erro = Assert.Single(erros);
+        Assert.Contains("prova_ano", erro.Campo);
+    }
+
+    [Theory]
+    [InlineData("enunciado")]
+    [InlineData("resolucao")]
+    [InlineData("resposta_correta")]
+    [InlineData("prova_edicao")]
+    [InlineData("prova_nivel")]
+    [InlineData("prova_numero")]
+    [InlineData("prova_ano")]
+    public void Campo_obrigatorio_ausente(string campo)
+    {
+        AssertUnicoErro(ValidarComQuestao(q => q.Remove(campo)), campo);
+    }
+
+    [Fact]
+    public void Texto_so_com_espacos_conta_como_ausente()
+    {
+        AssertUnicoErro(ValidarComQuestao(q => q["resolucao"] = "   \n "), "resolucao");
+    }
+
+    [Fact]
+    public void Resposta_correta_precisa_ser_igual_a_uma_alternativa()
+    {
+        AssertUnicoErro(ValidarComQuestao(q => q["resposta_correta"] = "R$ 120"), "resposta_correta");
+    }
+
+    [Fact]
+    public void Espacos_nas_pontas_nao_atrapalham_a_resposta()
+    {
+        Assert.Empty(ValidarComQuestao(q => q["resposta_correta"] = "  R$ 120,00 "));
+    }
+
+    [Fact]
+    public void Acento_em_forma_decomposta_e_normalizado()
+    {
+        // "é" como "e" + acento combinado (NFD) precisa casar com "é" (NFC).
+        var nfc = "Você está à frente";
+        var nfd = nfc.Normalize(NormalizationForm.FormD);
+        Assert.NotEqual(nfc, nfd);
+
+        Assert.Empty(ValidarComQuestao(q =>
+        {
+            q["alternativas"] = new JsonArray(nfc, "Outra");
+            q["resposta_correta"] = nfd;
+        }));
+    }
+
+    [Fact]
+    public void Alternativas_repetidas_ignorando_maiusculas()
+    {
+        AssertUnicoErro(ValidarComQuestao(q =>
+        {
+            q["alternativas"] = new JsonArray("Sim", "SIM", "Não");
+            q["resposta_correta"] = "Sim";
+        }), "alternativas[1]");
+    }
+
+    [Theory]
+    [InlineData(1)]
+    [InlineData(6)]
+    public void Quantidade_de_alternativas_fora_do_limite(int quantidade)
+    {
+        AssertUnicoErro(ValidarComQuestao(q =>
+        {
+            q["alternativas"] = new JsonArray(Enumerable.Range(1, quantidade).Select(i => (JsonNode)$"opção {i}").ToArray());
+            q["resposta_correta"] = "opção 1";
+        }), "alternativas");
+    }
+
+    [Theory]
+    [InlineData("As alternativas A e B")]
+    [InlineData("A, C")]
+    [InlineData("B ou D")]
+    [InlineData("Alternativa C")]
+    [InlineData("Todas as anteriores")]
+    [InlineData("nenhuma das alternativas anteriores")]
+    [InlineData("Todas as alternativas acima")]
+    public void Alternativa_que_cita_posicao(string alternativa)
+    {
+        var erros = ValidarComQuestao(q =>
+        {
+            q["alternativas"] = new JsonArray(alternativa, "Outra");
+            q["resposta_correta"] = "Outra";
+        });
+        AssertUnicoErro(erros, "alternativas[0]");
+    }
+
+    [Theory]
+    [InlineData("Ela comprou a casa e o carro")]
+    [InlineData("Nos anos anteriores, a produção caiu")]
+    [InlineData("Vitamina A e ferro")]
+    [InlineData("Escreva a letra a com capricho")]
+    public void Texto_comum_nao_e_confundido_com_posicao(string alternativa)
+    {
+        // As letras de alternativa só contam em maiúscula: "A e f" e "letra a" são texto comum.
+        Assert.Empty(ValidarComQuestao(q =>
+        {
+            q["alternativas"] = new JsonArray(alternativa, "Outra");
+            q["resposta_correta"] = "Outra";
+        }));
+    }
+
+    [Theory]
+    [InlineData("Custa R$ 10,00")]
+    [InlineData("Custa US$ 5")]
+    [InlineData("Fórmula \\( x^2 \\) certa")]
+    public void Cifrao_de_dinheiro_e_permitido(string enunciado)
+    {
+        Assert.Empty(ValidarComQuestao(q => q["enunciado"] = enunciado));
+    }
+
+    [Theory]
+    [InlineData("Quanto é $x^2$?")]
+    [InlineData("$$ x = 2 $$")]
+    public void Cifrao_como_delimitador_de_latex_e_recusado(string enunciado)
+    {
+        AssertUnicoErro(ValidarComQuestao(q => q["enunciado"] = enunciado), "enunciado");
+    }
+
+    [Theory]
+    [InlineData(2001)]
+    [InlineData(3000)]
+    public void Ano_da_prova_fora_do_intervalo(int ano)
+    {
+        AssertUnicoErro(ValidarComQuestao(q => q["prova_ano"] = ano), "prova_ano");
+    }
+
+    [Theory]
+    [InlineData("Mat-001")]
+    [InlineData("mat 001")]
+    [InlineData("mat--001")]
+    [InlineData("questão-1")]
+    public void Codigo_precisa_ser_slug(string codigo)
+    {
+        var erro = Assert.Single(ValidarComQuestao(q => q["codigo"] = codigo));
+        Assert.Equal("codigo", erro.Campo);
+    }
+
+    [Fact]
+    public void Codigo_repetido_entre_temas()
+    {
+        var raiz = JsonNode.Parse(Exemplo("exemplo-valido.json"))!.AsObject();
+        raiz["temas"]![1]!["questoes"]![0]!["codigo"] = "exemplo-mat-porcentagem-001";
+        var erro = Assert.Single(Validar(raiz.ToJsonString()));
+        Assert.Equal("codigo", erro.Campo);
+    }
+
+    [Fact]
+    public void Tema_com_slug_repetido()
+    {
+        var raiz = JsonNode.Parse(Exemplo("exemplo-valido.json"))!.AsObject();
+        raiz["temas"]![1]!["slug"] = "porcentagem-e-proporcao";
+        var erro = Assert.Single(Validar(raiz.ToJsonString()));
+        Assert.Equal("slug", erro.Campo);
+    }
+}
