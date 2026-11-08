@@ -1,4 +1,5 @@
 using Estudae.Api.Cli;
+using Estudae.Api.Endpoints;
 using Estudae.Infra;
 using Estudae.Infra.Identity;
 using Estudae.Infra.Persistence;
@@ -28,12 +29,31 @@ builder.Services
     .AddHealthChecks()
     .AddDbContextCheck<EstudaeDbContext>();
 
+builder.Services.AddErrosPadronizados();
+
+// Só em desenvolvimento: libera o front servido em outra porta do localhost
+// (python -m http.server, npx serve). Em produção o front sai do wwwroot da
+// própria API, mesma origem, e CORS não é necessário.
+const string CorsDev = "front-local";
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddCors(o => o.AddPolicy(CorsDev, p => p
+        .SetIsOriginAllowed(origem => Uri.TryCreate(origem, UriKind.Absolute, out var u) && u.IsLoopback)
+        .AllowAnyHeader()
+        .AllowAnyMethod()));
+}
+
 var app = builder.Build();
+
+app.UseErrosPadronizados();
+
+if (app.Environment.IsDevelopment()) app.UseCors(CorsDev);
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapHealthChecks("/health");
+app.MapConteudo();
 
 app.Run();
 return 0;

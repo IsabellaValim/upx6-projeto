@@ -65,8 +65,11 @@ public static class LeitorConteudo
         }
     }
 
+    private static string? N(string? s) => NormalizarTexto(s);
+
     // Texto vazio vira null, para o validador tratar "" e campo ausente do mesmo jeito.
-    private static string? N(string? s)
+    // Público porque a correção (POST /resposta) normaliza o texto enviado da mesma forma.
+    public static string? NormalizarTexto(string? s)
     {
         if (s is null) return null;
         var t = s.Replace("\r\n", "\n").Replace('\r', '\n').Trim().Normalize(NormalizationForm.FormC);
