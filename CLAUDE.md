@@ -166,8 +166,12 @@ lá, no mesmo commit da migration.
   - Todas as tentativas são guardadas, e `acertou` é gravado na hora da
     resposta.
   - `Questao` tem `status` (`rascunho`/`publicada`; o site só mostra
-    publicada) e `prova_numero` (opcional). Ainda sem migration: entram na
-    do primeiro ticket de conteúdo, não na fase 3.
+    publicada), `prova_numero` (opcional) e `codigo` (texto único, chave
+    natural do importador: reimportar o mesmo código atualiza, não duplica).
+    `videoaula` é única por (`tema_id`, `youtube_id`).
+- **Tabelas existentes:** Identity (migration `InicialIdentity`) e conteúdo
+  — `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`).
+  `tentativa` e `aula_assistida` ainda não existem (fora do MVP).
 - **Convenções de conteúdo** (matemática em LaTeX renderizado com KaTeX,
   delimitadores `\( \)` e `\[ \]` em vez de `$`, tabelas como imagem,
   fluxo de importação com script Python fora da app): ver a seção
@@ -309,6 +313,3 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 - `.gitignore` cobre padrões de Node/JS e artefatos de build do .NET
   (`bin/`, `obj/`, `.vs/`, `*.user`), e também ignora
   `appsettings.Development.json`.
-- O banco de desenvolvimento ainda tem a tabela `teste_persistencia`, que
-  sobrou do teste da fase 1. Ela não faz parte do modelo e pode ser apagada
-  (`DROP TABLE teste_persistencia;`).

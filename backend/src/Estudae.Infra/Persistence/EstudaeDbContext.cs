@@ -1,3 +1,4 @@
+using Estudae.Domain.Conteudo;
 using Estudae.Infra.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -8,10 +9,18 @@ namespace Estudae.Infra.Persistence;
 public class EstudaeDbContext(DbContextOptions<EstudaeDbContext> options)
     : IdentityDbContext<Usuario>(options)
 {
+    public DbSet<Disciplina> Disciplinas => Set<Disciplina>();
+    public DbSet<Tema> Temas => Set<Tema>();
+    public DbSet<Videoaula> Videoaulas => Set<Videoaula>();
+    public DbSet<Questao> Questoes => Set<Questao>();
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         // Primeiro o Identity monta o modelo dele; depois sobrescrevemos os nomes.
         base.OnModelCreating(builder);
+
+        // Conteúdo: um IEntityTypeConfiguration por entidade, em Configuracoes/.
+        builder.ApplyConfigurationsFromAssembly(typeof(EstudaeDbContext).Assembly);
 
         // Nomes em português (ver backend/DatabaseDocs/ModelodeDados.md). Só as
         // tabelas são traduzidas; as colunas ficam em snake_case via convenção.
