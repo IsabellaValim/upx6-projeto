@@ -8,19 +8,7 @@ namespace Estudae.Tests.Importacao;
 // UM campo e confere que aparece O erro esperado (questão + campo).
 public class ValidadorConteudoTests
 {
-    private static readonly string PastaExemplos = AcharPastaExemplos();
-
-    private static string AcharPastaExemplos()
-    {
-        for (var dir = new DirectoryInfo(AppContext.BaseDirectory); dir is not null; dir = dir.Parent)
-        {
-            var candidata = Path.Combine(dir.FullName, "conteudo", "exemplos");
-            if (Directory.Exists(candidata)) return candidata;
-        }
-        throw new DirectoryNotFoundException("Pasta conteudo/exemplos não encontrada acima de " + AppContext.BaseDirectory);
-    }
-
-    private static string Exemplo(string nome) => File.ReadAllText(Path.Combine(PastaExemplos, nome));
+    private static string Exemplo(string nome) => Exemplos.Ler(nome);
 
     private static List<ErroImportacao> Validar(string json)
     {
