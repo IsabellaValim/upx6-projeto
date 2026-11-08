@@ -206,6 +206,20 @@ backend/
 nome do **exame**, não do produto — usar só para conceitos de domínio e texto
 voltado ao usuário (ex.: a coluna `prova_ano`, o conteúdo das questões).
 
+### Importador de conteúdo
+
+Formato, regras e comandos: **`conteudo/README.md`**. Resumo:
+- Um JSON por disciplina em `conteudo/`; exemplos (válido e inválidos) em
+  `conteudo/exemplos/`, usados também pelos testes.
+- É um subcomando da API (vai junto na imagem):
+  `dotnet run --project src/Estudae.Api -- importar "$PWD/../conteudo/x.json" [--publicar] [--validar]`.
+  Caminho absoluto, porque o `dotnet run` roda a partir da pasta do projeto.
+- Código: leitura/normalização/validação/gravação em `Estudae.Infra/Importacao/`;
+  a linha de comando em `Estudae.Api/Cli/ImportarComando.cs`.
+- Qualquer erro aborta tudo (lista todos, com questão e campo). Reimportar
+  atualiza por chave natural (`codigo`, slug, `youtube_id`); nada é apagado.
+  Sem `--publicar` grava como rascunho, inclusive o que já estava publicado.
+
 ### Ordem de trabalho (fases)
 1. **Postgres em Docker** — ✅ **concluída**: `docker-compose.yml` na raiz,
    volume nomeado e healthcheck com `pg_isready` (detalhes acima)
@@ -308,7 +322,8 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 - O conteúdo do frontend é placeholder (`src/data.js`) — poucas questões por
   matéria. Qualquer feature que dependa de volume de conteúdo real vai expor
   isso.
-- Não há testes automatizados nem linter configurado ainda.
+- Testes: só os do importador (`backend/tests/Estudae.Tests`, xUnit, `dotnet test`).
+  Sem linter.
 - Não há `package.json` na raiz (frontend não tem dependências de build).
 - `.gitignore` cobre padrões de Node/JS e artefatos de build do .NET
   (`bin/`, `obj/`, `.vs/`, `*.user`), e também ignora

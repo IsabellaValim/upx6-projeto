@@ -234,7 +234,7 @@ migration (`InicialIdentity`).
 
 - **Fluxo de importação (MVP):** o texto da questão é extraído do PDF da prova, com ajuda de IA
   no chat, para o formato JSON do importador; uma pessoa revisa o JSON no PR (resolvendo de novo
-  as de Matemática); o **importador em C#** valida e grava.
+  as de Matemática); o **importador em C#** valida e grava. Formato, validações e comandos: `conteudo/README.md`.
 - **Fluxo planejado (depois do MVP):** um script em **Python** extrai os rascunhos dos PDFs com
   IA, fora da aplicação publicada, e o importador continua sendo a porta de entrada.
 - **Fonte:** toda questão do INEP leva `prova_ano`, `prova_edicao`, `prova_nivel` e
