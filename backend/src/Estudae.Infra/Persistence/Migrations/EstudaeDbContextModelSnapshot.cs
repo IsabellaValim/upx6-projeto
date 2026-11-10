@@ -70,6 +70,53 @@ namespace Estudae.Infra.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Estudae.Domain.Conteudo.Imagem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AtualizadaEm")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("atualizada_em");
+
+                    b.Property<string>("Caminho")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("caminho");
+
+                    b.Property<byte[]>("Dados")
+                        .IsRequired()
+                        .HasColumnType("bytea")
+                        .HasColumnName("dados");
+
+                    b.Property<string>("Sha256")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character(64)")
+                        .HasColumnName("sha256")
+                        .IsFixedLength();
+
+                    b.Property<string>("TipoMime")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("tipo_mime");
+
+                    b.HasKey("Id")
+                        .HasName("pk_imagem");
+
+                    b.HasIndex("Caminho")
+                        .IsUnique()
+                        .HasDatabaseName("ix_imagem_caminho");
+
+                    b.ToTable("imagem", (string)null);
+                });
+
             modelBuilder.Entity("Estudae.Domain.Conteudo.Questao", b =>
                 {
                     b.Property<int>("Id")

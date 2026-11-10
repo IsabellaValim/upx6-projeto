@@ -1,6 +1,6 @@
 namespace Estudae.Infra.Importacao;
 
-// Formato do arquivo de conteúdo: um JSON por disciplina (ver conteudo/README.md).
+// Formato do arquivo de conteúdo: um JSON por disciplina (ver docs/conteudo/README.md).
 // As chaves no JSON são snake_case, iguais às colunas do banco.
 //
 // Tudo é anulável de propósito: campo faltando não quebra a leitura, vira erro de
@@ -57,7 +57,8 @@ public sealed class QuestaoJson
 
 public sealed class ImagemJson
 {
-    // Caminho relativo a conteudo/imagens/ (ex.: "2022/2022_EM_regular_matematica_47.webp").
+    // Caminho relativo à pasta imagens/ ao lado do JSON, e chave da imagem no banco
+    // (ex.: "2022/2022_EM_regular_matematica_47.webp").
     public string? Arquivo { get; set; }
     // Texto alternativo: o que a imagem mostra, sem dar a resposta.
     public string? Descricao { get; set; }

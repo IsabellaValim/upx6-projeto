@@ -58,6 +58,19 @@ public class VideoaulaConfig : IEntityTypeConfiguration<Videoaula>
     }
 }
 
+public class ImagemConfig : IEntityTypeConfiguration<Imagem>
+{
+    public void Configure(EntityTypeBuilder<Imagem> e)
+    {
+        e.ToTable("imagem");
+        e.Property(i => i.Caminho).HasMaxLength(500);
+        e.HasIndex(i => i.Caminho).IsUnique();
+        e.Property(i => i.TipoMime).HasMaxLength(40);
+        e.Property(i => i.Dados).HasColumnType("bytea");
+        e.Property(i => i.Sha256).HasMaxLength(64).IsFixedLength();
+    }
+}
+
 public class QuestaoConfig : IEntityTypeConfiguration<Questao>
 {
     public void Configure(EntityTypeBuilder<Questao> e)

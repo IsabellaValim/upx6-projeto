@@ -186,4 +186,61 @@ public class ApiTests(ApiFixture f)
             Assert.Equal(["3", "4"], alts);
         }
     }
+
+    // ---- imagens (tabela imagem) ----
+
+    [Fact]
+    public async Task Imagem_vem_do_banco_com_tipo_e_etag()
+    {
+        var r = await f.Client.GetAsync("/conteudo/imagens/" + ApiFixture.CaminhoImagem);
+        Assert.Equal(HttpStatusCode.OK, r.StatusCode);
+        Assert.Equal("image/webp", r.Content.Headers.ContentType?.MediaType);
+        Assert.Equal(ApiFixture.BytesImagem, await r.Content.ReadAsByteArrayAsync());
+        Assert.NotNull(r.Headers.ETag);
+
+        // Mesma ETag de volta: 304, sem corpo.
+        var pedido = new HttpRequestMessage(HttpMethod.Get, "/conteudo/imagens/" + ApiFixture.CaminhoImagem);
+        pedido.Headers.IfNoneMatch.Add(r.Headers.ETag!);
+        var r304 = await f.Client.SendAsync(pedido);
+        Assert.Equal(HttpStatusCode.NotModified, r304.StatusCode);
+    }
+
+    [Fact]
+    public async Task Imagem_inexistente_da_404()
+    {
+        var r = await f.Client.GetAsync("/conteudo/imagens/teste/nao-existe.webp");
+        Assert.Equal(HttpStatusCode.NotFound, r.StatusCode);
+        Assert.False(string.IsNullOrWhiteSpace((await r.Content.ReadFromJsonAsync<ProblemaDto>())!.Erro));
+    }
+
+    [Fact]
+    public async Task Regravar_imagem_so_atualiza_se_os_bytes_mudaram()
+    {
+        const string caminho = "teste/regravar.png";
+        await using (var db = f.NovoContexto())
+        {
+            var g = new Estudae.Infra.Importacao.GravadorImagens(db);
+            var r1 = new Estudae.Infra.Importacao.ResumoImagens();
+            await g.GravarAsync([(caminho, new byte[] { 1, 2, 3 })], r1);
+            await db.SaveChangesAsync();
+            Assert.Equal(1, r1.Criadas);
+        }
+        await using (var db = f.NovoContexto())
+        {
+            var g = new Estudae.Infra.Importacao.GravadorImagens(db);
+            var r2 = new Estudae.Infra.Importacao.ResumoImagens();
+            await g.GravarAsync([(caminho, new byte[] { 1, 2, 3 })], r2);
+            Assert.Equal(1, r2.Iguais);
+            var r3 = new Estudae.Infra.Importacao.ResumoImagens();
+            await g.GravarAsync([(caminho, new byte[] { 9 })], r3);
+            await db.SaveChangesAsync();
+            Assert.Equal(1, r3.Atualizadas);
+        }
+        await using (var db = f.NovoContexto())
+        {
+            var img = await db.Imagens.SingleAsync(i => i.Caminho == caminho);
+            Assert.Equal(new byte[] { 9 }, img.Dados);
+            Assert.Equal("image/png", img.TipoMime);
+        }
+    }
 }

@@ -10,8 +10,8 @@
     powershell -ExecutionPolicy Bypass -File scripts/banco/exportar.ps1
     powershell -ExecutionPolicy Bypass -File scripts/banco/exportar.ps1 -Arquivo backups/antes-da-revisao.dump
 
-  As imagens das questões NÃO vão no .dump: o banco guarda só o caminho delas, e os arquivos
-  ficam no repositório, em conteudo/imagens/.
+  O .dump leva TODO o conteúdo, inclusive as imagens das questões (tabela imagem): o
+  conteúdo não fica mais no repositório, então este arquivo é a cópia para compartilhar.
 #>
 param(
   [string]$Arquivo = ("backups/estudae-" + (Get-Date -Format "yyyyMMdd-HHmm") + ".dump")

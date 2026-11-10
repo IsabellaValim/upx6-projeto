@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Identity;
 
 // Subcomandos: rodam e saem, sem subir o servidor web (ver Cli/).
 //   dotnet Estudae.Api.dll importar <arquivo.json> [--publicar] [--validar]
+//   dotnet Estudae.Api.dll importar-imagens <pasta>
 //   dotnet Estudae.Api.dll migrar
 if (args is [ImportarComando.Nome, .. var argsImportar])
     return await ImportarComando.ExecutarAsync(argsImportar);
+if (args is [ImportarImagensComando.Nome, .. var argsImagens])
+    return await ImportarImagensComando.ExecutarAsync(argsImagens);
 if (args is [MigrarComando.Nome])
     return await MigrarComando.ExecutarAsync();
 
@@ -61,25 +64,6 @@ app.UseStaticFiles(new StaticFileOptions
 {
     OnPrepareResponse = ctx => ctx.Context.Response.Headers.CacheControl = "no-cache",
 });
-
-// Imagens das questões (recortes da prova): servidas de conteudo/imagens/, a
-// mesma pasta que o importador confere. Na imagem Docker é /app/conteudo/imagens;
-// no dotnet run, a pasta conteudo/ da raiz do repo. A URL é a mesma do front
-// servido por python -m http.server na raiz: /conteudo/imagens/<arquivo>.
-var pastaImagens = new[]
-{
-    Path.Combine(app.Environment.ContentRootPath, "conteudo", "imagens"),
-    Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "..", "conteudo", "imagens")),
-}.FirstOrDefault(Directory.Exists);
-if (pastaImagens is not null)
-{
-    app.UseStaticFiles(new StaticFileOptions
-    {
-        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(pastaImagens),
-        RequestPath = "/conteudo/imagens",
-        OnPrepareResponse = ctx => ctx.Context.Response.Headers.CacheControl = "no-cache",
-    });
-}
 
 app.UseAuthentication();
 app.UseAuthorization();

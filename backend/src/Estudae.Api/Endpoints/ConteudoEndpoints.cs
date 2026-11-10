@@ -34,6 +34,27 @@ public static class ConteudoEndpoints
         api.MapGet("/disciplinas/{disciplina}/temas", ListarTemas);
         api.MapGet("/disciplinas/{disciplina}/temas/{tema}/questoes", ListarQuestoes);
         api.MapPost("/questoes/{id:int}/resposta", Responder);
+
+        // Imagens das questões, lidas da tabela imagem. Fora de /api porque o
+        // front usa a URL direto no <img> (ImagemDto.Url = "conteudo/imagens/...").
+        app.MapGet("/conteudo/imagens/{**caminho}", Imagem);
+    }
+
+    // ETag = hash dos bytes + no-cache: o navegador revalida a cada carga e recebe
+    // 304 sem corpo se a imagem não mudou (o FileContentHttpResult trata o If-None-Match).
+    private static async Task<IResult> Imagem(string caminho, HttpContext http, EstudaeDbContext db, CancellationToken ct)
+    {
+        var img = await db.Imagens
+            .Where(i => i.Caminho == caminho)
+            .Select(i => new { i.TipoMime, i.Dados, i.Sha256, i.AtualizadaEm })
+            .SingleOrDefaultAsync(ct);
+        if (img is null)
+            return TypedResults.NotFound(new ProblemaDto($"Imagem \"{caminho}\" não encontrada."));
+
+        http.Response.Headers.CacheControl = "no-cache";
+        return TypedResults.File(img.Dados, img.TipoMime,
+            lastModified: new DateTimeOffset(DateTime.SpecifyKind(img.AtualizadaEm, DateTimeKind.Utc)),
+            entityTag: new Microsoft.Net.Http.Headers.EntityTagHeaderValue($"\"{img.Sha256}\""));
     }
 
     private static async Task<List<DisciplinaDto>> ListarDisciplinas(EstudaeDbContext db, CancellationToken ct) =>

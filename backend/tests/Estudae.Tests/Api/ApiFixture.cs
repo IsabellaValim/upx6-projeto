@@ -85,8 +85,16 @@ public sealed class ApiFixture : IAsyncLifetime
             Status = StatusQuestao.Publicada,
             CriadoEm = DateTime.UtcNow,
         });
+
+        // ...e a imagem dessa questão, na tabela imagem, pelo gravador de verdade.
+        await scope.ServiceProvider.GetRequiredService<GravadorImagens>()
+            .GravarAsync([(CaminhoImagem, BytesImagem)], new ResumoImagens());
         await ctx.SaveChangesAsync();
     }
+
+    public const string CaminhoImagem = "teste/figura.webp";
+    // Não precisa ser um webp válido: a API devolve os bytes como estão.
+    public static readonly byte[] BytesImagem = "RIFF-falso-WEBP"u8.ToArray();
 
     public const string CodigoAutoral = "teste-autoral-001";
     public const string DisciplinaAutoral = "teste-autoral";

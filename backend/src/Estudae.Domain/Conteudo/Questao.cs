@@ -19,7 +19,8 @@ public class Questao
     public string RespostaCorreta { get; set; } = string.Empty;
     public string Resolucao { get; set; } = string.Empty;
     // Recorte da questão como está na prova (figura, tabela, gráfico...), caminho
-    // relativo a conteudo/imagens/ (ex.: "2022/2022_EM_regular_matematica_47.webp").
+    // = Imagem.Caminho (ex.: "2022/2022_EM_regular_matematica_47.webp"); os bytes
+    // ficam na tabela imagem.
     // A descrição é o texto alternativo, lido por leitor de tela e pela voz alta.
     public string? ImagemUrl { get; set; }
     public string? ImagemDescricao { get; set; }

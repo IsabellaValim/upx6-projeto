@@ -40,12 +40,14 @@ Projeto acadêmico desenvolvido para a UPX.
 
 No primeiro acesso a pessoa escolhe a prova (Ensino Fundamental ou Médio), e dá para trocar
 no Perfil. Questões com figura, tabela ou gráfico mostram o recorte da prova, com descrição
-para leitor de tela. Para carregar as questões num banco oficial:
-[`conteudo/ENTREGA-QUESTOES-2022.md`](conteudo/ENTREGA-QUESTOES-2022.md).
+para leitor de tela.
 
-Num banco novo o site mostra "Ainda não há matérias disponíveis": importe o conteúdo (abaixo).
-Questões de provas anteriores escolhidas para cada tema aguardam revisão em
-[`conteudo/curadoria-inep.md`](conteudo/curadoria-inep.md).
+**Todo o conteúdo (questões, vídeos e as 240 imagens) mora no banco, não no repositório.** Num
+banco novo o site mostra "Ainda não há matérias disponíveis": peça o `.dump` mais recente a quem
+mantém o conteúdo e use o `restaurar` (abaixo). Para carregar num banco oficial:
+[`docs/conteudo/ENTREGA-QUESTOES-2022.md`](docs/conteudo/ENTREGA-QUESTOES-2022.md). Questões de
+provas anteriores escolhidas para cada tema aguardam revisão em
+[`docs/conteudo/curadoria-inep.md`](docs/conteudo/curadoria-inep.md).
 
 ## Tecnologias
 
@@ -66,11 +68,12 @@ index.html, src/        frontend (SPA por hash; ver CLAUDE.md)
 backend/                solução .NET
   src/Estudae.Domain/   entidades (sem dependências)
   src/Estudae.Infra/    EF Core, migrations, importador de conteúdo
-  src/Estudae.Api/      endpoints, /health, subcomandos importar e migrar
+  src/Estudae.Api/      endpoints, /health, subcomandos importar, importar-imagens e migrar
   tests/Estudae.Tests/  testes de unidade e de integração
   DatabaseDocs/         modelo de dados
-conteudo/               questões e vídeos em JSON (um arquivo por disciplina)
 docs/api.md             contrato da API para o frontend
+docs/conteudo/          formato de importação, exemplos (de teste) e revisão das questões
+scripts/banco/          exportar e restaurar o banco (é assim que o conteúdo é compartilhado)
 docker-compose.yml      db + migrate + api
 .github/workflows/      CI
 ```
@@ -105,14 +108,11 @@ Abra `http://localhost:8080`. Na ordem, o Compose sobe o banco, aplica as migrat
 docker compose ps                 # estado dos serviços
 docker compose logs -f api        # logs da API
 docker compose down               # para tudo (mantém os dados)
-docker compose down -v            # ATENÇÃO: apaga os dados também
+docker compose down -v            # ATENÇÃO: apaga os dados também, inclusive todo o conteúdo
 ```
 
-Para carregar conteúdo (os JSONs de `conteudo/` vão dentro da imagem):
-
-```bash
-docker compose run --rm api importar conteudo/matematica.json --publicar
-```
+Para ter o conteúdo, restaure um `.dump` (ver "Restaurar" abaixo). Para cadastrar conteúdo
+novo a partir de um JSON: [`docs/conteudo/README.md`](docs/conteudo/README.md).
 
 ### Backend em desenvolvimento (`dotnet run`)
 
@@ -150,8 +150,8 @@ Se a 5432 (Postgres) ou a 8080 (site) já estiverem em uso na sua máquina, mude
 **Onde os dados ficam.** No PostgreSQL do Docker, dentro do volume `upx6-projeto_pgdata`, no seu
 computador e **fora do app**. Reconstruir a imagem, reiniciar ou apagar os containers não apaga
 os dados; só `docker compose down -v` apaga. O app acessa o banco pela rede interna do Compose.
-Os JSONs de `conteudo/` são a fonte que o importador lê; depois de importados, os dados vivem no
-banco.
+O banco é a **única fonte** do conteúdo (não há cópia no repositório): exporte depois de cada
+mudança e guarde o `.dump` fora do computador.
 
 **Abrir o banco numa ferramenta** (DBeaver, pgAdmin, `psql`): host `localhost`, porta `DB_PORT`
 do `.env` (padrão 5432), banco e usuário `estudae`, senha `POSTGRES_PASSWORD` do `.env`. Ou, sem
@@ -168,8 +168,8 @@ sh scripts/banco/exportar.sh
 
 Gera `backups/estudae-AAAAMMDD-HHMM.dump` com **o banco inteiro**: estrutura, migrations aplicadas
 e dados. A pasta `backups/` não vai para o git (pode conter dados): mande o arquivo por outro
-meio (Drive, e-mail). As imagens das questões não vão no dump, porque já estão no repositório
-(`conteudo/imagens/`).
+meio (Drive, e-mail). O dump leva todo o conteúdo, **inclusive as imagens das questões** (tabela
+`imagem`), por isso tem uns 17 MB.
 
 ### Restaurar (receber o banco de alguém)
 
@@ -202,23 +202,24 @@ banco em arquivo versionado.
 
 ## Conteúdo
 
-Questões e vídeos são cadastrados em JSON e entram no banco pelo importador, que confere
-tudo antes de gravar. Formato, regras, fluxo de revisão e um prompt para extrair questões
-com IA: [`conteudo/README.md`](conteudo/README.md).
+O conteúdo vive no banco. Conteúdo novo é escrito num JSON (fora do repositório) e entra
+pelo importador, que confere tudo antes de gravar; as imagens ao lado do JSON vão para o
+banco junto. Formato, regras, fluxo de revisão e um prompt para extrair questões com IA:
+[`docs/conteudo/README.md`](docs/conteudo/README.md).
 
 ## Documentação
 
 - [`docs/api.md`](docs/api.md): contrato da API
 - [`backend/DatabaseDocs/ModelodeDados.md`](backend/DatabaseDocs/ModelodeDados.md): modelo de dados
-- [`conteudo/README.md`](conteudo/README.md): como cadastrar conteúdo
+- [`docs/conteudo/README.md`](docs/conteudo/README.md): como cadastrar conteúdo
 - [`CLAUDE.md`](CLAUDE.md): guia técnico do projeto e decisões
 
 ## Próximos passos
 
 - [x] Ligar as telas à API de conteúdo
 - [ ] Publicar o site num ambiente de demonstração (VM + Caddy ou Render)
-- [ ] Revisar e incluir as questões de `conteudo/curadoria-inep.md`
+- [ ] Revisar e incluir as questões de `docs/conteudo/curadoria-inep.md`
 - [ ] Contas de aluno (login) e histórico de progresso
 - [ ] Mais áreas do exame (Ciências, História, Geografia)
-- [ ] Questões com figura e tabela
+- [x] Questões com figura e tabela (recortes da prova, guardados no banco)
 - [ ] Explicação de palavras ao passar o mouse

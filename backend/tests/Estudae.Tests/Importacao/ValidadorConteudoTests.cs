@@ -4,7 +4,7 @@ using Estudae.Infra.Importacao;
 
 namespace Estudae.Tests.Importacao;
 
-// Cada teste parte do exemplo válido da documentação (conteudo/exemplos/), muda
+// Cada teste parte do exemplo válido da documentação (docs/conteudo/exemplos/), muda
 // UM campo e confere que aparece O erro esperado (questão + campo).
 public class ValidadorConteudoTests
 {

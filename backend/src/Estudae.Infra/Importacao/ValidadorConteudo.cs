@@ -27,6 +27,10 @@ public static partial class ValidadorConteudo
     [GeneratedRegex(@"^[A-Za-z0-9_\-]+(/[A-Za-z0-9_\-]+)*\.(webp|png|jpe?g)$", RegexOptions.IgnoreCase)]
     private static partial Regex CaminhoImagem();
 
+    // Caminho de imagem seguro: relativo, sem "..", só caracteres simples.
+    public static bool CaminhoDeImagemValido(string caminho) =>
+        CaminhoImagem().IsMatch(caminho) && !caminho.Contains("..") && caminho.Length <= 500;
+
     // Alternativa que cita outra por posição quebra quando embaralhamos a ordem.
     // As letras A-E são maiúsculas de propósito (o artigo "a" não pode casar); as
     // palavras, em (?i:...), valem com qualquer caixa ("Todas as anteriores").
@@ -165,7 +169,7 @@ public static partial class ValidadorConteudo
                 if (im.Arquivo is null)
                     Erro(onde, "imagem.arquivo", "obrigatório");
                 else if (!CaminhoImagem().IsMatch(im.Arquivo) || im.Arquivo.Contains(".."))
-                    Erro(onde, "imagem.arquivo", $"\"{im.Arquivo}\" inválido: caminho relativo a conteudo/imagens/, só letras, números, \"_\", \"-\", \"/\" e extensão .webp, .png ou .jpg");
+                    Erro(onde, "imagem.arquivo", $"\"{im.Arquivo}\" inválido: caminho relativo à pasta imagens/ ao lado do JSON, só letras, números, \"_\", \"-\", \"/\" e extensão .webp, .png ou .jpg");
                 else
                     Tamanho(im.Arquivo, onde, "imagem.arquivo", 500);
                 Texto(im.Descricao, onde, "imagem.descricao", 1000);
