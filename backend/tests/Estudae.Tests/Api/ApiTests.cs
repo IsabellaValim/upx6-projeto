@@ -44,8 +44,7 @@ public class ApiTests(ApiFixture f)
     public async Task Lista_disciplinas_contando_so_publicadas()
     {
         var json = await f.Client.GetFromJsonAsync<JsonElement>("/api/disciplinas");
-        var mat = Assert.Single(json.EnumerateArray());
-        Assert.Equal("matematica", mat.GetProperty("slug").GetString());
+        var mat = Assert.Single(json.EnumerateArray(), d => d.GetProperty("slug").GetString() == "matematica");
         Assert.Equal(2, mat.GetProperty("totalQuestoes").GetInt32()); // o rascunho não conta
     }
 
@@ -144,6 +143,29 @@ public class ApiTests(ApiFixture f)
         await using var db2 = f.NovoContexto();
         Assert.Equal(antes, await db2.Questoes.CountAsync());
         Assert.Equal(2, await db2.Videoaulas.CountAsync());
-        Assert.Equal(2, await db2.Temas.CountAsync());
+        Assert.Equal(2, await db2.Temas.CountAsync(t => t.Disciplina.Slug == "matematica"));
+    }
+
+    // ---- origem da questão ----
+
+    [Fact]
+    public async Task Questao_oficial_traz_a_prova_de_origem()
+    {
+        var json = await f.Client.GetFromJsonAsync<JsonElement>("/api/disciplinas/matematica/temas/equacoes/questoes");
+        var prova = Assert.Single(json.EnumerateArray()).GetProperty("prova");
+        Assert.Equal(JsonValueKind.Object, prova.ValueKind);
+        Assert.True(prova.GetProperty("ano").GetInt32() >= 2002);
+    }
+
+    [Fact]
+    public async Task Questao_autoral_vem_com_prova_null_e_pode_ser_respondida()
+    {
+        var json = await f.Client.GetFromJsonAsync<JsonElement>(
+            $"/api/disciplinas/{ApiFixture.DisciplinaAutoral}/temas/{ApiFixture.TemaAutoral}/questoes");
+        var q = Assert.Single(json.EnumerateArray());
+        Assert.Equal(JsonValueKind.Null, q.GetProperty("prova").ValueKind);
+
+        var r = await f.Client.PostAsJsonAsync($"/api/questoes/{q.GetProperty("id").GetInt32()}/resposta", new { alternativa = "4" });
+        Assert.True((await r.Content.ReadFromJsonAsync<Correcao>())!.Acertou);
     }
 }

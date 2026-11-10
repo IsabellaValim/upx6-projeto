@@ -8,8 +8,8 @@ import { urls } from "../core/urls.js";
 
 export default function resultado(idx) {
   const r = state.results[+idx];
-  if (!r) return progresso();
-  const s = SUBJECTS[r.subject];
+  const s = r && SUBJECTS[r.subject];
+  if (!s) return progresso();
   const p = pct(r.correct, r.total);
   const C = 2 * Math.PI * 42;
   const weak = r.weakTopic !== null ? s.topics[r.weakTopic] : null;
@@ -18,7 +18,7 @@ export default function resultado(idx) {
     nav: "progresso",
     html: `
         <div class="topbar topbar--split result-head">
-          <div><h1>Resultado do quiz</h1><p class="kicker">Tema: ${s.name}</p></div>
+          <div><h1>Resultado do quiz</h1><p class="kicker">Tema: ${esc(s.name)}</p></div>
           <a class="icon-btn" href="${urls.home}" aria-label="Fechar resultado">${icon("xBox")}</a>
         </div>
         <div class="donut" role="img" aria-label="${p}% de aproveitamento">
@@ -36,7 +36,7 @@ export default function resultado(idx) {
             weak
               ? `<p>Você teve mais dificuldade no tema “${esc(weak.title)}”.</p>
                <p>Você pode revisar este conteúdo antes de tentar novamente.</p>
-               <a class="btn btn--primary btn--sm" href="${urls.video(r.subject, r.weakTopic, 0)}">${icon("video")}Assistir vídeo-aula recomendada</a>`
+               <a class="btn btn--primary btn--sm" href="${weak.videos ? urls.video(r.subject, r.weakTopic, 0) : urls.videos(r.subject)}">${icon("video")}Assistir vídeo-aula recomendada</a>`
               : `<p>Você acertou todas as questões. Excelente trabalho!</p>
                <p>Continue praticando para manter o ritmo até a prova.</p>
                <a class="btn btn--primary btn--sm" href="${urls.videos(r.subject)}">${icon("video")}Explorar vídeo-aulas</a>`
@@ -46,11 +46,11 @@ export default function resultado(idx) {
           <summary>Ver correção das questões</summary>
           ${r.items
             .map((x, k) => {
-              const item = s.questions[x.q];
+              // A correção (resposta certa e explicação) veio da API e foi guardada no resultado.
               return `<div class="review-item ${x.ok ? "ok" : "bad"}">
-              <p><span class="mark">${x.ok ? "Acertou" : "Errou"}</span> — ${k + 1}. ${esc(item.ask)}</p>
-              <p>Resposta certa: ${LETTERS[item.answer]}) ${esc(item.options[item.answer])}${!x.ok && x.chosen !== undefined ? ` · Você marcou ${LETTERS[x.chosen]}` : ""}</p>
-              <p>${esc(item.why)}</p>
+              <p><span class="mark">${x.ok ? "Acertou" : "Errou"}</span> — ${k + 1}. ${esc(x.ask)}</p>
+              <p>Resposta certa: ${LETTERS[x.answer]}) ${esc(x.options[x.answer])}${!x.ok && x.chosen !== undefined ? ` · Você marcou ${LETTERS[x.chosen]}` : ""}</p>
+              <p>${esc(x.why)}</p>
             </div>`;
             })
             .join("")}

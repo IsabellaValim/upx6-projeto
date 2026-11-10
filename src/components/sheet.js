@@ -1,4 +1,5 @@
 /* Folha inferior (bottom-sheet) para escolhas rápidas */
+import { SUBJECTS } from "../data.js";
 import { icon } from "../icons.js";
 import { $sheetRoot } from "../core/dom.js";
 import { esc } from "../core/utils.js";
@@ -39,16 +40,9 @@ export const chooseSubject = (kind) =>
     kind === "quiz"
       ? "Qual quiz você quer fazer?"
       : "Quais vídeo-aulas você quer ver?",
-    [
-      {
-        label: "Português",
-        icon: "pen",
-        href: kind === "quiz" ? urls.quiz("pt") : urls.videos("pt"),
-      },
-      {
-        label: "Matemática",
-        icon: "percent",
-        href: kind === "quiz" ? urls.quiz("mat") : urls.videos("mat"),
-      },
-    ],
+    Object.values(SUBJECTS).map((s) => ({
+      label: s.name,
+      icon: s.icon,
+      href: kind === "quiz" ? urls.quiz(s.id) : urls.videos(s.id),
+    })),
   );

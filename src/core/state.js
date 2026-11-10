@@ -14,7 +14,9 @@ export const state = {
     },
     store.get("a11y", {}),
   ),
-  results: store.get("results", []),
+  // v: 2 = resultado com a correção da API. Os antigos apontavam para o
+  // conteúdo de exemplo (que saiu) e não dá para exibi-los.
+  results: store.get("results", []).filter((r) => r.v === 2),
   watched: store.get("watched", {}),
   quiz: null,
 };

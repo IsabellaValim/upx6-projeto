@@ -65,8 +65,30 @@ public sealed class ApiFixture : IAsyncLifetime
             Status = StatusQuestao.Rascunho,
             CriadoEm = DateTime.UtcNow,
         });
+
+        // ...e uma questão AUTORAL publicada (sem prova_*), numa disciplina à parte
+        // para não mexer nas contagens dos testes de matemática.
+        ctx.Questoes.Add(new Questao
+        {
+            Codigo = CodigoAutoral,
+            Tema = new Tema
+            {
+                Slug = TemaAutoral, Titulo = "Tema autoral", Sobre = "Teste", Ordem = 1,
+                Disciplina = new Disciplina { Slug = DisciplinaAutoral, Nome = "Teste autoral" },
+            },
+            Enunciado = "Quanto é 2 + 2?",
+            Alternativas = ["3", "4"],
+            RespostaCorreta = "4",
+            Resolucao = "2 + 2 = 4.",
+            Status = StatusQuestao.Publicada,
+            CriadoEm = DateTime.UtcNow,
+        });
         await ctx.SaveChangesAsync();
     }
+
+    public const string CodigoAutoral = "teste-autoral-001";
+    public const string DisciplinaAutoral = "teste-autoral";
+    public const string TemaAutoral = "tema-autoral";
 
     public EstudaeDbContext NovoContexto() => new(
         new DbContextOptionsBuilder<EstudaeDbContext>()

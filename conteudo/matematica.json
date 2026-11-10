@@ -1,0 +1,216 @@
+{
+  "disciplina": {
+    "slug": "matematica",
+    "nome": "Matemática",
+    "icone": "percent"
+  },
+  "temas": [
+    {
+      "slug": "porcentagem-e-proporcao",
+      "titulo": "Porcentagem e proporção",
+      "sobre": "Compare preços e ajuste quantidades sem perder a relação entre os valores.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=OjOyNmTt7Mw",
+          "titulo": "Como calcular porcentagem (Gis com Giz)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-mat-por-001",
+          "enunciado": "Quanto fica o preço de uma mochila de R$ 120,00 após um desconto de 25%?",
+          "alternativas": [
+            "R$ 30,00",
+            "R$ 90,00",
+            "R$ 95,00",
+            "R$ 150,00"
+          ],
+          "resposta_correta": "R$ 90,00",
+          "resolucao": "25% é a quarta parte. Divida 120 por 4 para obter R$ 30,00 de desconto. Subtraindo 30 de 120, o preço final é R$ 90,00."
+        },
+        {
+          "codigo": "aut-mat-por-002",
+          "texto_base": "Uma receita de bolo rende 6 porções com 2 xícaras de farinha. Para uma confraternização, é preciso preparar 15 porções.",
+          "enunciado": "Quantas xícaras de farinha serão usadas para 15 porções, mantendo a mesma proporção?",
+          "alternativas": [
+            "4 xícaras",
+            "5 xícaras",
+            "6 xícaras",
+            "7,5 xícaras"
+          ],
+          "resposta_correta": "5 xícaras",
+          "resolucao": "De 6 para 15 porções, a quantidade é multiplicada por 2,5. Multiplique 2 xícaras por 2,5 para obter 5 xícaras."
+        },
+        {
+          "codigo": "aut-mat-por-003",
+          "texto_base": "Um pacote de 500 g de café custa R$ 7,50. Um pacote de 1 kg do mesmo café custa R$ 13,00.",
+          "enunciado": "Qual opção custa menos por quilo?",
+          "alternativas": [
+            "O pacote de 500 g",
+            "O pacote de 1 kg",
+            "Os dois têm o mesmo preço por quilo",
+            "É preciso saber a marca para comparar"
+          ],
+          "resposta_correta": "O pacote de 1 kg",
+          "resolucao": "Dois pacotes de 500 g somam 1 kg e custam R$ 15,00. O pacote de 1 kg custa R$ 13,00, ou seja, R$ 2,00 a menos por quilo."
+        }
+      ]
+    },
+    {
+      "slug": "equacoes",
+      "titulo": "Equações",
+      "sobre": "Represente valores desconhecidos para resolver problemas com taxas, quantidades e divisão de despesas.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=TLkqE_CWY2E",
+          "titulo": "Equação do primeiro grau (Gis com Giz)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-mat-equ-001",
+          "texto_base": "Uma gráfica cobra R$ 4,00 de taxa fixa e R$ 1,00 por página. Um pedido ficou em R$ 16,00.",
+          "enunciado": "Quantas páginas foram impressas?",
+          "alternativas": [
+            "6",
+            "9",
+            "12",
+            "16"
+          ],
+          "resposta_correta": "12",
+          "resolucao": "Dos R$ 16,00, retire a taxa fixa de R$ 4,00. Sobram R$ 12,00 referentes às páginas. Como cada uma custa R$ 1,00, foram impressas 12 páginas."
+        },
+        {
+          "codigo": "aut-mat-equ-002",
+          "texto_base": "Um coletivo comprou quatro cadeiras iguais. O total, incluindo R$ 45,00 de entrega, foi R$ 345,00.",
+          "enunciado": "Qual é o preço de cada cadeira?",
+          "alternativas": [
+            "R$ 60,00",
+            "R$ 75,00",
+            "R$ 90,00",
+            "R$ 100,00"
+          ],
+          "resposta_correta": "R$ 75,00",
+          "resolucao": "Retire o valor da entrega, R$ 45,00, do total de R$ 345,00. Divida os R$ 300,00 restantes pelas quatro cadeiras. Cada uma custa R$ 75,00."
+        },
+        {
+          "codigo": "aut-mat-equ-003",
+          "texto_base": "Para enviar encomendas, o plano A cobra R$ 12,00 por mês mais R$ 4,00 por entrega. O plano B cobra R$ 28,00 por mês mais R$ 2,00 por entrega.",
+          "enunciado": "Depois de quantas entregas os dois planos custam o mesmo no mês?",
+          "alternativas": [
+            "4",
+            "6",
+            "8",
+            "12"
+          ],
+          "resposta_correta": "8",
+          "resolucao": "O plano B começa R$ 16,00 mais caro na mensalidade. A cada entrega, ele economiza R$ 2,00 em relação ao A. Com 8 entregas, a economia chega a R$ 16,00. Ambos custam R$ 44,00."
+        }
+      ]
+    },
+    {
+      "slug": "geometria-plana",
+      "titulo": "Geometria plana",
+      "sobre": "Calcule área e perímetro para planejar um piso, uma cerca ou um revestimento.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=aIKxhaxynJ8",
+          "titulo": "Área do retângulo (Gis com Giz)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-mat-geo-001",
+          "texto_base": "Uma varanda retangular mede 4 metros de comprimento e 3 metros de largura.",
+          "enunciado": "Quantos metros quadrados de piso cobrem a varanda, sem considerar perdas?",
+          "alternativas": [
+            "7 m²",
+            "12 m²",
+            "14 m²",
+            "24 m²"
+          ],
+          "resposta_correta": "12 m²",
+          "resolucao": "Área é a medida da superfície. Multiplique os 4 metros de comprimento pelos 3 metros de largura. A área é 12 metros quadrados."
+        },
+        {
+          "codigo": "aut-mat-geo-002",
+          "texto_base": "Uma horta retangular mede 8 metros por 4 metros. Um portão de 2 metros vai ocupar parte de um dos lados.",
+          "enunciado": "Quantos metros de cerca são necessários, deixando livre o espaço do portão?",
+          "alternativas": [
+            "12 m",
+            "22 m",
+            "24 m",
+            "32 m"
+          ],
+          "resposta_correta": "22 m",
+          "resolucao": "O contorno mede 8 + 4 + 8 + 4, ou 24 metros. Retire os 2 metros do portão. A cerca precisa de 22 metros."
+        },
+        {
+          "codigo": "aut-mat-geo-003",
+          "texto_base": "Uma parede de 3 metros por 3 metros será revestida. Cada caixa cobre 2 metros quadrados. As caixas são vendidas inteiras. Desconsidere perdas.",
+          "enunciado": "Quantas caixas precisam ser compradas?",
+          "alternativas": [
+            "3",
+            "4",
+            "5",
+            "10"
+          ],
+          "resposta_correta": "5",
+          "resolucao": "A parede tem 9 metros quadrados. Quatro caixas cobrem só 8. Cinco caixas cobrem 10 metros quadrados, o suficiente para a parede."
+        }
+      ]
+    },
+    {
+      "slug": "estatistica-basica",
+      "titulo": "Estatística básica",
+      "sobre": "Resuma e compare dados de pequenas pesquisas usando média, mediana e moda.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=GIzwKJL33_g",
+          "titulo": "Média, moda e mediana (Gis com Giz)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-mat-est-001",
+          "texto_base": "Um grupo de caminhada teve 18 participantes no primeiro encontro, 22 no segundo e 20 no terceiro.",
+          "enunciado": "Qual foi a média de participantes por encontro?",
+          "alternativas": [
+            "15",
+            "18",
+            "20",
+            "60"
+          ],
+          "resposta_correta": "20",
+          "resolucao": "Some os três valores: 18 + 22 + 20 = 60. Divida pelo número de encontros, que é 3. A média é 20 participantes."
+        },
+        {
+          "codigo": "aut-mat-est-002",
+          "texto_base": "Uma pessoa anotou o tempo de espera do ônibus em seis dias: 10, 15, 20, 15, 30 e 15 minutos.",
+          "enunciado": "Qual é a moda, ou seja, o tempo que mais se repetiu?",
+          "alternativas": [
+            "10 minutos",
+            "15 minutos",
+            "20 minutos",
+            "30 minutos"
+          ],
+          "resposta_correta": "15 minutos",
+          "resolucao": "O tempo de 15 minutos aparece três vezes. Cada um dos demais tempos aparece uma só vez."
+        },
+        {
+          "codigo": "aut-mat-est-003",
+          "texto_base": "Uma pesquisa registrou cinco tempos de espera: 40, 5, 12, 8 e 13 minutos.",
+          "enunciado": "Qual é a mediana dos cinco tempos?",
+          "alternativas": [
+            "8 minutos",
+            "10 minutos",
+            "12 minutos",
+            "15,6 minutos"
+          ],
+          "resposta_correta": "12 minutos",
+          "resolucao": "Em ordem crescente, os tempos são 5, 8, 12, 13 e 40 minutos. Com cinco valores, a mediana é o terceiro, ou 12 minutos."
+        }
+      ]
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import { urls } from "../core/urls.js";
 export function historyList(limit) {
   const list = state.results
     .map((r, i) => ({ ...r, i }))
+    .filter((r) => SUBJECTS[r.subject]) // matéria que saiu do catálogo não aparece
     .reverse()
     .slice(0, limit);
   return `<div class="history">${list
@@ -17,22 +18,23 @@ export function historyList(limit) {
       const p = pct(r.correct, r.total);
       const good = p >= 60;
       const label =
-        r.weakTopic !== null ? s.topics[r.weakTopic].title : "Todos os temas";
+        r.weakTopic !== null ? s.topics[r.weakTopic]?.title ?? "Tema" : "Todos os temas";
       return `<a class="history-item ${good ? "ok" : "bad"}" href="${urls.resultado(r.i)}">
         <span class="badge">${icon(good ? "check" : "x")}</span>
-        <span><strong>${s.name} — ${esc(label)}</strong><small>${formatDay(r.date)}</small></span>
+        <span><strong>${esc(s.name)} — ${esc(label)}</strong><small>${formatDay(r.date)}</small></span>
         <span class="pct">${p}%</span></a>`;
     })
     .join("")}</div>`;
 }
 
 export function subjectBars() {
-  return ["pt", "mat"]
+  return Object.keys(SUBJECTS)
     .map((id) => {
       const sc = subjectScore(id);
+      const name = esc(SUBJECTS[id].name);
       return `<div class="bar-row">
-        <header><span>${SUBJECTS[id].name}</span><span>${sc === null ? "—" : sc + "%"}</span></header>
-        <div class="bar" role="progressbar" aria-label="Aproveitamento em ${SUBJECTS[id].name}" aria-valuenow="${sc ?? 0}" aria-valuemin="0" aria-valuemax="100"><i style="width:${sc ?? 0}%"></i></div>
+        <header><span>${name}</span><span>${sc === null ? "—" : sc + "%"}</span></header>
+        <div class="bar" role="progressbar" aria-label="Aproveitamento em ${name}" aria-valuenow="${sc ?? 0}" aria-valuemin="0" aria-valuemax="100"><i style="width:${sc ?? 0}%"></i></div>
         <p class="small" style="margin-top:.375rem">${watchedCount(id)} de ${totalLessons(id)} vídeo-aulas concluídas</p>
       </div>`;
     })

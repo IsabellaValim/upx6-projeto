@@ -153,16 +153,25 @@ public static partial class ValidadorConteudo
             Cifrao(q.Enunciado, onde, "enunciado");
             Cifrao(q.Resolucao, onde, "resolucao");
 
-            // Fonte: toda questão do INEP cita a prova de origem.
+            // Fonte: tudo ou nada. Sem nenhum prova_* = questão AUTORAL (o site mostra
+            // "Questão autoral Estudaê"). Com qualquer um deles a questão é tratada como
+            // do INEP e precisa dos quatro, para nunca exibir uma origem pela metade.
+            var citaProva = q.ProvaAno is not null || q.ProvaEdicao is not null
+                            || q.ProvaNivel is not null || q.ProvaNumero is not null;
+            if (!citaProva) return;
+
+            const string Incompleta = "obrigatório quando a questão cita a prova (para questão autoral, omita os quatro campos prova_*)";
             var anoAtual = DateTime.UtcNow.Year;
             if (q.ProvaAno is null)
-                Erro(onde, "prova_ano", "obrigatório");
+                Erro(onde, "prova_ano", Incompleta);
             else if (q.ProvaAno < PrimeiroAnoEncceja || q.ProvaAno > anoAtual)
                 Erro(onde, "prova_ano", $"{q.ProvaAno} fora do intervalo {PrimeiroAnoEncceja}–{anoAtual}");
-            Texto(q.ProvaEdicao, onde, "prova_edicao", 40);
-            Texto(q.ProvaNivel, onde, "prova_nivel", 40);
+            if (q.ProvaEdicao is null) Erro(onde, "prova_edicao", Incompleta);
+            else Tamanho(q.ProvaEdicao, onde, "prova_edicao", 40);
+            if (q.ProvaNivel is null) Erro(onde, "prova_nivel", Incompleta);
+            else Tamanho(q.ProvaNivel, onde, "prova_nivel", 40);
             if (q.ProvaNumero is null)
-                Erro(onde, "prova_numero", "obrigatório");
+                Erro(onde, "prova_numero", Incompleta);
             else if (q.ProvaNumero <= 0)
                 Erro(onde, "prova_numero", "precisa ser maior que zero");
         }

@@ -1,5 +1,7 @@
 /* Progresso */
+import { SUBJECTS } from "../data.js";
 import { state } from "../core/state.js";
+import { esc } from "../core/utils.js";
 import { historyList, subjectBars } from "../components/progress.js";
 import { urls } from "../core/urls.js";
 
@@ -19,8 +21,9 @@ export default function progresso() {
             : `<div class="empty">
           <h2>Nenhum quiz feito ainda</h2>
           <p>Faça seu primeiro quiz para ver acertos, erros e o que revisar.</p>
-          <a class="btn btn--primary btn--sm" href="${urls.quiz("pt")}">Começar quiz de Português</a>
-          <a class="btn btn--outline btn--sm" href="${urls.quiz("mat")}">Começar quiz de Matemática</a>
+          ${Object.values(SUBJECTS)
+            .map((s, i) => `<a class="btn ${i ? "btn--outline" : "btn--primary"} btn--sm" href="${urls.quiz(s.id)}">Começar quiz de ${esc(s.name)}</a>`)
+            .join("")}
         </div>`
         }`,
   };

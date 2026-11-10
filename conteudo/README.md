@@ -64,9 +64,36 @@ O modelo de dados por trás disso está em `backend/DatabaseDocs/ModelodeDados.m
 | `enunciado`, `resolucao` | sim | |
 | `alternativas` | sim | de 2 a 5, sem repetição (maiúscula/minúscula não conta como diferença) |
 | `resposta_correta` | sim | **exatamente igual** ao texto de uma das alternativas |
-| `prova_ano` | sim | de 2002 até o ano atual |
-| `prova_edicao`, `prova_nivel` | sim | texto, até 40 caracteres |
-| `prova_numero` | sim | número da questão na prova original, maior que zero |
+| `prova_ano` | só em questão do INEP | de 2002 até o ano atual |
+| `prova_edicao`, `prova_nivel` | só em questão do INEP | texto, até 40 caracteres |
+| `prova_numero` | só em questão do INEP | número da questão na prova original, maior que zero |
+
+### Questão do INEP ou autoral
+
+Os quatro campos `prova_*` são **tudo ou nada**:
+
+- **Questão do INEP:** os quatro preenchidos e conferidos com o PDF e o gabarito oficial. O site
+  mostra "Fonte: Encceja 2020, Nacional, Ensino Médio, questão 35."
+- **Questão autoral** (escrita pela equipe para praticar): **nenhum** dos quatro, e o `codigo`
+  começa com `aut-` (`aut-mat-por-001`). O site mostra "Questão autoral Estudaê, feita para
+  praticar." Nunca invente ano ou número para uma questão autoral.
+- Só um, dois ou três campos preenchidos é erro: o importador recusa o arquivo.
+
+## Catálogo atual
+
+| Arquivo | Temas | Vídeos | Questões | Origem |
+|---|---|---|---|---|
+| `portugues.json` | 4 | 4 | 12 | autorais (`aut-pt-*`) |
+| `matematica.json` | 4 | 4 | 12 | autorais (`aut-mat-*`) |
+
+Os vídeos passaram no oEmbed (existem e permitem incorporação). Legenda, ritmo e adequação
+continuam sendo revisão humana (checklist abaixo). As questões de prova anteriores escolhidas
+para cada tema estão em [`curadoria-inep.md`](curadoria-inep.md), aguardando revisão antes de
+entrar nos JSONs.
+
+**Conteúdo de teste x demonstração:** `exemplos/` tem questões inventadas e IDs de vídeo
+falsos, usados só pelos testes automáticos, e não entra na imagem. O que vai para o site são os
+arquivos da raiz desta pasta.
 
 Detalhes importantes:
 
@@ -82,6 +109,21 @@ Detalhes importantes:
 - Espaços nas pontas e quebras de linha do Windows são limpos automaticamente.
 
 ## Como importar
+
+### Pelo Docker Compose (não precisa do .NET instalado)
+
+Os JSONs desta pasta são **copiados para dentro da imagem** no build. Então, depois de editar
+um arquivo, reconstrua a imagem antes de importar; senão o importador lê a versão antiga.
+
+```bash
+docker compose up -d --build --wait                                   # reconstrói e sobe
+docker compose run --rm api importar conteudo/portugues.json --validar   # só confere
+docker compose run --rm api importar conteudo/portugues.json --publicar  # grava publicada
+docker compose run --rm api importar conteudo/matematica.json --publicar
+curl http://localhost:8080/api/disciplinas                              # confere as contagens
+```
+
+### Pelo `dotnet run` (desenvolvimento do backend)
 
 Dentro de `backend/`, com o Postgres do compose de pé:
 

@@ -1,6 +1,7 @@
 /* Área (aba-portugues / aba-matematica) */
 import { SUBJECTS } from "../data.js";
 import { icon } from "../icons.js";
+import { esc } from "../core/utils.js";
 import { backBtn } from "../components/nav.js";
 import home from "./home.js";
 import { urls } from "../core/urls.js";
@@ -13,7 +14,7 @@ export default function area(id) {
     nav: "inicio",
     html: `
         <div class="topbar">${backBtn(urls.home)}</div>
-        <h1 class="title">Área ${s.name}</h1>
+        <h1 class="title">Área ${esc(s.name)}</h1>
         <p class="lede">Escolha como deseja estudar!</p>
         <section class="mode-card" aria-labelledby="m1">
           <h2 id="m1">${icon("checkSquare")}Questões e Quiz</h2>

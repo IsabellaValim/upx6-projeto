@@ -253,57 +253,17 @@
 /* ---------- Detalhe da vídeo-aula ---------- */
 .player {
   position: relative;
-  aspect-ratio: 16 / 10;
+  aspect-ratio: 16 / 9;
   background: #2a2230;
   border-radius: var(--r-l);
   display: grid;
   place-items: center;
   overflow: hidden;
 }
-.player-btn {
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  border: 0;
-  background: var(--lilac);
-  color: var(--plum-dark);
-  display: grid;
-  place-items: center;
-}
-.player-btn .ico {
-  width: 1.75rem;
-  height: 1.75rem;
-}
-.player-caption {
-  position: absolute;
-  left: 1rem;
-  right: 1rem;
-  bottom: 1.25rem;
-  text-align: center;
-  color: #fff;
-  background: rgba(0, 0, 0, 0.6);
-  border-radius: 6px;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.875rem;
-}
-html[data-subs="grande"] .player-caption {
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-.player-progress {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 4px;
-  background: rgba(255, 255, 255, 0.2);
-}
-.player-progress i {
-  display: block;
+.player iframe {
+  width: 100%;
   height: 100%;
-  width: 0;
-  background: var(--lilac);
-  transition: width 0.3s linear;
+  border: 0;
 }
 
 .lesson-meta {
