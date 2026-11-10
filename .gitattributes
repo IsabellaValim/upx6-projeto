@@ -1,0 +1,3 @@
+# Scripts de shell sempre com LF, inclusive quando clonados no Windows (core.autocrlf=true):
+# com CRLF, o "sh" do Linux/Mac/VM falha com "$'\r': command not found".
+*.sh text eol=lf
