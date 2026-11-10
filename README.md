@@ -1,120 +1,90 @@
 # Estudaê
 
-Aplicativo web para estudar para o **Encceja** (Exame Nacional para Certificação de
-Competências de Jovens e Adultos), pensado principalmente para pessoas idosas: telas simples,
-textos grandes, alto contraste, poucos cliques e leitura em voz alta.
+![CI](https://github.com/IsabellaValim/upx6-projeto/actions/workflows/ci.yml/badge.svg)
 
-Projeto acadêmico desenvolvido para a UPX.
+Plataforma web para estudar para o **Encceja** (Exame Nacional para Certificação
+de Competências de Jovens e Adultos), pensada principalmente para pessoas idosas:
+telas simples, textos grandes, alto contraste, poucos cliques e leitura em voz
+alta. Projeto acadêmico (UPX).
 
-## O que o MVP faz
+Feita para o celular — no computador, o app aparece dentro de uma moldura de
+celular no centro da tela.
 
-- **Linguagens e Matemática**, do Ensino Fundamental e do Ensino Médio, com o conteúdo vindo da API (contrato em
-  [`docs/api.md`](docs/api.md)).
-- **Fluxo simples:** Início (escolhe a matéria) → Área (temas) → em cada tema, **Praticar**
-  ou **Ver aula**. Os temas abrem um por vez, com uma frase de descrição.
-- **Progresso:** cada matéria mostra "X de Y atividades" (aulas vistas e questões acertadas),
-  e o botão **Continuar estudando** leva direto à próxima atividade pendente.
-- **Vídeo-aulas** por tema: YouTube incorporado, com legenda e velocidade calma opcionais.
-  Logo abaixo, "Terminei a aula, quero praticar" marca a aula como vista e abre a lição.
-- **Simulado:** questões de todos os temas da matéria, com tempo e correção só no fim, como
-  no dia da prova. Enquanto não houver questões oficiais suficientes, é um "simulado de
-  treino" com as autorais. O tamanho e o tempo ficam em `SIMULADO`, em
-  `src/screens/simulado.js`.
-- **Lição curta por tema:** até 5 questões sorteadas. Cada resposta é conferida na hora pela
-  API, com a resposta certa destacada e a explicação; no fim, um resumo da lição.
-- **Origem da questão:** questões de provas anteriores mostram a fonte (ano, edição, número);
-  as escritas pela equipe aparecem como "Questão autoral Estudaê".
-- **Acessibilidade:** três tamanhos de fonte (a "Grande" é o padrão), alto contraste,
-  redução de animações e leitura em voz alta.
-- Login, cadastro, progresso e perfil ainda são **só do navegador** (`localStorage`), sem
-  conta de verdade no servidor. Contas reais ficam para depois do MVP.
+## O que o app faz
 
-### Conteúdo disponível hoje
+- **Duas provas, quatro matérias**: Linguagens e Matemática do Ensino Fundamental
+  e do Ensino Médio. A prova é escolhida no primeiro acesso e trocada no Perfil.
+- **Fluxo curto**: Início → Área da matéria → tema → **Ver aula** (YouTube
+  incorporado, com legenda e velocidade calma) ou **Praticar** (lição de até 5
+  questões com correção na hora).
+- **Simulado**: questões de todos os temas da matéria, com relógio e correção só
+  na entrega — como no dia da prova.
+- **Progresso**: "Continuar estudando" leva direto à próxima atividade pendente;
+  a aba Progresso resume atividades concluídas, dias de ofensiva e acertos.
+- **Acessibilidade**: três tamanhos de fonte ("Grande" é o padrão), alto
+  contraste, redução de animações e leitura em voz alta.
+- **Origem da questão**: oficiais mostram a fonte (prova e ano); as da equipe,
+  "Questão autoral Estudaê". Questões com figura exibem o recorte da prova, com
+  descrição para leitor de tela.
 
-| Matéria | Temas | Vídeo-aulas | Questões |
-|---|---|---|---|
-| Linguagens · Ensino Médio | 10 | 4 | 72 (60 do Encceja 2022 + 12 autorais) |
-| Matemática · Ensino Médio | 9 | 4 | 72 (60 do Encceja 2022 + 12 autorais) |
-| Linguagens · Ensino Fundamental | 10 | 0 | 60 do Encceja 2022 |
-| Matemática · Ensino Fundamental | 8 | 0 | 60 do Encceja 2022 |
+Login, progresso e perfil ainda vivem **só no navegador** (`localStorage`) —
+contas reais ficam para depois do MVP.
 
-No primeiro acesso a pessoa escolhe a prova (Ensino Fundamental ou Médio), e dá para trocar
-no Perfil. Questões com figura, tabela ou gráfico mostram o recorte da prova, com descrição
-para leitor de tela.
+## Conteúdo
 
-**Todo o conteúdo (questões, vídeos e as 240 imagens) mora no banco, não no repositório.** Num
-banco novo o site mostra "Ainda não há matérias disponíveis": peça o `.dump` mais recente a quem
-mantém o conteúdo e use o `restaurar` (abaixo). Para carregar num banco oficial:
-[`docs/conteudo/ENTREGA-QUESTOES-2022.md`](docs/conteudo/ENTREGA-QUESTOES-2022.md). Questões de
-provas anteriores escolhidas para cada tema aguardam revisão em
-[`docs/conteudo/curadoria-inep.md`](docs/conteudo/curadoria-inep.md).
+**Todo o conteúdo mora no banco, não no repositório** — inclusive as 240 imagens
+das questões. Num banco novo, o site mostra "Ainda não há matérias disponíveis":
+restaure um `.dump` (ver [Banco de dados](#banco-de-dados)) ou importe um JSON
+novo ([`docs/conteudo/README.md`](docs/conteudo/README.md)).
 
-## Tecnologias
+| Matéria                         | Temas | Vídeo-aulas | Questões                              |
+| ------------------------------- | ----- | ----------- | ------------------------------------- |
+| Linguagens · Ensino Médio       | 10    | 4           | 72 (60 do Encceja 2022 + 12 autorais) |
+| Matemática · Ensino Médio       | 9     | 4           | 72 (60 do Encceja 2022 + 12 autorais) |
+| Linguagens · Ensino Fundamental | 10    | 0           | 60 do Encceja 2022                    |
+| Matemática · Ensino Fundamental | 8     | 0           | 60 do Encceja 2022                    |
 
-| Parte | Tecnologia |
-|---|---|
-| Frontend | HTML + CSS + JavaScript puro (ES Modules), sem build e sem dependências |
-| Backend | ASP.NET Core (.NET 10), EF Core 10 + Npgsql |
-| Banco | PostgreSQL 16, em container |
-| Empacotamento | Docker (Dockerfile multi-stage) + Docker Compose |
-| CI | GitHub Actions |
+## Stack
 
-A API também serve as telas (mesma origem, um container só).
+| Parte         | Tecnologia                                                              |
+| ------------- | ----------------------------------------------------------------------- |
+| Frontend      | HTML + CSS + JavaScript puro (ES Modules) — sem build, sem dependências |
+| Backend       | ASP.NET Core (.NET 10), EF Core 10 + Npgsql                             |
+| Banco         | PostgreSQL 16, em container                                             |
+| Empacotamento | Dockerfile multi-stage + Docker Compose (`db` → `migrate` → `api`)      |
+| CI            | GitHub Actions: build + testes + smoke test do compose                  |
 
-## Estrutura
+A própria API serve as telas no `wwwroot`: mesma origem, um container só, sem
+CORS em produção.
 
-```
-index.html, src/        frontend (SPA por hash; ver CLAUDE.md)
-backend/                solução .NET
-  src/Estudae.Domain/   entidades (sem dependências)
-  src/Estudae.Infra/    EF Core, migrations, importador de conteúdo
-  src/Estudae.Api/      endpoints, /health, subcomandos importar, importar-imagens e migrar
-  tests/Estudae.Tests/  testes de unidade e de integração
-  DatabaseDocs/         modelo de dados
-docs/api.md             contrato da API para o frontend
-docs/conteudo/          formato de importação, exemplos (de teste) e revisão das questões
-scripts/banco/          exportar e restaurar o banco (é assim que o conteúdo é compartilhado)
-docker-compose.yml      db + migrate + api
-.github/workflows/      CI
-```
+## Como rodar
 
-## Pré-requisitos
+### Tudo junto (recomendado)
 
-| Para quê | O que instalar |
-|---|---|
-| Rodar o site completo | Docker + Docker Compose v2 |
-| Desenvolver o backend | .NET 10 SDK (a versão exata está em `backend/global.json`) |
-| Só mexer nas telas | Python 3 **ou** Node, como servidor estático |
-
-Não é preciso instalar o PostgreSQL nem o `psql`: o banco roda em container
-(`docker compose exec db psql -U estudae -d estudae`).
-
-No Windows, o caminho mais simples é o **Docker Desktop** com a integração do WSL
-habilitada. Para conferir: `docker compose version` (precisa ser v2, com espaço).
-
-## Como executar
-
-### Tudo junto (site + API + banco)
+Pré-requisito: **Docker com Compose v2** — no Windows, o Docker Desktop com a
+integração do WSL habilitada (`docker compose version`, com espaço, confere).
 
 ```bash
 cp .env.example .env        # e defina POSTGRES_PASSWORD
 docker compose up -d --build --wait
 ```
 
-Abra `http://localhost:8080`. Na ordem, o Compose sobe o banco, aplica as migrations (serviço
-`migrate`, que roda uma vez e termina) e depois a API.
+Abra `http://localhost:8080`. O Compose sobe o banco, aplica as migrations
+(serviço `migrate`, que roda uma vez e termina) e depois a API.
 
 ```bash
 docker compose ps                 # estado dos serviços
 docker compose logs -f api        # logs da API
 docker compose down               # para tudo (mantém os dados)
-docker compose down -v            # ATENÇÃO: apaga os dados também, inclusive todo o conteúdo
+docker compose down -v            # ATENÇÃO: apaga os dados, inclusive todo o conteúdo
 ```
 
-Para ter o conteúdo, restaure um `.dump` (ver "Restaurar" abaixo). Para cadastrar conteúdo
-novo a partir de um JSON: [`docs/conteudo/README.md`](docs/conteudo/README.md).
+Se a 5432 (Postgres) ou a 8080 (site) já estiverem ocupadas, mude `DB_PORT` ou
+`API_PORT` no `.env`. As portas só são publicadas em `127.0.0.1`.
 
 ### Backend em desenvolvimento (`dotnet run`)
+
+Pré-requisito: **.NET 10 SDK** (a versão exata está em `backend/global.json`).
 
 ```bash
 docker compose up -d --wait db    # só o banco
@@ -125,101 +95,103 @@ dotnet user-secrets set ConnectionStrings:Estudae \
   --project src/Estudae.Api       # uma vez por máquina
 dotnet ef database update --project src/Estudae.Infra --startup-project src/Estudae.Api
 dotnet run --project src/Estudae.Api    # API em http://localhost:5151
-dotnet test                             # precisa do banco de pé
+dotnet test                           # precisa do banco de pé
 ```
 
 ### Só as telas
 
-O app usa módulos ES, então precisa ser servido por HTTP (abrir o `index.html` pelo
-`file://` não funciona):
+O app usa módulos ES, então precisa ser servido por HTTP (abrir o `index.html`
+pelo `file://` não funciona):
 
 ```bash
 python -m http.server 8000   # ou: npx serve .
 ```
 
-Em desenvolvimento, a API (`dotnet run`) aceita chamadas de qualquer `http://localhost:<porta>`.
-Veja [`docs/api.md`](docs/api.md).
+Para apontar a outra API, rode no console do navegador
+`localStorage.setItem("estudae:api", "http://localhost:5151")` e recarregue. A
+API do `dotnet run` já aceita chamadas de `http://localhost:<porta>` em
+desenvolvimento.
 
-### Porta ocupada
+## Banco de dados
 
-Se a 5432 (Postgres) ou a 8080 (site) já estiverem em uso na sua máquina, mude `DB_PORT` ou
-`API_PORT` no `.env`. As portas só são publicadas em `127.0.0.1`.
-
-## Banco de dados: onde fica, exportar e sincronizar
-
-**Onde os dados ficam.** No PostgreSQL do Docker, dentro do volume `upx6-projeto_pgdata`, no seu
-computador e **fora do app**. Reconstruir a imagem, reiniciar ou apagar os containers não apaga
-os dados; só `docker compose down -v` apaga. O app acessa o banco pela rede interna do Compose.
-O banco é a **única fonte** do conteúdo (não há cópia no repositório): exporte depois de cada
+Os dados ficam no volume `upx6-projeto_pgdata`, no seu computador: rebuilds,
+reinícios e `docker compose down` não apagam — só `down -v` apaga. O banco é a
+**única fonte** do conteúdo (não há cópia no repositório): exporte depois de cada
 mudança e guarde o `.dump` fora do computador.
 
-**Abrir o banco numa ferramenta** (DBeaver, pgAdmin, `psql`): host `localhost`, porta `DB_PORT`
-do `.env` (padrão 5432), banco e usuário `estudae`, senha `POSTGRES_PASSWORD` do `.env`. Ou, sem
+Para abrir num cliente (DBeaver, pgAdmin, `psql`): host `localhost`, porta
+`DB_PORT` do `.env`, banco e usuário `estudae`, senha `POSTGRES_PASSWORD`. Sem
 instalar nada: `docker compose exec db psql -U estudae -d estudae`.
 
-### Exportar (para mandar a alguém ou guardar)
+### Exportar
 
 ```bash
-# Windows (PowerShell), na raiz do repositório, com o compose de pé:
-powershell -ExecutionPolicy Bypass -File scripts/banco/exportar.ps1
-# Linux, Mac, VM ou Git Bash:
-sh scripts/banco/exportar.sh
+powershell -ExecutionPolicy Bypass -File scripts/banco/exportar.ps1   # Windows
+sh scripts/banco/exportar.sh                                          # Linux, Mac, Git Bash
 ```
 
-Gera `backups/estudae-AAAAMMDD-HHMM.dump` com **o banco inteiro**: estrutura, migrations aplicadas
-e dados. A pasta `backups/` não vai para o git (pode conter dados): mande o arquivo por outro
-meio (Drive, e-mail). O dump leva todo o conteúdo, **inclusive as imagens das questões** (tabela
-`imagem`), por isso tem uns 17 MB.
+Gera `backups/estudae-<data>.dump` com o banco inteiro — ~17 MB porque leva
+também as imagens. A pasta `backups/` fica fora do git: mande o arquivo por
+outro meio (Drive, e-mail).
 
-### Restaurar (receber o banco de alguém)
+### Restaurar
 
 ```bash
-# Windows:
-powershell -ExecutionPolicy Bypass -File scripts/banco/restaurar.ps1 -Arquivo backups/estudae-20261110-1500.dump
-# Linux, Mac, VM ou Git Bash:
-sh scripts/banco/restaurar.sh backups/estudae-20261110-1500.dump
+powershell -ExecutionPolicy Bypass -File scripts/banco/restaurar.ps1 -Arquivo backups/estudae-<data>.dump
+sh scripts/banco/restaurar.sh backups/estudae-<data>.dump
 ```
 
-**Substitui** o conteúdo do seu banco local pelo do arquivo. Antes, o script guarda o banco atual
-em `backups/antes-de-restaurar-<data>.dump`, para você poder voltar atrás. A restauração é
-tudo ou nada (se der erro, o banco fica como estava), e no fim aplica as migrations que
-faltarem, se o arquivo for de uma versão mais antiga do app. Funciona também num banco vazio,
-recém-criado: é assim que outra pessoa sincroniza com você.
+**Substitui** o conteúdo local pelo do arquivo. Antes, o script guarda o banco
+atual em `backups/antes-de-restaurar-<data>.dump`, para voltar atrás. É tudo ou
+nada (em erro, o banco fica como estava) e no fim aplica as migrations que
+faltarem. Funciona num banco vazio: é assim que outra pessoa sincroniza com
+você.
 
 ### Subir para um banco online
 
-O `.dump` restaura em qualquer PostgreSQL 16 (VM, Render, Neon, Supabase...), sem instalar o
-PostgreSQL na sua máquina, usando a própria imagem do Docker:
+O `.dump` restaura em qualquer PostgreSQL 16 (VM, Render, Neon, Supabase...),
+sem instalar o Postgres na máquina — usando a própria imagem do Docker:
 
 ```bash
 docker run --rm -v "$PWD/backups:/b" postgres:16 \
   pg_restore --no-owner --no-privileges --clean --if-exists \
-  -d "postgresql://USUARIO:SENHA@HOST:5432/BANCO" /b/estudae-20261110-1500.dump
+  -d "postgresql://USUARIO:SENHA@HOST:5432/BANCO" /b/estudae-<data>.dump
 ```
 
-Depois, aponte a API online para esse banco (`ConnectionStrings__Estudae`). Não deixe a senha do
-banco em arquivo versionado.
+Depois, aponte a API online para esse banco (`ConnectionStrings__Estudae`).
+Não deixe a senha em arquivo versionado.
 
-## Conteúdo
+## Estrutura
 
-O conteúdo vive no banco. Conteúdo novo é escrito num JSON (fora do repositório) e entra
-pelo importador, que confere tudo antes de gravar; as imagens ao lado do JSON vão para o
-banco junto. Formato, regras, fluxo de revisão e um prompt para extrair questões com IA:
-[`docs/conteudo/README.md`](docs/conteudo/README.md).
+```text
+index.html, src/        frontend (SPA por hash; detalhes no CLAUDE.md)
+backend/
+  src/Estudae.Domain/   entidades (sem dependências)
+  src/Estudae.Infra/    EF Core, migrations, importador de conteúdo
+  src/Estudae.Api/      endpoints, /health, subcomandos migrar/importar/importar-imagens
+  tests/Estudae.Tests/  testes de unidade e de integração
+  DatabaseDocs/         modelo de dados
+docs/api.md             contrato da API para o frontend
+docs/conteudo/          formato de importação, exemplos e revisão das questões
+scripts/banco/          exportar e restaurar o banco (é assim que o conteúdo circula)
+.github/workflows/      CI
+docker-compose.yml      db → migrate → api
+```
 
 ## Documentação
 
-- [`docs/api.md`](docs/api.md): contrato da API
-- [`backend/DatabaseDocs/ModelodeDados.md`](backend/DatabaseDocs/ModelodeDados.md): modelo de dados
-- [`docs/conteudo/README.md`](docs/conteudo/README.md): como cadastrar conteúdo
-- [`CLAUDE.md`](CLAUDE.md): guia técnico do projeto e decisões
+- [`docs/api.md`](docs/api.md) — contrato da API
+- [`backend/DatabaseDocs/ModelodeDados.md`](backend/DatabaseDocs/ModelodeDados.md) — modelo de dados
+- [`docs/conteudo/README.md`](docs/conteudo/README.md) — como cadastrar conteúdo
+- [`docs/conteudo/ENTREGA-QUESTOES-2022.md`](docs/conteudo/ENTREGA-QUESTOES-2022.md) — entrega das 240 questões para o banco oficial
+- [`CLAUDE.md`](CLAUDE.md) — guia técnico do projeto e decisões
 
 ## Próximos passos
 
 - [x] Ligar as telas à API de conteúdo
+- [x] Questões com figura e tabela (recortes da prova, guardados no banco)
 - [ ] Publicar o site num ambiente de demonstração (VM + Caddy ou Render)
 - [ ] Revisar e incluir as questões de `docs/conteudo/curadoria-inep.md`
-- [ ] Contas de aluno (login) e histórico de progresso
+- [ ] Contas de aluno (login real) e progresso no banco
 - [ ] Mais áreas do exame (Ciências, História, Geografia)
-- [x] Questões com figura e tabela (recortes da prova, guardados no banco)
 - [ ] Explicação de palavras ao passar o mouse
