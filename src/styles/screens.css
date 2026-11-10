@@ -27,8 +27,11 @@
   padding: 2rem 0;
 }
 .welcome-hero .display {
-  font-size: 2.75rem;
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: 2.25rem;
   letter-spacing: -0.01em;
+  color: var(--ink);
 }
 .welcome-hero p {
   color: var(--muted);
