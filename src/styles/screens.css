@@ -110,170 +110,153 @@
   margin: 0.25rem 0 0.75rem;
 }
 
-/* ---------- Área (Português / Matemática) ---------- */
-.mode-card {
-  background: var(--plum);
-  color: var(--on-plum);
-  border-radius: var(--r-l);
-  padding: 1.25rem;
-  margin-top: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.625rem;
-}
-.mode-card h2 {
-  color: var(--on-plum);
-  font-size: 1.375rem;
+/* "Continuar estudando": leva direto à próxima atividade pendente */
+.continue-btn {
   display: flex;
   align-items: center;
-  gap: 0.625rem;
+  gap: 0.875rem;
+  margin-top: 1.25rem;
+  padding: 1rem 1.125rem;
+  min-height: 4rem;
+  border-radius: var(--r-l);
+  background: var(--plum-dark);
+  color: var(--on-plum);
+  text-decoration: none;
 }
-.mode-card h2 .ico {
+.continue-btn > .ico {
   width: 1.75rem;
   height: 1.75rem;
 }
-.mode-card p {
-  font-size: 0.9375rem;
-  opacity: 0.92;
-  line-height: 1.55;
+.continue-btn strong {
+  display: block;
+  font-size: 1.0625rem;
 }
-.mode-card .btn {
-  align-self: center;
-  margin-top: 0.5rem;
+.continue-btn small {
+  display: block;
+  font-size: 0.875rem;
+  opacity: 0.92;
+}
+.continue-btn .chev {
+  margin-left: auto;
+}
+.continue-btn:active {
+  background: var(--plum);
 }
 
-/* Cartão de tema na área: duas ações lado a lado (empilham em tela estreita) */
-.topic-card__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.25rem;
+/* Progresso da matéria */
+.progress-card h2 {
+  font-family: var(--sans);
+  font-size: 0.875rem;
   font-weight: 600;
+  color: var(--muted);
 }
-.topic-card__meta .ico {
-  width: 1rem;
-  height: 1rem;
+.progress-card p {
+  margin: 0.25rem 0 0.625rem;
+  color: var(--ink);
 }
-.topic-card__actions {
-  display: flex;
-  flex-wrap: wrap;
+.progress-card p strong {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+}
+
+/* Temas: lista que abre, um tema por vez */
+.topic-list {
+  display: grid;
   gap: 0.625rem;
 }
-.topic-card__actions .btn {
-  /* sem espaço para os dois lado a lado, empilham inteiros (não quebram o texto) */
-  white-space: nowrap;
-  flex: 1 1 auto;
-  min-height: 3rem;
-  font-size: 0.9375rem;
-  margin-top: 0.25rem;
-}
-
-/* ---------- Lista de vídeo-aulas ---------- */
-.topic {
-  background: var(--lilac);
+.topic-item {
+  background: var(--surface);
+  border: 1.5px solid var(--lilac);
   border-radius: var(--r-l);
-  margin-top: 0.875rem;
   overflow: hidden;
 }
-.topic summary {
+.topic-item[open] {
+  border-color: var(--plum);
+}
+.topic-item summary {
   list-style: none;
   display: flex;
   align-items: center;
   gap: 0.875rem;
-  padding: 0.875rem 1rem;
+  min-height: 4rem;
+  padding: 0.75rem 1rem;
   cursor: pointer;
 }
-.topic summary::-webkit-details-marker {
+.topic-item summary::-webkit-details-marker {
   display: none;
 }
-.topic-num {
-  font-family: var(--serif);
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--plum-dark);
+.topic-item__num {
   width: 2.25rem;
   height: 2.25rem;
+  flex: none;
   display: grid;
   place-items: center;
-  position: relative;
-  flex: none;
-}
-.topic-num::before,
-.topic-num::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 2px solid var(--plum-dark);
-  border-radius: 4px;
-  clip-path: polygon(0 0, 35% 0, 35% 100%, 0 100%);
-}
-.topic-num::after {
-  clip-path: polygon(65% 0, 100% 0, 100% 100%, 65% 100%);
-}
-.topic-pill {
-  flex: 1;
-  padding: 0.375rem 0.875rem;
+  border-radius: 50%;
   background: var(--lilac-soft);
-  border: 1.5px solid var(--plum);
-  border-radius: 999px;
-  text-align: center;
-  font-size: 0.875rem;
-  font-weight: 600;
   color: var(--plum-dark);
-  line-height: 1.3;
-}
-.topic-pill small {
-  display: block;
-  font-weight: 400;
-  color: var(--muted);
-  font-size: 0.75rem;
-}
-.topic[open] .topic-pill {
-  background: transparent;
-  border-color: transparent;
   font-family: var(--serif);
-  font-size: 1rem;
+  font-weight: 700;
 }
-.topic .chev {
-  color: var(--plum-dark);
-  transition: transform 0.2s;
-  width: 1.125rem;
+.topic-item.is-done .topic-item__num {
+  background: var(--ok-soft);
+  color: var(--ok-text);
 }
-.topic[open] .chev {
-  transform: rotate(180deg);
-}
-.lessons {
-  padding: 0 1rem 1rem;
-  display: grid;
-  gap: 0.5rem;
-}
-.lesson {
-  display: flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.625rem 0.875rem;
-  border: 1.5px solid var(--plum);
-  border-radius: 999px;
-  background: var(--lilac-soft);
-  text-decoration: none;
-  color: var(--plum-dark);
-  font-size: 0.875rem;
-  font-weight: 500;
-}
-.lesson .ico {
+.topic-item__num .ico {
   width: 1.125rem;
   height: 1.125rem;
 }
-.lesson .dur {
+.topic-item__text strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.topic-item__text small {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.topic-item.is-done .topic-item__text small {
+  color: var(--ok-text);
+  font-weight: 600;
+}
+.topic-item__text small .ico {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+.topic-item .chev {
   margin-left: auto;
-  font-weight: 700;
-  font-size: 0.75rem;
+  color: var(--plum-dark);
+  transition: transform 0.2s;
 }
-.lesson.done {
-  background: var(--surface);
+.topic-item[open] .chev {
+  transform: rotate(180deg);
 }
-.lesson.done .ico {
-  color: var(--ok);
+.topic-item__body {
+  padding: 0 1rem 1rem;
+}
+.topic-item__body > p {
+  color: var(--muted);
+  font-size: 0.9375rem;
+  line-height: 1.55;
+}
+.topic-item__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+  margin-top: 0.875rem;
+}
+.topic-item__actions .btn {
+  /* lado a lado; sem espaço, empilham inteiros (não quebram o texto) */
+  flex: 1 1 auto;
+  width: auto;
+  white-space: nowrap;
+}
+.topic-item__actions .btn--primary {
+  flex-grow: 2;
 }
 
 /* ---------- Detalhe da vídeo-aula ---------- */

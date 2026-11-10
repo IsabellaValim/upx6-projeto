@@ -10,17 +10,18 @@ Projeto acadêmico desenvolvido para a UPX.
 
 - **Português e Matemática** do Ensino Médio, com o conteúdo vindo da API (contrato em
   [`docs/api.md`](docs/api.md)).
-- **Fluxo em até 3 toques:** Início (escolhe a matéria) → Área (lista de temas) → em cada
-  tema, **Assistir aula** ou **Praticar**. O início também mostra "Continuar" com o último
-  tema praticado.
+- **Fluxo simples:** Início (escolhe a matéria) → Área (temas) → em cada tema, **Praticar**
+  ou **Ver aula**. Os temas abrem um por vez, com uma frase de descrição.
+- **Progresso:** cada matéria mostra "X de Y atividades" (aulas vistas e questões acertadas),
+  e o botão **Continuar estudando** leva direto à próxima atividade pendente.
 - **Vídeo-aulas** por tema: YouTube incorporado, com legenda e velocidade calma opcionais, e
   um atalho "Praticar este tema" logo abaixo.
 - **Lição curta por tema:** até 5 questões sorteadas. Cada resposta é conferida na hora pela
   API, com a resposta certa destacada e a explicação; no fim, um resumo da lição.
 - **Origem da questão:** questões de provas anteriores mostram a fonte (ano, edição, número);
   as escritas pela equipe aparecem como "Questão autoral Estudaê".
-- **Acessibilidade:** três tamanhos de fonte, alto contraste, redução de animações e
-  leitura em voz alta.
+- **Acessibilidade:** três tamanhos de fonte (a "Grande" é o padrão), alto contraste,
+  redução de animações e leitura em voz alta.
 - Login, cadastro, progresso e perfil ainda são **só do navegador** (`localStorage`), sem
   conta de verdade no servidor. Contas reais ficam para depois do MVP.
 

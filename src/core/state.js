@@ -5,7 +5,7 @@ export const state = {
   user: store.get("user", null),
   a11y: Object.assign(
     {
-      font: "padrao",
+      font: "grande", // padrão para quem ainda não escolheu (público idoso)
       contrast: false,
       speak: false,
       motion: false,

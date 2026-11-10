@@ -211,6 +211,7 @@ function finishLesson() {
   const items = q.questions.map((item, k) => {
     const r = q.results[k];
     return {
+      id: item.id, // conta como atividade concluída quando acertada (stats.js)
       ask: item.ask,
       options: item.options,
       chosen: q.chosen[k],

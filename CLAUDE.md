@@ -91,9 +91,19 @@ http.server` ou `npx serve .`.
     como o `AulaAssistida` atual.
 - **Decisão do MVP para o frontend (revista em 10/11/2026):** manter as telas
   e o visual originais (login, progresso e perfil continuam só no
-  `localStorage`). Fluxo sem redundância, em até 3 toques: Início (só os
-  cartões de matéria + "Continuar") → Área (lista de temas; cada cartão tem
-  "Assistir aula" e "Praticar") → vídeo ou lição. Saíram a tela "Escolha como
+  `localStorage`). Fluxo sem redundância: Início ("Continuar estudando" + os
+  cartões de matéria com "X de Y atividades") → Área (título, "Continuar
+  estudando", "Seu progresso" e os temas como lista que abre — `<details
+  name="temas">`, um aberto por vez, com uma frase de descrição, "Praticar"
+  em destaque e "Ver aula") → vídeo ou lição. Desenho rascunhado pela pessoa
+  em 10/11/2026; a tela própria de cada tema fica para quando houver assuntos
+  com mais material.
+- **Atividades** (`src/core/stats.js`: `topicProgress`, `subjectProgress`,
+  `nextActivity`): cada vídeo-aula conta quando marcada como concluída, e cada
+  questão quando acertada ao menos uma vez (as lições guardam o `id` da
+  questão). "Continuar estudando" = aula não vista do primeiro tema
+  incompleto, senão a prática dele.
+- **Fonte padrão:** "Grande" para quem ainda não escolheu (`state.js`). Saíram a tela "Escolha como
   deseja estudar", a lista separada de vídeo-aulas e a folha "qual matéria?";
   `#/videos/{m}` e `#/quiz/{m}` antigos redirecionam para a área.
   `estudae:results` com `v: 3` = lição por tema (tem `topic`).
