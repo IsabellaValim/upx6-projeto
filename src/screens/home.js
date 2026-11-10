@@ -1,4 +1,4 @@
-/* Início: a matéria é escolhida aqui, uma vez só */
+/* Início: logo, continuar, estudar por matéria e testar com o simulado */
 import { SUBJECTS } from "../data.js";
 import { icon } from "../icons.js";
 import { state } from "../core/state.js";
@@ -6,7 +6,7 @@ import { esc } from "../core/utils.js";
 import { subjectProgress, nextActivity } from "../core/stats.js";
 import { urls } from "../core/urls.js";
 
-// Matéria estudada por último: a da lição mais recente ou da última aula marcada.
+// Matéria estudada por último: a da lição/simulado mais recente ou da última aula marcada.
 function ultimaMateria() {
   const quando = {};
   for (const r of state.results) quando[r.subject] = Math.max(quando[r.subject] ?? 0, r.date);
@@ -18,27 +18,32 @@ function ultimaMateria() {
 }
 
 export default function home() {
-  const first = state.user.name.split(" ")[0];
-  const tile = (id) => {
-    const s = SUBJECTS[id];
-    const p = subjectProgress(id);
-    return `<a class="subject-tile" href="${urls.area(id)}">
-        ${icon(s.icon)}
-        <strong>${esc(s.name)}</strong>
-        <span>${p.done} de ${p.total} atividades</span>
-        <div class="mini-bar" aria-hidden="true"><i style="width:${p.total ? (p.done / p.total) * 100 : 0}%"></i></div>
-      </a>`;
-  };
-
+  const first = state.user.guest ? "" : state.user.name.split(" ")[0];
+  const materias = Object.keys(SUBJECTS);
   const ultima = ultimaMateria();
   const next = ultima && nextActivity(ultima);
+
+  const linha = (id) => {
+    const s = SUBJECTS[id];
+    const p = subjectProgress(id);
+    return `<a class="subject-row" href="${urls.area(id)}">
+        ${icon(s.icon)}
+        <span>
+          <strong>${esc(s.name)}</strong>
+          <small>${p.done} de ${p.total} atividades</small>
+          <span class="mini-bar" aria-hidden="true"><i style="width:${p.total ? (p.done / p.total) * 100 : 0}%"></i></span>
+        </span>
+        ${icon("chevronRight", "chev")}
+      </a>`;
+  };
 
   return {
     cls: "screen--nav",
     nav: "inicio",
     html: `
-        <p class="kicker">${state.user.guest ? "Bem-vindo ao Estudaê!" : `Bem-vindo de volta, ${esc(first)}!`}</p>
-        <h1 class="title" style="margin-top:.25rem">Pronto para estudar para o Encceja?</h1>
+        <img class="brand-logo" src="src/assets/branding/logo-primary.svg" alt="Estudaê">
+        <h1 class="title home-greeting">${first ? `Olá, ${esc(first)}! Vamos estudar?` : "Olá! Vamos estudar?"}</h1>
+        <p class="lede">Prepare-se para o Encceja no seu ritmo.</p>
         ${
           next
             ? `<a class="continue-btn" href="${next.href}">
@@ -49,11 +54,21 @@ export default function home() {
         </a>`
             : ""
         }
-        <h2 class="section-label">Escolha a matéria</h2>
+        <h2 class="section-label">Estudar por matéria</h2>
         ${
-          Object.keys(SUBJECTS).length
-            ? `<div class="subject-grid" style="margin-top:0">${Object.keys(SUBJECTS).map(tile).join("")}</div>`
+          materias.length
+            ? `<div class="subject-list">${materias.map(linha).join("")}</div>`
             : `<div class="empty"><p>Ainda não há matérias disponíveis. Volte mais tarde.</p></div>`
+        }
+        ${
+          materias.length
+            ? `<h2 class="section-label">Testar o que aprendeu</h2>
+        <a class="subject-row subject-row--sim" href="${urls.simulado()}">
+          ${icon("clock")}
+          <span><strong>Simulado</strong><small>Como no dia da prova, com tempo e resultado no fim.</small></span>
+          ${icon("chevronRight", "chev")}
+        </a>`
+            : ""
         }`,
   };
 }

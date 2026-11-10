@@ -1,5 +1,4 @@
 /* Carregando */
-import { icon } from "../icons.js";
 import { state } from "../core/state.js";
 import { go } from "../core/utils.js";
 import { urls } from "../core/urls.js";
@@ -8,7 +7,7 @@ export default function loading() {
   return {
     cls: "screen--center",
     html: `
-      <div class="logo-mark">${icon("book")}</div>
+      <img class="brand-symbol" src="src/assets/branding/icon.svg" alt="">
       <h1 class="display">Carregando…</h1>
       <div class="spinner" role="progressbar" aria-label="Carregando o Estudaê"></div>
       <p class="kicker">Aguarde!</p>`,

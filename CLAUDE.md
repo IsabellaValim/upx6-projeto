@@ -109,7 +109,27 @@ http.server` ou `npx serve .`.
   questão quando acertada ao menos uma vez (as lições guardam o `id` da
   questão). "Continuar estudando" = aula não vista do primeiro tema
   incompleto, senão a prática dele.
-- **Fonte padrão:** "Grande" para quem ainda não escolheu (`state.js`). Saíram a tela "Escolha como
+- **Fonte padrão:** "Grande" para quem ainda não escolheu (`state.js`).
+- **Início** (10/11/2026): logo, saudação, "Continuar estudando", "Estudar por
+  matéria" (cartões largos com progresso) e "Testar o que aprendeu"
+  (Simulado, com contorno, separado de estudar).
+- **Simulado** (`src/screens/simulado.js`, `#/simulado` e
+  `#/simulado/{matéria}`): questões de todos os temas da matéria, sorteadas,
+  sem correção até a entrega. Usa só as oficiais (`prova` preenchida) quando
+  houver o suficiente; senão, as autorais, com o aviso "Simulado de treino".
+  Relógio sempre visível; aviso nos minutos finais; ao zerar mostra "Tempo
+  esgotado · +mm:ss" e **deixa terminar**. Anterior/Próxima, painel "Ver todas
+  as questões" e confirmação na própria tela para sair ou entregar com questões
+  em branco. Na entrega, cada questão vai no `POST` (as em branco também, só
+  para trazer o gabarito; contam como erro). Resultado `kind: "simulado"`, com
+  tempo usado e o tema com mais erros. **Tamanho e tempo:** objeto `SIMULADO`
+  no topo do arquivo (hoje 30 questões no máximo e 3 min por questão), para
+  ajustar ao edital do Encceja.
+- **Marca:** SVGs em `src/assets/branding/` (`logo-primary`, `logo-white`,
+  `symbol-primary`, `symbol-white`, `symbol-purple`, `icon`). Não há `public/`:
+  o Dockerfile copia `src/` inteiro. Uso: `logo-primary` no início,
+  boas-vindas e login; `icon` no favicon e na tela de carregamento. O roxo da
+  marca é o `--plum-dark` (`#4D3159`). Saíram a tela "Escolha como
   deseja estudar", a lista separada de vídeo-aulas e a folha "qual matéria?";
   `#/videos/{m}` e `#/quiz/{m}` antigos redirecionam para a área.
   `estudae:results` com `v: 3` = lição por tema (tem `topic`).

@@ -18,7 +18,9 @@ export function historyList(limit) {
       const p = pct(r.correct, r.total);
       const good = p >= 60;
       // Lição por tema (v: 3) mostra o tema; quiz antigo, da matéria inteira, não tem.
-      const label = r.topic !== undefined ? s.topics[r.topic]?.title ?? "Tema" : "Todos os temas";
+      const label = r.kind === "simulado"
+        ? "Simulado"
+        : r.topic !== undefined ? s.topics[r.topic]?.title ?? "Tema" : "Todos os temas";
       return `<a class="history-item ${good ? "ok" : "bad"}" href="${urls.resultado(r.i)}">
         <span class="badge">${icon(good ? "check" : "x")}</span>
         <span><strong>${esc(s.name)} — ${esc(label)}</strong><small>${formatDay(r.date)}</small></span>

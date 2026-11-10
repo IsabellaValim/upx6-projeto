@@ -20,6 +20,7 @@ export const state = {
   results: store.get("results", []).filter((r) => r.v >= 2),
   watched: store.get("watched", {}),
   quiz: null,
+  simulado: null, // prova em andamento (não persistida)
 };
 
 export const save = {

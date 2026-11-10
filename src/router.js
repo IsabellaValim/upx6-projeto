@@ -58,6 +58,9 @@ function render() {
     name !== "acessibilidade"
   )
     state.quiz = null;
+  // O simulado em andamento sobrevive à ida e volta da Acessibilidade.
+  if (name !== "simulado" && name !== "acessibilidade" && state.simulado && !state.simulado.finished)
+    state.simulado = null;
   mount(screens[name], parts.slice(1), { focus: name !== "loading" });
 }
 

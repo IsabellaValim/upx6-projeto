@@ -9,6 +9,7 @@ import home from "./home.js";
 import area from "./area.js";
 import video from "./video.js";
 import quiz from "./quiz.js";
+import simulado from "./simulado.js";
 import resultado from "./resultado.js";
 import progresso from "./progresso.js";
 import perfil from "./perfil.js";
@@ -23,6 +24,7 @@ export const screens = {
   area,
   video,
   quiz,
+  simulado,
   resultado,
   progresso,
   perfil,

@@ -16,6 +16,10 @@ Projeto acadêmico desenvolvido para a UPX.
   e o botão **Continuar estudando** leva direto à próxima atividade pendente.
 - **Vídeo-aulas** por tema: YouTube incorporado, com legenda e velocidade calma opcionais.
   Logo abaixo, "Terminei a aula, quero praticar" marca a aula como vista e abre a lição.
+- **Simulado:** questões de todos os temas da matéria, com tempo e correção só no fim, como
+  no dia da prova. Enquanto não houver questões oficiais suficientes, é um "simulado de
+  treino" com as autorais. O tamanho e o tempo ficam em `SIMULADO`, em
+  `src/screens/simulado.js`.
 - **Lição curta por tema:** até 5 questões sorteadas. Cada resposta é conferida na hora pela
   API, com a resposta certa destacada e a explicação; no fim, um resumo da lição.
 - **Origem da questão:** questões de provas anteriores mostram a fonte (ano, edição, número);

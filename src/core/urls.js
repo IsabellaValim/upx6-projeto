@@ -15,5 +15,7 @@ export const urls = {
   video: (id, ti, li) => `#/video/${id}/${ti}/${li}`,
   // Lição curta de um tema (até 5 questões).
   quiz: (id, ti) => `#/quiz/${id}/${ti}`,
+  // Simulado: sem matéria = tela de instruções; com matéria = a prova.
+  simulado: (id) => (id ? `#/simulado/${id}` : "#/simulado"),
   resultado: (i) => `#/resultado/${i}`,
 };

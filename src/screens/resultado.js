@@ -12,15 +12,20 @@ export default function resultado(idx) {
   if (!s) return progresso();
   const p = pct(r.correct, r.total);
   const C = 2 * Math.PI * 42;
-  // Lição por tema (v: 3). Resultados antigos, da matéria inteira, não têm tema.
+  const sim = r.kind === "simulado";
+  // Lição por tema (v: 3) tem tema. Simulado: o tema com mais erros vira a recomendação.
   const t = r.topic !== undefined ? s.topics[r.topic] : null;
-  const watch = t?.videos ? urls.video(r.subject, r.topic, 0) : null;
+  const fraco = sim && r.weakTopic !== null ? s.topics[r.weakTopic] : null;
+  const recomendado = t ?? fraco;
+  const recTi = t ? r.topic : r.weakTopic;
+  const watch = recomendado?.videos ? urls.video(r.subject, recTi, 0) : null;
+  const minutos = (ms) => Math.max(1, Math.round(ms / 60000));
   return {
     cls: "screen--nav",
     nav: "progresso",
     html: `
         <div class="topbar topbar--split result-head">
-          <div><h1>Resultado da lição</h1><p class="kicker">${esc(s.name)}${t ? " · " + esc(t.title) : ""}</p></div>
+          <div><h1>${sim ? "Resultado do simulado" : "Resultado da lição"}</h1><p class="kicker">${esc(s.name)}${t ? " · " + esc(t.title) : ""}</p></div>
           <a class="icon-btn" href="${urls.home}" aria-label="Fechar resultado">${icon("xBox")}</a>
         </div>
         <div class="donut" role="img" aria-label="${p}% de aproveitamento">
@@ -33,15 +38,23 @@ export default function resultado(idx) {
           <div class="stat stat--bad"><strong>${r.total - r.correct}</strong><span>Erros</span></div>
           <div class="stat"><strong>${r.total}</strong><span>Questões</span></div>
         </div>
+        ${
+          sim
+            ? `<p class="small center" style="margin-top:.75rem">${icon("clock")} Tempo usado: ${minutos(r.usedMs)} de ${minutos(r.limitMs)} minutos${r.treino ? " · simulado de treino com questões autorais" : ""}</p>`
+            : ""
+        }
         <div class="tip">
           ${
-            r.correct < r.total
-              ? `<p>Que tal rever a aula deste tema antes de praticar de novo?</p>
+            r.correct === r.total
+              ? `<p>Você acertou todas as questões. Excelente trabalho!</p>
+               <p>${sim ? "Continue praticando para manter o ritmo até a prova." : "Escolha outro tema para continuar praticando."}</p>`
+              : sim && fraco
+                ? `<p>O tema com mais erros foi “${esc(fraco.title)}”.</p>
+               <p>Rever a aula dele pode ajudar no próximo simulado.</p>`
+                : `<p>Que tal rever a aula deste tema antes de praticar de novo?</p>
                <p>Na próxima lição as questões vêm em outra ordem.</p>`
-              : `<p>Você acertou todas as questões. Excelente trabalho!</p>
-               <p>Escolha outro tema para continuar praticando.</p>`
           }
-          ${watch ? `<a class="btn btn--primary btn--sm" href="${watch}">${icon("video")}Assistir a aula deste tema</a>` : ""}
+          ${watch && r.correct < r.total ? `<a class="btn btn--primary btn--sm" href="${watch}">${icon("video")}Assistir a aula ${sim ? "de " + esc(recomendado.title) : "deste tema"}</a>` : ""}
         </div>
         <details class="review">
           <summary>Ver correção das questões</summary>
@@ -56,8 +69,13 @@ export default function resultado(idx) {
             })
             .join("")}
         </details>
-        ${t ? `<a class="btn btn--outline" style="margin-top:1rem" href="${urls.quiz(r.subject, r.topic)}">Praticar de novo</a>` : ""}
-        <a class="btn btn--outline" style="margin-top:.75rem" href="${urls.area(r.subject)}">Escolher outro tema</a>
+        ${
+          sim
+            ? `<a class="btn btn--outline" style="margin-top:1rem" href="${urls.simulado(r.subject)}">Fazer outro simulado</a>
+        <a class="btn btn--outline" style="margin-top:.75rem" href="${urls.area(r.subject)}">Estudar os temas</a>`
+            : `${t ? `<a class="btn btn--outline" style="margin-top:1rem" href="${urls.quiz(r.subject, r.topic)}">Praticar de novo</a>` : ""}
+        <a class="btn btn--outline" style="margin-top:.75rem" href="${urls.area(r.subject)}">Escolher outro tema</a>`
+        }
         <p class="small center" style="margin-top:1rem">Resumo do desempenho salvo no seu perfil.</p>`,
     after() {
       requestAnimationFrame(() => {

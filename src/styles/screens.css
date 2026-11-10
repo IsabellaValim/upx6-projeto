@@ -3,20 +3,6 @@
    ========================================================== */
 
 /* ---------- Carregando / boas-vindas ---------- */
-.logo-mark {
-  width: 4.5rem;
-  height: 4.5rem;
-  border-radius: 18px;
-  background: var(--plum-dark);
-  display: grid;
-  place-items: center;
-  color: var(--on-plum);
-  margin: 0 auto 1.25rem;
-}
-.logo-mark .ico {
-  width: 2.25rem;
-  height: 2.25rem;
-}
 .spinner {
   width: 4.5rem;
   height: 4.5rem;
@@ -50,66 +36,7 @@
   margin: 0.75rem auto 0;
 }
 
-/* ---------- Início ---------- */
-.subject-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-}
-.subject-tile {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  padding: 1rem;
-  min-height: 8.5rem;
-  background: var(--lilac);
-  border-radius: var(--r-l);
-  text-decoration: none;
-  color: var(--plum-dark);
-  position: relative;
-  overflow: hidden;
-}
-.subject-tile .ico {
-  width: 1.75rem;
-  height: 1.75rem;
-  margin-bottom: auto;
-}
-.subject-tile strong {
-  font-family: var(--serif);
-  font-size: 1.125rem;
-  font-weight: 600;
-}
-.subject-tile span {
-  font-size: 0.8125rem;
-  color: var(--plum-dark); /* --muted sobre o lilás dava 3.7:1, abaixo do AA */
-}
-.subject-tile .mini-bar {
-  height: 4px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.6);
-  margin-top: 0.5rem;
-  overflow: hidden;
-}
-.subject-tile .mini-bar i {
-  display: block;
-  height: 100%;
-  background: var(--plum);
-}
-
-.continue-card {
-  margin-top: 1.5rem;
-  padding: 1rem;
-  border-radius: var(--r-l);
-  background: var(--surface);
-  border: 1.5px dashed var(--lilac-line);
-}
-.continue-card p {
-  font-size: 0.875rem;
-  color: var(--muted);
-  margin: 0.25rem 0 0.75rem;
-}
-
+/* ---------- Início e área ---------- */
 /* "Continuar estudando": leva direto à próxima atividade pendente */
 .continue-btn {
   display: flex;
@@ -636,10 +563,10 @@
   font-weight: 700;
 }
 .review-item.ok .mark {
-  color: var(--ok);
+  color: var(--ok-text);
 }
 .review-item.bad .mark {
-  color: var(--bad);
+  color: var(--bad-text);
 }
 .review-item p + p {
   margin-top: 0.375rem;
@@ -759,4 +686,187 @@
 }
 .history-item.bad .pct {
   color: var(--bad);
+}
+
+/* ---------- Marca (logo) ---------- */
+.brand-logo {
+  display: block;
+  height: 2.25rem;
+  width: auto;
+}
+.brand-logo img {
+  display: block;
+  height: 100%;
+  width: auto;
+}
+.brand-logo--hero {
+  height: 3.5rem;
+  margin: 0 auto 1.25rem;
+}
+.brand-symbol {
+  width: 4.5rem;
+  height: auto;
+  margin: 0 auto 1.25rem;
+}
+
+/* ---------- Início ---------- */
+.home-greeting {
+  margin-top: 1.5rem;
+}
+.subject-list {
+  display: grid;
+  gap: 0.75rem;
+}
+.subject-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 4.5rem;
+  padding: 1rem 1.125rem;
+  border-radius: var(--r-l);
+  background: var(--lilac);
+  color: var(--plum-dark);
+  text-decoration: none;
+}
+.subject-row > .ico {
+  width: 2rem;
+  height: 2rem;
+  flex: none;
+}
+.subject-row > span {
+  flex: 1;
+  min-width: 0;
+}
+.subject-row strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: 1.1875rem;
+  font-weight: 600;
+}
+.subject-row small {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--plum-dark);
+}
+.subject-row .mini-bar {
+  display: block;
+  height: 6px;
+  margin-top: 0.5rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.7);
+  overflow: hidden;
+}
+.subject-row .mini-bar i {
+  display: block;
+  height: 100%;
+  background: var(--plum-dark);
+}
+.subject-row .chev {
+  flex: none;
+  width: 1.25rem;
+}
+.subject-row:active {
+  background: var(--lilac-line);
+}
+/* Simulado: outro tipo de atividade, outro visual (contorno, sem progresso) */
+.subject-row--sim {
+  background: var(--surface);
+  border: 1.5px solid var(--plum);
+}
+.subject-row--sim:active {
+  background: var(--lilac-soft);
+}
+
+/* ---------- Simulado ---------- */
+.sim-rules {
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0 0;
+  display: grid;
+  gap: 0.75rem;
+}
+.sim-rules li {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.875rem 1rem;
+  border-radius: var(--r-m);
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+.sim-rules .ico {
+  color: var(--plum-dark);
+  margin-top: 0.125rem;
+}
+.sim-timer {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  border-radius: 999px;
+  background: var(--lilac-soft);
+  color: var(--plum-dark);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+.sim-timer.is-warning {
+  background: var(--bad-soft);
+  color: var(--bad-text);
+}
+.sim-timer.is-over {
+  background: var(--bad-text);
+  color: var(--on-plum);
+}
+.sim-badge {
+  margin-top: 0.75rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--r-m);
+  background: var(--lilac-soft);
+  color: var(--plum-dark);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-align: center;
+}
+.sim-panel {
+  margin-top: 1.25rem;
+  padding: 0.75rem 1rem 1rem;
+  border-radius: var(--r-l);
+  background: var(--surface);
+  border: 1.5px solid var(--lilac);
+}
+.sim-panel summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.75rem;
+  font-weight: 600;
+  color: var(--plum-dark);
+  cursor: pointer;
+}
+.sim-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(3rem, 1fr));
+  gap: 0.5rem;
+  margin: 0.75rem 0 0.5rem;
+}
+.sim-cell {
+  min-height: 3rem;
+  border-radius: var(--r-m);
+  border: 2px solid var(--plum);
+  background: var(--surface);
+  color: var(--plum-dark);
+  font-weight: 700;
+}
+.sim-cell.is-answered {
+  background: var(--plum-dark);
+  border-color: var(--plum-dark);
+  color: var(--on-plum);
+}
+.sim-cell.is-current {
+  outline: 3px solid var(--plum);
+  outline-offset: 2px;
 }

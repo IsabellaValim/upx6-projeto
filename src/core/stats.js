@@ -38,11 +38,13 @@ export function totalLessons(id) {
    Atividade = cada vídeo-aula do tema (conta quando marcada como concluída)
    + cada questão do tema (conta quando foi acertada ao menos uma vez). */
 
-// Ids das questões já acertadas num tema (lições v: 3 guardam o id).
+// Ids das questões já acertadas num tema, em lições ou simulados (os dois
+// guardam o id e o tema de cada questão).
 function acertadas(id, ti) {
   const ids = new Set();
   for (const r of state.results)
-    if (r.subject === id && r.topic === ti) for (const x of r.items) if (x.ok && x.id !== undefined) ids.add(x.id);
+    if (r.subject === id)
+      for (const x of r.items) if (x.topic === ti && x.ok && x.id !== undefined) ids.add(x.id);
   return ids;
 }
 
