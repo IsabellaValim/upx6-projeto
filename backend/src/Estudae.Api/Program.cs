@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Identity;
 
 // Subcomandos: rodam e saem, sem subir o servidor web (ver Cli/).
 //   dotnet Estudae.Api.dll importar <arquivo.json> [--publicar] [--validar]
+//   dotnet Estudae.Api.dll importar-imagens <pasta>
 //   dotnet Estudae.Api.dll migrar
 if (args is [ImportarComando.Nome, .. var argsImportar])
     return await ImportarComando.ExecutarAsync(argsImportar);
+if (args is [ImportarImagensComando.Nome, .. var argsImagens])
+    return await ImportarImagensComando.ExecutarAsync(argsImagens);
 if (args is [MigrarComando.Nome])
     return await MigrarComando.ExecutarAsync();
 

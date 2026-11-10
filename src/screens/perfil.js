@@ -1,4 +1,5 @@
 /* Perfil */
+import { NIVEIS } from "../data.js";
 import { icon } from "../icons.js";
 import { state } from "../core/state.js";
 import { store } from "../core/store.js";
@@ -28,6 +29,11 @@ export default function perfil() {
             <span class="streak">${icon("flame")}${streak} ${streak === 1 ? "dia" : "dias"} de ofensiva, nível ${level}</span>
           </div>
         </div>
+        <a class="subject-row subject-row--sim" style="margin-top:1rem" href="${urls.nivel}">
+          ${icon("book")}
+          <span><strong>Sua prova: ${NIVEIS[state.nivel]?.nome ?? "não escolhida"}</strong><small>Toque para trocar entre Ensino Fundamental e Médio.</small></span>
+          ${icon("chevronRight", "chev")}
+        </a>
         <div class="card">${subjectBars()}</div>
         <h2 class="section-label">Histórico recente</h2>
         ${state.results.length ? historyList(4) : `<div class="empty"><p>Suas lições vão aparecer aqui.</p><a class="btn btn--light" href="${urls.home}">Praticar um tema</a></div>`}

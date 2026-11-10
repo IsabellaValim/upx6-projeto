@@ -29,9 +29,22 @@ Docker, deploy e CI/CD. Ao trabalhar aqui:
   `feat/front-api` (10/11/2026). Um patch alternativo, que redesenhava o front,
   foi descartado por mudar demais a estrutura (backup local em
   `backup/frontend-mvp-codex`).
-- **Conteúdo:** `conteudo/portugues.json` e `matematica.json`, 4 temas, 4
-  vídeos e 12 questões **autorais** cada. Questões do INEP em revisão em
-  `conteudo/curadoria-inep.md`. Ainda não há ambiente de demonstração publicado.
+- **Conteúdo (10/11/2026, branch `feat/questoes-2022`):** 4 disciplinas —
+  `matematica` e `linguagens` (Ensino Médio, 72 questões cada: 60 do Encceja
+  2022 + 12 autorais) e `matematica-fundamental` e `linguagens-fundamental`
+  (60 do Encceja 2022 cada). As 240 oficiais foram transcritas dos recortes
+  da prova por subagentes, uma por caderno, com gabarito oficial, resolução,
+  tema e imagem (89). "Português" virou **"Linguagens"**. Entrega para o banco
+  oficial e checklist de revisão: `docs/conteudo/ENTREGA-QUESTOES-2022.md` e
+  `docs/conteudo/revisao-2022.csv`. Ainda não há ambiente de demonstração publicado.
+- **O conteúdo mora só no banco** (10/11/2026, branch `feat/conteudo-no-banco`,
+  decisão da pessoa, risco aceito): os JSONs e as 240 imagens saíram do repo.
+  Imagens na tabela `imagem` (bytea). Compartilhar = `exportar`/`restaurar`
+  (`scripts/banco/`); o dump leva tudo (~17 MB). A única cópia viva é o volume
+  Docker local: `down -v` apaga o conteúdo. Backups locais (fora do git) em
+  `backups/`, inclusive `conteudo-<data>.zip` com os JSONs e imagens antigos.
+  O PR #8 tinha sido mergeado na branch do #7 depois de ela entrar na `main`;
+  essa branch traz os dois.
 - **Backend:** fases 1 a 5 concluídas, mais o primeiro ticket de conteúdo:
   tabelas de conteúdo, importador, endpoints de leitura e correção,
   Dockerfile, compose completo e CI. Fora do MVP: login e tentativas.
@@ -183,10 +196,11 @@ O `docker-compose.yml` da raiz tem três serviços: `db` → `migrate` → `api`
 ```bash
 docker compose up -d --build --wait      # tudo: site + API em http://localhost:8080
 docker compose up -d --wait db           # só o banco (para dotnet run / dotnet test)
-docker compose run --rm api importar conteudo/matematica.json --publicar
+docker compose run --rm -v "$PWD/novo:/novo:ro" api importar /novo/x.json --publicar
+docker compose run --rm -v "$PWD/imagens:/imagens:ro" api importar-imagens /imagens
 docker compose exec db psql -U estudae -d estudae
 docker compose down                      # mantém os dados
-docker compose down -v                   # APAGA os dados
+docker compose down -v                   # APAGA os dados (e todo o conteúdo)
 ```
 
 - **Exportar e sincronizar o banco** (10/11/2026): `scripts/banco/exportar.ps1|.sh`
@@ -195,8 +209,8 @@ docker compose down -v                   # APAGA os dados
   corrompe); `scripts/banco/restaurar.ps1|.sh` faz backup do atual, `pg_restore
   --clean --if-exists --single-transaction` e roda o `migrate`. `backups/` fica no
   `.gitignore`. Os `.sh` têm `MSYS_NO_PATHCONV=1` (Git Bash troca `/tmp/...` por
-  caminho do Windows) e `.gitattributes` força LF. As imagens das questões não vão
-  no dump (estão em `conteudo/imagens/`).
+  caminho do Windows) e `.gitattributes` força LF. O dump leva também as imagens
+  (tabela `imagem`): é a forma de compartilhar o conteúdo.
 
 - **`migrate`:** a mesma imagem com `command: ["migrar"]` (subcomando da
   API, `Cli/MigrarComando.cs`). Roda uma vez; a `api` só sobe com
@@ -205,8 +219,8 @@ docker compose down -v                   # APAGA os dados
 - **Segredo:** `POSTGRES_PASSWORD` vem do `.env` e é obrigatória (`${...:?}`);
   a connection string da API é montada no compose (`Host=db;Port=5432`).
   `API_PORT` (padrão 8080) e `DB_PORT` também vêm do `.env`.
-- **Imagem:** leva o front no `wwwroot` e `conteudo/*.json` em
-  `/app/conteudo` (sem `conteudo/exemplos/`, barrado no `.dockerignore`).
+- **Imagem:** leva só a API e o front no `wwwroot`. Nenhum conteúdo: para
+  importar, a pasta do JSON é montada com `-v`.
 
 - **Host/porta:** `localhost:${DB_PORT}`, publicada só em `127.0.0.1`. A
   porta do host vem de `DB_PORT` no `.env` (não comitado; ver
@@ -242,7 +256,11 @@ lá, no mesmo commit da migration.
   e `AulaAssistida` ligam o usuário (`usuario`, do Identity) ao conteúdo.
   As tabelas do Identity ganham nomes em português (`usuario`, `papel`,
   `usuario_papel`...), configurados na fase 3 antes da primeira migration.
-- **Escopo:** só Ensino Médio, e só Português e Matemática por enquanto.
+- **Escopo:** Ensino Fundamental e Médio (`disciplina.nivel`), Linguagens e
+  Matemática. Questões com figura/tabela/gráfico levam o recorte da prova
+  (`imagem_url` + `imagem_descricao`); os bytes ficam na tabela `imagem`
+  (chave `caminho` = `imagem_url`, sem FK), servidos pela API em
+  `/conteudo/imagens/{caminho}` com ETag (`sha256`).
 - **Decisões deliberadas:**
   - Sem tabela `Area` (área = disciplina) e sem tabela `Prova`:
     `prova_ano`, `prova_edicao` e `prova_nivel` são colunas opcionais em
@@ -315,14 +333,17 @@ Application por enquanto).
 
 ### Importador de conteúdo
 
-Formato, regras e comandos: **`conteudo/README.md`**. Resumo:
-- Um JSON por disciplina em `conteudo/`; exemplos (válido e inválidos) em
-  `conteudo/exemplos/`, usados também pelos testes.
-- É um subcomando da API (vai junto na imagem):
-  `dotnet run --project src/Estudae.Api -- importar "$PWD/../conteudo/x.json" [--publicar] [--validar]`.
-  Caminho absoluto, porque o `dotnet run` roda a partir da pasta do projeto.
-- Código: leitura/normalização/validação/gravação em `Estudae.Infra/Importacao/`;
-  a linha de comando em `Estudae.Api/Cli/ImportarComando.cs`.
+Formato, regras e comandos: **`docs/conteudo/README.md`**. Resumo:
+- O JSON (um por disciplina) é só o meio de entrada, **fora do repo**; as imagens
+  em `imagens/` ao lado dele entram no banco na mesma transação, e as que não
+  estiverem lá precisam já estar no banco. Exemplos inventados (válido e
+  inválidos) em `docs/conteudo/exemplos/`, usados pelos testes.
+- São subcomandos da API (vão junto na imagem):
+  `importar <x.json> [--publicar] [--validar]` e `importar-imagens <pasta>`.
+  No `dotnet run`, caminho absoluto, porque ele roda a partir da pasta do projeto.
+- Código: leitura/normalização/validação/gravação em `Estudae.Infra/Importacao/`
+  (`GravadorImagens` não salva sozinho, para entrar na transação das questões);
+  a linha de comando em `Estudae.Api/Cli/`.
 - Qualquer erro aborta tudo (lista todos, com questão e campo). Reimportar
   atualiza por chave natural (`codigo`, slug, `youtube_id`); nada é apagado.
   Sem `--publicar` grava como rascunho, inclusive o que já estava publicado.
@@ -339,7 +360,7 @@ Formato, regras e comandos: **`conteudo/README.md`**. Resumo:
    (`db` → `migrate` → `api`, front no `wwwroot`, senha no `.env`)
 5. **CI com GitHub Actions** — ✅ **concluída** (`.github/workflows/ci.yml`):
    job `backend` (build, testes com Postgres como *service container*,
-   `--validar` de `conteudo/*.json`) e job `compose` (sobe o compose num
+   `--validar` do exemplo de conteúdo) e job `compose` (sobe o compose num
    banco vazio e faz smoke test de `/health`, `/` e `/api/disciplinas`)
 6. **Primeiro deploy** — ⏭️ **segunda à tarde**. Plano A (VM + compose +
    Caddy) ou B (Render); a decisão é da pessoa. Smoke test `/health` depois do
@@ -416,17 +437,39 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
   que nos faria mudar de ideia. Preencher juntos.
 - `videoaula.tipo` é mesmo necessário?
 - `aula_assistida`: uma marca só por aluno e vídeo, ou manter histórico?
-- As questões terão imagens (`imagem_url`)? (No MVP, não.)
-- Formato de `prova_edicao` (texto ou número)
-- Termos de uso do INEP para reaproveitar provas anteriores, e a fonte e o
-  formato de importação das questões
+- ~~As questões terão imagens?~~ Sim (10/11/2026): recorte da prova + texto
+  alternativo; ver `ModelodeDados.md`.
+- Formato de `prova_edicao` (hoje texto: `"Nacional"` ou `"Reaplicação (PPL)"`)
+- **Termos de uso do INEP** para reaproveitar provas anteriores: ainda em
+  aberto. As 240 questões de 2022 estão publicadas só no banco local; publicar
+  fora dele depende dessa conferência (registrado no guia de entrega).
 
 ## Pontos de atenção para quem for continuar o projeto
 
-- O catálogo ainda é pequeno (12 questões autorais por matéria, um vídeo por
-  tema). Qualquer feature que dependa de volume de conteúdo vai expor isso.
-- Os JSONs de `conteudo/` vão dentro da imagem: depois de editar, rebuild
-  (`docker compose up -d --build --wait`) antes de importar.
+- Catálogo: 264 questões (só 2022 entre as oficiais). Os temas novos não têm
+  vídeo; os do Fundamental, nenhum. As 480 referências de outros anos do pacote
+  de questões não têm texto e ficaram de fora.
+- **Tela da questão** (`src/components/questao.js`, usado pela lição e pelo
+  simulado): "Ouvir questão" no topo → imagem em largura total ("Toque para
+  ampliar") → texto de apoio em cartão próprio, com `white-space: pre-line`
+  (versos e quadrinhos em linhas separadas) → pergunta → fonte. Botões da
+  questão fixos no rodapé (`.quiz-nav--fixa`). O simulado esconde a barra de
+  baixo. **Imagem em tela cheia:** `<dialog>` nativo (foco preso, Esc, voltar
+  do celular fecha via `history.pushState`), zoom por pinça ou botões +/−
+  (100–300%), área rolável focável pelo teclado. O texto alternativo fica no
+  botão que abre a imagem. Com "reduzir movimento", o CSS do projeto dá
+  transição de 0,01 ms a tudo: testes que medem largura precisam esperar.
+- **Progresso** (`src/screens/progresso.js`): resumo em atividades da prova
+  escolhida (dias seguidos, lições, % de acertos), "Continuar estudando" pela
+  matéria estudada por último, um cartão por matéria (aulas vistas e questões
+  acertadas) e o histórico, tudo filtrado por `state.nivel`.
+- **Escolha de prova no app:** `#/nivel` (`src/screens/nivel.js`), guardada em
+  `estudae:nivel`; o router manda para lá quem ainda não escolheu. Início,
+  simulado e Progresso filtram por `state.nivel` (`materiasDoNivel` em
+  `data.js`). Na interface se chama "prova", porque "nível" já é a
+  gamificação do Perfil.
+- O conteúdo não está no repo: um clone novo sobe com o site vazio até
+  restaurar um `.dump`. Exporte depois de mudar conteúdo.
 - Esta máquina não tem o .NET SDK: build e testes do backend rodaram no
   container `mcr.microsoft.com/dotnet/sdk:10.0`.
 - Testes: `backend/tests/Estudae.Tests` (xUnit, `dotnet test`). Os de

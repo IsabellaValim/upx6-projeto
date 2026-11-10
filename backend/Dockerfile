@@ -60,9 +60,8 @@ COPY --from=build /app/publish .
 COPY index.html wwwroot/
 COPY src/ wwwroot/src/
 
-# JSONs de conteudo (sem os exemplos; ver .dockerignore), para importar com:
-#   docker compose run --rm api importar conteudo/matematica.json --publicar
-COPY conteudo/ conteudo/
+# Conteudo (questoes, videos, imagens) NAO vai na imagem: mora no banco. Para
+# importar um JSON novo, monte a pasta dele no container (ver docs/conteudo/README.md).
 
 # Usuario sem privilegios que ja existe na imagem (APP_UID e definido nela).
 # Sem esta linha o processo rodaria como root.

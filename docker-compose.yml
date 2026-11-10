@@ -6,16 +6,18 @@
 # So o banco:    docker compose up -d --wait db        (para rodar a API com dotnet run)
 # Status:        docker compose ps
 # Logs:          docker compose logs -f api
-# Importar:      docker compose run --rm api importar conteudo/matematica.json --publicar
+# Conteudo:      mora no banco. Para receber o de outra pessoa: scripts/banco/restaurar.ps1
+#                Importar um JSON novo (a pasta dele montada no container):
+#                docker compose run --rm -v "$PWD/novo:/novo:ro" api importar /novo/x.json --publicar
 # Parar:         docker compose down        (mantem os dados)
-#                docker compose down -v     (APAGA os dados)
+#                docker compose down -v     (APAGA os dados, inclusive todo o conteudo)
 #
 # Ordem de subida (depends_on):  db (healthy) -> migrate (terminou ok) -> api
 
 # Mesma imagem para "migrate" e "api": o build e um so (o segundo vem do cache).
 x-imagem-api: &imagem-api
   build:
-    context: .                 # raiz do repo: o Dockerfile copia backend/, src/ e conteudo/
+    context: .                 # raiz do repo: o Dockerfile copia backend/ e o front (index.html, src/)
     dockerfile: backend/Dockerfile
   image: estudae-api
 

@@ -13,6 +13,7 @@ public class EstudaeDbContext(DbContextOptions<EstudaeDbContext> options)
     public DbSet<Tema> Temas => Set<Tema>();
     public DbSet<Videoaula> Videoaulas => Set<Videoaula>();
     public DbSet<Questao> Questoes => Set<Questao>();
+    public DbSet<Imagem> Imagens => Set<Imagem>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

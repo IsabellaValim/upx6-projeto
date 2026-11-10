@@ -7,6 +7,7 @@ export const urls = {
   login: "#/login",
   cadastro: "#/cadastro",
   home: "#/home",
+  nivel: "#/nivel", // escolha da prova (Fundamental ou Médio)
   progresso: "#/progresso",
   perfil: "#/perfil",
   acessibilidade: "#/acessibilidade",

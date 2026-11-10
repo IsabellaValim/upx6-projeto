@@ -68,16 +68,10 @@ jobs:
       - name: Testes
         run: dotnet test --no-build -c Release --logger "console;verbosity=normal"
 
-      # Todo JSON de conteudo precisa passar no importador. Um PR de conteudo com
-      # erro fica vermelho aqui, antes da revisao humana.
-      - name: Validar conteudo
-        run: |
-          shopt -s nullglob
-          arquivos=("$GITHUB_WORKSPACE"/conteudo/*.json)
-          if [ ${#arquivos[@]} -eq 0 ]; then echo "Nenhum JSON em conteudo/ ainda."; exit 0; fi
-          for f in "${arquivos[@]}"; do
-            dotnet run --no-build -c Release --project src/Estudae.Api -- importar "$f" --validar
-          done
+      # O conteudo real mora no banco, nao no repo. Aqui so confere que o
+      # subcomando "importar" da linha de comando aceita o exemplo da documentacao.
+      - name: Validar exemplo de conteudo
+        run: dotnet run --no-build -c Release --project src/Estudae.Api -- importar "$GITHUB_WORKSPACE/docs/conteudo/exemplos/exemplo-valido.json" --validar
 
   compose:
     runs-on: ubuntu-24.04

@@ -24,6 +24,13 @@ public static partial class ValidadorConteudo
     [GeneratedRegex(@"(?<!\p{L})\$")]
     private static partial Regex CifraoLatex();
 
+    [GeneratedRegex(@"^[A-Za-z0-9_\-]+(/[A-Za-z0-9_\-]+)*\.(webp|png|jpe?g)$", RegexOptions.IgnoreCase)]
+    private static partial Regex CaminhoImagem();
+
+    // Caminho de imagem seguro: relativo, sem "..", só caracteres simples.
+    public static bool CaminhoDeImagemValido(string caminho) =>
+        CaminhoImagem().IsMatch(caminho) && !caminho.Contains("..") && caminho.Length <= 500;
+
     // Alternativa que cita outra por posição quebra quando embaralhamos a ordem.
     // As letras A-E são maiúsculas de propósito (o artigo "a" não pode casar); as
     // palavras, em (?i:...), valem com qualquer caixa ("Todas as anteriores").
@@ -50,6 +57,8 @@ public static partial class ValidadorConteudo
             Slug(d.Slug, "disciplina", "slug", 60);
             Texto(d.Nome, "disciplina", "nome", 100);
             Tamanho(d.Icone, "disciplina", "icone", 60);
+            if (d.Nivel is not null && !Estudae.Domain.Conteudo.NivelEnsino.Todos.Contains(d.Nivel))
+                Erro("disciplina", "nivel", $"\"{d.Nivel}\" inválido: use \"fundamental\" ou \"medio\" (ou omita, para \"medio\")");
         }
 
         // --- temas ---
@@ -152,6 +161,20 @@ public static partial class ValidadorConteudo
             Cifrao(q.TextoBase, onde, "texto_base");
             Cifrao(q.Enunciado, onde, "enunciado");
             Cifrao(q.Resolucao, onde, "resolucao");
+
+            // Imagem: caminho relativo seguro (sem "..", sem barra no início) e
+            // descrição obrigatória (acessibilidade: leitor de tela e voz alta).
+            if (q.Imagem is { } im)
+            {
+                if (im.Arquivo is null)
+                    Erro(onde, "imagem.arquivo", "obrigatório");
+                else if (!CaminhoImagem().IsMatch(im.Arquivo) || im.Arquivo.Contains(".."))
+                    Erro(onde, "imagem.arquivo", $"\"{im.Arquivo}\" inválido: caminho relativo à pasta imagens/ ao lado do JSON, só letras, números, \"_\", \"-\", \"/\" e extensão .webp, .png ou .jpg");
+                else
+                    Tamanho(im.Arquivo, onde, "imagem.arquivo", 500);
+                Texto(im.Descricao, onde, "imagem.descricao", 1000);
+                Cifrao(im.Descricao, onde, "imagem.descricao");
+            }
 
             // Fonte: tudo ou nada. Sem nenhum prova_* = questão AUTORAL (o site mostra
             // "Questão autoral Estudaê"). Com qualquer um deles a questão é tratada como

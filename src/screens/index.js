@@ -6,6 +6,7 @@ import boasVindas from "./boas-vindas.js";
 import login from "./login.js";
 import cadastro from "./cadastro.js";
 import home from "./home.js";
+import nivel from "./nivel.js";
 import area from "./area.js";
 import video from "./video.js";
 import quiz from "./quiz.js";
@@ -21,6 +22,7 @@ export const screens = {
   login,
   cadastro,
   home,
+  nivel,
   area,
   video,
   quiz,

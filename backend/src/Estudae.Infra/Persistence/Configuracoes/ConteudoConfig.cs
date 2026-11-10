@@ -14,8 +14,10 @@ public class DisciplinaConfig : IEntityTypeConfiguration<Disciplina>
 {
     public void Configure(EntityTypeBuilder<Disciplina> e)
     {
-        e.ToTable("disciplina");
+        e.ToTable("disciplina", t => t.HasCheckConstraint(
+            "ck_disciplina_nivel", "nivel IN ('fundamental', 'medio')"));
         e.Property(d => d.Nome).HasMaxLength(100);
+        e.Property(d => d.Nivel).HasMaxLength(20).HasDefaultValue(NivelEnsino.Medio);
         e.Property(d => d.Slug).HasMaxLength(60);
         e.Property(d => d.Icone).HasMaxLength(60);
         e.HasIndex(d => d.Slug).IsUnique();
@@ -56,6 +58,19 @@ public class VideoaulaConfig : IEntityTypeConfiguration<Videoaula>
     }
 }
 
+public class ImagemConfig : IEntityTypeConfiguration<Imagem>
+{
+    public void Configure(EntityTypeBuilder<Imagem> e)
+    {
+        e.ToTable("imagem");
+        e.Property(i => i.Caminho).HasMaxLength(500);
+        e.HasIndex(i => i.Caminho).IsUnique();
+        e.Property(i => i.TipoMime).HasMaxLength(40);
+        e.Property(i => i.Dados).HasColumnType("bytea");
+        e.Property(i => i.Sha256).HasMaxLength(64).IsFixedLength();
+    }
+}
+
 public class QuestaoConfig : IEntityTypeConfiguration<Questao>
 {
     public void Configure(EntityTypeBuilder<Questao> e)
@@ -70,6 +85,7 @@ public class QuestaoConfig : IEntityTypeConfiguration<Questao>
         e.Property(q => q.Alternativas).HasColumnType("text[]");
 
         e.Property(q => q.ImagemUrl).HasMaxLength(500);
+        e.Property(q => q.ImagemDescricao).HasMaxLength(1000);
         e.Property(q => q.ProvaEdicao).HasMaxLength(40);
         e.Property(q => q.ProvaNivel).HasMaxLength(40);
 

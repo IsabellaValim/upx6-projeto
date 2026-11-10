@@ -1,27 +1,38 @@
 # Conteúdo do Estudaê
 
-Aqui ficam as questões e os vídeos do site, **um arquivo JSON por disciplina**
-(`portugues.json`, `matematica.json`). O importador lê esses arquivos, confere tudo e
-grava no banco. Os exemplos em `exemplos/` mostram o formato e os erros que ele pega.
+**O conteúdo do site (questões, vídeos e imagens) mora no banco de dados, não no
+repositório** (decidido em 10/11/2026). Esta pasta só tem a documentação: o formato de entrada,
+as regras do importador, os exemplos inventados (`exemplos/`, usados pelos testes) e o
+histórico de revisão das questões de 2022.
+
+- **Compartilhar o conteúdo** (com a equipe, ou para subir num banco online): `exportar` e
+  `restaurar` de `scripts/banco/`. O `.dump` leva tudo, inclusive as imagens. Ver o README da raiz.
+- **Cadastrar conteúdo novo:** escrever um JSON no formato abaixo, **fora do repositório**,
+  com as imagens em `imagens/` ao lado dele, e rodar o importador. Depois de importado, o JSON
+  pode ser descartado: a fonte é o banco.
 
 O modelo de dados por trás disso está em `backend/DatabaseDocs/ModelodeDados.md`.
+Para carregar as questões de 2022 num banco oficial: [`ENTREGA-QUESTOES-2022.md`](ENTREGA-QUESTOES-2022.md).
 
-## Escopo do MVP
+## Escopo
 
-- Ensino Médio, provas do INEP, só **Português** e **Matemática**.
-- **Sem questões com figura, tabela ou gráfico.**
-- Quatro temas por disciplina (para mudar, basta editar o JSON):
+- Provas do Encceja de **Ensino Médio e Ensino Fundamental**, áreas de **Linguagens** e
+  **Matemática**. A mesma matéria nos dois níveis são duas disciplinas (`matematica` e
+  `matematica-fundamental`), com o campo `nivel`.
+- Questões com figura, tabela ou gráfico levam o **recorte da prova** como imagem.
 
-  | Disciplina (`slug`) | Temas (`slug`) |
-  |---|---|
-  | `portugues` | `interpretacao-de-texto`, `generos-textuais`, `variacao-linguistica`, `gramatica` |
-  | `matematica` | `porcentagem-e-proporcao`, `equacoes`, `geometria-plana`, `estatistica-basica` |
+  | Arquivo (`slug`) | Nível | Temas (`slug`) |
+  |---|---|---|
+  | `matematica` | médio | `porcentagem-e-proporcao`, `equacoes`, `geometria-plana`, `estatistica-basica`, `numeros-e-operacoes`, `grandezas-e-medidas`, `funcoes`, `geometria-espacial`, `probabilidade-e-contagem` |
+  | `linguagens` | médio | `interpretacao-de-texto`, `generos-textuais`, `variacao-linguistica`, `gramatica`, `literatura`, `comunicacao-e-midias`, `lingua-inglesa`, `lingua-espanhola`, `arte`, `educacao-fisica` |
+  | `matematica-fundamental` | fundamental | `numeros-e-operacoes`, `fracoes-e-decimais`, `porcentagem-e-proporcao`, `equacoes`, `grandezas-e-medidas`, `geometria`, `graficos-e-tabelas`, `probabilidade-e-contagem` |
+  | `linguagens-fundamental` | fundamental | os mesmos 10 de `linguagens` |
 
 ## Formato
 
 ```jsonc
 {
-  "disciplina": { "slug": "matematica", "nome": "Matemática", "icone": "percent" },
+  "disciplina": { "slug": "matematica", "nome": "Matemática", "icone": "percent", "nivel": "medio" },
   "temas": [
     {
       "slug": "porcentagem-e-proporcao",
@@ -41,7 +52,8 @@ O modelo de dados por trás disso está em `backend/DatabaseDocs/ModelodeDados.m
           "prova_ano": 2019,
           "prova_edicao": "Nacional",
           "prova_nivel": "Ensino Médio",
-          "prova_numero": 12
+          "prova_numero": 12,
+          "imagem": { "arquivo": "2022/2022_EM_regular_matematica_47.webp", "descricao": "O que a imagem mostra." }
         }
       ]
     }
@@ -54,6 +66,7 @@ O modelo de dados por trás disso está em `backend/DatabaseDocs/ModelodeDados.m
 | `disciplina.slug` | sim | minúsculas sem acento, números e hífen (`matematica`) |
 | `disciplina.nome` | sim | até 100 caracteres |
 | `disciplina.icone` | não | nome do ícone usado no front (`pen`, `percent`) |
+| `disciplina.nivel` | não | `"medio"` (padrão) ou `"fundamental"` |
 | `tema.slug` | sim | como o da disciplina; único no arquivo |
 | `tema.titulo`, `tema.sobre` | sim | título até 150 caracteres |
 | `videos[].youtube` | sim | **link completo do YouTube ou só o ID** (11 caracteres); o importador extrai o ID |
@@ -67,6 +80,17 @@ O modelo de dados por trás disso está em `backend/DatabaseDocs/ModelodeDados.m
 | `prova_ano` | só em questão do INEP | de 2002 até o ano atual |
 | `prova_edicao`, `prova_nivel` | só em questão do INEP | texto, até 40 caracteres |
 | `prova_numero` | só em questão do INEP | número da questão na prova original, maior que zero |
+| `imagem.arquivo` | não | caminho relativo à pasta `imagens/` ao lado do JSON (`.webp`, `.png`, `.jpg`); vira a chave da imagem no banco. O arquivo precisa estar na pasta **ou já estar no banco** |
+| `imagem.descricao` | se houver imagem | texto alternativo (até 1000 caracteres): o que a imagem mostra, **sem dar a resposta** |
+
+### Imagens
+
+- Só para questões que **dependem** do elemento visual (figura, gráfico, tabela, mapa, tirinha,
+  foto). Use o recorte da questão como está na prova.
+- Questão com imagem **não tem as alternativas embaralhadas**: o recorte mostra as letras
+  originais, e elas precisam bater com as da tela.
+- A descrição é lida pelo leitor de tela e pela leitura em voz alta. Tabela simples: transcreva
+  os dados também no `texto_base`.
 
 ### Questão do INEP ou autoral
 
@@ -79,21 +103,31 @@ Os quatro campos `prova_*` são **tudo ou nada**:
   praticar." Nunca invente ano ou número para uma questão autoral.
 - Só um, dois ou três campos preenchidos é erro: o importador recusa o arquivo.
 
-## Catálogo atual
+## Catálogo atual (no banco)
 
-| Arquivo | Temas | Vídeos | Questões | Origem |
-|---|---|---|---|---|
-| `portugues.json` | 4 | 4 | 12 | autorais (`aut-pt-*`) |
-| `matematica.json` | 4 | 4 | 12 | autorais (`aut-mat-*`) |
+| Disciplina (`slug`) | Nível | Temas | Vídeos | Questões | Origem |
+|---|---|---|---|---|---|
+| `matematica` | médio | 9 | 4 | 72 | 60 do Encceja 2022 + 12 autorais (`aut-mat-*`) |
+| `linguagens` | médio | 10 | 4 | 72 | 60 do Encceja 2022 + 12 autorais (`aut-pt-*`) |
+| `matematica-fundamental` | fundamental | 8 | 0 | 60 | Encceja 2022 |
+| `linguagens-fundamental` | fundamental | 10 | 0 | 60 | Encceja 2022 |
 
-Os vídeos passaram no oEmbed (existem e permitem incorporação). Legenda, ritmo e adequação
-continuam sendo revisão humana (checklist abaixo). As questões de prova anteriores escolhidas
-para cada tema estão em [`curadoria-inep.md`](curadoria-inep.md), aguardando revisão antes de
-entrar nos JSONs.
+Mais as **240 imagens** dos cadernos de 2022 na tabela `imagem` (89 usadas por questões; as
+outras ficam prontas para questões futuras). Para conferir no seu banco:
+
+```bash
+docker compose exec db psql -U estudae -d estudae -c "SELECT d.slug, count(q.id) FROM disciplina d JOIN tema t ON t.disciplina_id = d.id JOIN questao q ON q.tema_id = t.id GROUP BY 1;"
+```
+
+As 240 questões oficiais (os 8 cadernos de 2022, aplicação Nacional e Reaplicação/PPL) foram
+transcritas a partir dos recortes da prova, com gabarito oficial, resolução e tema. A revisão
+humana antes de publicar fora do ambiente local está em
+[`ENTREGA-QUESTOES-2022.md`](ENTREGA-QUESTOES-2022.md) e em `revisao-2022.csv`. Os temas novos
+ainda não têm vídeo. Os vídeos atuais passaram no oEmbed; legenda, ritmo e adequação continuam
+sendo revisão humana (checklist abaixo).
 
 **Conteúdo de teste x demonstração:** `exemplos/` tem questões inventadas e IDs de vídeo
-falsos, usados só pelos testes automáticos, e não entra na imagem. O que vai para o site são os
-arquivos da raiz desta pasta.
+falsos, usados só pelos testes automáticos. Nunca importe os exemplos no banco de verdade.
 
 Detalhes importantes:
 
@@ -112,34 +146,47 @@ Detalhes importantes:
 
 ### Pelo Docker Compose (não precisa do .NET instalado)
 
-Os JSONs desta pasta são **copiados para dentro da imagem** no build. Então, depois de editar
-um arquivo, reconstrua a imagem antes de importar; senão o importador lê a versão antiga.
+O JSON não vai na imagem: a pasta onde ele está é **montada no container** com `-v`
+(`:ro` = só leitura). Exemplo com o arquivo em `C:\conteudo-novo\matematica.json` e as
+imagens em `C:\conteudo-novo\imagens\`:
 
 ```bash
-docker compose up -d --build --wait                                   # reconstrói e sobe
-docker compose run --rm api importar conteudo/portugues.json --validar   # só confere
-docker compose run --rm api importar conteudo/portugues.json --publicar  # grava publicada
-docker compose run --rm api importar conteudo/matematica.json --publicar
-curl http://localhost:8080/api/disciplinas                              # confere as contagens
+# troque C:\conteudo-novo pela sua pasta (no Linux/macOS: "$PWD/conteudo-novo:/novo:ro")
+docker compose run --rm -v "C:\conteudo-novo:/novo:ro" api importar /novo/matematica.json --validar   # só confere
+docker compose run --rm -v "C:\conteudo-novo:/novo:ro" api importar /novo/matematica.json --publicar  # grava publicada
+curl http://localhost:8080/api/disciplinas                                                           # confere as contagens
 ```
+
+Só imagens (por exemplo, recortes de um caderno novo antes de transcrever as questões):
+
+```bash
+docker compose run --rm -v "C:\conteudo-novo\imagens:/imagens:ro" api importar-imagens /imagens
+```
+
+O caminho de cada imagem no banco é o relativo à pasta montada (`/imagens/2023/x.webp` vira
+`2023/x.webp`), o mesmo texto que vai em `imagem.arquivo`. Reimportar a mesma imagem não
+regrava nada (o banco guarda o hash dos bytes); se os bytes mudaram, ela é atualizada.
 
 ### Pelo `dotnet run` (desenvolvimento do backend)
 
 Dentro de `backend/`, com o Postgres do compose de pé:
 
 ```bash
-# Só confere o arquivo (não precisa de banco). Use antes de abrir o PR.
-dotnet run --project src/Estudae.Api -- importar "$PWD/../conteudo/matematica.json" --validar
+# Só confere o arquivo (não precisa de banco).
+dotnet run --project src/Estudae.Api -- importar "/caminho/absoluto/matematica.json" --validar
 
 # Grava como RASCUNHO (não aparece no site).
-dotnet run --project src/Estudae.Api -- importar "$PWD/../conteudo/matematica.json"
+dotnet run --project src/Estudae.Api -- importar "/caminho/absoluto/matematica.json"
 
-# Grava como PUBLICADA (aparece no site). Só depois da revisão no PR.
-dotnet run --project src/Estudae.Api -- importar "$PWD/../conteudo/matematica.json" --publicar
+# Grava como PUBLICADA (aparece no site). Só depois da revisão.
+dotnet run --project src/Estudae.Api -- importar "/caminho/absoluto/matematica.json" --publicar
 ```
 
-> O caminho precisa ser **absoluto** (`"$PWD/..."`): o `dotnet run` executa a partir da pasta
-> do projeto, então `../conteudo` não funcionaria.
+> O caminho precisa ser **absoluto**: o `dotnet run` executa a partir da pasta do projeto.
+
+- **Imagens:** as que estão em `imagens/` ao lado do JSON entram no banco junto com as
+  questões, **na mesma transação**. As que não estão lá precisam já existir no banco; senão o
+  importador recusa o arquivo inteiro e lista as que faltam.
 
 - **Se houver qualquer erro, nada é gravado.** A saída lista todos os erros, com a questão e o
   campo de cada um.
@@ -153,9 +200,10 @@ dotnet run --project src/Estudae.Api -- importar "$PWD/../conteudo/matematica.js
 ## Fluxo de trabalho
 
 1. Pegar a questão no PDF da prova (ver "Extrair com IA" abaixo).
-2. Colocar no JSON da disciplina, no tema certo, e rodar com `--validar`.
-3. Abrir um PR. **Outra pessoa revisa** (checklist abaixo).
-4. Depois do merge, importar com `--publicar`.
+2. Colocar num JSON (fora do repositório), no tema certo, e rodar com `--validar`.
+3. Importar **sem** `--publicar` (rascunho, não aparece no site). **Outra pessoa revisa**
+   (checklist abaixo), lendo o JSON ou o banco.
+4. Revisado, importar de novo com `--publicar` e rodar o `exportar` para compartilhar o dump.
 
 ### Checklist de revisão
 

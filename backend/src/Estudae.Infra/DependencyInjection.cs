@@ -26,6 +26,7 @@ public static class DependencyInjection
             .UseSnakeCaseNamingConvention());
 
         services.AddScoped<ImportadorConteudo>();
+        services.AddScoped<GravadorImagens>();
 
         return services;
     }

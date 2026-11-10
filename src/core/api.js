@@ -26,8 +26,13 @@ const seg = encodeURIComponent;
 export const api = {
   disciplinas: () => pedir("/disciplinas"),
   temas: (disciplina) => pedir(`/disciplinas/${seg(disciplina)}/temas`),
+  // A imagem vem do banco, servida pela API ("conteudo/imagens/..."). Com o
+  // front em outra porta, a URL relativa cairia no servidor estático: aponta para a API.
   questoes: (disciplina, tema) =>
-    pedir(`/disciplinas/${seg(disciplina)}/temas/${seg(tema)}/questoes`),
+    pedir(`/disciplinas/${seg(disciplina)}/temas/${seg(tema)}/questoes`).then((lista) => {
+      if (BASE) for (const q of lista) if (q.imagem) q.imagem.url = BASE + "/" + q.imagem.url;
+      return lista;
+    }),
   // Envia o TEXTO exato da alternativa, nunca a letra nem a posição.
   resposta: (id, alternativa) =>
     pedir(`/questoes/${seg(id)}/resposta`, {

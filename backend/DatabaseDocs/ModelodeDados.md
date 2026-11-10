@@ -1,7 +1,8 @@
 # Modelo de dados: Estudaê
 
-> **Status:** v2 (08/11/2026). Existem as tabelas do Identity (migration `InicialIdentity`) e as
-> de conteúdo: `disciplina`, `tema`, `videoaula` e `questao` (migration `Conteudo`).
+> **Status:** v4 (10/11/2026). Existem as tabelas do Identity (migration `InicialIdentity`) e as
+> de conteúdo: `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`) e `imagem`
+> (migration `ImagensNoBanco`).
 > `tentativa` e `aula_assistida` continuam só no papel: login e tentativas ficaram fora do MVP.
 > As tabelas nascem por migration, uma de cada vez, conforme cada ticket precisar delas.
 > O diagrama fica em `ModelodeDados.svg`, que **ainda é o da v1** (sem `codigo`): o bloco Mermaid
@@ -9,7 +10,10 @@
 >
 > Histórico: v1 (18/10) modelo inicial; adendo (19/10) `questao.status`, `questao.prova_numero`
 > e "Convenções de conteúdo"; v2 (08/11) `questao.codigo`, índice único de vídeo por tema,
-> escopo do MVP e a migration `Conteudo`.
+> escopo do MVP e a migration `Conteudo`; v3 (10/11) `disciplina.nivel`,
+> `questao.imagem_descricao` e uso de `questao.imagem_url` (migration `NivelEImagem`); v4 (10/11)
+> tabela `imagem` com os bytes das imagens, e o conteúdo passa a morar só no banco (migration
+> `ImagensNoBanco`).
 
 ## O que o sistema guarda
 
@@ -34,6 +38,7 @@ erDiagram
     DISCIPLINA ||--o{ TEMA : "tem"
     TEMA ||--o{ VIDEOAULA : "tem"
     TEMA ||--o{ QUESTAO : "classifica"
+    IMAGEM |o--o{ QUESTAO : "caminho = imagem_url (sem FK)"
     USUARIO ||--o{ TENTATIVA : "faz"
     QUESTAO ||--o{ TENTATIVA : "recebe"
     USUARIO ||--o{ AULA_ASSISTIDA : "marca"
@@ -44,6 +49,7 @@ erDiagram
         string nome
         string slug UK "ex.: matematica"
         string icone "opcional"
+        string nivel "fundamental ou medio"
     }
 
     TEMA {
@@ -74,13 +80,23 @@ erDiagram
         string[] alternativas "texto de cada alternativa"
         string resposta_correta "texto, uma das alternativas"
         string resolucao "explicacao do gabarito"
-        string imagem_url "opcional, figuras"
+        string imagem_url "opcional, = imagem.caminho"
+        string imagem_descricao "opcional, texto alternativo"
         int prova_ano "opcional"
         string prova_edicao "opcional"
         string prova_nivel "opcional"
         int prova_numero "opcional, numero na prova original"
         string status "rascunho ou publicada"
         datetime criado_em
+    }
+
+    IMAGEM {
+        int id PK
+        string caminho UK "ex.: 2022/x.webp"
+        string tipo_mime "image/webp, image/png, image/jpeg"
+        bytea dados "os bytes do arquivo"
+        string sha256 "hash dos bytes; ETag"
+        datetime atualizada_em
     }
 
     USUARIO {
@@ -234,7 +250,10 @@ migration (`InicialIdentity`).
 
 - **Fluxo de importação (MVP):** o texto da questão é extraído do PDF da prova, com ajuda de IA
   no chat, para o formato JSON do importador; uma pessoa revisa o JSON no PR (resolvendo de novo
-  as de Matemática); o **importador em C#** valida e grava. Formato, validações e comandos: `conteudo/README.md`.
+  as de Matemática); o **importador em C#** valida e grava. Formato, validações e comandos: `docs/conteudo/README.md`.
+- **O banco é a fonte do conteúdo** (10/11/2026): os JSONs e as imagens saíram do repositório.
+  O JSON é só o meio de entrada; o conteúdo é compartilhado pelo dump (`scripts/banco/`), que
+  leva também as imagens.
 - **Fluxo planejado (depois do MVP):** um script em **Python** extrai os rascunhos dos PDFs com
   IA, fora da aplicação publicada, e o importador continua sendo a porta de entrada.
 - **Fonte:** toda questão do INEP leva `prova_ano`, `prova_edicao`, `prova_nivel` e
@@ -247,8 +266,17 @@ migration (`InicialIdentity`).
 - **Delimitadores:** `\( ... \)` para fórmula na linha e `\[ ... \]` para fórmula em
   bloco. **Não usar `$`**, porque as questões têm valores como "R$ 10,00".
 - Preferir `\dfrac` a `\frac` no meio do texto: a fração fica maior e mais fácil de ler.
-- **Tabelas** dentro de uma questão começam como imagem (`imagem_url`). **No MVP não entram
-  questões com figura, tabela ou gráfico**, então `imagem_url` fica vazio por enquanto.
+- **Figuras, tabelas e gráficos** entram como imagem (decidido em 10/11/2026): `imagem_url`
+  guarda o caminho do **recorte da questão na prova** (ex.: `2022/x.webp`), que é a chave da
+  tabela `imagem`, onde ficam os bytes (servidos pela API em `/conteudo/imagens/{caminho}`, com
+  ETag = `sha256`); `imagem_descricao` é o texto alternativo, obrigatório quando há imagem. Uma
+  imagem por questão. **Tabela separada** (decidido em 10/11/2026), e não uma coluna `bytea` em
+  `questao`: a imagem pode entrar antes da questão (as 240 dos cadernos de 2022 estão no banco,
+  89 em uso) e pode servir a mais de uma. **Sem FK** de `imagem_url` para `caminho`: quem garante
+  a ligação é o importador, que recusa o JSON se a imagem não estiver na pasta nem no banco. Questão com imagem não tem as alternativas
+  embaralhadas, porque o recorte mostra as letras originais.
+- **Nível:** `disciplina.nivel` separa as provas de Ensino Fundamental e Médio. A mesma matéria
+  nos dois níveis são duas disciplinas (`matematica` e `matematica-fundamental`).
 - **Usar o mínimo de LaTeX:** `5²`, `×` e `R$ 10,00` em texto puro bastam na maioria das questões,
   e a leitura em voz alta lê texto puro direito.
 
@@ -271,6 +299,6 @@ migration (`InicialIdentity`).
 
 - [ ] `videoaula.tipo`: a tela precisa distinguir tipos (introdutório, aprofundando...) ou isso pode sair?
 - [ ] `aula_assistida`: basta marcar uma vez por aluno (modelo atual), ou queremos histórico de cada vez que ele assiste?
-- [ ] `questao.imagem_url`: como hospedar as figuras quando elas entrarem (no MVP, não entram)?
+- [x] `questao.imagem_url`: recortes na tabela `imagem`, servidos pela API (10/11/2026).
 - [ ] `prova_edicao`: texto ou número? Conferir como o INEP identifica as edições.
 - [ ] Termos de uso das provas do INEP para reaproveitar as questões.
