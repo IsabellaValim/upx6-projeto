@@ -388,12 +388,12 @@
   font-weight: 700;
   flex: none;
 }
-.alt[aria-checked="true"] {
+.alt[aria-checked='true'] {
   border-color: var(--plum-dark);
   background: var(--lilac);
   font-weight: 600;
 }
-.alt[aria-checked="true"] .letter {
+.alt[aria-checked='true'] .letter {
   background: var(--plum);
   box-shadow:
     0 0 0 3px var(--surface),
@@ -518,6 +518,15 @@
   color: var(--muted);
 }
 
+/* Linha de contexto do tema abaixo dos números do resultado. */
+.result-progresso {
+  margin-top: 0.75rem;
+  text-align: center;
+}
+.result-progresso strong {
+  color: var(--plum-dark);
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -563,6 +572,29 @@
 }
 .tip .btn {
   margin-top: 1rem;
+}
+/* Situação das videoaulas do tema, no topo do tip */
+.tip-aula {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: var(--plum-dark);
+}
+.tip-aula svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+.tip-aula--ok {
+  color: var(--ok-text);
+}
+/* Aula assistida + lição com nota máxima: o tip inteiro vira parabéns verde */
+.tip--ok {
+  background: var(--ok-soft);
+  border-color: var(--ok);
 }
 
 .review {
