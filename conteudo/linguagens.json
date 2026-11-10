@@ -1,0 +1,1357 @@
+{
+  "disciplina": {
+    "slug": "linguagens",
+    "nome": "Linguagens",
+    "icone": "pen",
+    "nivel": "medio"
+  },
+  "temas": [
+    {
+      "slug": "interpretacao-de-texto",
+      "titulo": "Interpretação de texto",
+      "sobre": "Leia avisos, mensagens e pequenos relatos para localizar informações, fazer inferências e separar fatos de opiniões.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=nkcQjccZr3g",
+          "titulo": "Interpretação de texto para o Encceja (Termine Seus Estudos)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-pt-int-001",
+          "texto_base": "Aviso da biblioteca: de segunda a sexta, atendimento até as 18h. Aos sábados, atendimento das 9h às 14h.",
+          "enunciado": "Em que horário a biblioteca fecha no sábado?",
+          "alternativas": [
+            "Ao meio-dia",
+            "Às 14h",
+            "Às 17h",
+            "Às 18h"
+          ],
+          "resposta_correta": "Às 14h",
+          "resolucao": "O primeiro horário vale de segunda a sexta. A frase seguinte informa que, no sábado, a biblioteca funciona até as 14h."
+        },
+        {
+          "codigo": "aut-pt-int-002",
+          "texto_base": "Mensagem da associação: recebemos seu nome para a oficina de fotografia. A confirmação das vagas será enviada na sexta.",
+          "enunciado": "O que a mensagem permite concluir sobre as vagas?",
+          "alternativas": [
+            "A lista já foi encerrada.",
+            "Quem chegou primeiro já foi inscrito.",
+            "Entrar na lista ainda não garante uma vaga.",
+            "O encontro foi cancelado."
+          ],
+          "resposta_correta": "Entrar na lista ainda não garante uma vaga.",
+          "resolucao": "Se a confirmação será enviada na sexta, entrar na lista é só a primeira etapa. O texto ainda não confirma quem conseguiu vaga."
+        },
+        {
+          "codigo": "aut-pt-int-003",
+          "texto_base": "A feira começou em maio. Acontece aos domingos e tem doze barracas. Para mim, a feira deixou o bairro mais acolhedor.",
+          "enunciado": "Qual trecho expressa uma opinião da autora?",
+          "alternativas": [
+            "A feira começou em maio.",
+            "A feira acontece aos domingos.",
+            "A feira tem doze barracas.",
+            "A feira deixou o bairro mais acolhedor."
+          ],
+          "resposta_correta": "A feira deixou o bairro mais acolhedor.",
+          "resolucao": "A expressão “mais acolhedor” traz a avaliação da autora. Os outros trechos apresentam informações que podem ser verificadas, como o dia e a quantidade de barracas."
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-019",
+          "texto_base": "Isolada no Atlântico Norte, na altura do Círculo Polar Ártico, a Islândia passa despercebida do resto do mundo. É um lugar do qual só costumamos nos lembrar quando é sacudido por alguma erupção vulcânica mais violenta — o que costuma acontecer a cada cinco anos, em média —, ou então os fãs de Júlio Verne também já ouviram falar dessa ilha, embora a descrição que o escritor faz de sua paisagem tão peculiar leve alguns a achar que ela só existe na ficção.\nRAMALHO, J. Os Caminhos da Terra, n. 178, fev. 2007.",
+          "enunciado": "O objetivo desse texto é",
+          "alternativas": [
+            "anunciar um filme de ficção.",
+            "noticiar uma tragédia natural.",
+            "divulgar a obra de um escritor.",
+            "apresentar informações sobre um país."
+          ],
+          "resposta_correta": "apresentar informações sobre um país.",
+          "resolucao": "O texto fala da Islândia: onde ela fica (\"no Atlântico Norte, na altura do Círculo Polar Ártico\"), que tem erupções vulcânicas a cada cinco anos, em média, e que sua paisagem é muito peculiar. Júlio Verne e os vulcões aparecem só como detalhes. O objetivo é dar informações sobre esse país.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 19
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-026",
+          "texto_base": "Quadro 1: UMA INJUSTIÇA! PRECISO FAZER ALGUMA COISA!\nAMARILDO. Disponível em: www.humorpolitico.com.br. Acesso em: 5 set. 2019.",
+          "enunciado": "Nesse texto, que aborda a violência contra a mulher, a crítica recai sobre a",
+          "alternativas": [
+            "omissão da sociedade.",
+            "desigualdade de gêneros.",
+            "ineficiência das autoridades.",
+            "indignação da população."
+          ],
+          "resposta_correta": "omissão da sociedade.",
+          "resolucao": "No primeiro quadro, o homem vê pela janela do vizinho uma cena de agressão contra uma mulher e diz: \"Uma injustiça! Preciso fazer alguma coisa!\". No segundo quadro, o que ele \"faz\" é fechar a janela com cadeado, para não ver mais nada. A charge critica quem sabe da violência e não age: a omissão da sociedade.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 26,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_26.webp",
+            "descricao": "Charge em dois quadros. No primeiro, um homem na rua olha, assustado, para uma janela aberta onde aparece um homem levantando o braço para bater numa mulher; ele fala o texto do balão. No segundo quadro, o mesmo homem fecha as duas folhas da janela e as tranca com um cadeado, com cara séria."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-027",
+          "texto_base": "TEXTO I\nAo vencedor, as batatas\nSupõe tu um campo de batatas e duas tribos famintas. As batatas apenas chegam para alimentar uma das tribos que assim adquire forças para transpor a montanha e ir à outra vertente, onde há batatas em abundância; mas, se as duas tribos dividirem em paz as batatas do campo, não chegam a nutrir-se suficientemente e morrem de inanição. A paz, nesse caso, é a destruição; a guerra é a conservação. Uma das tribos extermina a outra e recolhe os despojos. Ao vencido, ódio ou compaixão; ao vencedor, as batatas.\nASSIS, M. Quincas Borba. Porto Alegre: L&PM Pockets, 2015.\nTEXTO II\nVá plantar batatas\nA origem dessa frase é portuguesa. Antigamente, em Portugal, país mais voltado às navegações e à pesca, a agricultura era vítima de certo desdém. Algumas de suas culturas eram ainda mais depreciadas, como era o caso da batata, que demorou a entrar para a culinária portuguesa e brasileira. Era tida como um alimento vulgar, e quem se dedicasse a plantar batatas estava se sujeitando a uma atividade desqualificada.\nSILVA, D. De onde vêm as palavras: frases e curiosidades da língua portuguesa. São Paulo: Mandarim, 1997.",
+          "enunciado": "Ao comparar os textos, percebe-se que nessas narrativas",
+          "alternativas": [
+            "cultivar batatas assume sentidos distintos.",
+            "produzir batatas é uma atividade valorizada.",
+            "plantar batatas é uma garantia de sobrevivência.",
+            "consumir batatas é um hábito alimentar saudável."
+          ],
+          "resposta_correta": "cultivar batatas assume sentidos distintos.",
+          "resolucao": "No primeiro texto, as batatas são o prêmio de quem vence: quem fica com elas sobrevive (\"ao vencedor, as batatas\"). No segundo, plantar batatas era visto como \"uma atividade desqualificada\", daí a expressão \"vá plantar batatas\". Num texto a batata é valiosa; no outro, é desprezada. Por isso, ela assume sentidos diferentes.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 27
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-006",
+          "texto_base": "Cuidado: uso excessivo de internet e celular pode viciar\nA tecnologia está definitivamente presente na vida cotidiana. Seja para consultar informações, conversar com amigos e familiares ou apenas entreter, a internet e os celulares não saem das mãos e mentes das pessoas. Por esse motivo, especialistas alertam: o uso excessivo dessas ferramentas pode viciar. Apesar de o distúrbio ainda não constar no Manual diagnóstico e estatístico de transtornos mentais, estudos recentes apontam que as mudanças causadas no cérebro pelo abuso na utilização da web são similares aos efeitos de drogas químicas, como o álcool e a cocaína. “A dependência pela tecnologia é comportamental, as outras são químicas, mas ela causa o mesmo desgaste na ponta do neurônio que as drogas” — explica o coordenador do Grupo de Dependências Tecnológicas do Instituto de Psiquiatria do Hospital das Clínicas de São Paulo.\nDisponível em: http://oglobo.com. Acesso em: 1 set. 2013 (adaptado).",
+          "enunciado": "Para convencer o leitor sobre a dependência que a tecnologia pode causar, o texto apresenta um argumento",
+          "alternativas": [
+            "alarmista.",
+            "conservador.",
+            "tendencioso.",
+            "preconceituoso."
+          ],
+          "resposta_correta": "alarmista.",
+          "resolucao": "O título já começa com “Cuidado” e o texto diz que “especialistas alertam”. Ele compara o uso exagerado da internet aos efeitos de drogas como “o álcool e a cocaína”. Esse tipo de argumento busca assustar e alertar o leitor, por isso é alarmista.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 6
+        }
+      ]
+    },
+    {
+      "slug": "generos-textuais",
+      "titulo": "Gêneros textuais",
+      "sobre": "Reconheça o objetivo de textos como avisos, notícias e pedidos formais.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=7J_VPmdqdwM",
+          "titulo": "Tipos e gêneros textuais: conceitos e diferenças (Português com Carla Holz)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-pt-gen-001",
+          "texto_base": "Aviso de transporte: durante a obra na praça, o ônibus da linha 12 vai parar em frente ao mercado, de segunda a quinta.",
+          "enunciado": "Qual é a finalidade principal desse aviso?",
+          "alternativas": [
+            "Vender passagens antecipadas.",
+            "Informar uma mudança no ponto de embarque.",
+            "Explicar por que o ônibus faz todo o trajeto.",
+            "Contar como a praça foi construída."
+          ],
+          "resposta_correta": "Informar uma mudança no ponto de embarque.",
+          "resolucao": "O aviso informa onde embarcar durante a obra. O lugar e o período da mudança são as informações centrais."
+        },
+        {
+          "codigo": "aut-pt-gen-002",
+          "texto_base": "Na terça-feira, a praça do bairro reabriu após dois meses de obras. Na primeira manhã, cerca de 60 pessoas participaram da caminhada de inauguração.",
+          "enunciado": "O que aproxima esse texto de uma notícia?",
+          "alternativas": [
+            "Apresenta passos de montagem.",
+            "Pede uma doação a quem lê.",
+            "Relata um acontecimento com local e data.",
+            "Defende a opinião de que a praça deveria fechar."
+          ],
+          "resposta_correta": "Relata um acontecimento com local e data.",
+          "resolucao": "O texto informa o que aconteceu, onde e quando. Esses detalhes ajudam a identificar o gênero notícia."
+        },
+        {
+          "codigo": "aut-pt-gen-003",
+          "texto_base": "A associação de moradores quer enviar à prefeitura um pedido formal para consertar a iluminação de uma rua.",
+          "enunciado": "Que gênero atende melhor ao objetivo da associação?",
+          "alternativas": [
+            "Uma receita com orientações de preparo",
+            "Um anúncio de venda de imóveis",
+            "Uma notícia sobre a história do bairro",
+            "Um ofício solicitando o reparo"
+          ],
+          "resposta_correta": "Um ofício solicitando o reparo",
+          "resolucao": "O ofício serve para registrar um pedido formal dirigido a uma instituição. Nele, a associação pode identificar a rua e explicar o problema."
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-003",
+          "texto_base": "Receita de uma boa leitora e escritora\nINGREDIENTES\n• 1 criança interessada nos livros dos irmãos.\n• 3 irmãos leitores de contos infantis e gibis.\n• 1 professora de 1º ano séria e competente.\n• Pais preocupados com a alfabetização dos filhos.\nMODO DE FAZER\n1. Coloque 1 criança junto aos irmãos em 1 quarto ou sala silenciosa e junte 6 livros e 4 gibis variados todos os dias, em um horário determinado, de preferência antes do jantar.\n2. Verifique se os pais estão atendendo às expectativas e necessidades da criança com compreensão, atenção e carinho.\n3. Matricule a criança no 1º ano.\n4. Depois de alfabetizada e com muito interesse, a criança torna-se uma boa leitora e escritora.\nMARIA, L. Programa de Formação de Professores Alfabetizadores, 2001. Disponível em: http://portal.mec.gov.br. Acesso em: 1 nov. 2019 (adaptado).",
+          "enunciado": "Que característica diferencia essa receita das tradicionais?",
+          "alternativas": [
+            "A presença de verbos escritos em forma de ordem.",
+            "A enumeração da quantidade de materiais.",
+            "A indicação de um passo a passo.",
+            "A originalidade dos ingredientes."
+          ],
+          "resposta_correta": "A originalidade dos ingredientes.",
+          "resolucao": "Toda receita tem lista de ingredientes com quantidades, verbos de ordem (\"Coloque\", \"Verifique\") e um passo a passo. Isso esta receita também tem. O que é diferente são os ingredientes: em vez de alimentos, aparecem \"1 criança interessada nos livros\", \"3 irmãos leitores\" e \"1 professora\". Essa originalidade é o que a diferencia das receitas comuns.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 3
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-008",
+          "texto_base": "A ÁGUA QUE VOCÊ NÃO VÊ\nVocê consome sem perceber. Veja o quanto de água potável é necessário para produzir itens do seu cotidiano\nArroz 1 kg: 2 500 litros\nManteiga 1 kg: 18 000 litros\nLeite 1 L: 712,5 litros\nCarne de boi 1 kg: 17 100 litros\nCarne de frango 1 kg: 3 700 litros\nDisponível em: www.researchgate.net. Acesso em: 5 set. 2019 (adaptado).",
+          "enunciado": "O que caracteriza esse texto como um infográfico é a",
+          "alternativas": [
+            "ocorrência de formas verbais no imperativo.",
+            "presença de unidades de medida como litro e quilo.",
+            "organização das informações em título, subtítulo e colunas.",
+            "apresentação de dados combinando a linguagem verbal e a não verbal."
+          ],
+          "resposta_correta": "apresentação de dados combinando a linguagem verbal e a não verbal.",
+          "resolucao": "Um infográfico junta palavras e desenhos para passar informações de forma rápida. Neste texto, os números de litros aparecem dentro de gotas de água de tamanhos diferentes, que saem de torneiras, com desenhos dos alimentos embaixo. É essa mistura de texto (linguagem verbal) com imagem (linguagem não verbal) que faz dele um infográfico.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 8,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_08.webp",
+            "descricao": "Infográfico com cinco colunas. Em cada uma há uma torneira pingando uma gota de água; o tamanho da gota mostra a quantidade de água. Arroz 1 kg: 2 500 litros; manteiga 1 kg: 18 000 litros (a maior gota); leite 1 L: 712,5 litros (a menor); carne de boi 1 kg: 17 100 litros; carne de frango 1 kg: 3 700 litros. Embaixo, numa esteira, desenhos de arroz, manteiga, garrafa de leite, vaca e galinha."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-005",
+          "texto_base": "The Avengers — Os Vingadores\nSinopse\nContinuando as épicas aventuras cinematográficas iniciadas por Homem de Ferro, O incrível Hulk, Homem de Ferro 2, Thor e Capitão América: o primeiro vingador, The Avengers — Os Vingadores, da Marvel, é uma reunião de super-heróis inédita. Quando um inesperado inimigo aparece e ameaça a segurança e a tranquilidade do mundo, Nick Fury, diretor da agência internacional de pacificação conhecida como Shield, se vê em busca de uma equipe capaz de tirar o mundo da iminência de um desastre. Por todo o planeta, um ousado recrutamento se inicia.\nDisponível em: http://cinema10.com.br. Acesso em: 4 set. 2013 (adaptado).",
+          "enunciado": "O autor do texto, ao apresentar o resumo de um filme, omite várias informações, pois sua intenção é",
+          "alternativas": [
+            "induzir o leitor a criticar o filme.",
+            "levar o público a compreender o filme.",
+            "convencer o leitor a assistir ao filme.",
+            "estimular o público a discutir o enredo do filme."
+          ],
+          "resposta_correta": "convencer o leitor a assistir ao filme.",
+          "resolucao": "A sinopse conta só o começo da história e para no suspense: “um ousado recrutamento se inicia”. Ela usa palavras que valorizam o filme, como “épicas aventuras” e “reunião de super-heróis inédita”. Ao esconder o final, desperta a curiosidade para que a pessoa vá assistir ao filme.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 5
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-009",
+          "texto_base": "Ano I - nº 32 - setembro/2013\nNúcleo do Migrante concede cerca de mil passagens só nos cinco primeiros meses do ano\nDiariamente, São Paulo, a maior capital do país e o principal centro financeiro da América do Sul, recebe milhares de migrantes que saem de suas cidades de origem em busca da realização financeira e de uma qualidade de vida melhor na “Terra da garoa”.\nA migração é algo natural e necessário para o desenvolvimento de uma sociedade, porém, nem sempre as experiências que um migrante vivencia são positivas. Há os que se adaptam à realidade paulistana e os que não conseguem se inserir socialmente na capital. O arrependimento e a frustração daqueles que acreditam em uma vida mais digna em São Paulo trazem como consequência a chamada “migração de retorno”, em que eles desejam voltar para a terra de origem.\nPara atender essa população específica, a Secretaria Municipal de Assistência e Desenvolvimento Social (SMADS) mantém o Núcleo do Migrante, na Rodoviária do Tietê, que atende pessoas vindas de outros municípios, que chegaram ou encontram-se na cidade sem referência por um período não superior a três meses.\nO serviço funciona de segunda a segunda, das 7 às 22 horas, e conta com assistentes sociais, que orientam e encaminham os usuários para os mais diversos serviços, como Centros de Acolhida, saúde, órgãos de defesa de direitos, entre outros.\nAlém disso, também é oferecido o apoio assistencial através da concessão de passagens para o transporte intermunicipal e interno ao migrante em situação de vulnerabilidade. Entre janeiro e maio deste ano, o serviço concedeu 983 passagens.\nSMADS. Disponível em: www.prefeitura.sp.gov.br. Acesso em: 13 set. 2013.",
+          "enunciado": "Os textos possuem diferentes finalidades, em razão da situação em que são produzidos, para quem e por quem são escritos, entre outros fatores. O boletim sobre o Núcleo do Migrante tem a função de",
+          "alternativas": [
+            "divulgar o atendimento ao migrante realizado pela prefeitura.",
+            "explicar o que é a migração, apresentando algumas de suas consequências.",
+            "descrever as experiências e sensações das pessoas que migram para as grandes cidades.",
+            "convencer o leitor a migrar em busca de realização financeira e de uma qualidade de vida melhor."
+          ],
+          "resposta_correta": "divulgar o atendimento ao migrante realizado pela prefeitura.",
+          "resolucao": "O boletim é da própria prefeitura (SMADS) e informa onde fica o Núcleo do Migrante, o horário (“de segunda a segunda, das 7 às 22 horas”) e os serviços oferecidos, como as passagens. A parte sobre migração serve só de introdução. O objetivo principal é tornar esse atendimento conhecido.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 9
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-011",
+          "texto_base": "O governo aumentou para 504 o número de empregadores infratores que estão listados por utilizar mão de obra análoga à escrava no Brasil, de acordo com os últimos dados divulgados pelo Ministério do Trabalho.\n“Com a atualização, o documento passa a conter 504 infratores, entre pessoas físicas e jurídicas, com atuação nos meios rural e urbano. Dessas novas inclusões, 61 empregadores estão relacionados à atividade de pecuária, 14 à produção de carvão vegetal e 9 à extração de madeira. Entre os 136 nomes incluídos nessa atualização, houve 46 ocorrências no estado do Pará, 19 no estado de Minas Gerais e 13 no Tocantins”, afirma o Ministério em nota.\nAlém de diversas multas, os integrantes da “lista suja” têm acesso vetado às linhas de crédito dos bancos públicos e não poderão vender sua produção para instituições estatais.\nDisponível em: http://g1.globo.com. Acesso em: 11 set. 2013 (adaptado).",
+          "enunciado": "O texto trata da existência e do combate, ainda nos dias atuais, do trabalho análogo ao escravo no Brasil. Observando-se o objetivo e os principais elementos que compõem esse texto, constata-se que se trata de uma reportagem, pois o autor",
+          "alternativas": [
+            "expõe sua opinião sobre o assunto, usando linguagem pessoal e acrescentando informações ao que foi publicado.",
+            "tenta convencer o leitor a mudar de comportamento, empregando linguagem impessoal e verbos no imperativo.",
+            "aborda o assunto de forma breve, descrevendo alguns detalhes e convidando o leitor a saber mais sobre o tema.",
+            "apresenta o assunto de forma objetiva, utilizando linguagem precisa e opiniões de outras pessoas para validar o que afirma."
+          ],
+          "resposta_correta": "apresenta o assunto de forma objetiva, utilizando linguagem precisa e opiniões de outras pessoas para validar o que afirma.",
+          "resolucao": "O texto traz números exatos, como “504 infratores” e “46 ocorrências no estado do Pará”, sem dar a opinião do autor. Ele também cita, entre aspas, o que “afirma o Ministério em nota”, usando outra voz para confirmar as informações. Linguagem objetiva e precisa, com fontes citadas, é típica da reportagem.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 11
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-012",
+          "texto_base": "Brasileiro consome muito sal\nOs brasileiros estão consumindo cada vez mais sal por livre e espontânea vontade. De acordo com uma pesquisa feita pelo Instituto Brasileiro de Geografia e Estatística (IBGE) e apresentada pela Associação Brasileira das Indústrias de Alimentação (Abia), 70% do sal consumido no Brasil é colocado no prato pelo próprio consumidor.\nA Organização Mundial da Saúde (OMS) recomenda que cada pessoa consuma apenas dois gramas de sal por dia, porém o estudo mostrou que os brasileiros estão indo muito além disso, chegando a 4,46 gramas diariamente.\n23,8% são ingeridos através de produtos industrializados, como macarrão, bolachas e pães. 4,7% vêm de alimentos naturais, como frutas e legumes. No entanto, 71,5% são adicionados ao prato como tempero.\nDestak Brasília, 12 ago. 2013 (adaptado).",
+          "enunciado": "Essa notícia, do ponto de vista de seus elementos constitutivos,",
+          "alternativas": [
+            "apresenta dados estatísticos que mostram contradições entre instituições brasileiras e internacionais.",
+            "expõe argumentos que responsabilizam a indústria alimentícia pelo problema discutido.",
+            "usa porcentagens para eleger as comidas mais saudáveis.",
+            "tem um título que sintetiza sua informação principal."
+          ],
+          "resposta_correta": "tem um título que sintetiza sua informação principal.",
+          "resolucao": "O título “Brasileiro consome muito sal” resume em poucas palavras o que a notícia mostra. O resto do texto só confirma isso com números: o brasileiro chega a 4,46 gramas por dia, mais que o dobro dos dois gramas recomendados. O texto não culpa a indústria, pois diz que a maior parte do sal é colocada no prato pelo próprio consumidor.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 12
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-017",
+          "texto_base": "Frases de alerta em bulas\nAs bulas de medicamentos irão trazer novas frases de alerta quanto ao uso correto e seguro dos produtos. Além das frases que trazem precauções, contraindicações críticas, a nova norma traz, em linguagem para o paciente, frases de alerta quanto ao grau de risco do uso do medicamento na gravidez e no aleitamento.\nDisponível em: http://portal.anvisa.gov.br. Acesso em: 27 set. 2013 (adaptado).",
+          "enunciado": "No texto, a Agência Nacional de Vigilância Sanitária (Anvisa) alerta sobre como as bulas de remédios serão modificadas, visando atender melhor a função desse gênero, que é a de",
+          "alternativas": [
+            "informar como as pessoas devem usar medicamentos.",
+            "apresentar a composição química de medicamentos.",
+            "diminuir o consumo exagerado de medicamentos.",
+            "evitar o uso de medicamentos na gravidez."
+          ],
+          "resposta_correta": "informar como as pessoas devem usar medicamentos.",
+          "resolucao": "A bula é o papel que vem dentro da caixa do remédio. O texto diz que as novas frases tratam do “uso correto e seguro dos produtos”, em “linguagem para o paciente”. Então a função da bula é orientar a pessoa sobre como usar o medicamento.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 17
+        }
+      ]
+    },
+    {
+      "slug": "variacao-linguistica",
+      "titulo": "Variação linguística",
+      "sobre": "Veja como região, situação e relação entre as pessoas influenciam a maneira de falar e escrever.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=6fBOVygtNoU",
+          "titulo": "Variação linguística (Professor Noslen)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-pt-var-001",
+          "texto_base": "No mercado, Rita pediu mandioca. O feirante mostrou a raiz e disse: “Na região de onde eu vim, muita gente chama isso de macaxeira.”",
+          "enunciado": "Que tipo de variação o diálogo exemplifica?",
+          "alternativas": [
+            "Variação de sentido provocada pela pontuação.",
+            "Variação regional no nome do mesmo alimento.",
+            "Variação de tempo verbal.",
+            "Variação na grafia de uma única palavra."
+          ],
+          "resposta_correta": "Variação regional no nome do mesmo alimento.",
+          "resolucao": "No diálogo, as duas palavras nomeiam o mesmo alimento. O costume de usar uma ou outra forma pode variar conforme a região."
+        },
+        {
+          "codigo": "aut-pt-var-002",
+          "texto_base": "Paulo precisa pedir à secretaria de um curso a data de entrega do comprovante de matrícula.",
+          "enunciado": "Qual mensagem combina melhor com uma solicitação formal por e-mail?",
+          "alternativas": [
+            "Oi! Cê me diz quando a gente pega o papel?",
+            "E aí, saiu aquilo que falei?",
+            "Olá. Gostaria de saber quando o comprovante estará disponível. Agradeço a atenção.",
+            "Manda aí quando tiver pronto."
+          ],
+          "resposta_correta": "Olá. Gostaria de saber quando o comprovante estará disponível. Agradeço a atenção.",
+          "resolucao": "Essa mensagem identifica o assunto com clareza, faz o pedido de forma respeitosa e é adequada a um e-mail dirigido à instituição."
+        },
+        {
+          "codigo": "aut-pt-var-003",
+          "enunciado": "Por que a afirmação de que toda fala regional é “português errado” é inadequada?",
+          "alternativas": [
+            "Porque as variedades são parte da língua e sua adequação depende do contexto.",
+            "Porque só a língua escrita tem regras.",
+            "Porque toda situação pede o mesmo jeito de falar.",
+            "Porque os sotaques só existem em conversas informais."
+          ],
+          "resposta_correta": "Porque as variedades são parte da língua e sua adequação depende do contexto.",
+          "resolucao": "As variedades regionais fazem parte do português. Uma conversa, uma entrevista e um documento formal podem pedir modos diferentes de usar a língua."
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-001",
+          "texto_base": "Antigamente\nAntigamente, as moças chamavam-se mademoiselles e eram todas mimosas e muito prendadas. Não faziam anos: completavam primaveras, em geral dezoito. Os janotas, mesmo sendo rapagões, faziam-lhes pé de alferes, arrastando a asa, mas ficavam longos meses debaixo do balaio.\nANDRADE, C. D. Disponível em: www.carlosdrummonddeandrade.com.br. Acesso em: 3 set. 2014.",
+          "enunciado": "Para remeter a hábitos em desuso, o texto explora a variedade linguística característica de uma",
+          "alternativas": [
+            "época.",
+            "região.",
+            "faixa etária.",
+            "classe social."
+          ],
+          "resposta_correta": "época.",
+          "resolucao": "O texto começa com a palavra \"Antigamente\" e usa expressões que quase ninguém usa mais, como \"mademoiselles\", \"completavam primaveras\", \"janotas\" e \"pé de alferes\". Esse jeito de falar era comum em outro tempo. Por isso, a variedade explorada é a de uma época passada.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 1
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-004",
+          "texto_base": "A nova imagem dos idosos transformou a maneira de nomear as pessoas. Atualmente, chamar aquele que envelhece de velho pode expressar desprestígio ou desrespeito. A expressão velho, que nos leva a pensar em algo antiquado, desgastado ou obsoleto, foi substituída por idoso, significando a passagem do tempo e aquele que tem bastante idade. A fase da velhice foi substituída por terceira idade e, mais recentemente, por maturidade. Os jornais têm, inclusive, uma norma adotada em seus manuais de redação e estilo que orienta os jornalistas a terem cuidado com a carga de preconceito que a expressão velho encerra. A opção foi usar a palavra idoso ou apenas registrar a idade dos personagens.\nMASCARO, S. O que é velhice. São Paulo: Brasiliense, 2004 (adaptado).",
+          "enunciado": "Ao se referir aos termos \"velho\" e \"idoso\", o texto revela que",
+          "alternativas": [
+            "o sentido das palavras está sujeito a leis.",
+            "o vocabulário da língua portuguesa é amplo.",
+            "a escolha de palavras carrega valores sociais.",
+            "muitos vocábulos têm significados imprecisos."
+          ],
+          "resposta_correta": "a escolha de palavras carrega valores sociais.",
+          "resolucao": "O texto explica que chamar alguém de \"velho\" pode \"expressar desprestígio ou desrespeito\", e que os jornais orientam a ter cuidado com \"a carga de preconceito\" dessa palavra. Por isso se prefere \"idoso\" ou \"terceira idade\". Ou seja, escolher uma palavra ou outra mostra respeito ou preconceito: a escolha carrega valores sociais.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 4
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-007",
+          "texto_base": "É de se esperar que, na extensão do território brasileiro, haja uma unidade linguística, a língua portuguesa, mas também diversidade, os falares brasileiros. O falante do Norte do país não tem a menor dificuldade em entender o falante do Sul, embora ocorram diferenças na fonética, na sintaxe e no léxico. Por exemplo, a uma mesma fruta atribuem-se palavras regionalmente diferentes, tais como: tangerina, mexerica, laranja-cravo ou bergamota; pinha, fruta-de-conde ou ata; goiaba ou araçá, isto é, opções lexicais próprias de cada região.\nLEITE, Y.; CALLOU, D. Como falam os brasileiros. Rio de Janeiro: Jorge Zahar, 2002 (adaptado).",
+          "enunciado": "Ao apresentar diferentes nomes para algumas frutas de nossa terra, o texto",
+          "alternativas": [
+            "enfatiza o tamanho do Brasil.",
+            "destaca a riqueza linguística brasileira.",
+            "critica o emprego de vocabulário regional.",
+            "revela o desconhecimento da palavra correta."
+          ],
+          "resposta_correta": "destaca a riqueza linguística brasileira.",
+          "resolucao": "O texto diz que no Brasil há uma só língua, mas também \"diversidade, os falares brasileiros\". Os vários nomes para a mesma fruta, como tangerina, mexerica e bergamota, são dados como exemplo dessa variedade de cada região. O texto não critica nem diz que um nome é errado: ele mostra a riqueza da nossa língua.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 7
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-016",
+          "texto_base": "FIQUE ESPERTO!\nFala sério, a internet é muito incrível! Você não fica de cara em saber que todo tipo de comportamento pode acontecer na internet? É verdade. Tem muita coisa genial, mas como em todo lugar público, tem também os vacilões que se comportam espalhando preconceito e racismo, achando que na rede não tem lei. Os vacilões tentam convencer as vítimas pela sedução. Elogiam, dão cantadas e insistem sem descanso até conseguirem o que querem. Então, se alguém te procurar com um papo estranho, bloqueie essa pessoa sem receio. Lembre que seus direitos e deveres valem também na internet!\nSe quiser conversar on-line, busque o canaldeajuda.org.br.\nMoral da história: internet maneira é internet sem vacilo!\nDisponível em: www.internetsemvacilo.org.br. Acesso em: 30 out. 2019.",
+          "enunciado": "O uso de gírias nesse texto se justifica porque ele",
+          "alternativas": [
+            "aborda tema relacionado ao uso das redes sociais.",
+            "visa se aproximar do público-alvo.",
+            "objetiva orientar usuários acerca de crimes virtuais.",
+            "figura em um guia publicitário de grande circulação."
+          ],
+          "resposta_correta": "visa se aproximar do público-alvo.",
+          "resolucao": "O texto usa expressões como \"Fala sério\", \"fica de cara\", \"vacilões\", \"maneira\" e \"sem vacilo\". Esse é o jeito de falar dos jovens, que são o público da campanha. Usar a linguagem deles ajuda a criar proximidade, para que a mensagem de cuidado na internet seja ouvida.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 16
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-014",
+          "texto_base": "Samba do Arnesto\nO Arnesto nos convidou pra um samba, ele mora no Brás\nNós fumo, não encontremo ninguém\nNós vortermo com uma baita de uma reiva\nDa outra vez, nós num vai mais\nNós não semo tatu!\nIsso não se faz, Arnesto\nBARBOSA, A. Reviva: Adoniran Barbosa. Rio de Janeiro: Som Livre, 2002 (fragmento).",
+          "enunciado": "Nesse samba, Adoniram Barbosa busca retratar a fala de uma comunidade em São Paulo. O trecho que apresenta essa linguagem peculiar é:",
+          "alternativas": [
+            "“ele mora no Brás”.",
+            "“Da outra vez”.",
+            "“Nós vortemo”.",
+            "“Isso não se faz”."
+          ],
+          "resposta_correta": "“Nós vortemo”.",
+          "resolucao": "Na norma-padrão, diríamos “nós voltamos”. No samba aparece “vortemo”, com o “l” trocado por “r” e o final da palavra modificado, do jeito que se falava em certos bairros populares de São Paulo. Os outros trechos, como “Isso não se faz”, estão escritos como na fala comum de qualquer lugar.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 14
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-015",
+          "texto_base": "Nada tanto assim\nSó tenho tempo pras manchetes no metrô\nE o que acontece na novela\nAlguém me conta no corredor\nEscolho os filmes que eu não vejo no elevador\nPelas estrelas que eu encontro\nNa crítica do leitor\n\nEu tenho pressa\nE tanta coisa me interessa\nMas nada tanto assim\nEu me concentro em apostilas\nCoisa tão normal\nLeio os roteiros de viagem\nEnquanto rola o comercial\nConheço quase o mundo inteiro por cartão-postal\nEu sei de quase tudo um pouco e quase tudo mal\nLEONI. Disponível em: www.leoni.art.br. Acesso em: 20 mar. 2014.",
+          "enunciado": "As escolhas lexicais — entre elas a gíria — podem ser usadas como um argumento para atrair um público-alvo. Nessa letra de canção voltada para os jovens, esse recurso linguístico foi usado em",
+          "alternativas": [
+            "“Só tenho tempo pras manchetes no metrô”.",
+            "“E o que acontece na novela/Alguém me conta no corredor”.",
+            "“Eu me concentro em apostilas/Coisa tão normal”.",
+            "“Leio os roteiros de viagem/Enquanto rola o comercial”."
+          ],
+          "resposta_correta": "“Leio os roteiros de viagem/Enquanto rola o comercial”.",
+          "resolucao": "Gíria é uma palavra usada de modo informal, típico de um grupo, como os jovens. Em “Enquanto rola o comercial”, o verbo “rolar” tem o sentido de “passar” ou “acontecer”, que é um uso de gíria. Nos outros trechos as palavras estão no sentido comum.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 15
+        }
+      ]
+    },
+    {
+      "slug": "gramatica",
+      "titulo": "Gramática no texto",
+      "sobre": "Entenda como palavras de ligação e pronomes ajudam a construir o sentido.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=IIU6i3UXyi0",
+          "titulo": "Coesão e coerência (Professor Noslen)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-pt-gra-001",
+          "texto_base": "Eu ia me inscrever na terça, mas o prazo terminou na segunda.",
+          "enunciado": "Que relação a palavra “mas” estabelece entre as duas ideias?",
+          "alternativas": [
+            "Explica a causa da inscrição.",
+            "Indica que as duas ações aconteceram ao mesmo tempo.",
+            "Mostra um contraste entre a intenção e o que aconteceu.",
+            "Apresenta uma condição para participar."
+          ],
+          "resposta_correta": "Mostra um contraste entre a intenção e o que aconteceu.",
+          "resolucao": "A primeira ideia mostra que a pessoa pretendia se inscrever. A segunda mostra o impedimento. “Mas” liga essas duas ideias de contraste."
+        },
+        {
+          "codigo": "aut-pt-gra-002",
+          "texto_base": "A equipe colocou um mural na entrada. Nele, anotou o horário da próxima visita.",
+          "enunciado": "A palavra “nele” retoma qual elemento?",
+          "alternativas": [
+            "O horário",
+            "O mural",
+            "A visita",
+            "A equipe"
+          ],
+          "resposta_correta": "O mural",
+          "resolucao": "“Nele” significa “no mural”. O pronome retoma o lugar onde o horário foi anotado."
+        },
+        {
+          "codigo": "aut-pt-gra-003",
+          "texto_base": "A rua alagou. Por isso, a entrega foi remarcada.",
+          "enunciado": "Qual expressão mantém o sentido de “por isso” nesse texto?",
+          "alternativas": [
+            "Apesar disso",
+            "Antes disso",
+            "Por exemplo",
+            "Por esse motivo"
+          ],
+          "resposta_correta": "Por esse motivo",
+          "resolucao": "A rua alagada é o motivo da mudança. Tanto “por isso” quanto “por esse motivo” introduzem a consequência."
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-025",
+          "texto_base": "Adeus, doce França\nOs dias de França me deram uma sensação de pausa, de espanto, de novos contatos sonhados desde menino. Vi terras por onde andaram os doze pares de França, os heróis do meu Carlos Magno, lido e relido como história de Trancoso. Vi terras do sul, o mar Mediterrâneo, o mar da história, o mar dos gregos, dos egípcios, dos fenícios, dos romanos. Mas o nordestino tinha que voltar à sua realidade, à realidade maior que a história do mundo, isto é, à história dos seus homens, dos cangaceiros brutais, carregados de vida bárbara, de instintos cruéis de uma força, porém, que não se extingue nunca, porque é a energia de uma raça de homens mais duros do que as pedras dos seus lajedos.\nREGO, J. L. In: QUEIROZ, R.; GULLAR, F.; REGO, J. L. O melhor da crônica brasileira. Rio de Janeiro: José Olympio, 1997.",
+          "enunciado": "O texto é dividido em dois planos básicos, o do sonho e o da realidade. O termo que delimita essa separação é",
+          "alternativas": [
+            "“onde”.",
+            "“Mas”.",
+            "“isto é”.",
+            "“que”."
+          ],
+          "resposta_correta": "“Mas”.",
+          "resolucao": "Na primeira parte, o autor lembra a viagem à França, \"sonhada desde menino\". Depois vem a frase \"Mas o nordestino tinha que voltar à sua realidade\". A palavra \"Mas\" indica oposição: ela marca a passagem do sonho para a realidade. As outras palavras apenas ligam ou explicam partes dentro do mesmo plano.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 25
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-025",
+          "texto_base": "O Painel Brasileiro de Mudanças Climáticas lança amanhã, em São Paulo, um relatório sumário sobre os efeitos do aquecimento global no país. Resultado de seis anos de trabalho de 345 pesquisadores, que avaliaram tudo o que já se publicou de estudos sobre o tema, suas conclusões não são nada boas. Os biomas (paisagens naturais) sob maior aperto são a Floresta Amazônica e a Caatinga. Ambas sofrerão redução de chuvas e aumento de temperatura ao longo deste século, com resultados preocupantes nos dois casos.\nDisponível em: www1.folha.uol.com.br. Acesso em: 8 set. 2013 (adaptado).",
+          "enunciado": "Nesse texto, a expressão “suas conclusões não são nada boas” tem a função de",
+          "alternativas": [
+            "antecipar as conclusões contidas no relatório.",
+            "retomar os dados introdutórios apresentados no relatório.",
+            "introduzir a ideia de que estudos sobre os efeitos do aquecimento global foram publicados.",
+            "recuperar a informação de que o relatório é resultado de seis anos de trabalho de 345 pesquisadores."
+          ],
+          "resposta_correta": "antecipar as conclusões contidas no relatório.",
+          "resolucao": "A frase “suas conclusões não são nada boas” avisa o leitor, antes dos detalhes, que o resultado do relatório é ruim. Logo depois, o texto explica essas conclusões: a Amazônia e a Caatinga terão menos chuva e mais calor. Assim, a expressão adianta o que vem a seguir.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 25
+        }
+      ]
+    },
+    {
+      "slug": "literatura",
+      "titulo": "Literatura",
+      "sobre": "Leia poemas, contos e crônicas e perceba os recursos que dão expressividade ao texto.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-ling-005",
+          "texto_base": "Vozes d’África\nDeus! ó Deus! onde estás que não respondes?\nEm que mundo, em qu’estrela tu t’escondes\nEmbuçado nos céus?\nHá dois mil anos te mandei meu grito,\nQue embalde desde então corre o infinito...\nOnde estás, Senhor Deus?...\nALVES, C. Disponível em: www.dominiopublico.gov.br. Acesso em: 16 set. 2013 (fragmento).",
+          "enunciado": "No trecho do poema de Castro Alves, conhecido como o “poeta dos escravos” por protestar, nas suas obras, contra a situação a que eram submetidos os escravos, o eu lírico mostra-se",
+          "alternativas": [
+            "indignado e desesperançoso.",
+            "estressado e incrédulo.",
+            "vingativo e descrente.",
+            "raivoso e desconfiante."
+          ],
+          "resposta_correta": "indignado e desesperançoso.",
+          "resolucao": "No poema, quem fala é a África, que chama por Deus e pergunta: \"onde estás que não respondes?\". Ela diz que há \"dois mil anos\" manda seu grito, e que ele corre \"embalde\", isto é, em vão. O tom de protesto mostra indignação, e o grito sem resposta mostra falta de esperança.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 5
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-013",
+          "texto_base": "Piedade\nO coração de todo o ser humano\nfoi concebido para ter piedade,\npara olhar e sentir com caridade,\nficar mais doce o eterno desengano.\n\nPara dar vida em cada rude oceano\narrojar, através da imensidade,\ntábuas de salvação, de suavidade,\nde consolo e de afeto soberano.\n\nSim! Que não ter um coração profundo\né os olhos fechar à dor do mundo,\nficar inútil nos amargos trilhos.\n\nÉ como se o meu ser compadecido\nnão tivesse um soluço comovido\npara sentir e para amar meus filhos!\nCRUZ E SOUSA. Últimos sonetos. Disponível em: www.dominiopublico.gov.br. Acesso em: 30 mar. 2022.",
+          "enunciado": "Ao abordar o tema da piedade, o poema o descreve como um sentimento que",
+          "alternativas": [
+            "revela a importância do amor paterno.",
+            "valoriza a empatia das relações humanas.",
+            "ameniza os efeitos do sofrimento amoroso.",
+            "denuncia as consequências das desigualdades."
+          ],
+          "resposta_correta": "valoriza a empatia das relações humanas.",
+          "resolucao": "O poema diz que o coração humano foi feito \"para ter piedade, para olhar e sentir com caridade\" e para dar \"consolo e afeto\" a quem sofre. Também diz que não ter esse coração \"é os olhos fechar à dor do mundo\". Ou seja, a piedade é sentir a dor do outro, que é o que chamamos de empatia. Os filhos aparecem só no fim, como exemplo.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 13
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-017",
+          "texto_base": "Esperança\nLá bem no alto do décimo segundo andar do Ano\nVive uma louca chamada Esperança\nE ela pensa que quando todas as sirenas\nTodas as buzinas\nTodos os reco-recos tocarem Atira-se\nE — ó delicioso voo!\nEla será encontrada miraculosamente incólume na calçada,\nOutra vez criança…\nE em torno dela indagará o povo:\n— Como é teu nome, meninazinha de olhos verdes?\nE ela lhes dirá\n(É preciso dizer-lhes tudo de novo!)\nEla lhes dirá bem devagarinho, para que não esqueçam:\n— O meu nome é ES-PE-RAN-ÇA…\nQUINTANA, M. Mário Quintana: poesia completa. Rio de Janeiro: Nova Aguilar, 2005.",
+          "enunciado": "No poema, a esperança é personificada e associada metaforicamente à",
+          "alternativas": [
+            "passagem de ano.",
+            "saudade da infância.",
+            "ingenuidade do povo.",
+            "manifestação da loucura."
+          ],
+          "resposta_correta": "passagem de ano.",
+          "resolucao": "A Esperança vive \"no alto do décimo segundo andar do Ano\": os doze andares lembram os doze meses. Ela se atira quando tocam \"todas as sirenas, todas as buzinas, todos os reco-recos\", como na festa da virada do ano. E volta \"outra vez criança\", como o ano que recomeça. Por isso, ela está ligada à passagem de ano.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 17
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-013",
+          "texto_base": "De seu calmo esconderijo,\no ouro vem, dócil e ingênuo;\ntorna-se pó, folha, barra,\nprestígio, poder, engenho...\nÉ tão claro! — turva tudo:\nhonra, amor e pensamento.\n\nBorda flores nos vestidos,\nsobe a opulentos altares,\ntraça palácios e pontes,\neleva os homens audazes\ne acende paixões que alastram\nsinistras rivalidades.\nMEIRELES, C. Romanceiro da Inconfidência. Porto Alegre: L&PM, 2008.",
+          "enunciado": "As imagens que descrevem poeticamente a presença do ouro nas relações humanas reforçam a expressividade do poema, pois",
+          "alternativas": [
+            "destacam o contraste entre a pureza do metal e a obscuridade da cobiça.",
+            "denunciam a força oculta do ouro e a inaptidão de seus exploradores.",
+            "sugerem a existência de nobres e padres injustamente enriquecidos.",
+            "mencionam a interferência destrutiva do ouro nas relações amorosas."
+          ],
+          "resposta_correta": "destacam o contraste entre a pureza do metal e a obscuridade da cobiça.",
+          "resolucao": "O poema diz que o ouro vem “dócil e ingênuo” e que “É tão claro!”, mostrando sua pureza. Logo depois, diz que ele “turva tudo” e “acende paixões que alastram sinistras rivalidades”. O poema opõe o brilho do metal à escuridão da ganância que ele desperta nas pessoas.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 13
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-016",
+          "texto_base": "Descobri aos 13 anos que o que me dava prazer nas leituras não era a beleza das frases, mas a doença delas.\nComuniquei ao padre Ezequiel, um meu preceptor, esse gosto esquisito.\nO padre falou ainda: Manoel, isso não é doença, pode muito que você carregue para o resto da vida um certo gosto por nadas… E se riu. Você não é de bugre? — ele continuou. Que sim, eu respondi. Veja que bugre só pega por desvios, não anda em estradas — Pois é nos desvios que encontra as melhores surpresas e os ariticuns maduros.\nBARROS, M. Livro das ignorãças. Disponível em: www.jornaldepoesia.jor.br. Acesso em: 10 ago. 2014.",
+          "enunciado": "A palavra “bugre”, no contexto da colonização portuguesa no Brasil, era utilizada preconceituosamente pelos portugueses para fazer referência à cultura indígena como inculta e primitiva. No entanto, o poeta Manoel de Barros retoma essa palavra e se reapropria positivamente dela ao considerar que a linguagem poética",
+          "alternativas": [
+            "privilegia o que está à margem.",
+            "propõe-se a resgatar termos antigos.",
+            "baseia-se fortemente nas línguas indígenas.",
+            "admite o erro da língua de efeito improdutivo."
+          ],
+          "resposta_correta": "privilegia o que está à margem.",
+          "resolucao": "O texto diz que o bugre “só pega por desvios, não anda em estradas” e que “é nos desvios que encontra as melhores surpresas”. Para o poeta, a poesia faz o mesmo: valoriza o que fica fora do caminho comum, os “nadas” e a “doença” das frases. Ou seja, a linguagem poética dá valor ao que está à margem.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 16
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-020",
+          "texto_base": "— Tu reparaste como o céu é bonito? — disse, e sem esperar resposta, acrescentou: — Nossa tradição conta que nosso primeiro Pai veio de uma estrela dourada. Ele viu a beleza de nossa terra e resolveu descer para criar um paraíso aqui. Tu acreditas nisso? Há muitos mistérios em nossas vidas. Nós estamos cercados por seres animados que nos dizem que há mais coisas para acreditar do que o que nossos olhos veem. De que outra maneira se poderia entender os nossos rituais para a Mãe-Natureza? Se Ela não entendesse o que estamos fazendo, não sentiríamos vontade de fazer? — Talvez nossa tradição tenha razão ao afirmar isso, Maíra. — Não há coisas que fazemos sem compreender? — questionou Maíra. — Não precisamos compreender tudo o que fazemos. Temos de acreditar em quem nos ensina as coisas misteriosas da vida.\nMUNDURUKU, D. Sabedoria das águas. São Paulo: Global, 2004.",
+          "enunciado": "No fragmento, a percepção da condição humana pelas personagens indígenas Koru e Maíra revela uma",
+          "alternativas": [
+            "crença na existência de um paraíso criado para os homens.",
+            "aceitação da dimensão mítica da vida em sua grandeza insondável.",
+            "obediência aos rituais de perpetuação da identidade da aldeia.",
+            "submissão aos místicos responsáveis pelas cerimônias de iniciação."
+          ],
+          "resposta_correta": "aceitação da dimensão mítica da vida em sua grandeza insondável.",
+          "resolucao": "As personagens falam que “há muitos mistérios em nossas vidas” e que há mais coisas para acreditar “do que o que nossos olhos veem”. No fim, dizem: “Não precisamos compreender tudo o que fazemos”. Elas aceitam o lado mágico e misterioso da vida, sem precisar explicá-lo por completo.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 20
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-023",
+          "texto_base": "Outra vida\nSe o dia de hoje é igual ao dia que me espera\ndepois, resta-me, entanto, o consolo incessante\nde sentir, sob os pés, a cada passo adiante,\nque se muda o meu chão para o chão de outra esfera.\n\nEu não me esquivo à dor nem maldigo a severa\nlei que me condenou à tortura constante;\nporque em tudo adivinho a morte a todo instante,\nAbro o seio, risonho, à mão que o dilacera.\n\nNo ambiente que me envolve há trevas do seu luto;\nna minha solidão a sua voz escuto\ne sinto, contra o meu, o seu hálito frio.\n\nMorte, curta é a jornada e o meu fim está perto!\nFeliz, contigo irei, sem olhar o deserto\nQue deixo atrás de mim, vago, imenso, vazio.\nFRANCISCA JÚLIA. In: FARACO, S. (org.). Livro dos sonetos. Porto Alegre: L&PM Pocket, 2010.",
+          "enunciado": "O soneto é um gênero poético de forma fixa, frequentemente explorado pelo Classicismo e em geral voltado para temas universais. No texto de Francisca Júlia, ao tematizar a morte, o eu lírico revela",
+          "alternativas": [
+            "intenção de valorizar objetivamente a dor.",
+            "um desejo inconsciente de conviver com a morte.",
+            "dificuldade de entender a tortura a que se submete.",
+            "paz de espírito ao aceitar o fim inevitável da vida."
+          ],
+          "resposta_correta": "paz de espírito ao aceitar o fim inevitável da vida.",
+          "resolucao": "A voz do poema diz “Eu não me esquivo à dor nem maldigo” a lei que a condenou, ou seja, não foge nem reclama. No fim, fala com a Morte: “o meu fim está perto! Feliz, contigo irei”. Ela aceita a morte com calma e até com alegria, como algo que não se pode evitar.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 23
+        }
+      ]
+    },
+    {
+      "slug": "comunicacao-e-midias",
+      "titulo": "Comunicação e mídias",
+      "sobre": "Analise propagandas, redes sociais e textos que misturam palavras e imagens.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-ling-009",
+          "texto_base": "O streaming é considerado um processo ideal para ouvir ou assistir mais rápido, pois permite escutar e visualizar os arquivos enquanto se faz o download. Nessa transmissão, o usuário começa a ouvir a música ou assistir ao vídeo em questão de segundos, desde que utilize uma conexão de qualidade. O processo de streaming trouxe algo novo para a sociedade, pois possibilitou que um número muito maior de pessoas implantasse suas próprias emissoras de TV, fazendo uso simplesmente de um computador e da internet.\nDisponível em: www.usp.br. Acesso em: 14 jun. 2021 (adaptado).",
+          "enunciado": "De acordo com o texto, a transmissão via streaming é inovadora, pois",
+          "alternativas": [
+            "amplia o alcance das emissoras televisivas.",
+            "permite ao usuário acessar mídias rapidamente.",
+            "dispensa o espaço para arquivos no computador.",
+            "assegura o acesso a conexões de baixa velocidade."
+          ],
+          "resposta_correta": "permite ao usuário acessar mídias rapidamente.",
+          "resolucao": "O texto diz que o streaming é \"ideal para ouvir ou assistir mais rápido\", porque a pessoa escuta ou vê o arquivo enquanto ele ainda está sendo baixado. Ela começa a ouvir a música ou ver o vídeo \"em questão de segundos\". A novidade, então, é o acesso rápido às músicas e vídeos. O texto também diz que é preciso uma boa conexão, e não uma conexão lenta.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 9
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-012",
+          "texto_base": "Se tem festa, tem que ter camisinha\nProteja-se!\nUse sempre camisinha.\nNão importa a balada, nem onde, nem com quem. O importante é sempre usar camisinha.\nRetire gratuitamente a sua camisinha em uma unidade de saúde. Faça o teste de aids, sífilis e hepatites virais.\nDisponível em: www.sonora.ms.gov.br. Acesso em: 18 jul. 2015 (adaptado).",
+          "enunciado": "Esse texto publicitário tem a função de",
+          "alternativas": [
+            "incentivar a mudança de comportamentos.",
+            "informar sobre a proliferação de doenças.",
+            "convidar para uma festa popular.",
+            "divulgar atividades recreativas."
+          ],
+          "resposta_correta": "incentivar a mudança de comportamentos.",
+          "resolucao": "O cartaz usa frases de ordem e conselho: \"Proteja-se!\" e \"Use sempre camisinha.\" Ele diz que, não importa a festa, \"o importante é sempre usar camisinha\", e indica onde pegá-la de graça. A festa aparece só como cenário; o objetivo é fazer as pessoas mudarem de atitude e se protegerem.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 12,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_12.webp",
+            "descricao": "Cartaz de campanha de saúde. À esquerda, a frase \"Se tem festa, tem que ter camisinha\" em letras grandes no meio de uma moldura redonda feita de objetos de festa: balões, guarda-sóis, chapéus, bolas, máscaras de carnaval e violões. À direita, os textos de alerta e orientação."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-014",
+          "texto_base": "\"Com o passar dos anos, a internet foi ficando mais inteligente\", diz David Reinsel, vice-presidente sênior de uma empresa do setor de tecnologia. Você não está mais indo a algum lugar. O lugar está vendo você ir até ele, aprendendo mais sobre você, pelo que compra, pelo que busca e pelas coisas de que gosta. Assim como tudo que faz on-line, você deixa um rastro de informações. Seu eu digital é mais você do que o seu eu físico agora. Antes que as empresas criem um produto para uma determinada geração, são feitas muitas pesquisas sobre esse público através da internet. Assim, com as informações que estão recebendo sobre nós on-line, elas podem segmentar para o indivíduo que querem. Pense sobre o dia quando entrar em um restaurante e for recebido pelo nome e apresentado a um cardápio que leva em conta o que você gosta, considerando suas alergias. Ainda não chegamos lá, mas é para lá que estamos indo. A desvantagem, porém, é se esse restaurante diz ao seu plano de saúde que você pediu uma banana split.\nGAUDIN, S. Disponível em: https://computerworld.com.br. Acesso em: 30 maio 2021 (adaptado).",
+          "enunciado": "Entre as mudanças sociais decorrentes do desenvolvimento da internet, o texto destaca o uso de tecnologias com a finalidade de",
+          "alternativas": [
+            "facilitar o desenvolvimento de soluções digitais.",
+            "ajudar os usuários a administrarem suas rotinas.",
+            "desenvolver produtos para públicos específicos.",
+            "orientar as pessoas sobre hábitos saudáveis de vida."
+          ],
+          "resposta_correta": "desenvolver produtos para públicos específicos.",
+          "resolucao": "O texto conta que, \"antes que as empresas criem um produto para uma determinada geração\", elas pesquisam esse público pela internet. Com as informações que deixamos on-line, as empresas \"podem segmentar para o indivíduo que querem\". O exemplo do restaurante com cardápio pensado para cada cliente mostra isso: a tecnologia é usada para criar produtos para públicos específicos.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 14
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-021",
+          "texto_base": "Uma das vantagens de nossa tecnologia atual é que estamos sempre conectados a tudo: amigos, trabalho, família. E a maior desvantagem é justamente estarmos conectados a tudo o tempo todo. Em 1999, quando falávamos em tirar férias, nós realmente tirávamos férias. O período era completamente nosso; íamos viajar e, durante esse tempo, não ouvíamos falar de trabalho. Hoje, o período de férias não é mais exatamente um tempo de total descanso, mas uns dias com carga de trabalho menor, já que, a todo tempo, somos lembrados, via e-mail, pelo grupo de mensagens da empresa ou pelas redes sociais, sobre o que a empresa está fazendo e sobre qual será o nosso papel no andamento das coisas quando voltarmos. De todas as melhorias que a tecnologia tem nos proporcionado, nos fazer ficar preocupados com a reunião de segunda-feira enquanto estamos sentados na praia tomando água de coco, definitivamente, não é uma delas.\nDisponível em: https://canaltech.com.br. Acesso em: 30 maio 2021 (adaptado).",
+          "enunciado": "No texto, um exemplo de impacto negativo das tecnologias de informação e comunicação é a",
+          "alternativas": [
+            "substituição do contato físico pelo virtual entre as pessoas no local de trabalho.",
+            "falta de disposição dos profissionais para participar de atividades de lazer.",
+            "constante insegurança trabalhista pela sobrecarga de atribuições aos funcionários.",
+            "dificuldade dos profissionais em pausarem seus trabalhos mesmo em momentos de descanso."
+          ],
+          "resposta_correta": "dificuldade dos profissionais em pausarem seus trabalhos mesmo em momentos de descanso.",
+          "resolucao": "O texto diz que a maior desvantagem é \"estarmos conectados a tudo o tempo todo\". Hoje, nas férias, \"somos lembrados, via e-mail, pelo grupo de mensagens da empresa ou pelas redes sociais\" sobre o trabalho. O exemplo é ficar preocupado com a reunião de segunda-feira enquanto se está na praia. Ou seja, fica difícil parar de trabalhar mesmo no descanso.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 21
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-028",
+          "texto_base": "METADE DOS SOFTWARES EM USO NO BRASIL É CÓPIA PIRATA\nRESOLVEMOS MUDAR DE SÍMBOLO! A CAVEIRA FICOU FORA DE MODA...\nALVES. Disponível em: www1.folha.uol.com.br. Acesso em: 20 jul. 2014.",
+          "enunciado": "A troca da bandeira feita pelo personagem é um recurso usado para criticar a",
+          "alternativas": [
+            "utilização de símbolos antigos na internet.",
+            "venda de desenhos originais na rede.",
+            "navegação em sites inseguros.",
+            "pirataria digital."
+          ],
+          "resposta_correta": "pirataria digital.",
+          "resolucao": "O título da charge diz: \"Metade dos softwares em uso no Brasil é cópia pirata\". Os personagens são piratas num navio, e a bandeira pirata agora tem o símbolo @, da internet, no lugar da caveira. A troca mostra que a pirataria de hoje acontece no mundo digital, com programas copiados sem autorização.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 28,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_28.webp",
+            "descricao": "Charge com o título no alto, numa faixa escura. Mostra dois piratas num barco de madeira; um deles, de barba e chapéu de pirata, fala a frase do balão. No mastro tremula uma bandeira preta de pirata que, em vez da caveira, tem o símbolo @ (arroba) desenhado em branco."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-030",
+          "texto_base": "Gente bonita come fruta feia\nEm Portugal, há uma experiência que está dando certo para combater o desperdício de alimentos. É uma ideia simples: vender frutas, legumes e verduras que são desprezados pelo comércio apenas por uma questão de estética. Por isso, uma espécie de mercadinho em Lisboa recebeu o nome de Cooperativa da Fruta Feia.\nOs alimentos são recolhidos direto dos produtores daquilo que eles não iam conseguir comercializar, mas de boa qualidade mesmo assim. Vendem mais barato o que iria para o lixo, às vezes, apenas porque são formas estranhas ou frutas pequenas demais.\nO projeto começou por iniciativa da engenheira ambiental Isabel Soares, que criou o slogan da cooperativa: “Gente bonita come fruta feia”.\nDisponível em: http://g1.globo.com. Acesso em: 14 ago. 2015 (adaptado).",
+          "enunciado": "Para convencer o público, a cooperativa",
+          "alternativas": [
+            "criou uma imagem positiva para alimentos fora do padrão.",
+            "apresentou pessoas comprometidas a se alimentar bem.",
+            "enumerou vantagens econômicas na aquisição de hortifruti.",
+            "divulgou resultados de estudos sobre o valor de frutas e vegetais."
+          ],
+          "resposta_correta": "criou uma imagem positiva para alimentos fora do padrão.",
+          "resolucao": "A cooperativa vende frutas e verduras de boa qualidade que o comércio despreza só porque são \"feias\": de forma estranha ou pequenas demais. O slogan \"Gente bonita come fruta feia\" faz quem compra essas frutas se sentir bem. Assim, a cooperativa dá uma imagem positiva a alimentos fora do padrão.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 30
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-001",
+          "texto_base": "ASSÉDIO MORAL\nACIDENTE INVISÍVEL QUE PÕE EM RISCO A SAÚDE E A VIDA DO TRABALHADOR\nDisponível em: www.ebah.com.br. Acesso em: 26 set. 2013 (adaptado).",
+          "enunciado": "O texto tem por objetivo alertar os trabalhadores sobre o(a)",
+          "alternativas": [
+            "perigo de ir doente para o serviço.",
+            "tristeza causada pelo baixo salário.",
+            "acidente sofrido pelos colegas de profissão.",
+            "exposição a situações de constrangimento no trabalho."
+          ],
+          "resposta_correta": "exposição a situações de constrangimento no trabalho.",
+          "resolucao": "O cartaz fala de “assédio moral”, que é humilhar ou constranger alguém no trabalho. O desenho mostra um trabalhador triste lembrando de cenas em que o chefe grita com ele e os colegas riem dele. Por isso o “acidente invisível” é a exposição a situações de constrangimento no trabalho.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 1,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_linguagens_01.webp",
+            "descricao": "Cartaz em desenho com o título “Assédio moral”. Um homem com expressão triste está sentado sobre uma caixa, com a mão no rosto. Em balões de pensamento, ele lembra de cenas: um homem apontando o dedo e gritando com ele e um grupo de colegas rindo e apontando para ele."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-007",
+          "texto_base": "NO COMPUTADOR\nERRADO: A coluna está reta, mas a cadeira não tem braços. O peso fica nos ombros.\nERRADO: O banco sem encosto não dá apoio às costas.\nERRADO: A poltrona não dá sustentação ao corpo. Você escorrega para trás.\nERRADO: Os pés devem estar plantados no chão. Se não você enverga a coluna para frente.\nCERTO: Cadeira com encosto, coluna reta e cotovelos sempre apoiados nos braços da cadeira.",
+          "enunciado": "Imagens e palavras são aliadas na comunicação das mensagens. O verbal e o não verbal fazem parte do cotidiano social, influenciando as ações, as decisões e as escolhas das pessoas. Nesse sentido, os textos e os desenhos do infográfico unem-se com a finalidade de",
+          "alternativas": [
+            "ensinar a postura correta para se trabalhar no computador.",
+            "evidenciar os perigos da atividade de trabalho no computador.",
+            "alertar para as trágicas consequências da má postura no computador.",
+            "mostrar os benefícios da postura correta ao se trabalhar no computador."
+          ],
+          "resposta_correta": "ensinar a postura correta para se trabalhar no computador.",
+          "resolucao": "O infográfico mostra quatro jeitos “errados” de sentar e um “certo”, cada um com desenho e explicação. No final ele indica: “Cadeira com encosto, coluna reta e cotovelos sempre apoiados”. Comparando o errado com o certo, ele ensina como sentar bem diante do computador.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 7,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_linguagens_07.webp",
+            "descricao": "Infográfico com o título “No computador” e cinco quadros com desenhos de uma pessoa sentada diante de um computador. Os quatro primeiros têm o rótulo “Errado”: cadeira sem braços, banco sem encosto, poltrona em que a pessoa escorrega e pés sem apoio no chão; em alguns há uma estrela de dor nas costas ou ombros. O último, “Certo”, mostra cadeira com encosto e braços."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-010",
+          "texto_base": "LIXO ZERO\nEvite ser multado, não jogue lixo no chão.\nO Rio agradece :]\nDisponível em: www.rioonibus.com. Acesso em: 22 set. 2013.",
+          "enunciado": "As informações presentes no cartaz indicam que seu objetivo principal é",
+          "alternativas": [
+            "pressionar a população do Rio de Janeiro a não jogar lixo no chão, por meio de intimidação.",
+            "agradecer aos cidadãos pelo fim do lixo no chão no Rio de Janeiro, por meio de recursos lúdicos.",
+            "alertar os cariocas sobre o rigor em relação ao lixo atirado ao chão, por meio da persuasão.",
+            "divulgar o comportamento inovador da população carioca em relação ao lixo, por meio do humor."
+          ],
+          "resposta_correta": "alertar os cariocas sobre o rigor em relação ao lixo atirado ao chão, por meio da persuasão.",
+          "resolucao": "O cartaz avisa que quem jogar lixo no chão pode ser multado: “Evite ser multado”. Ao mesmo tempo, usa um tom simpático, com “O Rio agradece” e um rostinho sorrindo, para convencer as pessoas. Assim, ele alerta sobre a regra mais rígida tentando persuadir, e não ameaçar.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 10,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_linguagens_10.webp",
+            "descricao": "Cartaz com uma fotografia aérea de prédios do centro do Rio de Janeiro ao fundo. No canto, o logotipo da campanha “Lixo Zero”; no alto, logotipos de órgãos da prefeitura e da Rio Ônibus. Sobre a foto, duas faixas brancas com as frases do cartaz, a segunda terminada por um rostinho sorridente feito com sinais."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-022",
+          "texto_base": "Emergentes e bem equipados\nA nova estudante\nA dona de casa Rosa Maria Silvestre da Silva, de 51 anos, ainda “cata feijão” no teclado do computador. Quase não manda e-mail e muito de vez em quando visita os sites de seus programas de TV favoritos. Mas já colhe os frutos da presença da internet em sua vida. Mãe de três jovens adultos, todos com curso superior concluído ou em andamento, conheceu a internet por causa dos trabalhos acadêmicos dos filhos. E percebeu logo a diferença entre sua formação escolar, interrompida na 4ª série, e a quantidade de conhecimento que as gerações de hoje estão adquirindo com a ajuda da tecnologia. “O tempo passou. Vi que o que eu sabia era pouco”, diz Rosa.\nLIMA, F. Época, n. 586, 10 ago. 2009.",
+          "enunciado": "As novas tecnologias da comunicação representam a oferta mais dinâmica de conhecimentos para as gerações de hoje. A interferência da rede mundial de computadores na vida cotidiana demonstra a",
+          "alternativas": [
+            "percepção de que as ferramentas de informação da internet podem auxiliar na formação dos que a elas têm acesso.",
+            "informação de que a internet prejudica a educação de jovens e adultos, pois a tecnologia oferece grande volume de informação.",
+            "oposição ao uso das ferramentas oferecidas pelas novas tecnologias, haja vista que o excesso de informação prejudica o jovem.",
+            "rejeição à ideia de que a formação escolar dos jovens pode ser influenciada pelo uso das novas tecnologias."
+          ],
+          "resposta_correta": "percepção de que as ferramentas de informação da internet podem auxiliar na formação dos que a elas têm acesso.",
+          "resolucao": "Rosa conheceu a internet pelos trabalhos da faculdade dos filhos e “já colhe os frutos” dela. Ela percebeu “a quantidade de conhecimento que as gerações de hoje estão adquirindo com a ajuda da tecnologia”. O texto mostra a internet como uma ajuda para aprender, e não como um problema.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 22
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-024",
+          "texto_base": "Projeto usa aplicativo de celular para ajudar na alfabetização\nPessoas com mais de 15 anos que só sabem escrever o próprio nome estão se alfabetizando com ajuda de celulares inteligentes. Alunos ganham smartphones para fazer parte das atividades em um aplicativo. Intuitivo e desenvolvido em forma de jogo, o programa mistura texto, imagens, sons e símbolos para facilitar o aprendizado de alunos da EJA, programa de educação para jovens e adultos. Em sala de aula, quase tudo permanece igual: professor, livros, cadernos, lápis, borracha, giz e quadro continuam presentes. Mas, nos primeiros minutos da aula e em casa, as atividades são desenvolvidas no aparelho.\nDisponível em: www1.folha.uol.com.br. Acesso em: 23 set. 2013.",
+          "enunciado": "Atualmente, a integração de novas tecnologias à sala de aula tem sido cada vez mais frequente e desafiadora. O projeto relatado no texto utiliza aplicativos na alfabetização com o objetivo de",
+          "alternativas": [
+            "simplificar o trabalho do professor.",
+            "auxiliar na escrita do nome próprio.",
+            "substituir o uso de materiais impressos.",
+            "servir como elemento motivador da aprendizagem."
+          ],
+          "resposta_correta": "servir como elemento motivador da aprendizagem.",
+          "resolucao": "O aplicativo é “desenvolvido em forma de jogo” e mistura “texto, imagens, sons e símbolos para facilitar o aprendizado”. O texto diz que livros, cadernos e professor continuam na sala, então o celular não substitui nada. Ele entra como um atrativo a mais, que estimula os alunos a aprender.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 24
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-028",
+          "texto_base": "Não morra de frescura\nFaça o exame de\nPRÓSTATA\nDisponível em: www.livesaude.com. Acesso em: 1 set. 2013.",
+          "enunciado": "Anúncios publicitários têm o objetivo de persuadir o leitor a adquirir um produto, realizar uma ação, tomar determinada atitude. Considerando a linguagem e os procedimentos argumentativos utilizados pelo autor, o público-alvo a quem se destina esse anúncio são homens que",
+          "alternativas": [
+            "desenvolveram o câncer de próstata.",
+            "se recusam a fazer o exame de próstata.",
+            "consideram o exame de próstata imprescindível.",
+            "se previnem fazendo o exame de próstata."
+          ],
+          "resposta_correta": "se recusam a fazer o exame de próstata.",
+          "resolucao": "O anúncio diz “Não morra de frescura”, chamando de “frescura” a vergonha ou o medo de fazer o exame. Ele provoca quem evita o exame, mostrando que essa recusa pode custar a vida. Quem já faz o exame não precisaria ouvir esse recado.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 28,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_linguagens_28.webp",
+            "descricao": "Anúncio com as frases em letras grandes à esquerda e, à direita, um laço de fita, símbolo de campanhas de prevenção. Junto ao laço, o desenho de um homem de bigode, com ar antiquado e sério, segurando um cachimbo."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "lingua-inglesa",
+      "titulo": "Língua inglesa",
+      "sobre": "Compreenda textos curtos em inglês, como avisos, anúncios e tirinhas.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-ling-006",
+          "texto_base": "Older Workers and Age Discrimination\nThe Age Discrimination in Employment Act (ADEA), signed into law in 1967, forbids discrimination in the workplace, against anyone 40 or older. A recent survey shows that many workers still believe there are signs of age discrimination on the job today.\n1 in 5 workers in the U.S. is age 55 or older\nDisponível em: www.huffpost.com. Acesso em: 24 out. 2019 (adaptado).",
+          "enunciado": "A campanha alerta sobre uma lei que proíbe a",
+          "alternativas": [
+            "exclusão por aparência.",
+            "preferência por gênero.",
+            "discriminação por idade.",
+            "seleção por origem."
+          ],
+          "resposta_correta": "discriminação por idade.",
+          "resolucao": "O título fala em \"Age Discrimination\", que quer dizer discriminação por idade. O texto explica que a lei ADEA, de 1967, \"forbids discrimination\" (proíbe a discriminação) no trabalho contra qualquer pessoa com 40 anos ou mais. Então a lei proíbe discriminar alguém pela idade.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 6,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_06.webp",
+            "descricao": "Cartaz em tons de cinza. No alto, o título e um parágrafo em inglês. Embaixo, à esquerda, um mapa dos Estados Unidos com a frase em letras grandes \"1 in 5 workers in the U.S. is age 55 or older\". À direita, silhuetas de cinco pessoas adultas, homens e mulheres, em pé, como colegas de trabalho conversando."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-015",
+          "texto_base": "AUTISM FACTS\nFACT: THERE IS NO MEDICAL DETECTION OR CURE FOR AUTISM.\nFACT: AUTISM AFFECTS 1 IN 68 CHILDREN AND 1 IN 42 BOYS.\nFACT: AUTISM RECEIVES LESS THAN 5% THE RESEARCH OF MANY LESS PREVALENT CHILDHOOD DISEASES.\nFACT: AUTISM COSTS A FAMILY AN ABOUT US$ 60,000 A YEAR.\nDisponível em: www.scioto.com. Acesso em: 20 out. 2019.",
+          "enunciado": "O cartaz tem o objetivo de",
+          "alternativas": [
+            "captar ajuda financeira aos autistas.",
+            "apresentar informações sobre o autismo.",
+            "propor tratamento para crianças autistas.",
+            "orientar famílias de pessoas com autismo."
+          ],
+          "resposta_correta": "apresentar informações sobre o autismo.",
+          "resolucao": "O título do cartaz é \"Autism facts\", que quer dizer \"fatos sobre o autismo\". Cada faixa começa com a palavra \"FACT\" (fato) e traz um dado: que não há detecção médica nem cura, quantas crianças são afetadas, quanto se pesquisa e quanto custa para a família. O cartaz não pede dinheiro nem dá conselhos: ele apresenta informações.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 15,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_15.webp",
+            "descricao": "Cartaz com o título \"AUTISM FACTS\" e quatro faixas horizontais, cada uma com a palavra FACT e um ícone redondo: uma seringa, o desenho de uma criança, uma prancheta com lista e moedas com o símbolo de dólar. Cada faixa traz uma das frases em inglês transcritas no texto."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-027",
+          "texto_base": "I went to New York to visit my friend Susan last year. I took some money with me because that’s the place where people can buy whatever they want to. I bought some jeans, a jacket, a twin set and a pair of tennis shoes for my father. The trip was great and I had a lot of fun.\n(Palavras destacadas na prova: jeans, jacket, twin set, pair of tennis shoes.)",
+          "enunciado": "No texto, as palavras destacadas também fazem parte do nosso cotidiano. Elas remetem ao universo do(a)",
+          "alternativas": [
+            "turismo.",
+            "vestuário.",
+            "esporte.",
+            "economia."
+          ],
+          "resposta_correta": "vestuário.",
+          "resolucao": "As palavras destacadas são “jeans” (calça jeans), “jacket” (jaqueta), “twin set” (conjunto de blusa e casaquinho) e “pair of tennis shoes” (par de tênis). Todas são roupas ou calçados. Por isso elas pertencem ao universo do vestuário.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 27
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-030",
+          "texto_base": "Analise o cardápio, reproduzido de um restaurante londrino.\nMonday 31 January\nFresh Vegetable soup 20p\nHome made chicken liver pate 25p\nGrilled Trout 65p Chicken casserole 60p\nLiver, bacon and mushrooms 45p\nBaked potato, Carrots, Spinach Salad 15p\nChocolate mousse 15p\nApple pie + cream 20p\nEnglish cheese 20p Fresh fruit 10p\nCoffee 10p\nSet lunch 60p\nSERVICE 10%",
+          "enunciado": "O uso da expressão “service 10%” indica, comparando com os hábitos brasileiros, que os restaurantes ingleses cobram taxas",
+          "alternativas": [
+            "de juros para pedidos especiais.",
+            "de uso do cartão de crédito.",
+            "de atendimento feito pelo garçom.",
+            "reduzidas para pagamento à vista."
+          ],
+          "resposta_correta": "de atendimento feito pelo garçom.",
+          "resolucao": "Em inglês, “service” quer dizer “serviço”. No Brasil, também é comum o restaurante cobrar 10% de serviço, que é a taxa pelo atendimento do garçom. O cardápio mostra que em Londres existe o mesmo costume.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 30,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_linguagens_30.webp",
+            "descricao": "Cardápio escrito à mão, em inglês, dentro de um quadro, com a data no topo, a lista de pratos, sobremesas e café com os preços em pence (p) e, no canto inferior direito, a indicação da taxa de serviço."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "lingua-espanhola",
+      "titulo": "Língua espanhola",
+      "sobre": "Compreenda textos curtos em espanhol, como avisos, anúncios e tirinhas.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-ling-002",
+          "texto_base": "Una parte importante de las tradiciones de los uruguayos se relaciona con la comida y postres. Cuando los uruguayos quieren hacer una reunión con amigos, hacerlo con un asado suele ser una de las principales opciones. Comer un asado, bizcochos, un flan con dulce de leche, o un arroz con leche son siempre buenas excusas para sentarse y ponerse al día con los amigos o la familia. De las carnes a la parrilla hasta platos de pasta y postres deliciosos, la cocina uruguaya se ve influenciada de las tradiciones culinarias españolas, alemanas, francesas e italianas que reflejan la diversidad cultural del país. Un viaje a Uruguay no está completo sin disfrutar de una selección de alimentos tradicionales de los uruguayos.\nDisponível em: www.brisasdeldayman.com. Acesso em: 1 ago. 2015.",
+          "enunciado": "Considerando as manifestações da cultura uruguaia, o texto destaca o(a)",
+          "alternativas": [
+            "convívio social.",
+            "tradição culinária.",
+            "turismo comercial.",
+            "colonização europeia."
+          ],
+          "resposta_correta": "tradição culinária.",
+          "resolucao": "Logo na primeira frase, o texto diz que uma parte importante das tradições dos uruguaios está ligada à comida e às sobremesas (\"la comida y postres\"). Depois fala do churrasco (asado), do flan com doce de leite e das influências na cozinha do país. O assunto principal, portanto, é a tradição culinária.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 2
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-023",
+          "texto_base": "La carne que se usa más frecuentemente suele ser de vacuno, cabrito o cordero. El encargado de prepararlo también se llama asador. Se cocina sobre el asador, que consiste en dos hierros cruzados a modo de cruz, midiendo alrededor de 1,40 m el más largo, cuya parte inferior se clava en el suelo, casi verticalmente. El más corto sirve para sujetar la carne, que queda colocada longitudinalmente sobre el hierro más largo y se cocina sobre brasas generalmente de leña. A medida que la carne va asándose, también se la aproxima gradualmente a las brasas, hasta que la cocción final se realiza paralelamente al suelo, sobre aquellas. Los comensales cortan con sus cuchillos el trozo de carne que consumirán y también, sujetando con los dientes un extremo de la carne — cortando de abajo hacia arriba — cada bocado.\nDisponível em: www.elfolkloreargentino.com. Acesso em: 10 ago. 2015.",
+          "enunciado": "Ao apresentar o tradicional churrasco argentino, a palavra usada no texto para se referir à churrasqueira é",
+          "alternativas": [
+            "cocina.",
+            "asador.",
+            "brasas.",
+            "cuchillos."
+          ],
+          "resposta_correta": "asador.",
+          "resolucao": "O texto diz: \"Se cocina sobre el asador, que consiste en dos hierros cruzados\", ou seja, a carne é assada sobre o \"asador\", uma estrutura de dois ferros cruzados fincada no chão. Esse é o objeto onde se faz o churrasco. \"Brasas\" são as brasas do fogo, \"cuchillos\" são as facas e \"cocina\" é o verbo cozinhar.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 23
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-008",
+          "texto_base": "Voces, reclamos y esperas de jubilados\nSoy jubilada con el haber mínimo. Tengo 82 años. Alquilo un departamento que me ayuda a vivir. Hace dos años y medio que no percibo los alquileres. La “súbita” insolvencia del inquilino me ha causado un perjuicio irreparable. Tampoco paga expensas ni cargas impositivas. La causa está en el juzgado Nº 28, expediente 95 452/10. Los inadecuados recursos y apelaciones que la parte presenta y la gran demora en la resolución del juicio me causan un gran daño ante mi delicada situación económica donde no puedo afrontar los gastos médicos. ¿Es justo que después de tantos años de trabajo honrado me usurpen la propiedad y tenga que pasar por estas penurias? ¡¿Hasta cuándo los de la tercera edad seremos vapuleados?!\nDisponível em: www.clarin.com. Acesso em: 11 set. 2014.",
+          "enunciado": "A carta de uma aposentada ao jornal Clarín tem como objetivo",
+          "alternativas": [
+            "reivindicar apoio financeiro para tratamento de saúde.",
+            "exigir que o inquilino se retire do apartamento alugado.",
+            "descrever os maus-tratos que os idosos vêm sofrendo.",
+            "manifestar indignação perante a demora dos trâmites judiciais."
+          ],
+          "resposta_correta": "manifestar indignação perante a demora dos trâmites judiciais.",
+          "resolucao": "A aposentada conta que o inquilino não paga o aluguel há dois anos e meio e que o caso está na Justiça. Ela reclama da “gran demora en la resolución del juicio”, ou seja, da grande demora do processo. As perguntas finais, como “¿Hasta cuándo...?” (“Até quando...?”), mostram sua revolta com essa demora.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 8
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-019",
+          "texto_base": "Somos todos culpables de la ruina del planeta\nLa salud del mundo está hecha un asco. “Somos todos responsables”, claman las voces de la alarma universal, y la generalización absuelve: si somos todos responsables, nadie lo es.\nComo conejos se reproducen los nuevos tecnócratas del medio ambiente. Es la tasa de natalidad más alta del mundo: los expertos generan expertos y más expertos que se ocupan de envolver el tema en el papel celofán de la ambigüedad. Ellos fabrican el brumoso lenguaje de las exhortaciones al “sacrificio de todos” en las declaraciones de los gobiernos y en los solemnes acuerdos internacionales que nadie cumple.\nGALEANO, E. Medio ambiente y cambio climático. Disponível em: www.cubadebate.cu. Acesso em: 27 set. 2013.",
+          "enunciado": "O autor argumenta que somos todos responsáveis pela saúde do planeta. O vocábulo que identifica uma oposição a essa ideia de responsabilidade de “todos” é",
+          "alternativas": [
+            "“nadie”.",
+            "“alarma”.",
+            "“asco”.",
+            "“ambigüedad”."
+          ],
+          "resposta_correta": "“nadie”.",
+          "resolucao": "Em espanhol, “nadie” quer dizer “ninguém”, o contrário de “todos”. O autor escreve: “si somos todos responsables, nadie lo es”, isto é, se todos são responsáveis, ninguém é. Ele também critica os acordos “que nadie cumple”, que ninguém cumpre.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 19
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-021",
+          "texto_base": "Ubicado en los antiguos terrenos de la estación de cargas de Ferrocarril General San Martín, este magnífico parque posee 14 hectáreas de extensión y 1200 árboles. Enclavado en una importante área residencial de alta densidad habitacional y próxima al centro de la ciudad, se ha constituido en uno de los espacios verdes más importantes que cientos de ciudadanos disfrutan diariamente. Entre los sectores más atractivos se encuentra un hermoso lago con patos que simboliza la importancia del agua en esta zona semi-desértica, todo esto coronado por un anfiteatro natural de césped.\nEste pulmón verde posee un enorme valor estratégico para el desarrollo urbano de la Ciudad. Aquí se realizan en forma permanente actividades al aire libre, culturales y deportivas organizadas por la Municipalidad de la Ciudad de Mendoza para la recreación y el encuentro social. A partir de 2010, se crea dentro del mismo un importante Centro Cultural Multidisciplinario llamado “Nave Cultural”.\nDisponível em: www.ciudaddemendoza.gov.ar. Acesso em: 16 set. 2014.",
+          "enunciado": "O texto traz informações sobre um parque na cidade de Mendoza, Argentina, o qual",
+          "alternativas": [
+            "simboliza o valor da água para aquela região.",
+            "está localizado no centro histórico da cidade.",
+            "fica dentro da atual estação de trem de cargas.",
+            "representa um espaço de lazer para os cidadãos."
+          ],
+          "resposta_correta": "representa um espaço de lazer para os cidadãos.",
+          "resolucao": "O texto diz que o parque é um espaço verde que “cientos de ciudadanos disfrutan diariamente”, ou seja, que centenas de pessoas aproveitam todo dia. Lá acontecem atividades culturais e esportivas “para la recreación y el encuentro social”, isto é, para lazer e convivência. Quem simboliza a água é o lago, não o parque, e o parque fica nos antigos terrenos da estação, perto do centro.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 21
+        }
+      ]
+    },
+    {
+      "slug": "arte",
+      "titulo": "Arte",
+      "sobre": "Converse com pinturas, músicas, danças, teatro e patrimônio cultural.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-ling-010",
+          "texto_base": "TEXTO I\n[Fotografia]\nNelson da Rabeca na cidade de Marechal Deodoro, Alagoas.\nDisponível em: https://folhadolitoral.com.br. Acesso em: 28 out. 2019.\nTEXTO II\n[Fotografia]\nZeca da Rabeca na cidade de Paranaguá, Paraná.\nDisponível em: https://rabeca.org. Acesso em: 28 out. 2019.",
+          "enunciado": "A rabeca é um instrumento musical tipicamente brasileiro que se manifesta em muitos formatos e é utilizado em vários gêneros e estilos musicais. As duas fotografias de rabecas permitem identificar semelhanças desses instrumentos com o violino, demonstrando a",
+          "alternativas": [
+            "manutenção de hábitos culturais estrangeiros.",
+            "miscigenação cultural que marca a música brasileira.",
+            "adaptação da cultura brasileira às tradições musicais europeias.",
+            "busca de alternativas diante da dificuldade do estudo de música."
+          ],
+          "resposta_correta": "miscigenação cultural que marca a música brasileira.",
+          "resolucao": "A rabeca é um instrumento tipicamente brasileiro, mas parece com o violino, que veio da Europa. Isso mostra que a cultura brasileira misturou influências de fora com o jeito próprio de cada lugar do país, de Alagoas ao Paraná. Essa mistura de culturas é o que chamamos de miscigenação cultural.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 10,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_10.webp",
+            "descricao": "Duas fotografias em preto e branco. Na primeira, um senhor sorridente, de chapéu, toca uma rabeca apoiada no peito com um arco, ao lado de uma estátua de um tocador de rabeca. Na segunda, um homem de boné, em pé na porta de uma casa antiga, segura uma rabeca de madeira e o arco. As rabecas têm formato parecido com o de um violino."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-011",
+          "texto_base": "[Fotografia]\nPinacoteca do Estado de São Paulo\nDisponível em: www.saopaulo.sp.gov.br. Acesso em: 30 ago. 2015.",
+          "enunciado": "Fundada em 1905, a Pinacoteca do Estado de São Paulo é um museu de artes visuais, com ênfase na produção brasileira do século XIX até a contemporaneidade. Seu frontão e suas colunas concretizam a contribuição da cultura clássica para a cultura brasileira, uma vez que traduzem a inspiração na arquitetura",
+          "alternativas": [
+            "grega.",
+            "egípcia.",
+            "japonesa.",
+            "mesopotâmica."
+          ],
+          "resposta_correta": "grega.",
+          "resolucao": "O enunciado fala em \"cultura clássica\", que é a cultura da Grécia e da Roma antigas. Os templos gregos são conhecidos justamente pelas colunas e pelo frontão, a parte triangular acima da entrada. Por isso, a fachada da Pinacoteca mostra inspiração na arquitetura grega.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 11,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_11.webp",
+            "descricao": "Fotografia em preto e branco da fachada da Pinacoteca do Estado de São Paulo, um prédio antigo de tijolos. Aparece uma escadaria com vasos grandes, colunas altas e, sobre a entrada, uma parte triangular (frontão) com a palavra PINACOTECA."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-024",
+          "texto_base": "[Fotografia]\nDisponível em: https://sebastiaosalgadoo.wordpress.com. Acesso em: 28 out. 2019.",
+          "enunciado": "Essa obra de Sebastião Salgado retrata os pés de trabalhadores que estavam construindo um açude no início da década de 1980 no sertão do Ceará. A fotografia reflete que",
+          "alternativas": [
+            "a vulnerabilidade social inibe a produção artística.",
+            "a técnica artística tem mais importância que o tema escolhido.",
+            "a criação artística pode ser feita a partir de referenciais estéticos do cotidiano.",
+            "a dificuldade de encontrar referenciais estéticos é comum a certas localidades."
+          ],
+          "resposta_correta": "a criação artística pode ser feita a partir de referenciais estéticos do cotidiano.",
+          "resolucao": "A fotografia mostra uma cena simples do dia a dia: pés cansados de trabalhadores, de chinelos, sobre pedras. O fotógrafo transformou essa cena comum em obra de arte. Isso mostra que a arte pode nascer das coisas do cotidiano, até de uma realidade dura.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 24,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_24.webp",
+            "descricao": "Fotografia em preto e branco, em close, dos pés de três pessoas lado a lado, calçando chinelos gastos, sobre pedras. Os pés estão sujos de terra e com marcas de trabalho pesado; aparecem também as barras das calças."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-002",
+          "texto_base": "Vik Muniz afirma que recorreu ao lixo por seu alto poder provocador\nO artista brasileiro Vik Muniz, que exibiu em Lisboa seu documentário Lixo extraordinário, declarou que recorreu ao lixo em seu trabalho criativo por se tratar de “um elemento que ninguém quer ver” e que, por isso mesmo, possui um “alto poder provocador”. O documentário Lixo extraordinário narra a mudança na vida de vários catadores de lixo no Rio de Janeiro, quando começaram a colaborar com os trabalhos realizados pelo artista plástico. Lixo extraordinário, dirigido por João Jardim, Lucy Walker e Karen Harley, mostra o processo de elaboração das obras de Muniz, cujas fotografias foram vendidas posteriormente em casas de leilão londrinas por milhares de euros.\nDisponível em: www.estadao.com.br. Acesso em: 1 set. 2013 (adaptado).",
+          "enunciado": "O trabalho realizado pelo artista Vik Muniz com os catadores de lixo reflete o",
+          "alternativas": [
+            "poder transformador da arte.",
+            "pouco cuidado do artista com sua arte.",
+            "interesse dos catadores de lixo pelo cinema.",
+            "excesso de lixo na sociedade contemporânea."
+          ],
+          "resposta_correta": "poder transformador da arte.",
+          "resolucao": "O texto diz que o documentário “narra a mudança na vida de vários catadores de lixo” depois que eles passaram a trabalhar com o artista. O lixo virou obra de arte vendida por milhares de euros. Ou seja, a arte transformou o material e também a vida das pessoas.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 2
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-003",
+          "texto_base": "Era um maracatu. Havia os que gostavam dele e esperavam-no com curiosidade. Havia os que protestavam contra a revivescência africana e resmungavam. Bum… bum… bum… bum… E o batuque cada vez mais perto, mais perto. Dali a pouco desfilava o cortejo real dos negros. Vinha o rico estandarte com cores vivas e bordado a ouro. Seguiam-se as alas de mulheres ostentando turbantes, saias bem rodadas, corpetes enfeitados de vidrilhos. Traziam fetiches religiosos nas mãos. Na retaguarda do préstito, os atabaques, as marimbas, os congás, os pandeiros, as buzinas… As canções que todos entoavam eram ordinariamente nostálgicas, como uma ancestral saudade da terra de berço, ficada tão distante. Costumavam também cantar assim: \"Bravos, ioiô! Maracatu já chegou. Bravos, iaiá! Maracatu vai passar\".\nSETTE, M. Maxombas e maracatus, 1958. Disponível em: http://maracatu.org.br. Acesso em: 13 set. 2013 (adaptado).",
+          "enunciado": "A imagem que representa a manifestação cultural descrita é:",
+          "alternativas": [
+            "Fotografia de um cortejo numa rua de pedras, com mulheres de turbante e saias brancas bem rodadas, homens com lanças e um grande guarda-sol enfeitado erguido sobre o grupo.",
+            "Fotografia noturna de um desfile de carnaval numa avenida, com muitos foliões usando fantasias e adereços grandes e brilhantes.",
+            "Fotografia de pessoas dançando na rua com pequenas sombrinhas coloridas nas mãos, dando passos e saltos.",
+            "Fotografia de uma festa com a figura de um boi enfeitado e uma pessoa com cocar de penas e saia de folhas."
+          ],
+          "resposta_correta": "Fotografia de um cortejo numa rua de pedras, com mulheres de turbante e saias brancas bem rodadas, homens com lanças e um grande guarda-sol enfeitado erguido sobre o grupo.",
+          "resolucao": "O texto descreve o maracatu como um “cortejo real” que desfila pela rua, com estandarte e “alas de mulheres ostentando turbantes, saias bem rodadas”. A foto que mostra esse cortejo, com mulheres de turbante e saias rodadas e o grande guarda-sol da corte, é a que combina com a descrição. As outras fotos mostram desfile de escola de samba, dança com sombrinhas e festa do boi.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 3,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_linguagens_03.webp",
+            "descricao": "Quatro fotografias, uma para cada alternativa. Primeira: cortejo em rua de pedras com mulheres de turbante e saias brancas rodadas, homens com lanças e um guarda-sol enfeitado. Segunda: desfile noturno de carnaval com fantasias grandes. Terceira: pessoas dançando na rua com sombrinhas coloridas. Quarta: festa com um boi enfeitado e uma pessoa com cocar e saia de folhas."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-018",
+          "texto_base": "TEXTO I\nMESTRE VITALINO, Caruaru [s.d.].\n\nTEXTO II\nAmaro Vitalino, ou Mestre Vitalino, artista plástico popular, de família humilde e sem formação acadêmica específica, ficou conhecido por retratar com simplicidade a riqueza cultural do Nordeste brasileiro. Essa simplicidade pode ser observada em detalhes muito particulares de suas obras.\nDisponível em: www.popular.art.br. Acesso em: 10 ago. 2010.",
+          "enunciado": "A escultura representada revela uma preocupação com",
+          "alternativas": [
+            "a subjetividade das emoções e a tradução de imagens do seu subconsciente.",
+            "o academicismo, na fidelidade representada pelos traços da cultura popular.",
+            "o dinamismo, apresentado nas formas geométricas indicando movimento.",
+            "a expressão da cultura popular, sem a necessidade de ser fiel à imagem."
+          ],
+          "resposta_correta": "a expressão da cultura popular, sem a necessidade de ser fiel à imagem.",
+          "resolucao": "A escultura de barro mostra vaqueiros a cavalo, uma cena da vida no Nordeste, feita de modo simples. O texto diz que Mestre Vitalino, “sem formação acadêmica”, retratava “com simplicidade a riqueza cultural do Nordeste”. Ele não busca copiar a realidade com perfeição, e sim mostrar a cultura do povo.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 18,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_linguagens_18.webp",
+            "descricao": "Fotografia de uma escultura de barro, de cor clara, de Mestre Vitalino. Mostra um grupo de cinco homens de chapéu montados em cavalos, lado a lado, feitos com formas simples e arredondadas, sem muitos detalhes."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "educacao-fisica",
+      "titulo": "Educação física",
+      "sobre": "Reflita sobre esportes, jogos, práticas corporais e cuidados com a saúde.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-ling-018",
+          "texto_base": "O campeão do Brasileirão feminino de 2017 recebeu, de acordo com a CBF, R$ 120 mil, enquanto o 16º colocado do Brasileirão masculino do ano de 2016 recebeu quase seis vezes mais, cerca de R$ 700 mil. Esse cenário não é restrito ao futebol. No vôlei, por exemplo, a realidade se repete. Em 2016, uma montagem de duas imagens na internet trouxe o assunto à tona. Na primeira, a jogadora Natália Pereira posou segurando um cheque de US$ 15 mil, enquanto na segunda, o jogador da seleção sérvia Marko Ivovic segurava um cheque de US$ 30 mil. Eles foram premiados por terem sido considerados os melhores jogadores do Grand Prix e da Liga Mundial de Voleibol, respectivamente. Esses torneios são organizados pela Federação Internacional de Voleibol.\nDisponível em: www.nexojornal.com.br. Acesso em: 18 mar. 2018 (adaptado).",
+          "enunciado": "De acordo com o texto, a instituição social do esporte tem",
+          "alternativas": [
+            "utilizado federações para promover a igualdade de gênero.",
+            "refletido a desigualdade de gênero presente na sociedade.",
+            "provocado uma reflexão crítica sobre as relações de gênero.",
+            "revisto as inequidades de gênero entre homens e mulheres."
+          ],
+          "resposta_correta": "refletido a desigualdade de gênero presente na sociedade.",
+          "resolucao": "O texto mostra que a campeã do futebol feminino recebeu R$ 120 mil, enquanto um time masculino que ficou em 16º lugar recebeu cerca de R$ 700 mil. No vôlei, a melhor jogadora ganhou US$ 15 mil e o melhor jogador, US$ 30 mil. Mulheres ganham menos que homens também fora do esporte, e o esporte repete essa desigualdade.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 18
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-020",
+          "texto_base": "Informação Nutricional\nPorção de 2,5 g (5 cápsulas)\nQuantidade por Porção | %VD(*)\nValor energético: 10 kcal ou 42 kJ | 1%\nProteínas: 2,5 g | 3%\nNão contém quantidade significativa de carboidratos, gorduras totais, gorduras saturadas, gorduras trans, fibra alimentar e sódio.\n*Valores Diários de Referência com base em uma dieta de 2 000 kcal ou 8 400 kJ.\nSeus valores diários podem ser maiores ou menores dependendo de suas necessidades energéticas.\nDisponível em: http://nocautesport.com.br. Acesso em: 23 jul. 2015 (adaptado).",
+          "enunciado": "Essa tabela nutricional é apresentada no rótulo de um produto direcionado a praticantes de atividades físicas regulares. Sua leitura pode auxiliar o consumidor a",
+          "alternativas": [
+            "investigar a possibilidade de reações alérgicas.",
+            "descobrir a forma de consumo do produto.",
+            "avaliar os componentes do produto.",
+            "conhecer suas indicações de uso."
+          ],
+          "resposta_correta": "avaliar os componentes do produto.",
+          "resolucao": "A tabela nutricional mostra o que há em cada porção do produto: o valor energético (10 kcal), a quantidade de proteínas (2,5 g) e o que ele não contém, como carboidratos, gorduras e sódio. Ela não diz como tomar o produto nem para que serve. Por isso, ajuda o consumidor a avaliar os componentes do produto.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 20,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_20.webp",
+            "descricao": "Tabela de informação nutricional de rótulo, com cabeçalho escuro e três colunas: nutriente, quantidade por porção e porcentagem do valor diário. Porção de 2,5 g (5 cápsulas). Valor energético: 10 kcal ou 42 kJ, 1%. Proteínas: 2,5 g, 3%. Abaixo, avisos sobre o que o produto não contém e sobre os valores diários."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-022",
+          "texto_base": "A história dos Jogos Olímpicos\n-776 a. C.: Primeiros Jogos da Antiguidade\n393: Interrupção dos Jogos\n1894: Criação do Comitê Olímpico Internacional (COI)\n1896: Primeiros JO modernos em Atenas\n1900: Abertura dos JO para as mulheres em Paris\n1912: Abertura dos JO aos 5 continentes em Estocolmo\n1916: Primeira Guerra Mundial — Jogos cancelados\n1924: Primeiros JO de Inverno\n1932: Entrega das medalhas sobre um pódio\n1936: O regime nazista se apropria dos JO\n1940-44: Segunda Guerra Mundial — Jogos cancelados\n1960: Transmissão de TV ao vivo — Jogos de Roma\n1968: T. Smith & J. Carlos se manifestam contra a discriminação nos EUA\n2000: As duas Coreias desfilam sob a mesma bandeira em Sidney\n2012: O. Pistorius, 1º esportista paralímpico a participar dos JO\n2016: XXXI JO no Rio de Janeiro\nFonte: Museu Olímpico de Lausanne\nDisponível em: www.otempo.com.br. Acesso em: 18 mar. 2018.",
+          "enunciado": "O infográfico sobre a história dos jogos olímpicos permite reconhecer o(a)",
+          "alternativas": [
+            "totalidade de edições ocorridas dos jogos olímpicos modernos.",
+            "impacto financeiro da mídia na transmissão dos jogos olímpicos.",
+            "motivo pelo qual as mulheres não participaram do evento antes de 1900.",
+            "relação entre o evento esportivo e fatos históricos relativos a aspectos sociais."
+          ],
+          "resposta_correta": "relação entre o evento esportivo e fatos históricos relativos a aspectos sociais.",
+          "resolucao": "A linha do tempo mostra os Jogos junto com fatos da história: as duas Guerras Mundiais, que cancelaram os Jogos, o regime nazista, o protesto contra a discriminação nos EUA, as duas Coreias desfilando juntas e a entrada das mulheres em 1900. Ela não mostra todas as edições nem fala de dinheiro. Assim, o infográfico liga o esporte a fatos históricos e sociais.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 22,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_linguagens_22.webp",
+            "descricao": "Infográfico em forma de linha do tempo horizontal, de -776 a.C. até 2016. Sobre a linha há silhuetas de atletas correndo, um pódio em 1932, uma televisão em 1960 e um atleta com prótese nas pernas em 2012. Os anos com Jogos cancelados (393, 1916 e 1940-44) estão marcados com um X. No canto, o logotipo Rio 2016. Os textos de cada data estão transcritos no texto."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-ling-029",
+          "texto_base": "Mais de 1,4 bilhão de adultos em todo o mundo não praticam atividades físicas suficientes. É o que revela a primeira pesquisa feita para estimar tendências globais sobre o hábito de se exercitar, realizada pela Organização Mundial da Saúde (OMS). O levantamento usa dados de 2001 a 2016. Em 2016, cerca de uma em cada três mulheres (32%) e um em cada quatro homens (23%) em todo o planeta não estavam atingindo os níveis recomendados de atividade física para se manterem saudáveis — ao menos 150 minutos de exercício com intensidade moderada ou 75 minutos com intensidade vigorosa por semana. A pesquisa alerta que o sedentarismo aumenta o risco de doenças cardiovasculares, diabetes tipo 2, demência e alguns tipos de câncer.\nDisponível em: https://nacoesunidas.org. Acesso em: 4 out. 2018.",
+          "enunciado": "Com base nos resultados do estudo da OMS sobre sedentarismo, faz-se necessário modificar o(s)",
+          "alternativas": [
+            "hábitos alimentares.",
+            "uso de medicamentos.",
+            "níveis de atividade física.",
+            "acesso à prática de exercícios."
+          ],
+          "resposta_correta": "níveis de atividade física.",
+          "resolucao": "A pesquisa mostra que mais de 1,4 bilhão de adultos \"não praticam atividades físicas suficientes\" e não atingem \"os níveis recomendados de atividade física\": pelo menos 150 minutos de exercício moderado por semana. O texto não fala de comida, remédios nem de falta de lugar para praticar. Então o que precisa mudar é a quantidade de atividade física.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 29
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-004",
+          "texto_base": "A saúde da mulher esteve sob forte controle da moda. O espartilho afinava a silhueta, marcava a cintura e aumentava os seios. Apesar de ser prejudicial à saúde, as mulheres não se rebelaram contra seu desconforto. O nosso atual código de ética (social) é a estética: as mulheres estetizam o próprio corpo, tanto pela roupa quanto pela maquiagem e adereços, esculpindo-o por exercícios físicos e pela dieta. Pela atividade física e o controle do corpo, as mulheres constroem sua imagem, a identidade feminina, acentuada pela moda, bem como pela cirurgia plástica — implantes de silicone, lipoaspiração etc. A supervalorização da magreza causa frustração nas pessoas. O mercado da moda explora os corpos das modelos magras, esquecendo que a maior parte da população que desfila pelas ruas não tem corpo de manequim. As mulheres sofrem e ficam obcecadas pela magreza e dietas que, na maioria das vezes, são malsucedidas, o que aumenta os casos de anorexia, bulimia e depressão profunda.\nARAÚJO, D. C.; SCHEMES, C. Corpo, saúde e vestimentas: o (des)conforto feminino e a lingerie, análise de anúncios publicitários. VIII Encontro Nacional de História da Mídia. Guarapuava: Unicentro, 2011.",
+          "enunciado": "O texto mostra que os padrões estéticos corporais se modificam a cada momento histórico e indica que em cada geração tem predominado o interesse das pessoas pela",
+          "alternativas": [
+            "aparência física aliada ao consumismo.",
+            "beleza aliada ao bem-estar orgânico.",
+            "saúde aliada à qualidade de vida.",
+            "longevidade aliada ao equilíbrio."
+          ],
+          "resposta_correta": "aparência física aliada ao consumismo.",
+          "resolucao": "O texto mostra que, no passado, o espartilho era usado “apesar de ser prejudicial à saúde”. Hoje, roupas, maquiagem, cirurgias e o “mercado da moda” continuam ditando o corpo ideal. Em todas as épocas, o que pesa é a aparência, estimulada pelo consumo de produtos e serviços, e não a saúde.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 4
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-026",
+          "texto_base": "Após mais de quatrocentos anos de perseguição e proibições, o jogo da capoeira chega aos nossos dias — conhecido e praticado em todo o Brasil — com um conteúdo artístico, filosófico, cultural e social que o torna uma das mais importantes manifestações de nosso povo.\nTrês franceses apaixonados pela capoeira saíram de seu país para aprender as técnicas da arte marcial brasileira. Serão 15 dias de aprendizado com o grupo Nação Palmares, em Pindaré-Mirim.\nCAPOEIRA, N. Capoeira: os fundamentos da malícia. Rio de Janeiro: Record, 1996.",
+          "enunciado": "O prestígio e o alcance geográfico obtidos pela capoeira são recentes, pois por muito tempo essa manifestação cultural foi discriminada e considerada crime. Sua ascensão deve-se a um(a)",
+          "alternativas": [
+            "resistência cultural de grupos sociais.",
+            "necessidade de autodefesa dos praticantes.",
+            "apelo da mídia com propagandas sobre o tema.",
+            "estilo de luta com exercícios de fácil aprendizado."
+          ],
+          "resposta_correta": "resistência cultural de grupos sociais.",
+          "resolucao": "O texto conta que a capoeira passou por “mais de quatrocentos anos de perseguição e proibições” e mesmo assim chegou aos nossos dias. Isso só foi possível porque os grupos que a praticavam continuaram mantendo essa tradição viva. Hoje ela é conhecida em todo o Brasil e atrai até estrangeiros.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 26
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-ling-029",
+          "texto_base": "Brasil Futebol Clube\nO que é, o que é: que o vencedor comemora e o perdedor justifica? Que enche o céu de fogos, dia ou noite? Que faz cantar o Hino Nacional, de peito cheio? Acertou quem respondeu: o futebol. Paixão nacional, considerada tão mais excitante quanto se aproxima a abertura da Copa do Mundo, essa modalidade esportiva é apresentada como a encarnação de uma visão atual do planeta, de um ideal democrático ou ainda de afirmação de símbolos coletivos. A bola parece impor seus valores e códigos ao mundo social, político e econômico.\nCom exceção de alguns que o consideram “o ópio do povo”, o resto da humanidade ama o futebol. Já se foi o tempo em que se assistia ao futebol na televisão porque não havia filme bom. As coisas mudaram. Um jogo se prepara, as pessoas vestem a camisa do time, pintam a cara, vão torcer com amigos ou familiares. Mais do que um esporte de regras fáceis, sem equipamento especial e praticado em qualquer canto, o futebol se tornou matéria para as ciências humanas. E vem ganhando cada vez mais espaço nas universidades. Há quem diga, como o sociólogo Christian Bromberger, que ele é metáfora da condição humana, uma síntese de fenômenos da sociedade que relacionam o universal e o singular, a gestão das emoções ou das afirmações identitárias.\nDEL PRIORE, M. O Globo, 29 maio 2010.",
+          "enunciado": "Para justificar o fato de o futebol ser considerado uma verdadeira paixão nacional, o texto se apoia na ideia de que esse esporte",
+          "alternativas": [
+            "ensina os torcedores a cantar o Hino Nacional nos estádios para promover a valorização do país.",
+            "pode ser definido como o “ópio do povo”, porque acaba prejudicando a vida de algumas pessoas.",
+            "representa um misto de fenômenos sociais porque, atualmente, tem sido explorado em diferentes áreas.",
+            "rompe a barreira das dificuldades entre crianças e adolescentes que torcem por times diferentes."
+          ],
+          "resposta_correta": "representa um misto de fenômenos sociais porque, atualmente, tem sido explorado em diferentes áreas.",
+          "resolucao": "O texto diz que a bola influencia “o mundo social, político e econômico” e que o futebol “se tornou matéria para as ciências humanas” e para as universidades. Cita ainda um sociólogo que o chama de “uma síntese de fenômenos da sociedade”. Ou seja, o futebol reúne muitos aspectos da vida social e é estudado em várias áreas.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 29
+        }
+      ]
+    }
+  ]
+}

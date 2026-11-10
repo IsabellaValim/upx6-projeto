@@ -18,6 +18,8 @@ public sealed class DisciplinaJson
     public string? Slug { get; set; }
     public string? Nome { get; set; }
     public string? Icone { get; set; }
+    // "fundamental" ou "medio"; omitido = "medio" (arquivos anteriores ao campo).
+    public string? Nivel { get; set; }
 }
 
 public sealed class TemaJson
@@ -49,4 +51,14 @@ public sealed class QuestaoJson
     public string? ProvaEdicao { get; set; }
     public string? ProvaNivel { get; set; }
     public int? ProvaNumero { get; set; }
+    // Recorte da prova quando a questão depende de figura, tabela, gráfico...
+    public ImagemJson? Imagem { get; set; }
+}
+
+public sealed class ImagemJson
+{
+    // Caminho relativo a conteudo/imagens/ (ex.: "2022/2022_EM_regular_matematica_47.webp").
+    public string? Arquivo { get; set; }
+    // Texto alternativo: o que a imagem mostra, sem dar a resposta.
+    public string? Descricao { get; set; }
 }

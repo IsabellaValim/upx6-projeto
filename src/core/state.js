@@ -3,6 +3,8 @@ import { store } from "./store.js";
 
 export const state = {
   user: store.get("user", null),
+  // Prova escolhida: "fundamental" ou "medio" (null = ainda não escolheu).
+  nivel: store.get("nivel", null),
   a11y: Object.assign(
     {
       font: "grande", // padrão para quem ainda não escolheu (público idoso)
@@ -30,6 +32,9 @@ export const save = {
   a11y() {
     store.set("a11y", state.a11y);
     applyA11y();
+  },
+  nivel() {
+    store.set("nivel", state.nivel);
   },
   results() {
     store.set("results", state.results);

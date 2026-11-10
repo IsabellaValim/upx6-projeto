@@ -9,7 +9,8 @@
 >
 > Histórico: v1 (18/10) modelo inicial; adendo (19/10) `questao.status`, `questao.prova_numero`
 > e "Convenções de conteúdo"; v2 (08/11) `questao.codigo`, índice único de vídeo por tema,
-> escopo do MVP e a migration `Conteudo`.
+> escopo do MVP e a migration `Conteudo`; v3 (10/11) `disciplina.nivel`,
+> `questao.imagem_descricao` e uso de `questao.imagem_url` (migration `NivelEImagem`).
 
 ## O que o sistema guarda
 
@@ -44,6 +45,7 @@ erDiagram
         string nome
         string slug UK "ex.: matematica"
         string icone "opcional"
+        string nivel "fundamental ou medio"
     }
 
     TEMA {
@@ -74,7 +76,8 @@ erDiagram
         string[] alternativas "texto de cada alternativa"
         string resposta_correta "texto, uma das alternativas"
         string resolucao "explicacao do gabarito"
-        string imagem_url "opcional, figuras"
+        string imagem_url "opcional, recorte da prova"
+        string imagem_descricao "opcional, texto alternativo"
         int prova_ano "opcional"
         string prova_edicao "opcional"
         string prova_nivel "opcional"
@@ -247,8 +250,13 @@ migration (`InicialIdentity`).
 - **Delimitadores:** `\( ... \)` para fórmula na linha e `\[ ... \]` para fórmula em
   bloco. **Não usar `$`**, porque as questões têm valores como "R$ 10,00".
 - Preferir `\dfrac` a `\frac` no meio do texto: a fração fica maior e mais fácil de ler.
-- **Tabelas** dentro de uma questão começam como imagem (`imagem_url`). **No MVP não entram
-  questões com figura, tabela ou gráfico**, então `imagem_url` fica vazio por enquanto.
+- **Figuras, tabelas e gráficos** entram como imagem (decidido em 10/11/2026): `imagem_url`
+  guarda o caminho do **recorte da questão na prova**, relativo a `conteudo/imagens/` (servido
+  pela API em `/conteudo/imagens/`), e `imagem_descricao` o texto alternativo, obrigatório
+  quando há imagem. Uma imagem por questão. Questão com imagem não tem as alternativas
+  embaralhadas, porque o recorte mostra as letras originais.
+- **Nível:** `disciplina.nivel` separa as provas de Ensino Fundamental e Médio. A mesma matéria
+  nos dois níveis são duas disciplinas (`matematica` e `matematica-fundamental`).
 - **Usar o mínimo de LaTeX:** `5²`, `×` e `R$ 10,00` em texto puro bastam na maioria das questões,
   e a leitura em voz alta lê texto puro direito.
 
@@ -271,6 +279,6 @@ migration (`InicialIdentity`).
 
 - [ ] `videoaula.tipo`: a tela precisa distinguir tipos (introdutório, aprofundando...) ou isso pode sair?
 - [ ] `aula_assistida`: basta marcar uma vez por aluno (modelo atual), ou queremos histórico de cada vez que ele assiste?
-- [ ] `questao.imagem_url`: como hospedar as figuras quando elas entrarem (no MVP, não entram)?
+- [x] `questao.imagem_url`: recortes versionados em `conteudo/imagens/` e servidos pela API (10/11/2026).
 - [ ] `prova_edicao`: texto ou número? Conferir como o INEP identifica as edições.
 - [ ] Termos de uso das provas do INEP para reaproveitar as questões.

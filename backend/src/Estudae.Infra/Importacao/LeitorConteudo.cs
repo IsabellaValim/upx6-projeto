@@ -43,7 +43,7 @@ public static class LeitorConteudo
     {
         if (a.Disciplina is { } d)
         {
-            d.Slug = N(d.Slug); d.Nome = N(d.Nome); d.Icone = N(d.Icone);
+            d.Slug = N(d.Slug); d.Nome = N(d.Nome); d.Icone = N(d.Icone); d.Nivel = N(d.Nivel);
         }
         foreach (var t in a.Temas ?? [])
         {
@@ -61,6 +61,7 @@ public static class LeitorConteudo
                 q.RespostaCorreta = N(q.RespostaCorreta); q.Resolucao = N(q.Resolucao);
                 q.ProvaEdicao = N(q.ProvaEdicao); q.ProvaNivel = N(q.ProvaNivel);
                 q.Alternativas = q.Alternativas?.Select(N).ToList();
+                if (q.Imagem is { } im) { im.Arquivo = N(im.Arquivo); im.Descricao = N(im.Descricao); }
             }
         }
     }

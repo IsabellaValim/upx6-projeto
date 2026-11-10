@@ -16,12 +16,14 @@ namespace Estudae.Api.Endpoints;
 public static class ConteudoEndpoints
 {
     // ---- DTOs de saída (JSON em camelCase, padrão do ASP.NET Core) ----
-    public sealed record DisciplinaDto(string Slug, string Nome, string? Icone, int TotalQuestoes);
+    public sealed record DisciplinaDto(string Slug, string Nome, string? Icone, string Nivel, int TotalQuestoes);
+    // Url relativa à raiz do site ("conteudo/imagens/..."), como o front usa.
+    public sealed record ImagemDto(string Url, string? Descricao);
     public sealed record VideoDto(int Id, string Titulo, string YoutubeId, int? DuracaoSegundos);
     public sealed record TemaDto(string Slug, string Titulo, string Sobre, int TotalQuestoes, List<VideoDto> Videos);
     public sealed record ProvaDto(int? Ano, string? Edicao, string? Nivel, int? Numero);
     // Prova = null: questão autoral (sem origem no INEP).
-    public sealed record QuestaoDto(int Id, string? TextoBase, string Enunciado, List<string> Alternativas, ProvaDto? Prova);
+    public sealed record QuestaoDto(int Id, string? TextoBase, string Enunciado, List<string> Alternativas, ProvaDto? Prova, ImagemDto? Imagem);
     public sealed record RespostaRequest(string? Alternativa);
     public sealed record CorrecaoDto(bool Acertou, string RespostaCorreta, string Resolucao);
 
@@ -38,7 +40,7 @@ public static class ConteudoEndpoints
         await db.Disciplinas
             .OrderBy(d => d.Nome)
             .Select(d => new DisciplinaDto(
-                d.Slug, d.Nome, d.Icone,
+                d.Slug, d.Nome, d.Icone, d.Nivel,
                 d.Temas.SelectMany(t => t.Questoes).Count(q => q.Status == StatusQuestao.Publicada)))
             .ToListAsync(ct);
 
@@ -74,13 +76,17 @@ public static class ConteudoEndpoints
             .OrderBy(q => q.Id)
             .Select(q => new QuestaoDto(
                 q.Id, q.TextoBase, q.Enunciado, q.Alternativas,
-                q.ProvaAno == null ? null : new ProvaDto(q.ProvaAno, q.ProvaEdicao, q.ProvaNivel, q.ProvaNumero)))
+                q.ProvaAno == null ? null : new ProvaDto(q.ProvaAno, q.ProvaEdicao, q.ProvaNivel, q.ProvaNumero),
+                q.ImagemUrl == null ? null : new ImagemDto("conteudo/imagens/" + q.ImagemUrl, q.ImagemDescricao)))
             .ToListAsync(ct);
 
         // Embaralha as alternativas a cada pedido. É seguro porque a correção
         // compara o TEXTO escolhido, não a posição.
+        // Exceção: questão com imagem. O recorte da prova mostra as alternativas com
+        // as letras originais; embaralhar faria o "A" da imagem não ser o "A" da tela.
         foreach (var q in questoes)
         {
+            if (q.Imagem is not null) continue;
             var alts = q.Alternativas.ToArray();
             Random.Shared.Shuffle(alts);
             q.Alternativas.Clear();
