@@ -371,3 +371,14 @@
 .switch[aria-checked="true"]::after {
   transform: translateX(1.375rem);
 }
+/* toggle-row também serve de linha de navegação (lista de ajustes no Perfil) */
+a.toggle-row {
+  text-decoration: none;
+}
+a.toggle-row:active {
+  background: var(--lilac-soft);
+}
+.toggle-row .chev {
+  width: 1.125rem;
+  color: var(--muted);
+}

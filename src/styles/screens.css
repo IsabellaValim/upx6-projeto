@@ -622,6 +622,13 @@
   height: 0.9rem;
   color: var(--plum);
 }
+.profile-note {
+  display: block;
+  margin: 0.125rem 0 0.375rem;
+  color: var(--muted);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+}
 
 .bar-row + .bar-row {
   margin-top: 1rem;

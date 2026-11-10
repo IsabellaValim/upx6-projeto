@@ -1,18 +1,24 @@
-/* Perfil */
+/* Perfil: quem você é, os ajustes do app e a conta.
+   Progresso e histórico ficam só na aba Progresso — não se repetem aqui. */
 import { NIVEIS } from "../data.js";
 import { icon } from "../icons.js";
 import { state } from "../core/state.js";
 import { store } from "../core/store.js";
 import { esc, go, initials } from "../core/utils.js";
 import { streakDays } from "../core/stats.js";
-import { historyList, subjectBars } from "../components/progress.js";
 import { urls } from "../core/urls.js";
 
 export default function perfil() {
   const u = state.user;
   const streak = streakDays();
-  const correct = state.results.reduce((s, r) => s + r.correct, 0);
-  const level = 1 + Math.floor(correct / 10);
+
+  const ajuste = (href, ic, titulo, desc) => `
+        <a class="toggle-row" href="${href}">
+          ${icon(ic)}
+          <div><strong>${titulo}</strong><small>${desc}</small></div>
+          ${icon("chevronRight", "chev")}
+        </a>`;
+
   return {
     cls: "screen--nav",
     nav: "perfil",
@@ -26,21 +32,27 @@ export default function perfil() {
           <span class="avatar" aria-hidden="true">${esc(initials(u.name))}</span>
           <div>
             <strong>${esc(u.name)}</strong>
-            <span class="streak">${icon("flame")}${streak} ${streak === 1 ? "dia" : "dias"} de ofensiva, nível ${level}</span>
+            <small class="profile-note">${
+              u.guest
+                ? "Estudando sem conta — o progresso fica salvo neste aparelho."
+                : esc(u.login ?? "")
+            }</small>
+            <span class="streak">${icon("flame")}${
+              streak
+                ? `${streak} ${streak === 1 ? "dia" : "dias"} de ofensiva`
+                : "Estude hoje para começar uma ofensiva"
+            }</span>
           </div>
         </div>
-        <a class="subject-row subject-row--sim" style="margin-top:1rem" href="${urls.nivel}">
-          ${icon("book")}
-          <span><strong>Sua prova: ${NIVEIS[state.nivel]?.nome ?? "não escolhida"}</strong><small>Toque para trocar entre Ensino Fundamental e Médio.</small></span>
-          ${icon("chevronRight", "chev")}
-        </a>
-        <div class="card">${subjectBars()}</div>
-        <h2 class="section-label">Histórico recente</h2>
-        ${state.results.length ? historyList(4) : `<div class="empty"><p>Suas lições vão aparecer aqui.</p><a class="btn btn--light" href="${urls.home}">Praticar um tema</a></div>`}
-        <a class="btn btn--soft" style="margin-top:1.5rem" href="${urls.acessibilidade}">${icon("access")}Opções de acessibilidade</a>
-        <button class="btn btn--outline" style="margin-top:.75rem" id="logout">${icon("logout")}${u.guest ? "Sair do modo visitante" : "Sair da conta"}</button>`,
+        ${u.guest ? `<button class="btn btn--primary" id="sair" style="margin-top:1rem">${icon("user")}Entrar ou criar conta</button>` : ""}
+        <h2 class="section-label">Ajustes</h2>
+        <div class="card card--flush">
+          ${ajuste(urls.nivel, "book", "Prova do Encceja", NIVEIS[state.nivel]?.nome ?? "Ainda não escolhida")}
+          ${ajuste(urls.acessibilidade, "access", "Acessibilidade", "Tamanho do texto, contraste e leitura em voz alta")}
+        </div>
+        ${u.guest ? "" : `<button class="btn btn--outline" id="sair" style="margin-top:1.5rem">${icon("logout")}Sair da conta</button>`}`,
     after() {
-      document.getElementById("logout").addEventListener("click", () => {
+      document.getElementById("sair").addEventListener("click", () => {
         state.user = null;
         store.remove("user");
         go(urls.boasVindas);
