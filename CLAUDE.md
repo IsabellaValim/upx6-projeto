@@ -71,9 +71,15 @@ http.server` ou `npx serve .`.
   (certa/errada em texto e cor, resolução) → "Continuar". O resultado guarda
   enunciado, resposta certa e resolução (gabarito nunca fica no front). `fonte()` mostra a origem ou "Questão
   autoral Estudaê". Todo texto da API passa por `esc()`.
-- **Vídeo-aula:** iframe do `youtube-nocookie.com` no layout original.
-  "Legendas" recarrega o player com `cc_load_policy`; "Velocidade calma"
-  manda `setPlaybackRate` pela API de iframe (`enablejsapi=1`).
+- **Vídeo-aula** (`src/screens/video.js`, refeita em 10/11/2026): topo com o
+  nome do tema, iframe do `youtube-nocookie.com`, o título da aula como `<h1>`
+  (o canal entre parênteses no título vira a linha de baixo), descrição e
+  **uma ação principal**: "Terminei a aula, quero praticar" (marca a aula
+  como vista e abre a lição). Secundária: "Marcar como vista e voltar".
+  "Opções do vídeo" são interruptores com "Ligado/Desligado" escrito:
+  Legendas (recarrega o player com `cc_load_policy`) e Velocidade calma
+  (`setPlaybackRate` pela API de iframe, `enablejsapi=1`). O YouTube em outra
+  aba ficou como link pequeno de plano B. O "Voz alta" da descrição saiu.
 - **O que fica no `localStorage` hoje:** tudo existe só no navegador, sem
   conta real por trás, então **não há progresso para migrar** para o banco.
   - `estudae:user`: visitante ou um usuário de mentira do login/cadastro.

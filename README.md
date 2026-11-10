@@ -14,8 +14,8 @@ Projeto acadêmico desenvolvido para a UPX.
   ou **Ver aula**. Os temas abrem um por vez, com uma frase de descrição.
 - **Progresso:** cada matéria mostra "X de Y atividades" (aulas vistas e questões acertadas),
   e o botão **Continuar estudando** leva direto à próxima atividade pendente.
-- **Vídeo-aulas** por tema: YouTube incorporado, com legenda e velocidade calma opcionais, e
-  um atalho "Praticar este tema" logo abaixo.
+- **Vídeo-aulas** por tema: YouTube incorporado, com legenda e velocidade calma opcionais.
+  Logo abaixo, "Terminei a aula, quero praticar" marca a aula como vista e abre a lição.
 - **Lição curta por tema:** até 5 questões sorteadas. Cada resposta é conferida na hora pela
   API, com a resposta certa destacada e a explicação; no fim, um resumo da lição.
 - **Origem da questão:** questões de provas anteriores mostram a fonte (ano, edição, número);
