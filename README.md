@@ -46,16 +46,18 @@ novo ([`docs/conteudo/README.md`](docs/conteudo/README.md)).
 
 ## Stack
 
-| Parte         | Tecnologia                                                              |
-| ------------- | ----------------------------------------------------------------------- |
-| Frontend      | HTML + CSS + JavaScript puro (ES Modules) — sem build, sem dependências |
-| Backend       | ASP.NET Core (.NET 10), EF Core 10 + Npgsql                             |
-| Banco         | PostgreSQL 16, em container                                             |
-| Empacotamento | Dockerfile multi-stage + Docker Compose (`db` → `migrate` → `api`)      |
-| CI            | GitHub Actions: build + testes + smoke test do compose                  |
+| Parte         | Tecnologia                                                         |
+| ------------- | ------------------------------------------------------------------ |
+| Frontend      | React 19 + TypeScript + Vite (SPA, URLs limpas), Zustand, KaTeX    |
+| Backend       | ASP.NET Core (.NET 10), EF Core 10 + Npgsql                        |
+| Banco         | PostgreSQL 16, em container                                        |
+| Empacotamento | Dockerfile multi-stage + Docker Compose (`db` → `migrate` → `api`) |
+| CI            | GitHub Actions: build + testes + smoke test do compose             |
 
-A própria API serve as telas no `wwwroot`: mesma origem, um container só, sem
-CORS em produção.
+A própria API serve as telas no `wwwroot` (o `dist` do build do Vite): mesma
+origem, um container só, sem CORS em produção. As URLs são limpas (`/home`,
+`/area/matematica`...): a API devolve o `index.html` para qualquer caminho
+que não seja arquivo nem `/api`, e o React Router resolve a tela.
 
 ## Como rodar
 
@@ -98,19 +100,23 @@ dotnet run --project src/Estudae.Api    # API em http://localhost:5151
 dotnet test                           # precisa do banco de pé
 ```
 
-### Só as telas
+### Só o frontend (desenvolvimento)
 
-O app usa módulos ES, então precisa ser servido por HTTP (abrir o `index.html`
-pelo `file://` não funciona):
+O app React mora em `frontend/` e roda com o dev server do Vite, que já faz
+proxy de `/api` e `/conteudo` para `http://localhost:5151` (a API do
+`dotnet run` — suba o banco e a API como na seção acima):
 
 ```bash
-python -m http.server 8000   # ou: npx serve .
+cd frontend
+npm ci          # primeira vez
+npm run dev     # http://localhost:5173
+npm test        # testes (Vitest)
+npm run lint    # oxlint
+npm run build   # gera frontend/dist (o que vai para o wwwroot na imagem)
 ```
 
-Para apontar a outra API, rode no console do navegador
-`localStorage.setItem("estudae:api", "http://localhost:5151")` e recarregue. A
-API do `dotnet run` já aceita chamadas de `http://localhost:<porta>` em
-desenvolvimento.
+Progresso e preferências continuam no `localStorage` do navegador (chaves
+`estudae:*`), sem conta real por trás.
 
 ## Banco de dados
 
@@ -164,7 +170,7 @@ Não deixe a senha em arquivo versionado.
 ## Estrutura
 
 ```text
-index.html, src/        frontend (SPA por hash; detalhes no CLAUDE.md)
+frontend/               app React + TS + Vite (src/, testes; detalhes no CLAUDE.md)
 backend/
   src/Estudae.Domain/   entidades (sem dependências)
   src/Estudae.Infra/    EF Core, migrations, importador de conteúdo

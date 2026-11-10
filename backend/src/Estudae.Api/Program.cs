@@ -55,14 +55,18 @@ app.UseErrosPadronizados();
 
 if (app.Environment.IsDevelopment()) app.UseCors(CorsDev);
 
-// Front (index.html + src/) servido do wwwroot: na imagem, o Dockerfile copia
-// para lá os arquivos da raiz do repo. Mesma origem da API, então sem CORS.
-// no-cache = o navegador revalida (ETag/304) a cada carga: sem bundler gerando
-// nomes com hash, é o que garante que ninguém fica com o JS velho após um deploy.
+// Front (app React+Vite) servido do wwwroot: na imagem, o Dockerfile copia o
+// frontend/dist para lá. Mesma origem da API, então sem CORS.
+// /assets/* saem do build do Vite com hash no nome: cache longo e imutável.
+// O resto (index.html, /branding/*) fica no-cache = revalida (ETag/304) a cada
+// carga: ninguém fica com o shell velho após um deploy.
 app.UseDefaultFiles();
 app.UseStaticFiles(new StaticFileOptions
 {
-    OnPrepareResponse = ctx => ctx.Context.Response.Headers.CacheControl = "no-cache",
+    OnPrepareResponse = ctx => ctx.Context.Response.Headers.CacheControl =
+        ctx.Context.Request.Path.StartsWithSegments("/assets")
+            ? "public, max-age=31536000, immutable"
+            : "no-cache",
 });
 
 app.UseAuthentication();
@@ -70,6 +74,19 @@ app.UseAuthorization();
 
 app.MapHealthChecks("/health");
 app.MapConteudo();
+
+// /api/* que não casou com endpoint nenhum: 404 de verdade — nunca o index.html
+// do fallback de SPA. Endpoints exatos de /api ganham deste catch-all pela
+// precedência de rotas (literal > parâmetro > catch-all).
+app.Map("/api/{**_}", () => Results.NotFound());
+
+// O front usa URLs limpas (React Router): qualquer caminho sem arquivo que não
+// seja /api devolve o index.html (a restrição "nonfile" já vem no fallback) e
+// o router do front decide a tela. no-cache como o resto do shell.
+app.MapFallbackToFile("index.html", new StaticFileOptions
+{
+    OnPrepareResponse = ctx => ctx.Context.Response.Headers.CacheControl = "no-cache",
+});
 
 app.Run();
 return 0;

@@ -17,7 +17,7 @@
 # Mesma imagem para "migrate" e "api": o build e um so (o segundo vem do cache).
 x-imagem-api: &imagem-api
   build:
-    context: .                 # raiz do repo: o Dockerfile copia backend/ e o front (index.html, src/)
+    context: . # raiz do repo: o Dockerfile compila backend/ e frontend/
     dockerfile: backend/Dockerfile
   image: estudae-api
 

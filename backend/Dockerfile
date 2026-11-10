@@ -10,6 +10,20 @@
 # ultimo estagio; SDK, codigo-fonte e cache do NuGet ficam para tras.
 
 # ---------------------------------------------------------------------------
+# Estagio 0: build do front (Vite -> dist/, com hash no nome dos assets)
+# ---------------------------------------------------------------------------
+FROM node:22-alpine AS front
+WORKDIR /front
+
+# So os manifests primeiro: enquanto as dependencias nao mudam, o npm ci sai do
+# cache mesmo que qualquer .tsx mude (mesma ideia do restore do dotnet abaixo).
+COPY frontend/package.json frontend/package-lock.json ./
+RUN npm ci
+
+COPY frontend/ ./
+RUN npm run build
+
+# ---------------------------------------------------------------------------
 # Estagio 1: build (SDK completo: compilador, MSBuild, NuGet)
 # ---------------------------------------------------------------------------
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
@@ -54,11 +68,11 @@ EXPOSE 8080
 # Do estagio de build vem so o resultado do publish.
 COPY --from=build /app/publish .
 
-# Front (HTML/CSS/JS puro, sem build): direto do context para o wwwroot, que a
-# API serve com UseStaticFiles. Ficam depois do publish de proposito: mudar
-# so o front refaz so estas camadas, sem recompilar o C#.
-COPY index.html wwwroot/
-COPY src/ wwwroot/src/
+# Front compilado (React + Vite): o dist/ inteiro vai para o wwwroot, que a API
+# serve com UseStaticFiles + MapFallbackToFile (URLs limpas do React Router).
+# Fica depois do publish de proposito: mudar so o front refaz estas camadas e
+# o estagio "front", sem recompilar o C#.
+COPY --from=front /front/dist/ wwwroot/
 
 # Conteudo (questoes, videos, imagens) NAO vai na imagem: mora no banco. Para
 # importar um JSON novo, monte a pasta dele no container (ver docs/conteudo/README.md).
