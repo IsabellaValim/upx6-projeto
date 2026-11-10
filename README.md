@@ -130,6 +130,61 @@ Veja [`docs/api.md`](docs/api.md).
 Se a 5432 (Postgres) ou a 8080 (site) já estiverem em uso na sua máquina, mude `DB_PORT` ou
 `API_PORT` no `.env`. As portas só são publicadas em `127.0.0.1`.
 
+## Banco de dados: onde fica, exportar e sincronizar
+
+**Onde os dados ficam.** No PostgreSQL do Docker, dentro do volume `upx6-projeto_pgdata`, no seu
+computador e **fora do app**. Reconstruir a imagem, reiniciar ou apagar os containers não apaga
+os dados; só `docker compose down -v` apaga. O app acessa o banco pela rede interna do Compose.
+Os JSONs de `conteudo/` são a fonte que o importador lê; depois de importados, os dados vivem no
+banco.
+
+**Abrir o banco numa ferramenta** (DBeaver, pgAdmin, `psql`): host `localhost`, porta `DB_PORT`
+do `.env` (padrão 5432), banco e usuário `estudae`, senha `POSTGRES_PASSWORD` do `.env`. Ou, sem
+instalar nada: `docker compose exec db psql -U estudae -d estudae`.
+
+### Exportar (para mandar a alguém ou guardar)
+
+```bash
+# Windows (PowerShell), na raiz do repositório, com o compose de pé:
+powershell -ExecutionPolicy Bypass -File scripts/banco/exportar.ps1
+# Linux, Mac, VM ou Git Bash:
+sh scripts/banco/exportar.sh
+```
+
+Gera `backups/estudae-AAAAMMDD-HHMM.dump` com **o banco inteiro**: estrutura, migrations aplicadas
+e dados. A pasta `backups/` não vai para o git (pode conter dados): mande o arquivo por outro
+meio (Drive, e-mail). As imagens das questões não vão no dump, porque já estão no repositório
+(`conteudo/imagens/`).
+
+### Restaurar (receber o banco de alguém)
+
+```bash
+# Windows:
+powershell -ExecutionPolicy Bypass -File scripts/banco/restaurar.ps1 -Arquivo backups/estudae-20261110-1500.dump
+# Linux, Mac, VM ou Git Bash:
+sh scripts/banco/restaurar.sh backups/estudae-20261110-1500.dump
+```
+
+**Substitui** o conteúdo do seu banco local pelo do arquivo. Antes, o script guarda o banco atual
+em `backups/antes-de-restaurar-<data>.dump`, para você poder voltar atrás. A restauração é
+tudo ou nada (se der erro, o banco fica como estava), e no fim aplica as migrations que
+faltarem, se o arquivo for de uma versão mais antiga do app. Funciona também num banco vazio,
+recém-criado: é assim que outra pessoa sincroniza com você.
+
+### Subir para um banco online
+
+O `.dump` restaura em qualquer PostgreSQL 16 (VM, Render, Neon, Supabase...), sem instalar o
+PostgreSQL na sua máquina, usando a própria imagem do Docker:
+
+```bash
+docker run --rm -v "$PWD/backups:/b" postgres:16 \
+  pg_restore --no-owner --no-privileges --clean --if-exists \
+  -d "postgresql://USUARIO:SENHA@HOST:5432/BANCO" /b/estudae-20261110-1500.dump
+```
+
+Depois, aponte a API online para esse banco (`ConnectionStrings__Estudae`). Não deixe a senha do
+banco em arquivo versionado.
+
 ## Conteúdo
 
 Questões e vídeos são cadastrados em JSON e entram no banco pelo importador, que confere

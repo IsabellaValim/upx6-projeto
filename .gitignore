@@ -156,3 +156,6 @@ appsettings.*.local.json
 .env.local
 postgres-data/
 pgdata/
+
+# Exportações do banco (scripts/banco/exportar.*): podem ter dados, não vão para o git
+backups/

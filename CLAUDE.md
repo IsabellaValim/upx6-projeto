@@ -145,6 +145,15 @@ docker compose down                      # mantém os dados
 docker compose down -v                   # APAGA os dados
 ```
 
+- **Exportar e sincronizar o banco** (10/11/2026): `scripts/banco/exportar.ps1|.sh`
+  gera `backups/estudae-<data>.dump` (`pg_dump -Fc --no-owner`, feito dentro do
+  container e copiado com `docker cp -q`, porque redirecionar binário no PowerShell
+  corrompe); `scripts/banco/restaurar.ps1|.sh` faz backup do atual, `pg_restore
+  --clean --if-exists --single-transaction` e roda o `migrate`. `backups/` fica no
+  `.gitignore`. Os `.sh` têm `MSYS_NO_PATHCONV=1` (Git Bash troca `/tmp/...` por
+  caminho do Windows) e `.gitattributes` força LF. As imagens das questões não vão
+  no dump (estão em `conteudo/imagens/`).
+
 - **`migrate`:** a mesma imagem com `command: ["migrar"]` (subcomando da
   API, `Cli/MigrarComando.cs`). Roda uma vez; a `api` só sobe com
   `service_completed_successfully`. Escolhido no lugar do `efbundle` para
