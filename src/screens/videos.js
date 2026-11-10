@@ -17,7 +17,7 @@ export default function videos(id) {
       return `<details class="topic" ${i === 0 ? "open" : ""}>
         <summary>
           <span class="topic-num" aria-hidden="true">${i + 1}</span>
-          <span class="topic-pill">Tema ${i + 1} — ${esc(t.title)}<small>${t.videos} vídeos</small></span>
+          <span class="topic-pill">Tema ${i + 1} — ${esc(t.title)}<small>${t.videos} ${t.videos === 1 ? "vídeo" : "vídeos"}</small></span>
           ${icon("chevronDown", "chev")}
         </summary>
         <div class="lessons">
@@ -25,8 +25,8 @@ export default function videos(id) {
             .map((l, j) => {
               const done = state.watched[`${id}/${i}/${j}`];
               return `<a class="lesson ${done ? "done" : ""}" href="${urls.video(id, i, j)}">
-              ${icon(done ? "check" : "playCircle")}<span>${l.kind}${done ? '<span class="sr-only"> (concluído)</span>' : ""}</span>
-              <span class="dur">${l.min} min</span></a>`;
+              ${icon(done ? "check" : "playCircle")}<span>${esc(l.kind)}${done ? '<span class="sr-only"> (concluído)</span>' : ""}</span>
+              ${l.min ? `<span class="dur">${l.min} min</span>` : ""}</a>`;
             })
             .join("")}
         </div>
@@ -38,7 +38,7 @@ export default function videos(id) {
     nav: "inicio",
     html: `
         <div class="topbar">${backBtn(urls.area(id))}</div>
-        <p class="kicker">${s.name} (Encceja)</p>
+        <p class="kicker">${esc(s.name)} (Encceja)</p>
         <h1 class="title">Vídeo-aulas</h1>
         <p class="small" style="margin-top:.25rem">${watchedCount(id)} de ${totalLessons(id)} aulas concluídas</p>
         ${topics}`,

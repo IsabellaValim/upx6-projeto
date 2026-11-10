@@ -1,5 +1,5 @@
 /* Utilidades puras (sem acesso a estado ou DOM) */
-export const LETTERS = ["A", "B", "C", "D"];
+export const LETTERS = ["A", "B", "C", "D", "E"]; // a API manda de 2 a 5 alternativas
 
 export const esc = (s) =>
   String(s).replace(

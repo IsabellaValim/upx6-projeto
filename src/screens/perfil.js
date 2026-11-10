@@ -30,7 +30,7 @@ export default function perfil() {
         </div>
         <div class="card">${subjectBars()}</div>
         <h2 class="section-label">Histórico recente</h2>
-        ${state.results.length ? historyList(4) : `<div class="empty"><p>Seus quizzes vão aparecer aqui.</p><a class="btn btn--light" href="${urls.quiz("pt")}">Fazer um quiz</a></div>`}
+        ${state.results.length ? historyList(4) : `<div class="empty"><p>Seus quizzes vão aparecer aqui.</p><a class="btn btn--light" href="${urls.home}">Fazer um quiz</a></div>`}
         <a class="btn btn--soft" style="margin-top:1.5rem" href="${urls.acessibilidade}">${icon("access")}Opções de acessibilidade</a>
         <button class="btn btn--outline" style="margin-top:.75rem" id="logout">${icon("logout")}${u.guest ? "Sair do modo visitante" : "Sair da conta"}</button>`,
     after() {
