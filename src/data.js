@@ -32,6 +32,7 @@ export async function carregarCatalogo() {
     }));
     SUBJECTS[d.slug] = {
       id: d.slug,
+      nivel: d.nivel ?? "medio", // "fundamental" ou "medio"
       name: d.nome,
       area: topics.length === 1 ? "1 tema" : `${topics.length} temas`,
       icon: d.icone || "book",
@@ -57,7 +58,28 @@ export async function carregarQuestoes(id, ti) {
     ask: q.enunciado,
     options: q.alternativas,
     prova: q.prova,
+    imagem: q.imagem, // { url, descricao } ou null: recorte da prova (figura, tabela...)
   }));
+}
+
+// Provas do Encceja (o "nível" da disciplina na API).
+export const NIVEIS = {
+  fundamental: { nome: "Ensino Fundamental", sobre: "Para quem quer o certificado de conclusão do Ensino Fundamental." },
+  medio: { nome: "Ensino Médio", sobre: "Para quem quer o certificado de conclusão do Ensino Médio." },
+};
+
+// Matérias da prova escolhida, na ordem do catálogo.
+export const materiasDoNivel = (nivel) => Object.values(SUBJECTS).filter((s) => s.nivel === nivel);
+
+// Imagem da questão, com o texto alternativo e um link para ver em tamanho grande.
+export function figuraQuestao(imagem, esc) {
+  if (!imagem?.url) return "";
+  return `<figure class="q-figure">
+      <img src="${esc(imagem.url)}" alt="${esc(imagem.descricao || "Imagem da questão")}" loading="lazy">
+      <figcaption>Questão como aparece na prova ·
+        <a class="link" href="${esc(imagem.url)}" target="_blank" rel="noopener">Ampliar imagem<span class="sr-only"> (abre em outra aba)</span></a>
+      </figcaption>
+    </figure>`;
 }
 
 // "Fonte: Encceja 2020, Nacional, Ensino Médio, questão 35." ou, sem prova, autoral.

@@ -1,5 +1,5 @@
 /* Início: logo, continuar, estudar por matéria e testar com o simulado */
-import { SUBJECTS } from "../data.js";
+import { SUBJECTS, NIVEIS, materiasDoNivel } from "../data.js";
 import { icon } from "../icons.js";
 import { state } from "../core/state.js";
 import { esc } from "../core/utils.js";
@@ -14,12 +14,14 @@ function ultimaMateria() {
     const id = k.split("/")[0];
     quando[id] = Math.max(quando[id] ?? 0, ts);
   }
-  return Object.keys(quando).filter((id) => SUBJECTS[id]).sort((a, b) => quando[b] - quando[a])[0];
+  return Object.keys(quando)
+    .filter((id) => SUBJECTS[id]?.nivel === state.nivel) // só da prova escolhida
+    .sort((a, b) => quando[b] - quando[a])[0];
 }
 
 export default function home() {
   const first = state.user.guest ? "" : state.user.name.split(" ")[0];
-  const materias = Object.keys(SUBJECTS);
+  const materias = materiasDoNivel(state.nivel).map((s) => s.id);
   const ultima = ultimaMateria();
   const next = ultima && nextActivity(ultima);
 
@@ -43,7 +45,7 @@ export default function home() {
     html: `
         <img class="brand-logo" src="src/assets/branding/logo-primary.svg" alt="Estudaê">
         <h1 class="title home-greeting">${first ? `Olá, ${esc(first)}! Vamos estudar?` : "Olá! Vamos estudar?"}</h1>
-        <p class="lede">Prepare-se para o Encceja no seu ritmo.</p>
+        <p class="lede">Prova do Encceja: <strong>${NIVEIS[state.nivel]?.nome ?? ""}</strong> · <a class="link" href="${urls.nivel}">Trocar</a></p>
         ${
           next
             ? `<a class="continue-btn" href="${next.href}">

@@ -1,5 +1,5 @@
 /* Lição: até 5 questões de UM tema, com a correção logo após cada resposta */
-import { SUBJECTS, carregarQuestoes, fonte } from "../data.js";
+import { SUBJECTS, carregarQuestoes, fonte, figuraQuestao } from "../data.js";
 import { api } from "../core/api.js";
 import { icon } from "../icons.js";
 import { $app } from "../core/dom.js";
@@ -103,6 +103,7 @@ function drawQuestion() {
       <section class="statement" aria-labelledby="ask">
         <p class="tag">${esc(s.name.toUpperCase())}</p>
         ${item.text ? `<p class="passage">${esc(item.text)}</p>` : ""}
+        ${figuraQuestao(item.imagem, esc)}
         <p class="ask" id="ask">${esc(item.ask)}</p>
         <p class="small source" style="margin-top:.5rem">${esc(fonte(item.prova))}</p>
         <button class="btn btn--light listen" id="listen">${icon("volume")}Ouvir questão</button>
@@ -134,7 +135,7 @@ function drawQuestion() {
 
   const readAloud = () =>
     speak(
-      `Questão ${q.i + 1}. ${item.text ? item.text + ". " : ""}${item.ask} ${item.options.map((o, k) => `Alternativa ${LETTERS[k]}: ${o}.`).join(" ")}`,
+      `Questão ${q.i + 1}. ${item.text ? item.text + ". " : ""}${item.imagem?.descricao ? "Imagem: " + item.imagem.descricao + ". " : ""}${item.ask} ${item.options.map((o, k) => `Alternativa ${LETTERS[k]}: ${o}.`).join(" ")}`,
     );
   document.getElementById("listen").addEventListener("click", readAloud);
 

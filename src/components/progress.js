@@ -30,7 +30,9 @@ export function historyList(limit) {
 }
 
 export function subjectBars() {
+  // Só as matérias da prova escolhida (Fundamental ou Médio).
   return Object.keys(SUBJECTS)
+    .filter((id) => !state.nivel || SUBJECTS[id].nivel === state.nivel)
     .map((id) => {
       const sc = subjectScore(id);
       const name = esc(SUBJECTS[id].name);

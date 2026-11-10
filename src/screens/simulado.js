@@ -2,7 +2,7 @@
    Simulado: questões de todos os temas de uma matéria, com tempo,
    sem correção até o fim (como no dia da prova).
    ========================================================== */
-import { SUBJECTS, carregarQuestoes, fonte } from "../data.js";
+import { SUBJECTS, carregarQuestoes, fonte, materiasDoNivel, figuraQuestao } from "../data.js";
 import { api } from "../core/api.js";
 import { icon } from "../icons.js";
 import { $app } from "../core/dom.js";
@@ -31,7 +31,7 @@ export default function simulado(id) {
 
 /* ---------- Instruções e escolha da matéria ---------- */
 function instrucoes() {
-  const materias = Object.values(SUBJECTS).filter((s) => s.totalQuestoes > 0);
+  const materias = materiasDoNivel(state.nivel).filter((s) => s.totalQuestoes > 0);
   return {
     cls: "screen--nav",
     nav: "inicio",
@@ -148,6 +148,7 @@ function draw({ panel = false } = {}) {
       <section class="statement" aria-labelledby="ask">
         <p class="tag">${esc(s.topics[item.topic].title.toUpperCase())}</p>
         ${item.text ? `<p class="passage">${esc(item.text)}</p>` : ""}
+        ${figuraQuestao(item.imagem, esc)}
         <p class="ask" id="ask">${esc(item.ask)}</p>
         <p class="small source" style="margin-top:.5rem">${esc(fonte(item.prova))}</p>
         <button class="btn btn--light listen" id="listen">${icon("volume")}Ouvir questão</button>
@@ -204,7 +205,7 @@ function draw({ panel = false } = {}) {
   };
 
   document.getElementById("listen").addEventListener("click", () =>
-    speak(`Questão ${q.i + 1}. ${item.text ? item.text + ". " : ""}${item.ask} ${item.options.map((o, k) => `Alternativa ${LETTERS[k]}: ${o}.`).join(" ")}`),
+    speak(`Questão ${q.i + 1}. ${item.text ? item.text + ". " : ""}${item.imagem?.descricao ? "Imagem: " + item.imagem.descricao + ". " : ""}${item.ask} ${item.options.map((o, k) => `Alternativa ${LETTERS[k]}: ${o}.`).join(" ")}`),
   );
 
   const alts = [...box.querySelectorAll(".alt")];
