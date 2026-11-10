@@ -346,6 +346,7 @@
   font-weight: 600;
   line-height: 1.5;
   white-space: pre-line;
+  overflow-wrap: anywhere;
 }
 .q-fonte {
   font-size: 0.8125rem;
@@ -370,6 +371,10 @@
   border: 2px solid transparent;
   font-size: 0.9375rem;
   color: var(--ink);
+}
+.alt > span:last-child {
+  min-width: 0;
+  overflow-wrap: anywhere;
 }
 .alt .letter {
   width: 1.75rem;
@@ -700,8 +705,13 @@
   color: var(--muted);
   font-size: 0.75rem;
 }
+/* O texto pode encolher e quebrar; o % nunca é espremido */
+.history-item > span {
+  min-width: 0;
+}
 .history-item .pct {
   margin-left: auto;
+  flex: none;
   font-weight: 700;
   font-size: 0.875rem;
 }
@@ -722,6 +732,7 @@
   display: block;
   height: 100%;
   width: auto;
+  max-width: 100%;
 }
 .brand-logo--hero {
   height: 3.5rem;
@@ -939,7 +950,9 @@
 .visualizador {
   width: 100vw;
   max-width: 100vw;
+  height: 100vh;
   height: 100dvh;
+  max-height: 100vh;
   max-height: 100dvh;
   margin: 0;
   padding: 0;
