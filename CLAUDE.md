@@ -102,7 +102,7 @@ http.server` ou `npx serve .`.
   - `estudae:results`: **uma entrada por quiz inteiro** (`v: 2`, `subject`,
     `date`, `correct`, `total`, `weakTopic`), com as respostas em `items`
     (`ask`, `options`, `chosen`, `answer`, `why`, `topic`, `ok`). `chosen` e
-    `answer` são *posições* em `options`. Entradas sem `v: 2` (do conteúdo de
+    `answer` são _posições_ em `options`. Entradas sem `v: 2` (do conteúdo de
     exemplo antigo) são ignoradas ao carregar. Versão inicial de `Tentativa`, mas o banco guarda uma tentativa
     por questão; sessão de quiz está fora do escopo por enquanto.
   - `estudae:watched`: mapa `"materia/tema/aula"` → timestamp. É um
@@ -113,7 +113,7 @@ http.server` ou `npx serve .`.
   `localStorage`). Fluxo sem redundância: Início ("Continuar estudando" + os
   cartões de matéria com "X de Y atividades") → Área (título, "Continuar
   estudando", "Seu progresso" e os temas como lista que abre — `<details
-  name="temas">`, um aberto por vez, com uma frase de descrição, "Praticar"
+name="temas">`, um aberto por vez, com uma frase de descrição, "Praticar"
   em destaque e "Ver aula") → vídeo ou lição. Desenho rascunhado pela pessoa
   em 10/11/2026; a tela própria de cada tema fica para quando houver assuntos
   com mais material.
@@ -149,8 +149,9 @@ http.server` ou `npx serve .`.
 - **Cores de texto de acerto/erro:** `--ok-text` e `--bad-text` (base.css),
   mais escuras que `--ok`/`--bad`, para passar de 4.5:1 sobre os fundos claros.
 - **Componentes reutilizáveis:** `src/components/` — `nav.js` (bottom-nav +
-  botão voltar) e `progress.js` (barras de aproveitamento + histórico, usados
-  em Progresso e Perfil). O `sheet.js` (folha "qual matéria?") saiu junto com
+  botão voltar) e `progress.js` (linhas de progresso por matéria + histórico,
+  usados só em Progresso; o Perfil tem identidade e ajustes, sem progresso).
+  O `sheet.js` (folha "qual matéria?") saiu junto com
   os atalhos redundantes do início; o CSS dele e o `#sheet-root` ficaram, sem uso.
 - **Utilitários:** `src/core/utils.js` (puro, sem DOM/estado: `esc`, `go`,
   `pct`, `shuffle`, etc.), `src/core/stats.js` (métricas derivadas: streak,
@@ -167,10 +168,11 @@ http.server` ou `npx serve .`.
 Fases 1 a 5 prontas, mais o conteúdo do MVP; o resto do plano segue abaixo.
 
 ### Stack decidida
+
 - **Backend:** ASP.NET Core (.NET 10 LTS, suporte até nov/2028), EF Core 10
-  + Npgsql. O .NET 8 estava no plano original, mas o suporte dele termina em
-  nov/2026; a troca foi feita antes de existir código. `backend/global.json`
-  fixa o SDK em 10.0.x.
+  - Npgsql. O .NET 8 estava no plano original, mas o suporte dele termina em
+    nov/2026; a troca foi feita antes de existir código. `backend/global.json`
+    fixa o SDK em 10.0.x.
 - **Banco de dados:** PostgreSQL rodando em Docker
 - **Frontend:** as telas vanilla JS já existentes, servidas pelo `wwwroot` da
   própria API (mesma origem, um container só, sem CORS). Revisitar se surgir
@@ -207,7 +209,7 @@ docker compose down -v                   # APAGA os dados (e todo o conteúdo)
   gera `backups/estudae-<data>.dump` (`pg_dump -Fc --no-owner`, feito dentro do
   container e copiado com `docker cp -q`, porque redirecionar binário no PowerShell
   corrompe); `scripts/banco/restaurar.ps1|.sh` faz backup do atual, `pg_restore
-  --clean --if-exists --single-transaction` e roda o `migrate`. `backups/` fica no
+--clean --if-exists --single-transaction` e roda o `migrate`. `backups/` fica no
   `.gitignore`. Os `.sh` têm `MSYS_NO_PATHCONV=1` (Git Bash troca `/tmp/...` por
   caminho do Windows) e `.gitattributes` força LF. O dump leva também as imagens
   (tabela `imagem`): é a forma de compartilhar o conteúdo.
@@ -289,7 +291,9 @@ lá, no mesmo commit da migration.
   nunca por id, para o mesmo arquivo servir em qualquer ambiente.
 
 ### Estrutura da solução
+
 O `src/` da raiz é o frontend, então o backend fica inteiro em `backend/`:
+
 ```
 backend/
 ├─ Estudae.slnx            formato novo de solução (padrão no .NET 10)
@@ -304,6 +308,7 @@ backend/
 └─ tests/
    └─ Estudae.Tests/       xUnit: unidade (importador) + integração (API, Postgres)
 ```
+
 - **Domain não depende de nada** (nem EF Core, nem ASP.NET). Por isso
   `Usuario : IdentityUser` mora na Infra, e o Domain referencia o usuário só
   por `UsuarioId` (string).
@@ -312,8 +317,8 @@ backend/
   ticket de conteúdo, mas pelo prazo do MVP o importador ficou na Infra e os
   endpoints usam o `DbContext` direto. Revisitar depois do MVP.
 
-**Convenção de nomes:** tudo que criamos leva o nome do produto, *Estudaê*
-(container `estudae-db`, banco `estudae`, projetos `Estudae.*`). *Encceja* é o
+**Convenção de nomes:** tudo que criamos leva o nome do produto, _Estudaê_
+(container `estudae-db`, banco `estudae`, projetos `Estudae.*`). _Encceja_ é o
 nome do **exame**, não do produto — usar só para conceitos de domínio e texto
 voltado ao usuário (ex.: a coluna `prova_ano`, o conteúdo das questões).
 
@@ -322,6 +327,7 @@ voltado ao usuário (ex.: a coluna `prova_ano`, o conteúdo das questões).
 Contrato completo para o front: **`docs/api.md`**. Código em
 `Estudae.Api/Endpoints/` (minimal APIs, `DbContext` direto, sem camada
 Application por enquanto).
+
 - `GET /api/disciplinas`, `GET /api/disciplinas/{d}/temas`,
   `GET /api/disciplinas/{d}/temas/{t}/questoes`, `POST /api/questoes/{id}/resposta`.
 - Só conteúdo publicado; os GETs projetam para DTOs sem gabarito/resolução.
@@ -334,6 +340,7 @@ Application por enquanto).
 ### Importador de conteúdo
 
 Formato, regras e comandos: **`docs/conteudo/README.md`**. Resumo:
+
 - O JSON (um por disciplina) é só o meio de entrada, **fora do repo**; as imagens
   em `imagens/` ao lado dele entram no banco na mesma transação, e as que não
   estiverem lá precisam já estar no banco. Exemplos inventados (válido e
@@ -349,6 +356,7 @@ Formato, regras e comandos: **`docs/conteudo/README.md`**. Resumo:
   Sem `--publicar` grava como rascunho, inclusive o que já estava publicado.
 
 ### Ordem de trabalho (fases)
+
 1. **Postgres em Docker** — ✅ **concluída**: `docker-compose.yml` na raiz,
    volume nomeado e healthcheck com `pg_isready` (detalhes acima)
 2. **Análise de features e modelagem de dados** — ✅ **concluída**: modelo
@@ -359,7 +367,7 @@ Formato, regras e comandos: **`docs/conteudo/README.md`**. Resumo:
 4. **Dockerfile multi-stage + compose completo** — ✅ **concluída**
    (`db` → `migrate` → `api`, front no `wwwroot`, senha no `.env`)
 5. **CI com GitHub Actions** — ✅ **concluída** (`.github/workflows/ci.yml`):
-   job `backend` (build, testes com Postgres como *service container*,
+   job `backend` (build, testes com Postgres como _service container_,
    `--validar` do exemplo de conteúdo) e job `compose` (sobe o compose num
    banco vazio e faz smoke test de `/health`, `/` e `/api/disciplinas`)
 6. **Primeiro deploy** — ⏭️ **segunda à tarde**. Plano A (VM + compose +
@@ -370,7 +378,8 @@ Formato, regras e comandos: **`docs/conteudo/README.md`**. Resumo:
 8. Próximos tickets: integração do front, login, tentativas, manutenção
 
 Por que essa ordem:
-- (Plano original) o primeiro deploy seria do *skeleton*, para provar o
+
+- (Plano original) o primeiro deploy seria do _skeleton_, para provar o
   caminho até produção com o mínimo de código. Com o prazo do MVP, o deploy
   veio depois do conteúdo; o smoke test do compose no CI cobre parte desse risco.
 - CI/CD vem antes do primeiro ticket real: toda feature já nasce com testes
@@ -380,6 +389,7 @@ Por que essa ordem:
   migration por vez — é assim que o schema cresce em projetos reais.
 
 ### Notas sobre deploy e custo
+
 - **Plano A (VM):** o mesmo compose de dev + um serviço Caddy nas portas
   80/443 (HTTPS automático; dá para usar `<ip>.sslip.io` sem domínio). O
   banco não publica porta. Backup é manual: cron com `pg_dump`, e testar uma
@@ -390,6 +400,7 @@ Por que essa ordem:
 - Em qualquer caso: alerta de orçamento desde o primeiro dia.
 
 ### Requisitos e restrições
+
 - **Acessibilidade é prioridade:** fontes grandes, alto contraste, fluxo
   simples, poucos cliques (público-alvo são pessoas idosas)
 - **Conteúdo:** verificar os termos de uso do INEP para provas anteriores;
@@ -412,7 +423,7 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 
 - **Connection string:** chave `ConnectionStrings:Estudae`, **nunca em
   arquivo versionado**. O `dotnet run` não lê o `.env` (quem lê é o
-  `docker compose`). No host ela vem dos *user-secrets* (só no ambiente
+  `docker compose`). No host ela vem dos _user-secrets_ (só no ambiente
   Development, guardados em `~/.microsoft/usersecrets/`, fora do repo); em
   container virá da variável `ConnectionStrings__Estudae`. Sem ela, a API
   para na inicialização com uma mensagem dizendo o que configurar. A porta
@@ -431,6 +442,7 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
   ficam para o ticket de autenticação.
 
 ### Decisões em aberto
+
 - Registrar em `docs/decisoes/` (ADRs) as decisões "frontend no `wwwroot`
   com cookie" e "Clean Architecture gradual". Formato combinado: Status /
   Data / Contexto / Decisão / Alternativas consideradas / Consequências / O

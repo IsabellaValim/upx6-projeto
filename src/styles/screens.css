@@ -1022,13 +1022,11 @@
   box-shadow: 0 -6px 16px rgba(60, 35, 70, 0.1);
 }
 
-/* Progresso: cartão por matéria com a barra e o detalhe de aulas e questões */
-.subject-row--progress .bar {
-  margin-top: 0.5rem;
-  background: rgba(255, 255, 255, 0.7);
-}
-.subject-row--progress .subject-row__detail {
+/* Progresso: detalhe de aulas e questões sob a barra de cada matéria */
+.bar-row > small {
+  display: block;
   margin-top: 0.375rem;
+  color: var(--muted);
   font-size: 0.8125rem;
 }
 
