@@ -58,12 +58,27 @@ export function topicProgress(id, ti) {
 
 export function subjectProgress(id) {
   return SUBJECTS[id].topics.reduce(
-    (acc, _, ti) => {
+    (acc, t, ti) => {
       const p = topicProgress(id, ti);
-      return { done: acc.done + p.done, total: acc.total + p.total };
+      return {
+        done: acc.done + p.done,
+        total: acc.total + p.total,
+        aulas: acc.aulas + p.aulas,
+        totalAulas: acc.totalAulas + t.videos,
+        questoes: acc.questoes + p.questoes,
+        totalQuestoes: acc.totalQuestoes + t.totalQuestoes,
+      };
     },
-    { done: 0, total: 0 },
+    { done: 0, total: 0, aulas: 0, totalAulas: 0, questoes: 0, totalQuestoes: 0 },
   );
+}
+
+// Resultados (lições e simulados) da prova escolhida, do mais novo para o mais antigo.
+export function resultadosDaProva(nivel) {
+  return state.results
+    .map((r, i) => ({ ...r, i }))
+    .filter((r) => SUBJECTS[r.subject] && (!nivel || SUBJECTS[r.subject].nivel === nivel))
+    .reverse();
 }
 
 // Próxima atividade pendente da matéria: no primeiro tema incompleto, a aula

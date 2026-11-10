@@ -2,7 +2,8 @@
   "disciplina": {
     "slug": "matematica",
     "nome": "Matemática",
-    "icone": "percent"
+    "icone": "percent",
+    "nivel": "medio"
   },
   "temas": [
     {
@@ -53,6 +54,146 @@
           ],
           "resposta_correta": "O pacote de 1 kg",
           "resolucao": "Dois pacotes de 500 g somam 1 kg e custam R$ 15,00. O pacote de 1 kg custa R$ 13,00, ou seja, R$ 2,00 a menos por quilo."
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-035",
+          "texto_base": "Uma fábrica com 1 500 funcionários produz, em 12 dias, uma encomenda mensal fixa de carros para exportação. No próximo mês, 500 desses funcionários estarão de férias.",
+          "enunciado": "No próximo mês, quantos dias serão necessários para que a fábrica produza a quantidade de carros para cumprir a encomenda mensal para exportação?",
+          "alternativas": [
+            "36",
+            "18",
+            "8",
+            "4"
+          ],
+          "resposta_correta": "18",
+          "resolucao": "Com menos funcionários, o trabalho demora mais. No próximo mês trabalharão 1 500 − 500 = 1 000 funcionários. O trabalho total é 1 500 × 12 = 18 000 dias de trabalho. Dividindo por 1 000 funcionários, são necessários 18 dias.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 35
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-037",
+          "texto_base": "Uma pessoa consultou em quatro instituições financeiras, que emprestam dinheiro a juros simples, as condições oferecidas para pagamento de um empréstimo de R$ 1 000,00.\n• Instituição I: pagar R$ 1 200,00 em parcela única após 20 meses;\n• Instituição II: pagar R$ 1 200,00 em parcela única após 10 meses;\n• Instituição III: pagar R$ 1 180,00 em parcela única após 6 meses;\n• Instituição IV: pagar R$ 1 160,00 em parcela única após 4 meses.\nA pessoa decidiu escolher a instituição que oferece a menor taxa mensal de juros.",
+          "enunciado": "A instituição escolhida deverá ser a",
+          "alternativas": [
+            "I.",
+            "II.",
+            "III.",
+            "IV."
+          ],
+          "resposta_correta": "I.",
+          "resolucao": "Calculamos quanto de juros se paga por mês em cada uma. Na I, são R$ 200,00 em 20 meses: R$ 10,00 por mês (1% ao mês). Na II, R$ 20,00 por mês (2%); na III, R$ 180,00 ÷ 6 = R$ 30,00 por mês (3%); na IV, R$ 160,00 ÷ 4 = R$ 40,00 por mês (4%). A menor taxa é a da instituição I.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 37
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-054",
+          "texto_base": "O preço de custo de cada TV adquirida para revenda por um lojista foi R$ 800,00. Esse lojista pretende estabelecer um preço de venda de forma que, ao anunciar esse preço e ainda oferecer um desconto de 50% sobre ele, garanta um lucro de R$ 200,00 por unidade de TV vendida.",
+          "enunciado": "O preço de venda a ser anunciado é",
+          "alternativas": [
+            "R$ 2 000,00.",
+            "R$ 1 800,00.",
+            "R$ 1 500,00.",
+            "R$ 1 000,00."
+          ],
+          "resposta_correta": "R$ 2 000,00.",
+          "resolucao": "Para ter lucro de R$ 200,00, a TV precisa sair por 800 + 200 = R$ 1 000,00 já com o desconto. Um desconto de 50% deixa só a metade do preço anunciado. Então a metade do preço anunciado é R$ 1 000,00, e o preço anunciado é R$ 2 000,00.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 54
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-037",
+          "texto_base": "Uma das maneiras de se medir o desempenho de um automóvel é calcular a razão entre a distância percorrida (em km) e o volume de combustível (em litro) gasto nesse percurso.\nAs informações a seguir foram obtidas a respeito de quatro automóveis movidos a gasolina:\n• automóvel I: percorre 286 km com 13 L;\n• automóvel II: percorre 288 km com 16 L;\n• automóvel III: percorre 255 km com 15 L;\n• automóvel IV: percorre 250 km com 12 L.",
+          "enunciado": "A partir dessas informações, o automóvel que apresentou o melhor desempenho, ao utilizar gasolina, foi o",
+          "alternativas": [
+            "I.",
+            "II.",
+            "III.",
+            "IV."
+          ],
+          "resposta_correta": "I.",
+          "resolucao": "Dividimos a distância pelos litros para saber quantos quilômetros cada carro faz com 1 litro. Automóvel I: 286 ÷ 13 = 22 km por litro. Automóvel II: 288 ÷ 16 = 18. Automóvel III: 255 ÷ 15 = 17. Automóvel IV: 250 ÷ 12 ≈ 20,8. O automóvel I anda mais com cada litro, então tem o melhor desempenho.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 37
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-051",
+          "texto_base": "Em uma reunião de uma cooperativa, há 600 associados presentes com direito a voto. Eles discutem a venda ou não de um imóvel, e as duas únicas opções de voto são favorável ou não favorável à venda. A decisão pela venda ou não será a que tiver o maior número de votos, e 480 dos associados presentes já votaram. Até o momento, 60% dos votos foram para não vender o imóvel e 40% para vendê-lo. Os demais associados declararão seus votos sabendo desse resultado parcial.\nUm dos presentes, que já votou a favor da venda, pretende convencer outras pessoas que ainda não votaram para garantir que a decisão final seja pela venda do terreno.",
+          "enunciado": "Para que isso ocorra, o número mínimo de sócios que ele deve convencer a votar a favor da venda é",
+          "alternativas": [
+            "109.",
+            "192.",
+            "288.",
+            "312."
+          ],
+          "resposta_correta": "109.",
+          "resolucao": "Dos 480 votos, 60% são contra (288) e 40% a favor (192). Faltam votar 600 − 480 = 120 pessoas. Se ele convencer uma quantidade de pessoas e as outras votarem contra, os votos a favor precisam passar dos votos contra. Com 108 convencidos, ficaria 300 a 300, um empate. Com 109, ficam 301 a favor e 299 contra, e a venda vence.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 51
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-053",
+          "texto_base": "Um produto é vendido por R$ 120,00. Para aumentar as vendas, o dono da loja decide dar um desconto no preço desse produto. Ele sabe que o desconto deve ser, no máximo, igual a 30% para que não tenha prejuízo.",
+          "enunciado": "O valor mínimo pelo qual o produto com desconto deve ser vendido é",
+          "alternativas": [
+            "R$ 70,00.",
+            "R$ 84,00.",
+            "R$ 90,00.",
+            "R$ 94,00."
+          ],
+          "resposta_correta": "R$ 84,00.",
+          "resolucao": "O menor preço acontece com o maior desconto permitido, que é 30%. 30% de 120 é 0,30 × 120 = R$ 36,00. Tirando do preço: 120 − 36 = R$ 84,00.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 53
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-055",
+          "texto_base": "Um páreo do Grande Prêmio de Turfe será disputado pelos quatro melhores cavalos de corrida da temporada. O retrospecto desses cavalos nas últimas corridas está indicado no quadro.\n\nCavalos: Total de vitórias / Total de corridas disputadas\nA: 4 / 9\nB: 50 / 100\nC: 8 / 12\nD: 55 / 225\n\nUm apostador deseja escolher o cavalo com o melhor desempenho histórico, considerando o percentual de vitórias em relação ao total de corridas.",
+          "enunciado": "Para atender seu desejo, o apostador deverá escolher o cavalo",
+          "alternativas": [
+            "A.",
+            "B.",
+            "C.",
+            "D."
+          ],
+          "resposta_correta": "C.",
+          "resolucao": "Dividimos as vitórias pelo total de corridas de cada cavalo. Cavalo A: 4 ÷ 9 ≈ 44%. Cavalo B: 50 ÷ 100 = 50%. Cavalo C: 8 ÷ 12 ≈ 67%. Cavalo D: 55 ÷ 225 ≈ 24%. O cavalo C venceu a maior parte das corridas que disputou.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 55,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_55.webp",
+            "descricao": "Quadro com três colunas: Cavalos, Total de vitórias e Total de corridas disputadas, para os cavalos A, B, C e D. Os valores estão transcritos no texto da questão."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-056",
+          "texto_base": "Um fabricante de tintas embala sua produção em dois tipos de latas, uma com capacidade para 18 litros e a outra, para 3,6 litros. Na lata com capacidade para 18 litros há a informação de que contém 25 kg de tinta no seu interior. Um caminhoneiro deseja avaliar se consegue transportar, de uma só vez, a encomenda de 200 latas com capacidade para 3,6 litros dessa tinta.",
+          "enunciado": "A quantidade de tinta, em quilograma, contida nessa encomenda é",
+          "alternativas": [
+            "518.",
+            "720.",
+            "1 000.",
+            "5 000."
+          ],
+          "resposta_correta": "1 000.",
+          "resolucao": "A lata pequena tem 3,6 litros, que é a quinta parte da lata grande (18 ÷ 3,6 = 5). Então ela tem a quinta parte da massa: 25 ÷ 5 = 5 kg de tinta. As 200 latas pequenas têm 200 × 5 = 1 000 kg.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 56
         }
       ]
     },
@@ -105,6 +246,23 @@
           ],
           "resposta_correta": "8",
           "resolucao": "O plano B começa R$ 16,00 mais caro na mensalidade. A cada entrega, ele economiza R$ 2,00 em relação ao A. Com 8 entregas, a economia chega a R$ 16,00. Ambos custam R$ 44,00."
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-047",
+          "texto_base": "O consumo C de energia elétrica por um chuveiro é diretamente proporcional à potência processada P de sua resistência e ao tempo t de funcionamento desse chuveiro. Por sua vez, a potência processada P é diretamente proporcional à resistência elétrica R e ao quadrado da corrente elétrica i. Considere k uma constante que depende das unidades utilizadas para as grandezas envolvidas.",
+          "enunciado": "A relação que expressa C, em termos de i, R e t, é dada na forma",
+          "alternativas": [
+            "C = k·(R·i·t)",
+            "C = k·(R·i²·t)",
+            "C = k·(R·i²/t)",
+            "C = k·(R²·i²·t²)"
+          ],
+          "resposta_correta": "C = k·(R·i²·t)",
+          "resolucao": "Diretamente proporcional quer dizer que as grandezas aparecem multiplicando. O consumo depende da potência vezes o tempo: P · t. A potência depende da resistência vezes o quadrado da corrente: R · i². Juntando as duas coisas, o consumo fica C = k·(R·i²·t), com a corrente ao quadrado e o tempo e a resistência sem expoente.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 47
         }
       ]
     },
@@ -157,6 +315,162 @@
           ],
           "resposta_correta": "5",
           "resolucao": "A parede tem 9 metros quadrados. Quatro caixas cobrem só 8. Cinco caixas cobrem 10 metros quadrados, o suficiente para a parede."
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-041",
+          "texto_base": "Considere o hexágono regular ABCDEF inscrito numa circunferência, conforme a figura.\nPode-se inscrever nesse hexágono um triângulo, com vértices nos pontos A, C e E.",
+          "enunciado": "O triângulo de vértices nos pontos A, C e E é um triângulo",
+          "alternativas": [
+            "retângulo, aquele que tem um ângulo reto.",
+            "obtusângulo, aquele que tem um ângulo obtuso.",
+            "escaleno, aquele que tem três lados com medidas diferentes.",
+            "equilátero, aquele que tem três lados congruentes."
+          ],
+          "resposta_correta": "equilátero, aquele que tem três lados congruentes.",
+          "resolucao": "No hexágono regular, todos os lados são iguais. Os pontos A, C e E são vértices alternados: entre cada um deles há sempre um vértice pulado. Por isso, os lados AC, CE e EA têm a mesma medida, e o triângulo é equilátero.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 41,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_41.webp",
+            "descricao": "Hexágono regular cinza desenhado dentro de uma circunferência, com os seis vértices tocando a circunferência. Os vértices são nomeados em sequência: A (embaixo), B, C, D (em cima), E e F."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-042",
+          "texto_base": "No chão do pátio de uma escola, está pintado um quadriculado formado por 4 filas horizontais e 4 filas verticais, estando as filas horizontais numeradas de 1 a 4, de norte para sul, e as filas verticais nomeadas por A, B, C e D, de oeste para leste. Um estudante se encontra posicionado inicialmente na casa B1 desse quadriculado, conforme a figura.\nEsse estudante recebe instruções para executar esta sequência de deslocamentos: andar duas casas para o sul, duas casas para o leste e uma casa para o norte.",
+          "enunciado": "Em qual casa o estudante estará após realizar a movimentação indicada?",
+          "alternativas": [
+            "D2",
+            "D3",
+            "C2",
+            "B3"
+          ],
+          "resposta_correta": "D2",
+          "resolucao": "O estudante começa em B1. Andando duas casas para o sul, desce para B3. Andando duas casas para o leste, vai para a direita até D3. Andando uma casa para o norte, sobe para D2.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 42,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_42.webp",
+            "descricao": "Quadriculado de 4 por 4 casas. As colunas são A, B, C e D, da esquerda para a direita; as linhas são 1, 2, 3 e 4, de cima para baixo. Há um ponto preto na casa B1. Ao lado, uma rosa dos ventos: Norte para cima, Sul para baixo, Leste à direita e Oeste à esquerda."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-044",
+          "texto_base": "Um fabricante de bicicletas pretende fazer uma roda com cinco raios, conforme a figura. Sabe-se que os cinco raios deverão dividir a circunferência em partes iguais.",
+          "enunciado": "Qual é a medida do ângulo AÔB?",
+          "alternativas": [
+            "36º",
+            "50º",
+            "60º",
+            "72º"
+          ],
+          "resposta_correta": "72º",
+          "resolucao": "Uma volta completa ao redor do centro mede 360º. Os cinco raios dividem essa volta em 5 partes iguais. Assim, cada ângulo entre dois raios vizinhos mede 360 ÷ 5 = 72º.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 44,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_44.webp",
+            "descricao": "Roda de bicicleta vista de frente, com aro cinza e cinco raios saindo do centro O até o aro, igualmente espaçados. Os dois raios de baixo terminam nos pontos A (à esquerda) e B (à direita), vizinhos entre si."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-045",
+          "texto_base": "Para dar sustentação a um toldo, um serralheiro produz estruturas metálicas. Ele emprega três tubos metálicos, dois deles com 2 metros de comprimento, que são soldados a um terceiro, formando uma estrutura em formato de um triângulo retângulo.",
+          "enunciado": "Quanto mede, em metro, o comprimento do terceiro tubo que compõe uma dessas estruturas?",
+          "alternativas": [
+            "√8",
+            "√2",
+            "8",
+            "4"
+          ],
+          "resposta_correta": "√8",
+          "resolucao": "Os dois tubos de 2 metros são os lados que formam o ângulo reto, e o terceiro tubo é o lado maior (a hipotenusa). Pelo Teorema de Pitágoras, o quadrado do lado maior é a soma dos quadrados dos outros dois: 2² + 2² = 4 + 4 = 8. Então o terceiro tubo mede √8 metros.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 45
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-048",
+          "texto_base": "Um menino observa um drone a partir de um ângulo de 30º em relação à horizontal, conforme a figura.",
+          "enunciado": "A distância d, em metro, do drone até os olhos do menino é",
+          "alternativas": [
+            "10.",
+            "20.",
+            "30.",
+            "40."
+          ],
+          "resposta_correta": "40.",
+          "resolucao": "A figura forma um triângulo retângulo: a altura de 20 m fica em frente ao ângulo de 30º, e d é o lado maior. Num triângulo retângulo com ângulo de 30º, o lado em frente a esse ângulo mede a metade do lado maior (o seno de 30º é 1/2). Então d = 2 × 20 = 40 metros.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 48,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_48.webp",
+            "descricao": "Triângulo retângulo tracejado. No alto, um drone; uma linha vertical de 20 m desce dele até o canto com ângulo reto. Desse canto, uma linha horizontal vai até os olhos de um menino em pé. A linha inclinada d liga o drone aos olhos do menino, formando ali um ângulo de 30° com a horizontal."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-050",
+          "texto_base": "Em uma escola, o diretor decidiu revestir com cortiça as faces frontais dos 30 quadros de avisos espalhados pelas paredes. Todos os quadros têm forma retangular, com lados medindo 1,5 m e 1 m. A cortiça é vendida em folhas inteiriças, em formato de quadrado, com 1 m de lado.",
+          "enunciado": "A quantidade mínima de folhas de cortiça que a escola deve adquirir para revestir os 30 quadros de avisos é",
+          "alternativas": [
+            "60.",
+            "45.",
+            "38.",
+            "30."
+          ],
+          "resposta_correta": "45.",
+          "resolucao": "Cada quadro tem área de 1,5 × 1 = 1,5 m². Os 30 quadros somam 30 × 1,5 = 45 m². Cada folha de cortiça cobre 1 × 1 = 1 m², e uma folha pode ser cortada ao meio para completar dois quadros. Assim, bastam 45 folhas.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 50,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_50.webp",
+            "descricao": "Duas figuras lado a lado. À esquerda, o quadro de aviso: um retângulo com 1,5 m de largura e 1 m de altura. À direita, a folha de cortiça: um quadrado com 1 m de lado."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-042",
+          "texto_base": "Um arquiteto deseja utilizar uma tela, no formato triangular, com base medindo 10 dm e altura 8 dm, para a realização de um projeto. Ele não obteve sucesso na busca desse material, encontrando, apenas, telas retangulares de diferentes medidas. Então, resolveu reestruturar seu projeto, optando por uma tela retangular de comprimento 5 dm e que tenha área igual à área da tela inicialmente desejada.",
+          "enunciado": "Com base nessas informações, a tela a ser escolhida pelo arquiteto deverá possuir altura, em dm, igual a",
+          "alternativas": [
+            "4.",
+            "8.",
+            "13.",
+            "16."
+          ],
+          "resposta_correta": "8.",
+          "resolucao": "A área do triângulo é base vezes altura dividido por 2: 10 × 8 ÷ 2 = 40 dm². O retângulo precisa ter a mesma área, e sua área é comprimento vezes altura. Então 5 × altura = 40, e a altura é 40 ÷ 5 = 8 dm.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 42
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-048",
+          "texto_base": "Para colocar grama em toda a extensão de um terreno residencial retangular de 40 m por 20 m, o morador pesquisou os tipos de placas de grama disponíveis em uma loja:\n• placa 1: quadrada, de dimensões 0,7 m por 0,7 m;\n• placa 2: retangular, de dimensões 1 m por 0,5 m.",
+          "enunciado": "Para não haver desperdício de grama, qual a opção que o morador deverá escolher?",
+          "alternativas": [
+            "Comprar 1 642 placas do tipo 1.",
+            "Comprar 1 600 placas do tipo 2.",
+            "Comprar 1 610 placas do tipo 1 e 26 placas do tipo 2.",
+            "Comprar 1 606 placas do tipo 1 e 42 placas do tipo 2."
+          ],
+          "resposta_correta": "Comprar 1 600 placas do tipo 2.",
+          "resolucao": "A área do terreno é 40 × 20 = 800 m². A placa 2 tem área 1 × 0,5 = 0,5 m², e cabe certinho: 40 placas em um lado (40 ÷ 1) e 40 no outro (20 ÷ 0,5), dando 40 × 40 = 1 600 placas, que cobrem exatamente 800 m². A placa 1 tem 0,7 m de lado, e 40 e 20 não são múltiplos de 0,7, então sempre sobraria grama cortada. As outras opções também não somam exatamente 800 m².",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 48
         }
       ]
     },
@@ -209,6 +523,873 @@
           ],
           "resposta_correta": "12 minutos",
           "resolucao": "Em ordem crescente, os tempos são 5, 8, 12, 13 e 40 minutos. Com cinco valores, a mediana é o terceiro, ou 12 minutos."
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-049",
+          "texto_base": "O gráfico apresenta o número de gols marcados e sofridos por uma equipe de futebol de salão em cada um dos seis jogos de um campeonato.",
+          "enunciado": "Quantos jogos essa equipe de futebol de salão ganhou?",
+          "alternativas": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "resposta_correta": "3",
+          "resolucao": "A equipe ganha quando marca mais gols do que sofre. Isso acontece no jogo 1 (2 a 1), no jogo 2 (4 a 2) e no jogo 6 (5 a 1). No jogo 3 houve empate e nos jogos 4 e 5 a equipe perdeu. Foram 3 vitórias.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 49,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_49.webp",
+            "descricao": "Gráfico de barras duplas por jogo: barra preta para gols marcados e cinza para gols sofridos. Jogo 1: 2 marcados, 1 sofrido. Jogo 2: 4 e 2. Jogo 3: 3 e 3. Jogo 4: 3 e 4. Jogo 5: 2 e 5. Jogo 6: 5 e 1."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-057",
+          "texto_base": "Um curso de língua portuguesa é oferecido em uma instituição para quatro turmas distintas: I, II, III e IV. Em cada uma dessas turmas, há estudantes brasileiros e estudantes estrangeiros. O quadro apresenta a quantidade de estudantes brasileiros e o total de estudantes em cada turma.\nTurma I: 9 brasileiros, 22 estudantes no total\nTurma II: 10 brasileiros, 18 estudantes no total\nTurma III: 6 brasileiros, 20 estudantes no total\nTurma IV: 5 brasileiros, 17 estudantes no total",
+          "enunciado": "Qual turma tem o maior número de estudantes estrangeiros?",
+          "alternativas": [
+            "I",
+            "II",
+            "III",
+            "IV"
+          ],
+          "resposta_correta": "III",
+          "resolucao": "Os estrangeiros são o total menos os brasileiros. Turma I: 22 − 9 = 13. Turma II: 18 − 10 = 8. Turma III: 20 − 6 = 14. Turma IV: 17 − 5 = 12. A turma III tem mais estrangeiros.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 57,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_57.webp",
+            "descricao": "Quadro com as colunas turma, quantidade de brasileiros e total de estudantes. Turma I: 9 e 22. Turma II: 10 e 18. Turma III: 6 e 20. Turma IV: 5 e 17."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-058",
+          "texto_base": "O quadro mostra as maiores temperaturas registradas no estado do Mato Grosso do Sul em determinado mês, segundo o Instituto Nacional de Meteorologia (Inmet).\nSonora: 42,0 °C\nCoxim: 40,0 °C\nPorto Murtinho: 39,0 °C\nTrês Lagoas: 39,0 °C\nDisponível em: www.campograndenews.com.br. Acesso em: 20 set. 2018 (adaptado).",
+          "enunciado": "A média aritmética das temperaturas apresentadas no quadro é",
+          "alternativas": [
+            "40,5.",
+            "40,0.",
+            "39,5.",
+            "39,0."
+          ],
+          "resposta_correta": "40,0.",
+          "resolucao": "Para calcular a média, somamos as temperaturas e dividimos pela quantidade de cidades. A soma é 42 + 40 + 39 + 39 = 160. Dividindo por 4 cidades: 160 ÷ 4 = 40,0 °C.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 58,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_58.webp",
+            "descricao": "Quadro com as colunas cidade e temperatura em graus Celsius. Sonora: 42,0. Coxim: 40,0. Porto Murtinho: 39,0. Três Lagoas: 39,0."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-059",
+          "texto_base": "As notas de quatro alunos em cinco provas foram:\n• aluno I: 6, 6, 9, 9 e 6;\n• aluno II: 6, 7, 10, 6 e 6;\n• aluno III: 7, 8, 5, 8 e 6;\n• aluno IV: 6, 4, 2, 9 e 9.",
+          "enunciado": "O aluno que obteve a maior média aritmética dentre as notas nessas cinco provas foi o",
+          "alternativas": [
+            "I.",
+            "II.",
+            "III.",
+            "IV."
+          ],
+          "resposta_correta": "I.",
+          "resolucao": "Somamos as notas de cada aluno e dividimos por 5. Aluno I: 36 ÷ 5 = 7,2. Aluno II: 35 ÷ 5 = 7,0. Aluno III: 34 ÷ 5 = 6,8. Aluno IV: 30 ÷ 5 = 6,0. A maior média é a do aluno I.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 59
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-031",
+          "texto_base": "O Parque Nacional do Iguaçu, localizado em Foz do Iguaçu (PR), é um dos locais de grande acesso de turistas do país e do exterior, devido às suas belezas naturais, em especial suas cataratas. O quadro apresenta o inventário do fluxo mensal de turistas a esse parque.\n\nFluxo de visitantes do Parque Nacional do Iguaçu (2011)\nMês: Brasileiros / Estrangeiros / Total\nJaneiro: 117 900 / 64 654 / 182 554\nFevereiro: 45 451 / 57 558 / 103 009\nMarço: 58 187 / 61 757 / 119 944\nAbril: 59 466 / 51 698 / 111 164\nMaio: 40 714 / 36 973 / 77 687\nJunho: 42 214 / 32 134 / 74 348\nJulho: 68 486 / 63 518 / 132 004\nAgosto: 37 803 / 47 362 / 85 165\nSetembro: 53 038 / 52 531 / 105 569\nOutubro: 64 221 / 59 208 / 123 429\nNovembro: 69 760 / 62 327 / 132 087\nDezembro: 94 113 / 53 114 / 147 227\nTotal: 751 353 / 642 834 / 1 394 187\nFonte: Ibama/ ICMBio\n\nDisponível em: www.pmfi.pr.gov.br. Acesso em: 21 jan. 2013 (adaptado).",
+          "enunciado": "Uma família brasileira está programando visitar o parque no próximo ano, mas pretende ir em época de menor presença de turistas.\nSupondo que a distribuição apresentada se mantenha no mesmo perfil, para que mês a família deverá programar sua visita?",
+          "alternativas": [
+            "Janeiro.",
+            "Fevereiro.",
+            "Junho.",
+            "Agosto."
+          ],
+          "resposta_correta": "Junho.",
+          "resolucao": "Para saber quando há menos turistas, olhamos a coluna Total, que soma brasileiros e estrangeiros. O menor total do ano é 74 348 visitantes, no mês de junho. Maio (77 687) e agosto (85 165) vêm logo depois, mas são maiores. Por isso, junho é o mês com menor presença de turistas.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 31,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_31.webp",
+            "descricao": "Quadro com o título Fluxo de visitantes do Parque Nacional do Iguaçu (2011), com quatro colunas: Mês, Brasileiros, Estrangeiros e Total. Há uma linha para cada mês, de janeiro a dezembro, e uma linha final de total. Os valores estão transcritos no texto da questão."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-033",
+          "texto_base": "O Departamento de Comunicação Visual de uma agência dos Correios, visando melhor atender ao seu público, afixou em seu quadro de avisos o cartaz apresentado na figura. Nela está indicada, de forma gráfica, a quantidade média de clientes presentes na agência em cada faixa horária de seus dias de funcionamento.\n\nAfluência de público por faixa horária\nHorário de atendimento: das 8 h às 17 h\n\nConsiderando que o número de funcionários para atendimento seja sempre o mesmo ao longo do dia e que o tempo de atendimento de cada cliente seja aproximadamente igual, o tempo de espera para uma pessoa ser atendida varia apenas conforme a quantidade de clientes presentes na agência.",
+          "enunciado": "Um funcionário de uma empresa encarregado de postar a correspondência de cada dia, querendo gastar o menor tempo possível com sua tarefa, deverá ir para a agência na faixa horária de",
+          "alternativas": [
+            "8 - 9.",
+            "12 - 13.",
+            "13 - 14.",
+            "16 - 17."
+          ],
+          "resposta_correta": "8 - 9.",
+          "resolucao": "O tempo de espera depende só de quantos clientes estão na agência. No gráfico, a barra mais baixa, com apenas um bonequinho, é a da faixa das 8 às 9 horas. As faixas das 12 às 13 (cinco bonequinhos), das 13 às 14 e das 16 às 17 (quatro bonequinhos) têm muito mais gente. Então ir das 8 às 9 horas é o que faz gastar menos tempo.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 33,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_33.webp",
+            "descricao": "Gráfico de barras verticais com bonequinhos sobre cada barra, indicando a quantidade de clientes por faixa horária. Quantidade de bonequinhos por faixa: 8-9: 1; 9-10: 2; 10-11: 3; 11-12: 4; 12-13: 5; 13-14: 4; 14-15: 3; 15-16: 3; 16-17: 4. A altura das barras acompanha essa quantidade."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-035",
+          "texto_base": "A organização de um torneio amador premiará o atleta com a maior média aritmética na prova de salto em distância, levando em consideração as quatro medidas dos saltos de cada atleta nessa competição. No quadro, temos os registros, em metro, dos saltos de cada atleta.\n\nAtleta: Salto 1 / Salto 2 / Salto 3 / Salto 4\nA₁: 1,8 / 1,5 / 1,9 / 1,8\nA₂: 1,3 / 1,5 / 2,0 / 2,0\nA₃: 1,2 / 1,6 / 2,0 / 1,4\nA₄: 0,0 / 1,9 / 1,6 / 2,0",
+          "enunciado": "O atleta que alcançou a maior média foi o",
+          "alternativas": [
+            "A₁.",
+            "A₂.",
+            "A₃.",
+            "A₄."
+          ],
+          "resposta_correta": "A₁.",
+          "resolucao": "Como todos têm quatro saltos, basta somar os saltos de cada atleta e comparar. A₁: 1,8 + 1,5 + 1,9 + 1,8 = 7,0. A₂: 6,8. A₃: 6,2. A₄: 5,5. A maior soma é a de A₁, e sua média é 7,0 ÷ 4 = 1,75 m, a maior de todas.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 35,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_35.webp",
+            "descricao": "Quadro com cinco colunas: Atleta, Salto 1, Salto 2, Salto 3 e Salto 4. Há uma linha para cada atleta, de A₁ a A₄, com as medidas dos saltos em metro. Os valores estão transcritos no texto da questão."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-041",
+          "texto_base": "Um prestador de serviço vai de casa em casa se oferecendo para lavar carros a um preço fixo de R$ 12,00 por carro. Seu único gasto é com a compra de produtos para limpeza dos carros. Para lavar 29 carros, ele gasta R$ 60,00. O gráfico a seguir representa a quantidade de carros lavados de segunda a sexta-feira.",
+          "enunciado": "Qual foi o seu lucro, em real, nesses cinco dias trabalhados?",
+          "alternativas": [
+            "816,00",
+            "696,00",
+            "636,00",
+            "576,00"
+          ],
+          "resposta_correta": "576,00",
+          "resolucao": "Pelo gráfico, ele lavou 10 + 12 + 8 + 12 + 16 = 58 carros na semana. Ele recebeu 58 × 12 = R$ 696,00. Como 58 é o dobro de 29, o gasto com produtos foi o dobro de R$ 60,00, ou seja, R$ 120,00. O lucro é o que recebeu menos o que gastou: 696 − 120 = R$ 576,00.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 41,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_41.webp",
+            "descricao": "Gráfico de linha tracejada com o eixo vertical Quantidade de carros lavados (de 0 a 16) e o eixo horizontal Dia da semana. Pontos marcados: segunda, 10 carros; terça, 12; quarta, 8; quinta, 12; sexta, 16."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-044",
+          "texto_base": "Foi feita uma pesquisa entre quatro casais de namorados para saber como andavam suas relações. A pergunta apresentada foi: De acordo com a tabela, qual nota você daria para seu relacionamento?\n• de 0 a 2 pontos – estamos nos conhecendo melhor;\n• de 3 a 5 pontos – gostamos um do outro;\n• de 6 a 8 pontos – adoramos um ao outro;\n• de 9 a 10 pontos – nos amamos.\nAs notas dadas, individualmente, pelos casais foram:\n\nCasal: Homem / Mulher\n1: 4 / 6\n2: 7 / 7\n3: 9 / 7\n4: 3 / 1\n\nUtilizando a média das pontuações fornecidas pelos casais, um dos pesquisadores atribuiu uma classificação ao relacionamento de cada casal, de acordo com os valores da tabela utilizada na pesquisa, mas não observou os resultados corretamente. O resultado que ele apresentou foi:\n• casal 1: adoramos um ao outro;\n• casal 2: nos amamos;\n• casal 3: adoramos um ao outro;\n• casal 4: gostamos um do outro.",
+          "enunciado": "A única classificação de relacionamento atribuída corretamente foi a do casal",
+          "alternativas": [
+            "1.",
+            "2.",
+            "3.",
+            "4."
+          ],
+          "resposta_correta": "3.",
+          "resolucao": "Calculamos a média de cada casal, somando as duas notas e dividindo por 2. Casal 1: (4 + 6) ÷ 2 = 5, que é gostamos um do outro. Casal 2: 7, que é adoramos um ao outro. Casal 3: (9 + 7) ÷ 2 = 8, que é adoramos um ao outro. Casal 4: (3 + 1) ÷ 2 = 2, que é estamos nos conhecendo melhor. Só a classificação do casal 3 bate com a que o pesquisador apresentou.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 44,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_44.webp",
+            "descricao": "Tabela com três colunas: Casal, Homem e Mulher, com a nota dada por cada pessoa dos casais 1 a 4. Os valores estão transcritos no texto da questão."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-045",
+          "texto_base": "Uma pessoa passará uma temporada no Canadá. O quadro apresenta as previsões de temperaturas médias, em °C, para o período desejado e as três cidades de sua preferência.\n\nOpções de cidades no Canadá: Fev. / Mar. / Abr. / Maio / Jun. / Jul.\nMontreal: − 8,8 / − 2,4 / 5,7 / 12,9 / 18,0 / 20,1\nOttawa: − 9,2 / − 2,6 / 5,9 / 13,0 / 18,1 / 20,8\nWinnipeg: − 15,1 / − 7,0 / 3,8 / 11,6 / 16,9 / 19,8\n\nDisponível em: http://cursosnocanada.com.br. Acesso em: 16 set. 2013.",
+          "enunciado": "Por recomendações médicas, ela deve escolher onde se alojar, em cada mês, na cidade que apresente a maior temperatura. As propostas apresentadas a seguir são pacotes de hospedagem oferecidos por uma operadora de turismo:\n• I. Montreal em fevereiro e março; Winnipeg em abril; Ottawa em maio, junho e julho;\n• II. Montreal em fevereiro e março; Ottawa em abril, maio, junho e julho;\n• III. Winnipeg em fevereiro e março; Ottawa em abril, maio, junho e julho;\n• IV. Winnipeg em fevereiro, março e abril; Ottawa em maio, junho e julho.\nPara que a pessoa atenda as recomendações médicas, ela deverá optar pela proposta",
+          "alternativas": [
+            "I.",
+            "II.",
+            "III.",
+            "IV."
+          ],
+          "resposta_correta": "II.",
+          "resolucao": "Em fevereiro e março as temperaturas são negativas, e a maior é a que está mais perto de zero: Montreal (− 8,8 e − 2,4). De abril a julho, a maior temperatura é sempre a de Ottawa (5,9; 13,0; 18,1 e 20,8). A única proposta com Montreal em fevereiro e março e Ottawa de abril a julho é a II.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 45,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_45.webp",
+            "descricao": "Quadro com as temperaturas médias previstas, em graus Celsius, para Montreal, Ottawa e Winnipeg nos meses de fevereiro a julho. Os valores estão transcritos no texto da questão."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-049",
+          "texto_base": "O gráfico apresenta as calorias de algumas frutas, relacionadas com a sua massa em grama.\n\nDUARTE, M. O guia dos curiosos. São Paulo: Cia. das Letras, 2005.",
+          "enunciado": "Dentre as frutas com mais de 100 g, a que apresenta a menor quantidade de calorias é o(a)",
+          "alternativas": [
+            "banana.",
+            "caju.",
+            "goiaba.",
+            "laranja."
+          ],
+          "resposta_correta": "laranja.",
+          "resolucao": "Primeiro separamos as frutas com mais de 100 g: maçã (130 g), laranja (137 g) e goiaba (189 g). Banana (86 g) e caju (59 g) ficam de fora. Entre as três, a barra mais baixa é a da laranja, com pouco mais de 60 calorias. Por isso, a laranja é a resposta.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 49,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_49.webp",
+            "descricao": "Gráfico de barras com o eixo vertical Caloria (de 0 a 100) e o eixo horizontal Massa (g). Barras, aproximadamente: caju, 59 g, cerca de 27 calorias; banana, 86 g, cerca de 79; maçã, 130 g, cerca de 78; laranja, 137 g, cerca de 63; goiaba, 189 g, cerca de 95."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-057",
+          "texto_base": "O quadro apresenta uma referência para se determinar a quantidade de calorias perdidas durante uma hora de corrida, relacionando a massa corporal do corredor (em kg) e o ritmo de sua corrida (em km/h).\n\nRitmo (km/h) e massa corporal (kg): 60 / 70 / 80 / 90\n4 km/h: 630 kcal / 730 kcal / 836 kcal / 940 kcal\n5 km/h: 720 kcal / 840 kcal / 960 kcal / 1 130 kcal\n6 km/h: 910 kcal / 1 040 kcal / 1 210 kcal / 1 360 kcal\n\nRunner’s World Coach, n.1 (adaptado).",
+          "enunciado": "Considere que a quantidade de calorias perdidas por um corredor com massa corporal de 85 kg é a média aritmética das quantidades de calorias perdidas por corredores com 80 kg e 90 kg, durante uma corrida com duração de 1 h, mantendo-se um ritmo de 5 km/h.\nA quantidade de calorias perdidas por um corredor com massa corporal de 85 kg, em kcal, é",
+          "alternativas": [
+            "888.",
+            "950.",
+            "983.",
+            "1 045."
+          ],
+          "resposta_correta": "1 045.",
+          "resolucao": "Na linha do ritmo de 5 km/h, o corredor de 80 kg perde 960 kcal e o de 90 kg perde 1 130 kcal. A média é a soma dividida por 2: (960 + 1 130) ÷ 2 = 2 090 ÷ 2 = 1 045 kcal.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 57,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_57.webp",
+            "descricao": "Quadro com as calorias perdidas em uma hora de corrida. As linhas são os ritmos 4, 5 e 6 km/h e as colunas são as massas corporais 60, 70, 80 e 90 kg. Os valores estão transcritos no texto da questão."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "numeros-e-operacoes",
+      "titulo": "Números e operações",
+      "sobre": "Faça contas com números naturais, decimais e frações, potências e números muito grandes ou muito pequenos.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-mat-032",
+          "texto_base": "Os hormônios T₃ (Triiodotironina) e T₄ (Tetraiodotironina) são produzidos pela tireoide. São conhecidos como hormônios metabólicos, sendo o T₃ a forma hormonal mais funcionalmente ativa, e o T₄ o principal hormônio secretado pela tireoide.\nA quantidade de T₄ presente no organismo de uma pessoa foi medida durante quatro anos consecutivos, obtendo-se os seguintes resultados:\n2014: 2,0023;   2015: 2,0960;   2016: 2,9000;   2017: 2,0000.\nDisponível em: https://lume.ufrgs.br. Acesso em: 27 set. 2018.",
+          "enunciado": "A taxa do hormônio T₄ esteve mais alta no organismo dessa pessoa no ano",
+          "alternativas": [
+            "2014.",
+            "2015.",
+            "2016.",
+            "2017."
+          ],
+          "resposta_correta": "2016.",
+          "resolucao": "Todos os valores começam com 2, então comparamos o primeiro algarismo depois da vírgula. Em 2016 ele é 9, maior que o 0 dos outros anos. Por isso, 2,9000 é o maior valor, e a taxa foi mais alta em 2016.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 32
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-034",
+          "texto_base": "Com o objetivo de implementar a separação do lixo em um conjunto habitacional, 3 600 moradores foram entrevistados. Os dados obtidos informam que 3/5 deles já separam o lixo em suas residências, e que 1/4 pretende começar a separação do lixo produzido em suas residências.",
+          "enunciado": "O número que representa o total de moradores que já separam o lixo pode ser obtido por",
+          "alternativas": [
+            "3600 × 1/4",
+            "3600 × 2/5",
+            "3600 × 3/5",
+            "3600 × 17/20"
+          ],
+          "resposta_correta": "3600 × 3/5",
+          "resolucao": "O texto diz que 3/5 dos moradores já separam o lixo. Para saber quanto é uma fração de um total, multiplicamos o total pela fração. Assim, os que já separam são 3600 × 3/5. A fração 1/4 é de quem ainda pretende começar.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 34
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-036",
+          "texto_base": "Um pai preocupado com a educação financeira dos filhos foi destaque nas redes sociais. Ele desenvolveu uma pequena planilha para calcular a mesada das duas filhas. Essa mesada era condicionada ao cumprimento de diversas regras como: escovar os dentes, arrumar os brinquedos, apagar a luz, fazer a tarefa escolar, etc. Sempre que alguma regra era descumprida, uma pequena multa era cobrada, fazendo a mesada diminuir. Outro pai decidiu fazer o mesmo com seu filho. A mesada inicial era de R$ 50,00 e a cada regra descumprida a multa era de R$ 2,25. No final do mês, o pai observou que seu filho teve 5 multas.\nDisponível em: www.clubedospoupadores.com.br. Acesso em: 14 ago. 2015 (adaptado).",
+          "enunciado": "O valor final da mesada do filho, em real, foi",
+          "alternativas": [
+            "45,00.",
+            "39,95.",
+            "39,85.",
+            "38,75."
+          ],
+          "resposta_correta": "38,75.",
+          "resolucao": "Foram 5 multas de R$ 2,25 cada: 5 × 2,25 = R$ 11,25. Esse valor sai da mesada inicial: 50,00 − 11,25 = R$ 38,75.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 36
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-039",
+          "texto_base": "Artur compra, no atacado, uma caixa contendo 20 kg de uvas por R$ 180,00. Ele revende essas uvas formando bandejas com 2 kg de uvas cada e pretende ter um lucro de, no mínimo, R$ 90,00 com a revenda das uvas dessa caixa.",
+          "enunciado": "Qual é o preço mínimo, em real, pelo qual Artur deve vender cada bandeja de uvas de forma a alcançar o lucro pretendido?",
+          "alternativas": [
+            "4,50",
+            "9,00",
+            "13,50",
+            "27,00"
+          ],
+          "resposta_correta": "27,00",
+          "resolucao": "Com 20 kg ele monta 20 ÷ 2 = 10 bandejas. Para pagar a caixa e ainda lucrar, precisa receber 180 + 90 = R$ 270,00. Dividindo por 10 bandejas: 270 ÷ 10 = R$ 27,00 cada.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 39
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-051",
+          "texto_base": "Quatro irmãos estavam num parque e decidiram alugar uma bicicleta para cada um. Encaminharam-se para um guichê de locação e lá encontraram esta tabela de preços.\nPlano I: taxa fixa R$ 20,00; valor adicional por hora R$ 10,00; kit de segurança R$ 14,00\nPlano II: taxa fixa R$ 25,00; valor adicional por hora R$ 9,00; kit de segurança R$ 14,00\nPlano III: taxa fixa R$ 30,00; valor adicional por hora R$ 6,00; kit de segurança R$ 15,00\nPlano IV: taxa fixa R$ 35,00; valor adicional por hora R$ 5,00; kit de segurança R$ 15,00\nUm dos irmãos optou por alugar uma bicicleta no plano I, outro no II, outro no III e outro no IV. Juntamente com as bicicletas, todos alugaram também o kit de segurança, pagando o valor do plano no qual a bicicleta foi alugada. Após iniciarem o aluguel num mesmo instante, os quatro irmãos retornaram ao guichê para devolver as bicicletas exatamente três horas após o início dos aluguéis.",
+          "enunciado": "O irmão que fez a opção resultando no menor valor total pelo aluguel foi o que optou pelo plano",
+          "alternativas": [
+            "I.",
+            "II.",
+            "III.",
+            "IV."
+          ],
+          "resposta_correta": "III.",
+          "resolucao": "Somamos taxa fixa, 3 horas e kit em cada plano. Plano I: 20 + 30 + 14 = R$ 64,00. Plano II: 25 + 27 + 14 = R$ 66,00. Plano III: 30 + 18 + 15 = R$ 63,00. Plano IV: 35 + 15 + 15 = R$ 65,00. O menor total é o do plano III.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 51,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_51.webp",
+            "descricao": "Tabela de preços com quatro linhas (planos I, II, III e IV) e as colunas taxa fixa, valor adicional por hora e kit de segurança, em reais. Plano I: 20,00; 10,00; 14,00. Plano II: 25,00; 9,00; 14,00. Plano III: 30,00; 6,00; 15,00. Plano IV: 35,00; 5,00; 15,00."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-053",
+          "texto_base": "Uma empresa vende arroz em sacos com diferentes tamanhos. A tabela apresenta os três tipos de saco que essa empresa vende, a massa em quilograma e o preço de cada um deles.\nPequeno: 5 kg, R$ 12,00\nMédio: 10 kg, R$ 18,00\nGrande: 15 kg, R$ 24,00\nUm pequeno restaurante pretende comprar dessa empresa, no mínimo, 25 quilogramas de arroz de forma a ter o menor custo com a compra.",
+          "enunciado": "A quantidade mínima de sacos que o restaurante deverá comprar para atender suas necessidades é",
+          "alternativas": [
+            "2 sacos grandes.",
+            "5 sacos pequenos.",
+            "1 saco grande e 1 saco médio.",
+            "2 sacos médios e 1 saco pequeno."
+          ],
+          "resposta_correta": "1 saco grande e 1 saco médio.",
+          "resolucao": "Calculamos o custo de cada opção, todas com pelo menos 25 kg. Dois grandes: 2 × 24 = R$ 48,00. Cinco pequenos: 5 × 12 = R$ 60,00. Um grande e um médio: 24 + 18 = R$ 42,00. Dois médios e um pequeno: 36 + 12 = R$ 48,00. A mais barata é um saco grande e um médio.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 53,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_53.webp",
+            "descricao": "Tabela com as colunas tipos de saco, massa em kg e preço unitário em reais. Pequeno: 5 kg, 12,00. Médio: 10 kg, 18,00. Grande: 15 kg, 24,00."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-032",
+          "texto_base": "Dois meninos jogavam cartas com um baralho em que metade delas apresentavam números escritos na forma de fração irredutível e a outra metade tinha os mesmos números impressos na forma decimal. Em um momento, um dos meninos estava com a carta apresentada na figura.\n\nCarta: 4/5",
+          "enunciado": "A carta desse baralho que representa, na forma decimal, o mesmo número mostrado na carta que estava com o menino é",
+          "alternativas": [
+            "1,25",
+            "0,45",
+            "4,5",
+            "0,8"
+          ],
+          "resposta_correta": "0,8",
+          "resolucao": "A fração 4/5 quer dizer 4 dividido por 5. Fazendo a divisão, 4 ÷ 5 = 0,8. Outra forma de ver: 4/5 é o mesmo que 8/10, ou seja, oito décimos, que se escreve 0,8.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 32,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_32.webp",
+            "descricao": "Desenho de uma carta de baralho cinza com a fração 4/5 escrita no centro. As alternativas também aparecem desenhadas como cartas cinza, cada uma com um número decimal."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-038",
+          "texto_base": "Um funcionário recebe um salário mensal de R$ 1 200,00 registrado em carteira. Em determinado mês, o contracheque desse funcionário apresenta os seguintes acréscimos e descontos, calculados sobre o seu salário:\n• INSS: desconto de R$ 133,20;\n• faltas não justificadas: desconto de R$ 80,00;\n• vale-alimentação: acréscimo de R$ 300,00;\n• seguro-saúde: desconto de R$ 6,00.",
+          "enunciado": "Nesse mês, a quantia que o funcionário receberá, em real, é",
+          "alternativas": [
+            "680,80.",
+            "1 280,80.",
+            "1 292,80.",
+            "1 719,20."
+          ],
+          "resposta_correta": "1 280,80.",
+          "resolucao": "Somamos os descontos: 133,20 + 80,00 + 6,00 = 219,20 reais. Somamos o acréscimo ao salário: 1 200,00 + 300,00 = 1 500,00 reais. Depois tiramos os descontos: 1 500,00 − 219,20 = 1 280,80 reais.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 38
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-040",
+          "texto_base": "Uma dona de casa pretende revestir com piso cerâmico o chão de um banheiro, com área de 36 m². Ao chegar à loja de construção, encontra quatro opções de piso, que diferem pelos tamanhos das peças e também pela qualidade da cerâmica. A loja só vende caixas de cerâmicas fechadas. A escolha da dona de casa será feita pelo piso que ofereça o menor custo para revestir todo o chão.\nAs especificações das caixas, de cada tipo de piso, são:\n\nPiso 1: Capacidade de revestimento: 1,5 m²; R$ 15,00\nPiso 2: Capacidade de revestimento: 1,8 m²; R$ 17,00\nPiso 3: Capacidade de revestimento: 2,5 m²; R$ 23,00\nPiso 4: Capacidade de revestimento: 3,6 m²; R$ 38,00",
+          "enunciado": "Para gastar o mínimo possível, essa dona de casa deverá escolher o piso",
+          "alternativas": [
+            "1.",
+            "2.",
+            "3.",
+            "4."
+          ],
+          "resposta_correta": "2.",
+          "resolucao": "Calculamos quantas caixas de cada piso cobrem 36 m² e quanto isso custa. Piso 1: 36 ÷ 1,5 = 24 caixas, 24 × 15 = R$ 360,00. Piso 2: 36 ÷ 1,8 = 20 caixas, 20 × 17 = R$ 340,00. Piso 3: 36 ÷ 2,5 = 14,4, mas como a caixa é fechada são 15 caixas, 15 × 23 = R$ 345,00. Piso 4: 36 ÷ 3,6 = 10 caixas, 10 × 38 = R$ 380,00. O menor gasto é com o piso 2.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 40,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_40.webp",
+            "descricao": "Quatro quadros com borda tracejada, um para cada tipo de piso (Piso 1 a Piso 4), cada um com a capacidade de revestimento da caixa em m² e o preço da caixa. Os valores estão transcritos no texto da questão."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-046",
+          "texto_base": "Quatro hotéis cobram de hospedagem um valor de diária mais uma taxa de serviço proporcional à diária. Um representante comercial precisa se hospedar por um dia em um desses hotéis. Para isso, analisou os valores das diárias e das taxas de serviço nesses hotéis, descritas no quadro.\n\nHotel: Diária (R$) / Taxa de serviço\nI: 210,00 / 3/10 da diária\nII: 240,00 / 1/10 da diária\nIII: 250,00 / 0,11 da diária\nIV: 300,00 / 0,10 da diária",
+          "enunciado": "Avaliando esses valores, para fazer a maior economia, o hotel escolhido por ele será o",
+          "alternativas": [
+            "I.",
+            "II.",
+            "III.",
+            "IV."
+          ],
+          "resposta_correta": "II.",
+          "resolucao": "Calculamos o total de cada hotel: diária mais taxa. Hotel I: 3/10 de 210 é 63, total R$ 273,00. Hotel II: 1/10 de 240 é 24, total R$ 264,00. Hotel III: 0,11 de 250 é 27,50, total R$ 277,50. Hotel IV: 0,10 de 300 é 30, total R$ 330,00. O menor total é o do hotel II.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 46,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_46.webp",
+            "descricao": "Quadro com três colunas: Hotel, Diária (R$) e Taxa de serviço, para os hotéis I a IV. Nos hotéis I e II a taxa aparece como fração da diária; nos hotéis III e IV, como número decimal. Os valores estão transcritos no texto da questão."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-050",
+          "texto_base": "Foram vendidos 4 352 ingressos para uma partida de futebol, dos quais 658 eram cadeiras numeradas e o restante, arquibancada.\nCada ingresso de cadeira numerada foi vendido a R$ 45,00 e o da arquibancada, por R$ 20,00. Do valor arrecadado nessa venda, 1/10 foi destinado a doações.",
+          "enunciado": "O valor final líquido arrecadado com essa venda, após a doação, foi de",
+          "alternativas": [
+            "R$ 66 492,00.",
+            "R$ 93 141,00.",
+            "R$ 103 490,00.",
+            "R$ 161 451,00."
+          ],
+          "resposta_correta": "R$ 93 141,00.",
+          "resolucao": "Os ingressos de arquibancada foram 4 352 − 658 = 3 694. As cadeiras renderam 658 × 45 = R$ 29 610,00 e a arquibancada 3 694 × 20 = R$ 73 880,00, somando R$ 103 490,00. A doação foi 1/10 disso, ou seja, R$ 10 349,00. Sobram 103 490 − 10 349 = R$ 93 141,00.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 50
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-052",
+          "texto_base": "Uma agência de viagens constatou que o número de passagens aéreas vendidas com destino ao Brasil em junho de 2013 aumentou em relação ao número de passagens vendidas com destino a outros países. Do total de passagens aéreas vendidas nessa agência, 0,125 foi para o Japão; 0,125 para os Estados Unidos; 0,25 para a França e 0,5 para o Brasil.",
+          "enunciado": "Qual é a representação fracionária que expressa a venda de passagens aéreas para o Japão em relação ao número total de passagens vendidas por essa agência?",
+          "alternativas": [
+            "1/125",
+            "1/8",
+            "5/4",
+            "12/5"
+          ],
+          "resposta_correta": "1/8",
+          "resolucao": "O Japão ficou com 0,125 do total. Escrevendo como fração, 0,125 é 125/1 000. Simplificando por 125, fica 1/8. Para conferir: 1 ÷ 8 = 0,125.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 52
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-059",
+          "texto_base": "Uma pessoa comprou um carro usado e pagou 36 prestações fixas no valor de R$ 426,00 cada.",
+          "enunciado": "O valor total que essa pessoa pagou pelo referido carro foi, em real,",
+          "alternativas": [
+            "14 006,00.",
+            "15 136,00.",
+            "15 336,00.",
+            "26 838,00."
+          ],
+          "resposta_correta": "15 336,00.",
+          "resolucao": "Basta multiplicar o número de prestações pelo valor de cada uma: 36 × 426. Uma forma fácil: 30 × 426 = 12 780 e 6 × 426 = 2 556. Somando, 12 780 + 2 556 = R$ 15 336,00.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 59
+        }
+      ]
+    },
+    {
+      "slug": "grandezas-e-medidas",
+      "titulo": "Grandezas e medidas",
+      "sobre": "Converta unidades de comprimento, massa, tempo e capacidade, e use escalas de mapas e plantas.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-mat-031",
+          "texto_base": "Um caminhão tem capacidade para transportar até 6 toneladas.",
+          "enunciado": "A carga máxima, em quilograma, que esse caminhão é capaz de transportar é",
+          "alternativas": [
+            "6.",
+            "60.",
+            "600.",
+            "6 000."
+          ],
+          "resposta_correta": "6 000.",
+          "resolucao": "Uma tonelada é igual a 1 000 quilogramas. Então, 6 toneladas são 6 × 1 000 = 6 000 quilogramas. Essa é a carga máxima do caminhão.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 31
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-033",
+          "texto_base": "Uma empresa de eventos, ao organizar uma festa para 50 pessoas, planejou comprar sorvetes em embalagens de 1 kg, considerando servir, como sobremesa, duas bolas de 50 g de sorvete para cada convidado.",
+          "enunciado": "Qual é a quantidade mínima de embalagens com 1 kg de sorvete que a empresa deve comprar para essa festa?",
+          "alternativas": [
+            "3",
+            "5",
+            "25",
+            "50"
+          ],
+          "resposta_correta": "5",
+          "resolucao": "Cada convidado come duas bolas de 50 g, ou seja, 100 g. Para 50 pessoas, são 50 × 100 = 5 000 g. Como 1 kg é igual a 1 000 g, 5 000 g são 5 kg. Logo, bastam 5 embalagens.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 33
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-038",
+          "texto_base": "Uma pessoa, antes de sair de casa para visitar um amigo, deslocando-se com o seu carro, verifica em um aplicativo para celulares quatro possibilidades de trajetos para fazer a sua viagem, obtendo os seguintes resultados quanto a distâncias e tempos de deslocamento em função do trânsito:\n• trajeto 1: distância de 25 km, deslocamento de 5 km a cada 14 minutos;\n• trajeto 2: distância de 20 km, deslocamento de 5 km a cada 20 minutos;\n• trajeto 3: distância de 32 km, deslocamento de 8 km a cada 15 minutos;\n• trajeto 4: distância de 36 km, deslocamento de 9 km a cada 18 minutos.",
+          "enunciado": "A fim de gastar o menor tempo possível, qual trajeto essa pessoa deverá escolher?",
+          "alternativas": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "resposta_correta": "3",
+          "resolucao": "Calculamos o tempo total de cada trajeto. Trajeto 1: 25 km são 5 trechos de 5 km, então 5 × 14 = 70 minutos. Trajeto 2: 4 × 20 = 80 minutos. Trajeto 3: 32 km são 4 trechos de 8 km, então 4 × 15 = 60 minutos. Trajeto 4: 4 × 18 = 72 minutos. O mais rápido é o trajeto 3.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 38
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-047",
+          "texto_base": "Ao analisar um mapa na escala 1 : 300 000, um estudante observou uma região em formato de quadrado, que na figura está indicada em cinza escuro, e mediu o comprimento dos lados dessa região, encontrando 15 cm.",
+          "enunciado": "A medida real, em quilômetro, do comprimento do lado da região indicada é",
+          "alternativas": [
+            "20.",
+            "45.",
+            "4 500.",
+            "20 000."
+          ],
+          "resposta_correta": "45.",
+          "resolucao": "A escala 1 : 300 000 quer dizer que 1 cm no mapa vale 300 000 cm na realidade. Então 15 cm valem 15 × 300 000 = 4 500 000 cm. Como 1 km tem 100 000 cm, dividimos: 4 500 000 ÷ 100 000 = 45 km.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 47,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_47.webp",
+            "descricao": "Trecho de mapa com linhas sinuosas de divisas. No centro, um quadrado cinza escuro com os lados marcados com 15 cm na horizontal e 15 cm na vertical. Na parte de baixo, a legenda: Escala: 1 : 300 000."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-034",
+          "texto_base": "O desenho está na escala de 1 : 500, ou seja, cada unidade de medida no desenho equivale a 500 unidades de medida no setor habitacional. Ele representa o caminho percorrido por uma pessoa ao visitar o edifício onde pretende comprar um apartamento.\n\nLegenda:\nAB = 4 cm\nBC = 6 cm\nCD = 5 cm\nDE = 4 cm\nEscala 1 : 500",
+          "enunciado": "A distância real do ponto A até o ponto E, em centímetro, percorrida por essa pessoa é",
+          "alternativas": [
+            "520.",
+            "950.",
+            "1 900.",
+            "9 500."
+          ],
+          "resposta_correta": "9 500.",
+          "resolucao": "Primeiro somamos os trechos do desenho: 4 + 6 + 5 + 4 = 19 cm. Na escala 1 : 500, cada 1 cm do desenho vale 500 cm na realidade. Então a distância real é 19 × 500 = 9 500 cm.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 34,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_34.webp",
+            "descricao": "Planta de um setor habitacional com vários quarteirões retangulares e a entrada no alto, à esquerda. Uma linha grossa mostra o caminho: desce do ponto A (entrada) até B, segue para a direita até C, desce até D e vai para a direita até E. Ao lado, uma legenda com as medidas de cada trecho no desenho, e embaixo a indicação Escala 1 : 500."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "funcoes",
+      "titulo": "Funções e gráficos",
+      "sobre": "Veja como uma quantidade depende de outra e leia o que um gráfico mostra sobre essa relação.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-mat-040",
+          "texto_base": "Equipamentos em geral, como móveis, veículos e máquinas, sofrem depreciação ao longo do tempo, ou seja, seu possível valor de revenda diminui. Uma máquina foi adquirida por uma empresa e o gráfico relaciona o valor, em real, dessa máquina ao longo dos anos.",
+          "enunciado": "O valor, em real, da depreciação anual da máquina é",
+          "alternativas": [
+            "500.",
+            "1 250.",
+            "2 500.",
+            "8 000."
+          ],
+          "resposta_correta": "500.",
+          "resolucao": "No gráfico, a máquina vale R$ 40 000 no início e R$ 39 500 depois de 1 ano. A cada ano o valor cai a mesma quantia, até R$ 37 500 no quinto ano. A queda por ano é 40 000 − 39 500 = R$ 500.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 40,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_40.webp",
+            "descricao": "Gráfico de linha reta descendente. Eixo horizontal: número de anos a partir da aquisição, de 0 a 5. Eixo vertical: valor da máquina em reais. Pontos: ano 0, 40 000; ano 1, 39 500; ano 2, 39 000; ano 3, 38 500; ano 4, 38 000; ano 5, 37 500."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-046",
+          "texto_base": "O celular é um aparelho utilizado por muitas pessoas. O consumo de bateria de um celular está relacionado ao período em que está ligado. O gráfico apresenta o consumo de bateria de um celular entre 8 h e 14 h de um determinado dia, mantendo o mesmo padrão até a quantidade de carga da bateria se esgotar.",
+          "enunciado": "A bateria atingiu 5% de sua quantidade de carga às",
+          "alternativas": [
+            "14 h 30 min.",
+            "17 h 30 min.",
+            "20 h 30 min.",
+            "23 h 30 min."
+          ],
+          "resposta_correta": "17 h 30 min.",
+          "resolucao": "No gráfico, a bateria cai 10% a cada hora: de 100% às 8 h para 40% às 14 h. De 40% até 5% faltam 35%. Gastando 10% por hora, isso leva 3 horas e meia. Somando a 14 h, a bateria chega a 5% às 17 h 30 min.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 46,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_46.webp",
+            "descricao": "Gráfico de linha reta descendente. Eixo horizontal: tempo, de 08:00 a 14:00. Eixo vertical: quantidade de carga da bateria em porcentagem, de 0 a 100. Pontos: 08:00, 100%; 09:00, 90%; 10:00, 80%; 11:00, 70%; 12:00, 60%; 13:00, 50%; 14:00, 40%."
+          }
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-052",
+          "texto_base": "Para se construir 1 metro linear de muro com uma determinada altura, gastam-se 38 tijolos.",
+          "enunciado": "A expressão que relaciona a quantidade Q de metro linear desse muro, em função da quantidade T de tijolos gastos em sua construção, é",
+          "alternativas": [
+            "Q = 38 × T",
+            "Q = 38 ÷ T",
+            "Q = T + 38",
+            "Q = T ÷ 38"
+          ],
+          "resposta_correta": "Q = T ÷ 38",
+          "resolucao": "Cada metro de muro usa 38 tijolos. Para saber quantos metros dá para construir com T tijolos, dividimos os tijolos por 38. Por exemplo, 76 tijolos dão 76 ÷ 38 = 2 metros. Por isso, Q = T ÷ 38.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 52
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-055",
+          "texto_base": "Um grande show musical será realizado na capital de um estado. Uma empresa disponibiliza, para participantes que moram no interior desse estado, o serviço de compra do ingresso (sem taxas) e o translado (ida e volta) ao local do show. O valor do ingresso é R$ 80,00 e o translado será cobrado de acordo com a distância total percorrida, cobrando-se o valor de R$ 0,20 por quilômetro percorrido.",
+          "enunciado": "A representação algébrica que expressa a relação de interdependência do total pago em termos da distância é",
+          "alternativas": [
+            "y = 0,2⋅x",
+            "y = 80,2⋅x",
+            "y = 0,2⋅x + 80",
+            "y = 0,4⋅x + 80"
+          ],
+          "resposta_correta": "y = 0,2⋅x + 80",
+          "resolucao": "Chamando de x a distância total em quilômetros e de y o total pago, o translado custa 0,2 vezes x. A esse valor somamos o ingresso, que é fixo: R$ 80,00. Assim, o total é y = 0,2⋅x + 80.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 55
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-056",
+          "texto_base": "Em um posto de combustível, o preço cobrado por um litro de gasolina é R$ 5,00.",
+          "enunciado": "O gráfico que representa a relação entre o valor total a pagar, em real, e a quantidade de gasolina, em litro, quando se abastece um carro nesse posto é",
+          "alternativas": [
+            "Reta que começa em 0 litro e 0 real e passa por 1 litro e 5 reais, 3 litros e 15 reais e 7 litros e 35 reais.",
+            "Reta que começa em 5 litros e 0 real e passa por 6 litros e 5 reais e 7 litros e 10 reais.",
+            "Reta que começa em 0 litro e 5 reais e passa por 1 litro e 10 reais, 3 litros e 20 reais e 6 litros e 35 reais.",
+            "Reta horizontal no valor de 5 reais para qualquer quantidade de gasolina."
+          ],
+          "resposta_correta": "Reta que começa em 0 litro e 0 real e passa por 1 litro e 5 reais, 3 litros e 15 reais e 7 litros e 35 reais.",
+          "resolucao": "Cada litro custa R$ 5,00, então o valor a pagar é 5 vezes a quantidade de litros. Sem gasolina, não se paga nada: o gráfico começa no zero. Com 1 litro paga-se R$ 5,00, com 3 litros R$ 15,00 e com 7 litros R$ 35,00. A reta certa é a que sai do zero e sobe 5 reais a cada litro.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 56,
+          "imagem": {
+            "arquivo": "2022/2022_EM_regular_matematica_56.webp",
+            "descricao": "Quatro gráficos, um para cada opção, todos com eixo horizontal gasolina em litros (0 a 7) e eixo vertical valor a pagar em reais (0 a 35). Primeiro: reta saindo da origem e chegando a 35 em 7 litros. Segundo: reta saindo de 5 litros no eixo horizontal e chegando a 10 em 7 litros. Terceiro: reta saindo de 5 no eixo vertical e chegando a 35 em 6 litros. Quarto: reta horizontal na altura 5."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-039",
+          "texto_base": "Durante a reforma de uma casa, decidiu-se pela troca de todo o piso da cozinha. O gráfico expressa a relação entre a área (a), em metro quadrado, e o preço (P), em real, a ser pago na compra do piso escolhido. Sabe-se que a loja que comercializa os pisos cobra, pela entrega do material, um valor fixo adicional de R$ 95,00.",
+          "enunciado": "A expressão algébrica que representa o custo total (C), incluindo o valor referente à entrega, em função da área (a), na aquisição do piso é igual a",
+          "alternativas": [
+            "C = 15a",
+            "C = 15a + 95",
+            "C = 22,5a",
+            "C = 22,5a + 95"
+          ],
+          "resposta_correta": "C = 22,5a + 95",
+          "resolucao": "No gráfico, 4 m² custam R$ 90,00 e 8 m² custam R$ 180,00. Então cada metro quadrado custa 90 ÷ 4 = R$ 22,50, e o preço do piso é 22,5 × a. A entrega soma um valor fixo de R$ 95,00, que não depende da área. Assim, o custo total é C = 22,5a + 95.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 39,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_39.webp",
+            "descricao": "Gráfico com o eixo horizontal a (m²), de 0 a 16, e o eixo vertical P (R$), de 0 a 300, de 30 em 30. Uma reta sai da origem (0, 0) e sobe. Linhas tracejadas marcam dois pontos da reta: área 4 com preço 90 e área 8 com preço 180."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-060",
+          "texto_base": "Uma operadora de cartão de crédito oferece aos seus clientes pontos de bonificação para compras acima de 200 reais. Ao realizar essas compras, o cliente ganha, para cada compra, 3 pontos e mais 0,5 ponto por real gasto.",
+          "enunciado": "A expressão que representa a relação entre pontos de bonificação (B) e reais gastos (R) nessa situação é",
+          "alternativas": [
+            "B = 2,5R",
+            "B = 3,5R",
+            "B = 0,5 + 3R",
+            "B = 3 + 0,5R"
+          ],
+          "resposta_correta": "B = 3 + 0,5R",
+          "resolucao": "A cada compra o cliente ganha 3 pontos fixos, que não dependem do valor gasto. Além disso, ganha 0,5 ponto para cada real, ou seja, 0,5 vezes R. Juntando as duas partes, os pontos são B = 3 + 0,5R.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 60
+        }
+      ]
+    },
+    {
+      "slug": "geometria-espacial",
+      "titulo": "Geometria espacial",
+      "sobre": "Trabalhe com caixas, cilindros e outros sólidos: volume, capacidade e planificação.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-ppl-2022-mat-036",
+          "texto_base": "Os prismas da figura possuem bases formadas por polígonos com 3, 4, 5 e 6 lados, respectivamente.",
+          "enunciado": "Generalizando, qual é o número de faces de um prisma que possui base formada por um polígono com N lados?",
+          "alternativas": [
+            "N + 1",
+            "N + 2",
+            "2N",
+            "3N"
+          ],
+          "resposta_correta": "N + 2",
+          "resolucao": "Um prisma tem duas bases iguais, uma em cima e outra embaixo. Ao redor, cada lado da base gera uma face lateral, então são N faces laterais. Somando: N faces laterais + 2 bases = N + 2. Por exemplo, o prisma de base triangular tem 3 + 2 = 5 faces.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 36,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_36.webp",
+            "descricao": "Quatro prismas cinza, lado a lado, com as arestas destacadas em branco: o primeiro tem base triangular, o segundo base quadrada (quatro lados), o terceiro base pentagonal (cinco lados) e o quarto base hexagonal (seis lados)."
+          }
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-054",
+          "texto_base": "Um fabricante de creme de leite quer oferecer seu produto em caixinhas na forma de blocos retangulares com as seguintes dimensões:\n• embalagem I: 5 cm × 5 cm × 10 cm;\n• embalagem II: 10 cm × 10 cm × 10 cm.\nEle garante que ambas as caixinhas são totalmente preenchidas com o produto, e o preço da embalagem I já foi definido em R$ 4,00.",
+          "enunciado": "Para que a embalagem II seja oferecida com preço que represente uma economia para o consumidor de R$ 0,20 em relação à mesma quantidade de produto adquirida em embalagens do tipo I, seu preço deve ser",
+          "alternativas": [
+            "R$ 7,80.",
+            "R$ 8,00.",
+            "R$ 15,20.",
+            "R$ 15,80."
+          ],
+          "resposta_correta": "R$ 15,80.",
+          "resolucao": "O volume da embalagem I é 5 × 5 × 10 = 250 cm³, e o da embalagem II é 10 × 10 × 10 = 1 000 cm³. Então a embalagem II tem o mesmo produto que 4 embalagens I, que custariam 4 × 4,00 = R$ 16,00. Com economia de R$ 0,20, o preço deve ser 16,00 − 0,20 = R$ 15,80.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 54
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-058",
+          "texto_base": "Em uma joalheria, o formato da caixinha de presente, quando se coloca a tampa, corresponde a um prisma de base hexagonal, conforme a figura.\nAo comprar um presente nessa joalheria, um aluno associou essa embalagem a um prisma de base hexagonal e identificou o número de faces, vértices e arestas da caixinha.",
+          "enunciado": "O número de faces, vértices e arestas da caixinha com a tampa são, respectivamente,",
+          "alternativas": [
+            "4, 10 e 13.",
+            "8, 12 e 18.",
+            "8, 12 e 36.",
+            "12, 8 e 22."
+          ],
+          "resposta_correta": "8, 12 e 18.",
+          "resolucao": "O hexágono tem 6 lados. Faces: 6 laterais mais as 2 bases (fundo e tampa), total de 8. Vértices: 6 em cima e 6 embaixo, total de 12. Arestas: 6 na base de cima, 6 na de baixo e 6 verticais, total de 18.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 58,
+          "imagem": {
+            "arquivo": "2022/2022_EM_reaplicacao_PPL_matematica_58.webp",
+            "descricao": "Fotografia de uma caixinha de presente prateada com tampa, no formato de prisma de base hexagonal: a tampa e o fundo têm seis lados e as laterais são retângulos. Uma linha horizontal nas laterais marca onde a tampa se encaixa."
+          }
+        }
+      ]
+    },
+    {
+      "slug": "probabilidade-e-contagem",
+      "titulo": "Probabilidade e contagem",
+      "sobre": "Calcule as chances de algo acontecer e conte de quantas formas uma escolha pode ser feita.",
+      "videos": [],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2022-mat-043",
+          "texto_base": "Em um pote há 8 balas: 3 vermelhas, 3 laranja, 1 amarela e 1 verde. Uma pessoa retira, sem olhar, 1 bala desse pote.",
+          "enunciado": "Qual é a probabilidade de a bala retirada ser da cor vermelha?",
+          "alternativas": [
+            "1/4",
+            "3/8",
+            "3/5",
+            "3/4"
+          ],
+          "resposta_correta": "3/8",
+          "resolucao": "Probabilidade é o número de casos que queremos dividido pelo total de casos. Há 3 balas vermelhas num total de 8 balas. Então a chance de tirar uma vermelha é 3/8.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 43
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-060",
+          "texto_base": "Um programa de televisão oferece aos participantes a oportunidade de ganharem uma TV sorteando uma bola dentre as 100 bolas de uma urna, sendo 95 brancas e 5 douradas. Ganha o prêmio o participante que retirar uma bola dourada.\nA produção desse programa pretende reduzir a probabilidade de a TV ser sorteada e, para isso, decide acrescentar na urna novas bolas brancas, mantendo as 5 bolas douradas.",
+          "enunciado": "Qual quantidade de bolas brancas deve ser acrescentada à urna para que a probabilidade de um participante ganhar a TV seja de 4%?",
+          "alternativas": [
+            "30",
+            "25",
+            "4",
+            "1"
+          ],
+          "resposta_correta": "25",
+          "resolucao": "As 5 bolas douradas devem ser 4% do total de bolas. Se 4% correspondem a 5 bolas, 1% corresponde a 5 ÷ 4 = 1,25 bola, e 100% correspondem a 125 bolas. Como já existem 100 bolas, é preciso acrescentar 125 − 100 = 25 bolas brancas.",
+          "prova_ano": 2022,
+          "prova_edicao": "Nacional",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 60
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-043",
+          "texto_base": "Numa rede de lanchonetes, um dos sanduíches mais tradicionais é o Big Super, que é composto de dois hambúrgueres, alface, queijo, molho especial, cebola, picles e pão com gergelim. Essa rede resolveu criar um sanduíche promocional, no qual o cliente escolhe de 1 a 3 ingredientes, dentre os 5 ingredientes contidos no Big Super (alface, queijo, molho especial, cebola, picles), mantendo os dois hambúrgueres e o pão com gergelim.",
+          "enunciado": "O total de sanduíches promocionais distintos que o cliente poderá escolher é",
+          "alternativas": [
+            "5.",
+            "10.",
+            "15.",
+            "25."
+          ],
+          "resposta_correta": "25.",
+          "resolucao": "Contamos separadamente, sem importar a ordem dos ingredientes. Com 1 ingrediente há 5 escolhas. Com 2 ingredientes há 10 pares diferentes (5 × 4 ÷ 2). Com 3 ingredientes também há 10 grupos (5 × 4 × 3 ÷ 6). Somando: 5 + 10 + 10 = 25 sanduíches diferentes.",
+          "prova_ano": 2022,
+          "prova_edicao": "Reaplicação (PPL)",
+          "prova_nivel": "Ensino Médio",
+          "prova_numero": 43
         }
       ]
     }

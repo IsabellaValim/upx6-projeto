@@ -9,5 +9,16 @@ public class Disciplina
     public string Slug { get; set; } = string.Empty;
     public string? Icone { get; set; }
 
+    // Nível do Encceja a que a disciplina pertence: "fundamental" ou "medio".
+    // A mesma matéria nos dois níveis são duas disciplinas (slugs diferentes).
+    public string Nivel { get; set; } = NivelEnsino.Medio;
+
     public List<Tema> Temas { get; set; } = [];
+}
+
+public static class NivelEnsino
+{
+    public const string Fundamental = "fundamental";
+    public const string Medio = "medio";
+    public static readonly string[] Todos = [Fundamental, Medio];
 }

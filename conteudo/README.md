@@ -1,27 +1,31 @@
 # Conteúdo do Estudaê
 
-Aqui ficam as questões e os vídeos do site, **um arquivo JSON por disciplina**
-(`portugues.json`, `matematica.json`). O importador lê esses arquivos, confere tudo e
-grava no banco. Os exemplos em `exemplos/` mostram o formato e os erros que ele pega.
+Aqui ficam as questões e os vídeos do site, **um arquivo JSON por disciplina**, e as imagens
+das questões em `imagens/`. O importador lê esses arquivos, confere tudo e grava no banco.
+Os exemplos em `exemplos/` mostram o formato e os erros que ele pega.
 
 O modelo de dados por trás disso está em `backend/DatabaseDocs/ModelodeDados.md`.
+Para carregar as questões de 2022 num banco oficial: [`ENTREGA-QUESTOES-2022.md`](ENTREGA-QUESTOES-2022.md).
 
-## Escopo do MVP
+## Escopo
 
-- Ensino Médio, provas do INEP, só **Português** e **Matemática**.
-- **Sem questões com figura, tabela ou gráfico.**
-- Quatro temas por disciplina (para mudar, basta editar o JSON):
+- Provas do Encceja de **Ensino Médio e Ensino Fundamental**, áreas de **Linguagens** e
+  **Matemática**. A mesma matéria nos dois níveis são duas disciplinas (`matematica` e
+  `matematica-fundamental`), com o campo `nivel`.
+- Questões com figura, tabela ou gráfico levam o **recorte da prova** como imagem.
 
-  | Disciplina (`slug`) | Temas (`slug`) |
-  |---|---|
-  | `portugues` | `interpretacao-de-texto`, `generos-textuais`, `variacao-linguistica`, `gramatica` |
-  | `matematica` | `porcentagem-e-proporcao`, `equacoes`, `geometria-plana`, `estatistica-basica` |
+  | Arquivo (`slug`) | Nível | Temas (`slug`) |
+  |---|---|---|
+  | `matematica` | médio | `porcentagem-e-proporcao`, `equacoes`, `geometria-plana`, `estatistica-basica`, `numeros-e-operacoes`, `grandezas-e-medidas`, `funcoes`, `geometria-espacial`, `probabilidade-e-contagem` |
+  | `linguagens` | médio | `interpretacao-de-texto`, `generos-textuais`, `variacao-linguistica`, `gramatica`, `literatura`, `comunicacao-e-midias`, `lingua-inglesa`, `lingua-espanhola`, `arte`, `educacao-fisica` |
+  | `matematica-fundamental` | fundamental | `numeros-e-operacoes`, `fracoes-e-decimais`, `porcentagem-e-proporcao`, `equacoes`, `grandezas-e-medidas`, `geometria`, `graficos-e-tabelas`, `probabilidade-e-contagem` |
+  | `linguagens-fundamental` | fundamental | os mesmos 10 de `linguagens` |
 
 ## Formato
 
 ```jsonc
 {
-  "disciplina": { "slug": "matematica", "nome": "Matemática", "icone": "percent" },
+  "disciplina": { "slug": "matematica", "nome": "Matemática", "icone": "percent", "nivel": "medio" },
   "temas": [
     {
       "slug": "porcentagem-e-proporcao",
@@ -41,7 +45,8 @@ O modelo de dados por trás disso está em `backend/DatabaseDocs/ModelodeDados.m
           "prova_ano": 2019,
           "prova_edicao": "Nacional",
           "prova_nivel": "Ensino Médio",
-          "prova_numero": 12
+          "prova_numero": 12,
+          "imagem": { "arquivo": "2022/2022_EM_regular_matematica_47.webp", "descricao": "O que a imagem mostra." }
         }
       ]
     }
@@ -54,6 +59,7 @@ O modelo de dados por trás disso está em `backend/DatabaseDocs/ModelodeDados.m
 | `disciplina.slug` | sim | minúsculas sem acento, números e hífen (`matematica`) |
 | `disciplina.nome` | sim | até 100 caracteres |
 | `disciplina.icone` | não | nome do ícone usado no front (`pen`, `percent`) |
+| `disciplina.nivel` | não | `"medio"` (padrão) ou `"fundamental"` |
 | `tema.slug` | sim | como o da disciplina; único no arquivo |
 | `tema.titulo`, `tema.sobre` | sim | título até 150 caracteres |
 | `videos[].youtube` | sim | **link completo do YouTube ou só o ID** (11 caracteres); o importador extrai o ID |
@@ -67,6 +73,17 @@ O modelo de dados por trás disso está em `backend/DatabaseDocs/ModelodeDados.m
 | `prova_ano` | só em questão do INEP | de 2002 até o ano atual |
 | `prova_edicao`, `prova_nivel` | só em questão do INEP | texto, até 40 caracteres |
 | `prova_numero` | só em questão do INEP | número da questão na prova original, maior que zero |
+| `imagem.arquivo` | não | caminho relativo a `conteudo/imagens/` (`.webp`, `.png`, `.jpg`); o arquivo precisa existir |
+| `imagem.descricao` | se houver imagem | texto alternativo (até 1000 caracteres): o que a imagem mostra, **sem dar a resposta** |
+
+### Imagens
+
+- Só para questões que **dependem** do elemento visual (figura, gráfico, tabela, mapa, tirinha,
+  foto). Use o recorte da questão como está na prova.
+- Questão com imagem **não tem as alternativas embaralhadas**: o recorte mostra as letras
+  originais, e elas precisam bater com as da tela.
+- A descrição é lida pelo leitor de tela e pela leitura em voz alta. Tabela simples: transcreva
+  os dados também no `texto_base`.
 
 ### Questão do INEP ou autoral
 
@@ -81,15 +98,19 @@ Os quatro campos `prova_*` são **tudo ou nada**:
 
 ## Catálogo atual
 
-| Arquivo | Temas | Vídeos | Questões | Origem |
-|---|---|---|---|---|
-| `portugues.json` | 4 | 4 | 12 | autorais (`aut-pt-*`) |
-| `matematica.json` | 4 | 4 | 12 | autorais (`aut-mat-*`) |
+| Arquivo | Nível | Temas | Vídeos | Questões | Origem |
+|---|---|---|---|---|---|
+| `matematica.json` | médio | 9 | 4 | 72 | 60 do Encceja 2022 + 12 autorais (`aut-mat-*`) |
+| `linguagens.json` | médio | 10 | 4 | 72 | 60 do Encceja 2022 + 12 autorais (`aut-pt-*`) |
+| `matematica-fundamental.json` | fundamental | 8 | 0 | 60 | Encceja 2022 |
+| `linguagens-fundamental.json` | fundamental | 10 | 0 | 60 | Encceja 2022 |
 
-Os vídeos passaram no oEmbed (existem e permitem incorporação). Legenda, ritmo e adequação
-continuam sendo revisão humana (checklist abaixo). As questões de prova anteriores escolhidas
-para cada tema estão em [`curadoria-inep.md`](curadoria-inep.md), aguardando revisão antes de
-entrar nos JSONs.
+As 240 questões oficiais (os 8 cadernos de 2022, aplicação Nacional e Reaplicação/PPL) foram
+transcritas a partir dos recortes da prova, com gabarito oficial, resolução e tema. A revisão
+humana antes de publicar fora do ambiente local está em
+[`ENTREGA-QUESTOES-2022.md`](ENTREGA-QUESTOES-2022.md) e em `revisao-2022.csv`. Os temas novos
+ainda não têm vídeo. Os vídeos atuais passaram no oEmbed; legenda, ritmo e adequação continuam
+sendo revisão humana (checklist abaixo).
 
 **Conteúdo de teste x demonstração:** `exemplos/` tem questões inventadas e IDs de vídeo
 falsos, usados só pelos testes automáticos, e não entra na imagem. O que vai para o site são os
@@ -117,8 +138,8 @@ um arquivo, reconstrua a imagem antes de importar; senão o importador lê a ver
 
 ```bash
 docker compose up -d --build --wait                                   # reconstrói e sobe
-docker compose run --rm api importar conteudo/portugues.json --validar   # só confere
-docker compose run --rm api importar conteudo/portugues.json --publicar  # grava publicada
+docker compose run --rm api importar conteudo/linguagens.json --validar   # só confere
+docker compose run --rm api importar conteudo/linguagens.json --publicar  # grava publicada
 docker compose run --rm api importar conteudo/matematica.json --publicar
 curl http://localhost:8080/api/disciplinas                              # confere as contagens
 ```

@@ -37,6 +37,14 @@ namespace Estudae.Infra.Persistence.Migrations
                         .HasColumnType("character varying(60)")
                         .HasColumnName("icone");
 
+                    b.Property<string>("Nivel")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasDefaultValue("medio")
+                        .HasColumnName("nivel");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -56,7 +64,10 @@ namespace Estudae.Infra.Persistence.Migrations
                         .IsUnique()
                         .HasDatabaseName("ix_disciplina_slug");
 
-                    b.ToTable("disciplina", (string)null);
+                    b.ToTable("disciplina", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_disciplina_nivel", "nivel IN ('fundamental', 'medio')");
+                        });
                 });
 
             modelBuilder.Entity("Estudae.Domain.Conteudo.Questao", b =>
@@ -87,6 +98,11 @@ namespace Estudae.Infra.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("enunciado");
+
+                    b.Property<string>("ImagemDescricao")
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)")
+                        .HasColumnName("imagem_descricao");
 
                     b.Property<string>("ImagemUrl")
                         .HasMaxLength(500)

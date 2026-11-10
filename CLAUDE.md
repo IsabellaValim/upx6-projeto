@@ -29,9 +29,14 @@ Docker, deploy e CI/CD. Ao trabalhar aqui:
   `feat/front-api` (10/11/2026). Um patch alternativo, que redesenhava o front,
   foi descartado por mudar demais a estrutura (backup local em
   `backup/frontend-mvp-codex`).
-- **Conteúdo:** `conteudo/portugues.json` e `matematica.json`, 4 temas, 4
-  vídeos e 12 questões **autorais** cada. Questões do INEP em revisão em
-  `conteudo/curadoria-inep.md`. Ainda não há ambiente de demonstração publicado.
+- **Conteúdo (10/11/2026, branch `feat/questoes-2022`):** 4 disciplinas —
+  `matematica` e `linguagens` (Ensino Médio, 72 questões cada: 60 do Encceja
+  2022 + 12 autorais) e `matematica-fundamental` e `linguagens-fundamental`
+  (60 do Encceja 2022 cada). As 240 oficiais foram transcritas dos recortes
+  da prova por subagentes, uma por caderno, com gabarito oficial, resolução,
+  tema e imagem (88). "Português" virou **"Linguagens"**. Entrega para o banco
+  oficial e checklist de revisão: `conteudo/ENTREGA-QUESTOES-2022.md` e
+  `conteudo/revisao-2022.csv`. Ainda não há ambiente de demonstração publicado.
 - **Backend:** fases 1 a 5 concluídas, mais o primeiro ticket de conteúdo:
   tabelas de conteúdo, importador, endpoints de leitura e correção,
   Dockerfile, compose completo e CI. Fora do MVP: login e tentativas.
@@ -233,7 +238,9 @@ lá, no mesmo commit da migration.
   e `AulaAssistida` ligam o usuário (`usuario`, do Identity) ao conteúdo.
   As tabelas do Identity ganham nomes em português (`usuario`, `papel`,
   `usuario_papel`...), configurados na fase 3 antes da primeira migration.
-- **Escopo:** só Ensino Médio, e só Português e Matemática por enquanto.
+- **Escopo:** Ensino Fundamental e Médio (`disciplina.nivel`), Linguagens e
+  Matemática. Questões com figura/tabela/gráfico levam o recorte da prova
+  (`imagem_url` + `imagem_descricao`), servido pela API em `/conteudo/imagens/`.
 - **Decisões deliberadas:**
   - Sem tabela `Area` (área = disciplina) e sem tabela `Prova`:
     `prova_ano`, `prova_edicao` e `prova_nivel` são colunas opcionais em
@@ -407,15 +414,37 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
   que nos faria mudar de ideia. Preencher juntos.
 - `videoaula.tipo` é mesmo necessário?
 - `aula_assistida`: uma marca só por aluno e vídeo, ou manter histórico?
-- As questões terão imagens (`imagem_url`)? (No MVP, não.)
-- Formato de `prova_edicao` (texto ou número)
-- Termos de uso do INEP para reaproveitar provas anteriores, e a fonte e o
-  formato de importação das questões
+- ~~As questões terão imagens?~~ Sim (10/11/2026): recorte da prova + texto
+  alternativo; ver `ModelodeDados.md`.
+- Formato de `prova_edicao` (hoje texto: `"Nacional"` ou `"Reaplicação (PPL)"`)
+- **Termos de uso do INEP** para reaproveitar provas anteriores: ainda em
+  aberto. As 240 questões de 2022 estão publicadas só no banco local; publicar
+  fora dele depende dessa conferência (registrado no guia de entrega).
 
 ## Pontos de atenção para quem for continuar o projeto
 
-- O catálogo ainda é pequeno (12 questões autorais por matéria, um vídeo por
-  tema). Qualquer feature que dependa de volume de conteúdo vai expor isso.
+- Catálogo: 264 questões (só 2022 entre as oficiais). Os temas novos não têm
+  vídeo; os do Fundamental, nenhum. As 480 referências de outros anos do pacote
+  de questões não têm texto e ficaram de fora.
+- **Tela da questão** (`src/components/questao.js`, usado pela lição e pelo
+  simulado): "Ouvir questão" no topo → imagem em largura total ("Toque para
+  ampliar") → texto de apoio em cartão próprio, com `white-space: pre-line`
+  (versos e quadrinhos em linhas separadas) → pergunta → fonte. Botões da
+  questão fixos no rodapé (`.quiz-nav--fixa`). O simulado esconde a barra de
+  baixo. **Imagem em tela cheia:** `<dialog>` nativo (foco preso, Esc, voltar
+  do celular fecha via `history.pushState`), zoom por pinça ou botões +/−
+  (100–300%), área rolável focável pelo teclado. O texto alternativo fica no
+  botão que abre a imagem. Com "reduzir movimento", o CSS do projeto dá
+  transição de 0,01 ms a tudo: testes que medem largura precisam esperar.
+- **Progresso** (`src/screens/progresso.js`): resumo em atividades da prova
+  escolhida (dias seguidos, lições, % de acertos), "Continuar estudando" pela
+  matéria estudada por último, um cartão por matéria (aulas vistas e questões
+  acertadas) e o histórico, tudo filtrado por `state.nivel`.
+- **Escolha de prova no app:** `#/nivel` (`src/screens/nivel.js`), guardada em
+  `estudae:nivel`; o router manda para lá quem ainda não escolheu. Início,
+  simulado e Progresso filtram por `state.nivel` (`materiasDoNivel` em
+  `data.js`). Na interface se chama "prova", porque "nível" já é a
+  gamificação do Perfil.
 - Os JSONs de `conteudo/` vão dentro da imagem: depois de editar, rebuild
   (`docker compose up -d --build --wait`) antes de importar.
 - Esta máquina não tem o .NET SDK: build e testes do backend rodaram no

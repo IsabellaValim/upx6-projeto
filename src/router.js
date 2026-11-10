@@ -51,6 +51,11 @@ function render() {
     go(urls.boasVindas);
     return;
   }
+  // Antes de estudar, a pessoa escolhe a prova (Fundamental ou Médio), uma vez só.
+  if (!PUBLIC.has(name) && !state.nivel && name !== "nivel" && name !== "acessibilidade") {
+    location.replace(urls.nivel);
+    return;
+  }
   if (
     name !== "quiz" &&
     state.quiz &&

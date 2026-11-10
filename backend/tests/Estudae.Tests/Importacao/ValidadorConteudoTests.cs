@@ -105,6 +105,45 @@ public class ValidadorConteudoTests
     }
 
     [Fact]
+    public void Imagem_valida_com_descricao()
+    {
+        Assert.Empty(ValidarComQuestao(q => q["imagem"] = new JsonObject
+        {
+            ["arquivo"] = "2022/2022_EM_regular_matematica_47.webp",
+            ["descricao"] = "Mapa com um quadrado de 15 cm de lado e escala 1 : 300 000.",
+        }));
+    }
+
+    [Fact]
+    public void Imagem_sem_descricao_e_recusada()
+    {
+        AssertUnicoErro(ValidarComQuestao(q => q["imagem"] = new JsonObject { ["arquivo"] = "2022/x.webp" }), "imagem.descricao");
+    }
+
+    [Theory]
+    [InlineData("../segredo.webp")]
+    [InlineData("/2022/x.webp")]
+    [InlineData("2022/x.svg")]
+    [InlineData("2022/com espaço.webp")]
+    public void Caminho_de_imagem_inseguro_ou_invalido(string arquivo)
+    {
+        AssertUnicoErro(ValidarComQuestao(q => q["imagem"] = new JsonObject { ["arquivo"] = arquivo, ["descricao"] = "Figura." }), "imagem.arquivo");
+    }
+
+    [Theory]
+    [InlineData("medio", true)]
+    [InlineData("fundamental", true)]
+    [InlineData("superior", false)]
+    public void Nivel_da_disciplina(string nivel, bool valido)
+    {
+        var raiz = JsonNode.Parse(Exemplo("exemplo-valido.json"))!.AsObject();
+        raiz["disciplina"]!["nivel"] = nivel;
+        var erros = Validar(raiz.ToJsonString());
+        if (valido) Assert.Empty(erros);
+        else Assert.Equal("nivel", Assert.Single(erros).Campo);
+    }
+
+    [Fact]
     public void Texto_so_com_espacos_conta_como_ausente()
     {
         AssertUnicoErro(ValidarComQuestao(q => q["resolucao"] = "   \n "), "resolucao");
