@@ -64,15 +64,22 @@ http.server` ou `npx serve .`.
   telas já usavam (`SUBJECTS`, `lessonsFor`), mas preenchidos pela API:
   `carregarCatalogo()` roda no início (o `router` só renderiza depois; se
   falhar, tela com "Tentar de novo"). `SUBJECTS` é indexado pelo **slug** da
-  disciplina; `#/video/{slug}/{tema}/{aula}` usa a posição do tema e da aula.
-  O quiz é **por matéria**: `carregarQuestoes()` junta as questões de todos os
-  temas; em "Ver resultado", cada resposta vai no `POST` (texto da
-  alternativa) e o resultado guarda enunciado, resposta certa e resolução
-  (gabarito nunca fica no front). `fonte()` mostra a origem ou "Questão
+  disciplina; `#/video/{slug}/{tema}/{aula}` e `#/quiz/{slug}/{tema}` usam a
+  posição do tema (e da aula). A **lição é por tema** (`src/screens/quiz.js`,
+  até `TAMANHO_LICAO` = 5 questões sorteadas de `carregarQuestoes(id, ti)`):
+  marcar → "Conferir" (`POST` com o texto da alternativa) → correção na hora
+  (certa/errada em texto e cor, resolução) → "Continuar". O resultado guarda
+  enunciado, resposta certa e resolução (gabarito nunca fica no front). `fonte()` mostra a origem ou "Questão
   autoral Estudaê". Todo texto da API passa por `esc()`.
-- **Vídeo-aula:** iframe do `youtube-nocookie.com` no layout original.
-  "Legendas" recarrega o player com `cc_load_policy`; "Velocidade calma"
-  manda `setPlaybackRate` pela API de iframe (`enablejsapi=1`).
+- **Vídeo-aula** (`src/screens/video.js`, refeita em 10/11/2026): topo com o
+  nome do tema, iframe do `youtube-nocookie.com`, o título da aula como `<h1>`
+  (o canal entre parênteses no título vira a linha de baixo), descrição e
+  **uma ação principal**: "Terminei a aula, quero praticar" (marca a aula
+  como vista e abre a lição). Secundária: "Marcar como vista e voltar".
+  "Opções do vídeo" são interruptores com "Ligado/Desligado" escrito:
+  Legendas (recarrega o player com `cc_load_policy`) e Velocidade calma
+  (`setPlaybackRate` pela API de iframe, `enablejsapi=1`). O YouTube em outra
+  aba ficou como link pequeno de plano B. O "Voz alta" da descrição saiu.
 - **O que fica no `localStorage` hoje:** tudo existe só no navegador, sem
   conta real por trás, então **não há progresso para migrar** para o banco.
   - `estudae:user`: visitante ou um usuário de mentira do login/cadastro.
@@ -88,13 +95,50 @@ http.server` ou `npx serve .`.
   - `estudae:watched`: mapa `"materia/tema/aula"` → timestamp. É um
     liga/desliga (desmarcar apaga a chave), ou seja, uma marca por aula,
     como o `AulaAssistida` atual.
-- **Decisão do MVP para o frontend (revista em 10/11/2026):** a ideia inicial
-  era esconder Progresso e Perfil e fazer o quiz por tema. A pessoa preferiu
-  manter as telas como estão (login, progresso e perfil continuam só no
-  `localStorage`) e o quiz por matéria, trocando só a fonte dos dados.
+- **Decisão do MVP para o frontend (revista em 10/11/2026):** manter as telas
+  e o visual originais (login, progresso e perfil continuam só no
+  `localStorage`). Fluxo sem redundância: Início ("Continuar estudando" + os
+  cartões de matéria com "X de Y atividades") → Área (título, "Continuar
+  estudando", "Seu progresso" e os temas como lista que abre — `<details
+  name="temas">`, um aberto por vez, com uma frase de descrição, "Praticar"
+  em destaque e "Ver aula") → vídeo ou lição. Desenho rascunhado pela pessoa
+  em 10/11/2026; a tela própria de cada tema fica para quando houver assuntos
+  com mais material.
+- **Atividades** (`src/core/stats.js`: `topicProgress`, `subjectProgress`,
+  `nextActivity`): cada vídeo-aula conta quando marcada como concluída, e cada
+  questão quando acertada ao menos uma vez (as lições guardam o `id` da
+  questão). "Continuar estudando" = aula não vista do primeiro tema
+  incompleto, senão a prática dele.
+- **Fonte padrão:** "Grande" para quem ainda não escolheu (`state.js`).
+- **Início** (10/11/2026): logo, saudação, "Continuar estudando", "Estudar por
+  matéria" (cartões largos com progresso) e "Testar o que aprendeu"
+  (Simulado, com contorno, separado de estudar).
+- **Simulado** (`src/screens/simulado.js`, `#/simulado` e
+  `#/simulado/{matéria}`): questões de todos os temas da matéria, sorteadas,
+  sem correção até a entrega. Usa só as oficiais (`prova` preenchida) quando
+  houver o suficiente; senão, as autorais, com o aviso "Simulado de treino".
+  Relógio sempre visível; aviso nos minutos finais; ao zerar mostra "Tempo
+  esgotado · +mm:ss" e **deixa terminar**. Anterior/Próxima, painel "Ver todas
+  as questões" e confirmação na própria tela para sair ou entregar com questões
+  em branco. Na entrega, cada questão vai no `POST` (as em branco também, só
+  para trazer o gabarito; contam como erro). Resultado `kind: "simulado"`, com
+  tempo usado e o tema com mais erros. **Tamanho e tempo:** objeto `SIMULADO`
+  no topo do arquivo (hoje 30 questões no máximo e 3 min por questão), para
+  ajustar ao edital do Encceja.
+- **Marca:** SVGs em `src/assets/branding/` (`logo-primary`, `logo-white`,
+  `symbol-primary`, `symbol-white`, `symbol-purple`, `icon`). Não há `public/`:
+  o Dockerfile copia `src/` inteiro. Uso: `logo-primary` no início,
+  boas-vindas e login; `icon` no favicon e na tela de carregamento. O roxo da
+  marca é o `--plum-dark` (`#4D3159`). Saíram a tela "Escolha como
+  deseja estudar", a lista separada de vídeo-aulas e a folha "qual matéria?";
+  `#/videos/{m}` e `#/quiz/{m}` antigos redirecionam para a área.
+  `estudae:results` com `v: 3` = lição por tema (tem `topic`).
+- **Cores de texto de acerto/erro:** `--ok-text` e `--bad-text` (base.css),
+  mais escuras que `--ok`/`--bad`, para passar de 4.5:1 sobre os fundos claros.
 - **Componentes reutilizáveis:** `src/components/` — `nav.js` (bottom-nav +
-  botão voltar), `sheet.js` (bottom-sheet de escolha rápida), `progress.js`
-  (barras de aproveitamento + histórico, usados em Progresso e Perfil).
+  botão voltar) e `progress.js` (barras de aproveitamento + histórico, usados
+  em Progresso e Perfil). O `sheet.js` (folha "qual matéria?") saiu junto com
+  os atalhos redundantes do início; o CSS dele e o `#sheet-root` ficaram, sem uso.
 - **Utilitários:** `src/core/utils.js` (puro, sem DOM/estado: `esc`, `go`,
   `pct`, `shuffle`, etc.), `src/core/stats.js` (métricas derivadas: streak,
   score por matéria, aulas assistidas), `src/core/speech.js` (Web Speech API),

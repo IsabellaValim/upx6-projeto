@@ -39,6 +39,12 @@ async function carregar() {
 function render() {
   if (!catalogoPronto) return;
   const parts = location.hash.replace(/^#\/?/, "").split("/").filter(Boolean);
+  // Links antigos: a lista de vídeo-aulas virou a própria área, e o quiz agora
+  // é por tema. Os dois levam para a área da matéria.
+  if ((parts[0] === "videos" || (parts[0] === "quiz" && parts.length === 2)) && parts[1]) {
+    location.replace(urls.area(parts[1]));
+    return;
+  }
   let name = parts[0] || "loading";
   if (!screens[name]) name = state.user ? "home" : "boas-vindas";
   if (!PUBLIC.has(name) && !state.user) {
@@ -52,6 +58,9 @@ function render() {
     name !== "acessibilidade"
   )
     state.quiz = null;
+  // O simulado em andamento sobrevive à ida e volta da Acessibilidade.
+  if (name !== "simulado" && name !== "acessibilidade" && state.simulado && !state.simulado.finished)
+    state.simulado = null;
   mount(screens[name], parts.slice(1), { focus: name !== "loading" });
 }
 

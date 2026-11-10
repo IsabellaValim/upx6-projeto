@@ -45,18 +45,14 @@ export function lessonsFor(topic) {
   return topic.lessons;
 }
 
-// Questões de TODOS os temas da matéria (o quiz é por matéria). Não trazem
-// gabarito: a correção vem do POST de resposta.
-export async function carregarQuestoes(id) {
-  const s = SUBJECTS[id];
-  const porTema = await Promise.all(
-    s.topics.map((t, i) =>
-      t.totalQuestoes ? api.questoes(id, t.slug).then((qs) => qs.map((q) => ({ ...q, topic: i }))) : [],
-    ),
-  );
-  return porTema.flat().map((q) => ({
+// Questões de UM tema (a lição é por tema). Não trazem gabarito: a correção
+// vem do POST de resposta.
+export async function carregarQuestoes(id, ti) {
+  const t = SUBJECTS[id].topics[ti];
+  const questoes = await api.questoes(id, t.slug);
+  return questoes.map((q) => ({
     id: q.id,
-    topic: q.topic,
+    topic: ti,
     text: q.textoBase,
     ask: q.enunciado,
     options: q.alternativas,

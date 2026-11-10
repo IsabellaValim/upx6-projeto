@@ -10,14 +10,22 @@ Projeto acadêmico desenvolvido para a UPX.
 
 - **Português e Matemática** do Ensino Médio, com o conteúdo vindo da API (contrato em
   [`docs/api.md`](docs/api.md)).
-- **Temas** em cada disciplina, cada um com **vídeo-aulas** (YouTube incorporado, com
-  legenda e velocidade calma opcionais).
-- **Quiz por matéria:** junta as questões de todos os temas, em ordem aleatória. No fim,
-  cada resposta é corrigida pela API, e o resultado mostra a resposta certa e a explicação.
+- **Fluxo simples:** Início (escolhe a matéria) → Área (temas) → em cada tema, **Praticar**
+  ou **Ver aula**. Os temas abrem um por vez, com uma frase de descrição.
+- **Progresso:** cada matéria mostra "X de Y atividades" (aulas vistas e questões acertadas),
+  e o botão **Continuar estudando** leva direto à próxima atividade pendente.
+- **Vídeo-aulas** por tema: YouTube incorporado, com legenda e velocidade calma opcionais.
+  Logo abaixo, "Terminei a aula, quero praticar" marca a aula como vista e abre a lição.
+- **Simulado:** questões de todos os temas da matéria, com tempo e correção só no fim, como
+  no dia da prova. Enquanto não houver questões oficiais suficientes, é um "simulado de
+  treino" com as autorais. O tamanho e o tempo ficam em `SIMULADO`, em
+  `src/screens/simulado.js`.
+- **Lição curta por tema:** até 5 questões sorteadas. Cada resposta é conferida na hora pela
+  API, com a resposta certa destacada e a explicação; no fim, um resumo da lição.
 - **Origem da questão:** questões de provas anteriores mostram a fonte (ano, edição, número);
   as escritas pela equipe aparecem como "Questão autoral Estudaê".
-- **Acessibilidade:** três tamanhos de fonte, alto contraste, redução de animações e
-  leitura em voz alta.
+- **Acessibilidade:** três tamanhos de fonte (a "Grande" é o padrão), alto contraste,
+  redução de animações e leitura em voz alta.
 - Login, cadastro, progresso e perfil ainda são **só do navegador** (`localStorage`), sem
   conta de verdade no servidor. Contas reais ficam para depois do MVP.
 

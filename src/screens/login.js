@@ -11,8 +11,9 @@ export default function login() {
     cls: "screen--lilac",
     html: `
       <div class="topbar">${backBtn(urls.boasVindas)}</div>
-      <div style="margin-top:2rem">
-        <h1 class="display">Entrar</h1>
+      <div style="margin-top:1rem">
+        <img class="brand-logo" src="src/assets/branding/logo-primary.svg" alt="Estudaê">
+        <h1 class="display" style="margin-top:1.5rem">Entrar</h1>
         <p class="lede">Acesse sua conta para continuar estudando.</p>
       </div>
       <form id="login-form" novalidate style="margin-top:1rem">

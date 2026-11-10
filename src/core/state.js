@@ -5,7 +5,7 @@ export const state = {
   user: store.get("user", null),
   a11y: Object.assign(
     {
-      font: "padrao",
+      font: "grande", // padrão para quem ainda não escolheu (público idoso)
       contrast: false,
       speak: false,
       motion: false,
@@ -14,11 +14,13 @@ export const state = {
     },
     store.get("a11y", {}),
   ),
-  // v: 2 = resultado com a correção da API. Os antigos apontavam para o
-  // conteúdo de exemplo (que saiu) e não dá para exibi-los.
-  results: store.get("results", []).filter((r) => r.v === 2),
+  // v: 2 = quiz da matéria inteira e v: 3 = lição por tema, ambos com a
+  // correção da API. Os sem versão apontavam para o conteúdo de exemplo (que
+  // saiu) e não dá para exibi-los.
+  results: store.get("results", []).filter((r) => r.v >= 2),
   watched: store.get("watched", {}),
   quiz: null,
+  simulado: null, // prova em andamento (não persistida)
 };
 
 export const save = {
