@@ -3,8 +3,13 @@ import { NIVEIS, materiasDoNivel } from "../data.js";
 import { icon } from "../icons.js";
 import { state } from "../core/state.js";
 import { esc, pct } from "../core/utils.js";
-import { subjectProgress, nextActivity, resultadosDaProva, streakDays } from "../core/stats.js";
-import { historyList, subjectCards } from "../components/progress.js";
+import {
+  subjectProgress,
+  nextActivity,
+  resultadosDaProva,
+  streakDays,
+} from "../core/stats.js";
+import { historyList, subjectStats } from "../components/progress.js";
 import { urls } from "../core/urls.js";
 
 export default function progresso() {
@@ -22,8 +27,12 @@ export default function progresso() {
   const dias = streakDays();
   // "Continuar": primeiro a matéria estudada por último (como no início), depois as outras.
   const ultima = resultados[0]?.subject;
-  const ordem = [...materias].sort((a, b) => (b.id === ultima) - (a.id === ultima));
-  const next = ordem.map((s) => ({ s, n: nextActivity(s.id) })).find((x) => x.n);
+  const ordem = [...materias].sort(
+    (a, b) => (b.id === ultima) - (a.id === ultima),
+  );
+  const next = ordem
+    .map((s) => ({ s, n: nextActivity(s.id) }))
+    .find((x) => x.n);
 
   const destaque = (valor, rotulo) =>
     `<div class="stat"><strong>${valor}</strong><span>${rotulo}</span></div>`;
@@ -57,7 +66,7 @@ export default function progresso() {
         }
 
         <h2 class="section-label">Por matéria</h2>
-        <div class="subject-list">${subjectCards()}</div>
+        <div class="card">${subjectStats()}</div>
 
         <h2 class="section-label">Últimas lições e simulados</h2>
         ${

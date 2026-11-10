@@ -27,10 +27,12 @@ html[data-motion="reduce"] .spinner {
 @media (min-width: 520px) {
   body {
     padding: 24px 0;
+    height: 100vh;
     height: 100dvh;
     overflow: hidden;
   }
   .shell {
+    height: calc(100vh - 48px);
     height: calc(100dvh - 48px);
     min-height: 0;
     display: flex;
