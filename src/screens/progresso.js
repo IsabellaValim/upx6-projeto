@@ -14,15 +14,15 @@ export default function progresso() {
         <h1 class="title">Seu progresso</h1>
         <p class="lede">Acompanhe como você está em cada área.</p>
         <div class="card">${subjectBars()}</div>
-        <h2 class="section-label">Quizzes feitos</h2>
+        <h2 class="section-label">Lições feitas</h2>
         ${
           has
             ? historyList(20)
             : `<div class="empty">
-          <h2>Nenhum quiz feito ainda</h2>
-          <p>Faça seu primeiro quiz para ver acertos, erros e o que revisar.</p>
+          <h2>Nenhuma lição feita ainda</h2>
+          <p>Escolha um tema e pratique para ver acertos, erros e o que revisar.</p>
           ${Object.values(SUBJECTS)
-            .map((s, i) => `<a class="btn ${i ? "btn--outline" : "btn--primary"} btn--sm" href="${urls.quiz(s.id)}">Começar quiz de ${esc(s.name)}</a>`)
+            .map((s, i) => `<a class="btn ${i ? "btn--outline" : "btn--primary"} btn--sm" href="${urls.area(s.id)}">Praticar ${esc(s.name)}</a>`)
             .join("")}
         </div>`
         }`,

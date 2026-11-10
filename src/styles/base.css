@@ -16,6 +16,9 @@
   --ok-soft: #DDF0E3;
   --bad: #C23B34;
   --bad-soft: #F7DEDC;
+  /* Tons para TEXTO de acerto/erro (contraste ≥ 4.5 sobre os fundos claros) */
+  --ok-text: #1F6E3E;
+  --bad-text: #9A2924;
   --on-plum: #FFFFFF;
   --outer: #E4DAD0;
 

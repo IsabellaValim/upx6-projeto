@@ -10,9 +10,10 @@ export const urls = {
   progresso: "#/progresso",
   perfil: "#/perfil",
   acessibilidade: "#/acessibilidade",
+  // Área = lista de temas da matéria, cada um com "Assistir aula" e "Praticar".
   area: (id) => `#/area/${id}`,
-  videos: (id) => `#/videos/${id}`,
   video: (id, ti, li) => `#/video/${id}/${ti}/${li}`,
-  quiz: (id) => `#/quiz/${id}`,
+  // Lição curta de um tema (até 5 questões).
+  quiz: (id, ti) => `#/quiz/${id}/${ti}`,
   resultado: (i) => `#/resultado/${i}`,
 };

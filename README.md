@@ -10,10 +10,13 @@ Projeto acadêmico desenvolvido para a UPX.
 
 - **Português e Matemática** do Ensino Médio, com o conteúdo vindo da API (contrato em
   [`docs/api.md`](docs/api.md)).
-- **Temas** em cada disciplina, cada um com **vídeo-aulas** (YouTube incorporado, com
-  legenda e velocidade calma opcionais).
-- **Quiz por matéria:** junta as questões de todos os temas, em ordem aleatória. No fim,
-  cada resposta é corrigida pela API, e o resultado mostra a resposta certa e a explicação.
+- **Fluxo em até 3 toques:** Início (escolhe a matéria) → Área (lista de temas) → em cada
+  tema, **Assistir aula** ou **Praticar**. O início também mostra "Continuar" com o último
+  tema praticado.
+- **Vídeo-aulas** por tema: YouTube incorporado, com legenda e velocidade calma opcionais, e
+  um atalho "Praticar este tema" logo abaixo.
+- **Lição curta por tema:** até 5 questões sorteadas. Cada resposta é conferida na hora pela
+  API, com a resposta certa destacada e a explicação; no fim, um resumo da lição.
 - **Origem da questão:** questões de provas anteriores mostram a fonte (ano, edição, número);
   as escritas pela equipe aparecem como "Questão autoral Estudaê".
 - **Acessibilidade:** três tamanhos de fonte, alto contraste, redução de animações e

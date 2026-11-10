@@ -82,7 +82,7 @@
 }
 .subject-tile span {
   font-size: 0.8125rem;
-  color: var(--muted);
+  color: var(--plum-dark); /* --muted sobre o lilás dava 3.7:1, abaixo do AA */
 }
 .subject-tile .mini-bar {
   height: 4px;
@@ -140,6 +140,32 @@
 .mode-card .btn {
   align-self: center;
   margin-top: 0.5rem;
+}
+
+/* Cartão de tema na área: duas ações lado a lado (empilham em tela estreita) */
+.topic-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: 600;
+}
+.topic-card__meta .ico {
+  width: 1rem;
+  height: 1rem;
+}
+.topic-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+.topic-card__actions .btn {
+  /* sem espaço para os dois lado a lado, empilham inteiros (não quebram o texto) */
+  white-space: nowrap;
+  flex: 1 1 auto;
+  min-height: 3rem;
+  font-size: 0.9375rem;
+  margin-top: 0.25rem;
 }
 
 /* ---------- Lista de vídeo-aulas ---------- */
@@ -395,6 +421,74 @@
   box-shadow:
     0 0 0 3px var(--surface),
     0 0 0 5px var(--plum-dark);
+}
+
+/* Correção logo após cada questão: certo/errado também em texto (não só cor) */
+.alt[disabled] {
+  cursor: default;
+}
+/* .alt.alt--* para vencer .alt[aria-checked="true"] (a alternativa marcada) */
+.alt.alt--ok {
+  border-color: var(--ok);
+  background: var(--ok-soft);
+}
+.alt.alt--ok .letter {
+  background: var(--ok-text);
+  box-shadow: none;
+}
+.alt.alt--bad {
+  border-color: var(--bad);
+  background: var(--bad-soft);
+}
+.alt.alt--bad .letter {
+  background: var(--bad-text);
+  box-shadow: none;
+}
+.alt-note {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+.alt--ok .alt-note {
+  color: var(--ok-text);
+}
+.alt--bad .alt-note {
+  color: var(--bad-text);
+}
+/* Fonte da questão, sobre o lilás do enunciado */
+.statement .source {
+  color: var(--plum-dark);
+}
+.alt-note .ico {
+  width: 1rem;
+  height: 1rem;
+}
+.feedback h2 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.feedback--ok {
+  border-color: var(--ok);
+}
+.feedback--ok h2 {
+  color: var(--ok-text);
+}
+.feedback--bad {
+  border-color: var(--bad);
+}
+.feedback--bad h2 {
+  color: var(--bad-text);
+}
+/* A explicação é o conteúdo principal da correção: cor cheia, não "muted". */
+.tip.feedback p {
+  color: var(--ink);
+  font-size: 0.9375rem;
 }
 
 .quiz-nav {

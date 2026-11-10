@@ -7,7 +7,6 @@ import login from "./login.js";
 import cadastro from "./cadastro.js";
 import home from "./home.js";
 import area from "./area.js";
-import videos from "./videos.js";
 import video from "./video.js";
 import quiz from "./quiz.js";
 import resultado from "./resultado.js";
@@ -22,7 +21,6 @@ export const screens = {
   cadastro,
   home,
   area,
-  videos,
   video,
   quiz,
   resultado,

@@ -28,7 +28,7 @@ export default function video(id, ti, li) {
     nav: "inicio",
     html: `
         <div class="topbar topbar--split">
-          <a class="icon-btn icon-btn--solid" href="${urls.videos(id)}" aria-label="Voltar para as vídeo-aulas">${icon("arrowLeft")}</a>
+          <a class="icon-btn icon-btn--solid" href="${urls.area(id)}" aria-label="Voltar para os temas">${icon("arrowLeft")}</a>
           <h1>Vídeo-aula</h1>
           <a class="icon-btn icon-btn--solid" href="${urls.acessibilidade}" aria-label="Opções de acessibilidade">${icon("access")}</a>
         </div>
@@ -48,7 +48,8 @@ export default function video(id, ti, li) {
         <a class="ext-card" href="https://www.youtube.com/watch?v=${l.youtubeId}" target="_blank" rel="noopener noreferrer">
           ${icon("external")}<span><strong>Assistir no YouTube</strong><span class="small">Abre em outra aba. Use se o vídeo não abrir aqui.</span></span>
         </a>
-        <button class="btn ${done ? "btn--outline" : "btn--primary"}" id="done">${done ? `${icon("check")}Aula concluída` : "Marcar como concluída"}</button>
+        <button class="btn btn--outline" id="done">${done ? `${icon("check")}Aula concluída` : "Marcar como concluída"}</button>
+        ${t.totalQuestoes ? `<a class="btn btn--primary" style="margin-top:.75rem" href="${urls.quiz(id, +ti)}">${icon("checkSquare")}Praticar este tema</a>` : ""}
         ${next ? `<a class="btn btn--outline" style="margin-top:.75rem" href="${next}">Próxima aula</a>` : ""}`,
     after({ rerender }) {
       const yt = document.getElementById("yt");

@@ -12,13 +12,15 @@ export default function resultado(idx) {
   if (!s) return progresso();
   const p = pct(r.correct, r.total);
   const C = 2 * Math.PI * 42;
-  const weak = r.weakTopic !== null ? s.topics[r.weakTopic] : null;
+  // Lição por tema (v: 3). Resultados antigos, da matéria inteira, não têm tema.
+  const t = r.topic !== undefined ? s.topics[r.topic] : null;
+  const watch = t?.videos ? urls.video(r.subject, r.topic, 0) : null;
   return {
     cls: "screen--nav",
     nav: "progresso",
     html: `
         <div class="topbar topbar--split result-head">
-          <div><h1>Resultado do quiz</h1><p class="kicker">Tema: ${esc(s.name)}</p></div>
+          <div><h1>Resultado da lição</h1><p class="kicker">${esc(s.name)}${t ? " · " + esc(t.title) : ""}</p></div>
           <a class="icon-btn" href="${urls.home}" aria-label="Fechar resultado">${icon("xBox")}</a>
         </div>
         <div class="donut" role="img" aria-label="${p}% de aproveitamento">
@@ -33,14 +35,13 @@ export default function resultado(idx) {
         </div>
         <div class="tip">
           ${
-            weak
-              ? `<p>Você teve mais dificuldade no tema “${esc(weak.title)}”.</p>
-               <p>Você pode revisar este conteúdo antes de tentar novamente.</p>
-               <a class="btn btn--primary btn--sm" href="${weak.videos ? urls.video(r.subject, r.weakTopic, 0) : urls.videos(r.subject)}">${icon("video")}Assistir vídeo-aula recomendada</a>`
+            r.correct < r.total
+              ? `<p>Que tal rever a aula deste tema antes de praticar de novo?</p>
+               <p>Na próxima lição as questões vêm em outra ordem.</p>`
               : `<p>Você acertou todas as questões. Excelente trabalho!</p>
-               <p>Continue praticando para manter o ritmo até a prova.</p>
-               <a class="btn btn--primary btn--sm" href="${urls.videos(r.subject)}">${icon("video")}Explorar vídeo-aulas</a>`
+               <p>Escolha outro tema para continuar praticando.</p>`
           }
+          ${watch ? `<a class="btn btn--primary btn--sm" href="${watch}">${icon("video")}Assistir a aula deste tema</a>` : ""}
         </div>
         <details class="review">
           <summary>Ver correção das questões</summary>
@@ -55,7 +56,8 @@ export default function resultado(idx) {
             })
             .join("")}
         </details>
-        <a class="btn btn--outline" style="margin-top:1rem" href="${urls.quiz(r.subject)}">Refazer quiz</a>
+        ${t ? `<a class="btn btn--outline" style="margin-top:1rem" href="${urls.quiz(r.subject, r.topic)}">Praticar de novo</a>` : ""}
+        <a class="btn btn--outline" style="margin-top:.75rem" href="${urls.area(r.subject)}">Escolher outro tema</a>
         <p class="small center" style="margin-top:1rem">Resumo do desempenho salvo no seu perfil.</p>`,
     after() {
       requestAnimationFrame(() => {
