@@ -69,8 +69,10 @@ function SessionWatcher() {
 function CatalogoGate() {
   const status = useApp((s) => s.catalogoStatus)
   useEffect(() => {
-    carregarCatalogo().catch(() => {})
-  }, [])
+    // 'loading' = ainda não carregou neste boot; 'ready'/'error' já têm dono
+    // (o retry da tela de erro chama carregarCatalogo direto).
+    if (status === 'loading') carregarCatalogo().catch(() => {})
+  }, [status])
   if (status === 'error')
     return (
       <main className="screen screen--center" id="main">

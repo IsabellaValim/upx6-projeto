@@ -8,13 +8,38 @@ import { api } from './api'
 import { useApp } from './store'
 import type { CatalogSubject, ProvaApi, QuestaoItem } from '../types'
 
+let carregando: Promise<void> | null = null
+
 // Carrega matérias e temas (com os vídeos) uma vez, no início do app.
-export async function carregarCatalogo(): Promise<void> {
+// Chamadas paralelas (o StrictMode desmonta/remonta o gate em dev)
+// dividem a mesma promessa em voo; 'ready' resolve na hora e qualquer
+// estado posterior a um erro tenta de novo.
+export function carregarCatalogo(): Promise<void> {
+  if (useApp.getState().catalogoStatus === 'ready') return Promise.resolve()
+  if (!carregando) {
+    carregando = carregarCatalogoDeFato()
+    // Assentou (sucesso ou erro): limpa para a próxima chamada decidir pelo
+    // status. then(ok, err) — não rejeita, evita unhandled rejection.
+    carregando.then(
+      () => {
+        carregando = null
+      },
+      () => {
+        carregando = null
+      },
+    )
+  }
+  return carregando
+}
+
+async function carregarCatalogoDeFato(): Promise<void> {
   const { setCatalogoStatus, setSubjects } = useApp.getState()
   setCatalogoStatus('loading')
   try {
     const disciplinas = await api.disciplinas()
-    const temasPorDisciplina = await Promise.all(disciplinas.map((d) => api.temas(d.slug)))
+    const temasPorDisciplina = await Promise.all(
+      disciplinas.map((d) => api.temas(d.slug)),
+    )
     const subjects: Record<string, CatalogSubject> = {}
     disciplinas.forEach((d, i) => {
       const topics = temasPorDisciplina[i].map((t) => ({
@@ -26,7 +51,9 @@ export async function carregarCatalogo(): Promise<void> {
         lessons: t.videos.map((v) => ({
           id: v.id,
           kind: v.titulo,
-          min: v.duracaoSegundos ? Math.max(1, Math.round(v.duracaoSegundos / 60)) : null,
+          min: v.duracaoSegundos
+            ? Math.max(1, Math.round(v.duracaoSegundos / 60))
+            : null,
           youtubeId: v.youtubeId,
         })),
       }))
@@ -88,7 +115,8 @@ export const materiasDoNivel = (
 
 // "Fonte: Encceja 2020, Nacional, Ensino Médio, questão 35." ou, sem prova, autoral.
 export function fonte(prova: ProvaApi | null): string {
-  if (!prova || !prova.ano) return 'Questão autoral Estudaê, feita para praticar.'
+  if (!prova || !prova.ano)
+    return 'Questão autoral Estudaê, feita para praticar.'
   const partes = [
     'Encceja ' + prova.ano,
     prova.edicao,
