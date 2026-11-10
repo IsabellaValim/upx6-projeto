@@ -1,5 +1,9 @@
 # Curadoria: questões de provas anteriores do Encceja
 
+> **Atualização (10/11/2026):** as 240 questões de **2022** (todos os cadernos de Linguagens e
+> Matemática, Fundamental e Médio) já estão nos JSONs; ver `ENTREGA-QUESTOES-2022.md`. Esta
+> lista continua valendo para os itens de **2019 e 2020**, que ainda não foram transcritos.
+
 Questões oficiais escolhidas para mostrar, depois da prática com as questões autorais, como o
 Encceja cobra cada habilidade. **Ainda não estão nos JSONs.** Esta lista traz só a referência e a
 letra do gabarito; os enunciados não foram transcritos.

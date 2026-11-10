@@ -8,7 +8,7 @@ Projeto acadêmico desenvolvido para a UPX.
 
 ## O que o MVP faz
 
-- **Português e Matemática** do Ensino Médio, com o conteúdo vindo da API (contrato em
+- **Linguagens e Matemática**, do Ensino Fundamental e do Ensino Médio, com o conteúdo vindo da API (contrato em
   [`docs/api.md`](docs/api.md)).
 - **Fluxo simples:** Início (escolhe a matéria) → Área (temas) → em cada tema, **Praticar**
   ou **Ver aula**. Os temas abrem um por vez, com uma frase de descrição.
@@ -33,8 +33,15 @@ Projeto acadêmico desenvolvido para a UPX.
 
 | Matéria | Temas | Vídeo-aulas | Questões |
 |---|---|---|---|
-| Português | 4 | 4 | 12 autorais |
-| Matemática | 4 | 4 | 12 autorais |
+| Linguagens · Ensino Médio | 10 | 4 | 72 (60 do Encceja 2022 + 12 autorais) |
+| Matemática · Ensino Médio | 9 | 4 | 72 (60 do Encceja 2022 + 12 autorais) |
+| Linguagens · Ensino Fundamental | 10 | 0 | 60 do Encceja 2022 |
+| Matemática · Ensino Fundamental | 8 | 0 | 60 do Encceja 2022 |
+
+No primeiro acesso a pessoa escolhe a prova (Ensino Fundamental ou Médio), e dá para trocar
+no Perfil. Questões com figura, tabela ou gráfico mostram o recorte da prova, com descrição
+para leitor de tela. Para carregar as questões num banco oficial:
+[`conteudo/ENTREGA-QUESTOES-2022.md`](conteudo/ENTREGA-QUESTOES-2022.md).
 
 Num banco novo o site mostra "Ainda não há matérias disponíveis": importe o conteúdo (abaixo).
 Questões de provas anteriores escolhidas para cada tema aguardam revisão em
