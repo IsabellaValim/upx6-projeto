@@ -53,9 +53,6 @@ export default function Resultado() {
   const perfeito = r.correct === r.total
   // Progresso do tema da lição (aulas vistas + questões acertadas ao menos 1x).
   const progTema = t ? topicProgress(r.subject, r.topic!) : null
-  // Com 0 acertos a dica ganha uma frase de incentivo antes da sugestão.
-  const incentivo =
-    r.correct === 0 ? 'Não desanime — cada erro mostra o que revisar. ' : ''
 
   return (
     <Screen cls="screen--nav" nav="progresso">
@@ -90,12 +87,20 @@ export default function Resultado() {
           <span>de aproveitamento</span>
         </div>
       </div>
-      {/* Uma linha só, em vez de três caixinhas: "Acertou 0 de 5 questões"
-          é mais fácil de ler do que decorar Acertos/Erros/Questões. */}
-      <p className="result-summary">
-        Acertou <strong>{r.correct}</strong> de <strong>{r.total}</strong>{' '}
-        questões
-      </p>
+      <div className="stats">
+        <div className="stat stat--ok">
+          <strong>{r.correct}</strong>
+          <span>Acertos</span>
+        </div>
+        <div className="stat stat--bad">
+          <strong>{r.total - r.correct}</strong>
+          <span>Erros</span>
+        </div>
+        <div className="stat">
+          <strong>{r.total}</strong>
+          <span>Questões</span>
+        </div>
+      </div>
       {progTema && (
         <p className="small center result-progresso">
           Deste tema, você já concluiu{' '}
@@ -118,42 +123,33 @@ export default function Resultado() {
             <Icon name={aulaVista ? 'check' : 'video'} />
             {aulaVista
               ? aulasTotal > 1
-                ? `Todas as ${aulasTotal} aulas do tema assistidas`
-                : 'Aula do tema já assistida'
-              : `${aulasVistas} de ${aulasTotal} aula${aulasTotal > 1 ? 's' : ''} do tema assistida${aulasTotal > 1 ? 's' : ''}`}
+                ? `Todas as ${aulasTotal} aulas assistidas`
+                : 'Aula já assistida'
+              : aulasVistas > 0
+                ? `${aulasVistas} de ${aulasTotal} aulas assistidas`
+                : 'Você ainda não assistiu à aula'}
           </p>
         )}
+        {/* Uma frase só por situação — sem empanturrar o cartão. */}
         {perfeito ? (
-          <>
-            <p>
-              Você acertou todas as questões
-              {aulaVista ? ' e já assistiu à aula — tema concluído' : ''}.
-              Excelente trabalho!
-            </p>
-            <p>
-              {sim
-                ? 'Continue praticando para manter o ritmo até a prova.'
-                : 'Escolha outro tema para continuar praticando.'}
-            </p>
-          </>
+          <p>
+            Você acertou todas as questões
+            {aulaVista ? ' e já assistiu à aula — tema concluído' : ''}.
+            Excelente trabalho!
+          </p>
         ) : sim && fraco ? (
-          <>
-            <p>O tema com mais erros foi “{fraco.title}”.</p>
-            <p>
-              {aulaVista ? 'Rever' : 'Assistir a'} a aula dele pode ajudar no
-              próximo simulado.
-            </p>
-          </>
+          <p>
+            O tema com mais erros foi “{fraco.title}” —{' '}
+            {aulaVista ? 'rever' : 'assistir a'} a aula dele pode ajudar no
+            próximo simulado.
+          </p>
         ) : (
-          <>
-            <p>
-              {incentivo}
-              {aulaVista
-                ? 'Você já assistiu à aula deste tema — vale revê-la ou conferir a correção abaixo.'
-                : 'Que tal assistir à aula deste tema antes de praticar de novo?'}
-            </p>
-            <p>Na próxima lição as questões vêm em outra ordem.</p>
-          </>
+          <p>
+            {r.correct === 0 ? 'Não desanime — ' : ''}
+            {aulaVista
+              ? 'vale revê-la ou conferir a correção abaixo.'
+              : 'assista à aula deste tema antes de praticar de novo.'}
+          </p>
         )}
         {watch && !perfeito && (
           <Link
@@ -169,9 +165,9 @@ export default function Resultado() {
           </Link>
         )}
       </div>
-      {/* A correção é o conteúdo mais útil depois de um erro: aberta por
-          padrão quando houve questão errada, com o título dizendo o que tem. */}
-      <details className="review" open={!perfeito}>
+      {/* Correção sempre recolhida (no simulado são até 30 itens: aberta
+          viraria uma parede). O título já conta quantas questões erraram. */}
+      <details className="review">
         <summary>
           {perfeito
             ? 'Ver a correção das questões'

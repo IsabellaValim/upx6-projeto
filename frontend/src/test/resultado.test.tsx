@@ -1,4 +1,4 @@
-/* Resultado: destaque da videoaula, resumo em linha e CTA contextual. */
+/* Resultado: destaque da videoaula, caixas de números e CTA contextual. */
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import App from '../App'
@@ -61,10 +61,10 @@ afterEach(cleanup)
 beforeEach(() => reset())
 
 describe('Resultado: destaque da videoaula', () => {
-  it('aula não assistida: "0 de 1" e CTA primária "Assistir à aula"', async () => {
+  it('aula não assistida: aviso e CTA primária "Assistir à aula"', async () => {
     abrir()
     expect(
-      await screen.findByText('0 de 1 aula do tema assistida'),
+      await screen.findByText('Você ainda não assistiu à aula'),
     ).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: /Assistir à aula deste tema/ }),
@@ -74,9 +74,7 @@ describe('Resultado: destaque da videoaula', () => {
   it('aula assistida: destaque "já assistida" e CTA de rever (outline)', async () => {
     reset({ watched: { 'matematica/0/0': 1 } })
     abrir()
-    expect(
-      await screen.findByText('Aula do tema já assistida'),
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Aula já assistida')).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: /Assistir à aula de novo/ }),
     ).toHaveClass('btn--outline')
@@ -106,13 +104,12 @@ describe('Resultado: destaque da videoaula', () => {
 })
 
 describe('Resultado: UI para idosos', () => {
-  it('resumo em uma linha e progresso do tema', async () => {
+  it('caixas de números e contexto do tema, sem encher de texto', async () => {
     abrir()
-    expect(
-      await screen.findByText(
-        (_, el) => el?.textContent === 'Acertou 0 de 2 questões',
-      ),
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Acertos')).toBeInTheDocument()
+    expect(screen.getByText('Erros')).toBeInTheDocument()
+    expect(screen.getByText('Questões')).toBeInTheDocument()
+    // Progresso do tema em uma linha curta.
     expect(
       screen.getByText(
         (_, el) =>
@@ -121,21 +118,25 @@ describe('Resultado: UI para idosos', () => {
     ).toBeInTheDocument()
   })
 
-  it('com erro: correção aberta e "Praticar de novo" primário', async () => {
+  it('correção fica recolhida mesmo com erros (com contagem no título)', async () => {
     abrir()
     const review = await screen.findByText(/Correção das questões — 2 erradas/)
-    expect(review.closest('details')).toHaveAttribute('open')
-    expect(screen.getByRole('link', { name: 'Praticar de novo' })).toHaveClass(
-      'btn--primary',
-    )
-    expect(
-      screen.getByRole('link', { name: 'Escolher outro tema' }),
-    ).toHaveClass('btn--outline')
-    // Incentivo com 0 acertos.
+    expect(review.closest('details')).not.toHaveAttribute('open')
+    // Com 0 acertos, incentivo curto dentro da dica.
     expect(screen.getByText(/Não desanime/)).toBeInTheDocument()
   })
 
-  it('com nota máxima: correção fechada e "Escolher outro tema" primário', async () => {
+  it('com erro: "Praticar de novo" primário; com nota máxima: "Escolher outro tema"', async () => {
+    abrir()
+    expect(
+      await screen.findByRole('link', { name: 'Praticar de novo' }),
+    ).toHaveClass('btn--primary')
+    expect(
+      screen.getByRole('link', { name: 'Escolher outro tema' }),
+    ).toHaveClass('btn--outline')
+  })
+
+  it('nota máxima: "Escolher outro tema" primário e refazer vira outline', async () => {
     reset({
       results: [
         {
@@ -146,10 +147,8 @@ describe('Resultado: UI para idosos', () => {
       ],
     })
     abrir()
-    const review = await screen.findByText('Ver a correção das questões')
-    expect(review.closest('details')).not.toHaveAttribute('open')
     expect(
-      screen.getByRole('link', { name: 'Escolher outro tema' }),
+      await screen.findByRole('link', { name: 'Escolher outro tema' }),
     ).toHaveClass('btn--primary')
     expect(screen.getByRole('link', { name: 'Praticar de novo' })).toHaveClass(
       'btn--outline',
