@@ -71,17 +71,6 @@ export const NIVEIS = {
 // Matérias da prova escolhida, na ordem do catálogo.
 export const materiasDoNivel = (nivel) => Object.values(SUBJECTS).filter((s) => s.nivel === nivel);
 
-// Imagem da questão, com o texto alternativo e um link para ver em tamanho grande.
-export function figuraQuestao(imagem, esc) {
-  if (!imagem?.url) return "";
-  return `<figure class="q-figure">
-      <img src="${esc(imagem.url)}" alt="${esc(imagem.descricao || "Imagem da questão")}" loading="lazy">
-      <figcaption>Questão como aparece na prova ·
-        <a class="link" href="${esc(imagem.url)}" target="_blank" rel="noopener">Ampliar imagem<span class="sr-only"> (abre em outra aba)</span></a>
-      </figcaption>
-    </figure>`;
-}
-
 // "Fonte: Encceja 2020, Nacional, Ensino Médio, questão 35." ou, sem prova, autoral.
 export function fonte(prova) {
   if (!prova || !prova.ano) return "Questão autoral Estudaê, feita para praticar.";

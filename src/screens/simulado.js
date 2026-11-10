@@ -2,7 +2,8 @@
    Simulado: questões de todos os temas de uma matéria, com tempo,
    sem correção até o fim (como no dia da prova).
    ========================================================== */
-import { SUBJECTS, carregarQuestoes, fonte, materiasDoNivel, figuraQuestao } from "../data.js";
+import { SUBJECTS, carregarQuestoes, materiasDoNivel } from "../data.js";
+import { enunciado, ligarImagem } from "../components/questao.js";
 import { api } from "../core/api.js";
 import { icon } from "../icons.js";
 import { $app } from "../core/dom.js";
@@ -77,9 +78,8 @@ function prova(id) {
       finished: false,
     };
   }
+  // Durante a prova, sem a barra de baixo: menos distração e nada de sair sem querer.
   return {
-    cls: "screen--nav",
-    nav: "inicio",
     html: `<div id="sim"></div>`,
     after() {
       if (state.simulado.questions) draw();
@@ -143,16 +143,9 @@ function draw({ panel = false } = {}) {
           <a class="btn btn--primary" href="${urls.home}" id="exit-yes">Sair</a>
         </div>
       </div>
-      <h1 class="quiz-count">Questão ${q.i + 1} de ${total} — ${esc(s.name)}</h1>
-      <p class="small">${answered} de ${total} respondidas</p>
-      <section class="statement" aria-labelledby="ask">
-        <p class="tag">${esc(s.topics[item.topic].title.toUpperCase())}</p>
-        ${item.text ? `<p class="passage">${esc(item.text)}</p>` : ""}
-        ${figuraQuestao(item.imagem, esc)}
-        <p class="ask" id="ask">${esc(item.ask)}</p>
-        <p class="small source" style="margin-top:.5rem">${esc(fonte(item.prova))}</p>
-        <button class="btn btn--light listen" id="listen">${icon("volume")}Ouvir questão</button>
-      </section>
+      <h1 class="quiz-count">Questão ${q.i + 1} de ${total}</h1>
+      <p class="q-contexto">${esc(s.name)} · ${esc(s.topics[item.topic].title)} · <span class="sim-respondidas">${answered} de ${total} respondidas</span></p>
+      <section class="statement" aria-labelledby="ask">${enunciado(item)}</section>
       <div class="alts" role="radiogroup" aria-labelledby="ask">
         ${item.options
           .map(
@@ -161,7 +154,7 @@ function draw({ panel = false } = {}) {
           )
           .join("")}
       </div>
-      <div class="quiz-nav">
+      <div class="quiz-nav quiz-nav--fixa">
         <button class="btn btn--outline btn--sm" id="prev" ${q.i === 0 ? "disabled" : ""}>${icon("undo")}Anterior</button>
         ${
           q.i === total - 1
@@ -204,6 +197,7 @@ function draw({ panel = false } = {}) {
     $app.scrollTop = 0;
   };
 
+  ligarImagem(box, item);
   document.getElementById("listen").addEventListener("click", () =>
     speak(`Questão ${q.i + 1}. ${item.text ? item.text + ". " : ""}${item.imagem?.descricao ? "Imagem: " + item.imagem.descricao + ". " : ""}${item.ask} ${item.options.map((o, k) => `Alternativa ${LETTERS[k]}: ${o}.`).join(" ")}`),
   );
@@ -215,7 +209,7 @@ function draw({ panel = false } = {}) {
       q.chosen[q.i] = +b.dataset.k;
       alts.forEach((x) => x.setAttribute("aria-checked", String(x === b)));
       const done = q.chosen.filter((x) => x !== undefined).length;
-      box.querySelector(".quiz-count + .small").textContent = `${done} de ${total} respondidas`;
+      box.querySelector(".sim-respondidas").textContent = `${done} de ${total} respondidas`;
       const cell = box.querySelector(`[data-go="${q.i}"]`);
       cell.classList.add("is-answered");
       cell.setAttribute("aria-label", `Questão ${q.i + 1}, respondida`);

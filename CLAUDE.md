@@ -426,6 +426,20 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 - Catálogo: 264 questões (só 2022 entre as oficiais). Os temas novos não têm
   vídeo; os do Fundamental, nenhum. As 480 referências de outros anos do pacote
   de questões não têm texto e ficaram de fora.
+- **Tela da questão** (`src/components/questao.js`, usado pela lição e pelo
+  simulado): "Ouvir questão" no topo → imagem em largura total ("Toque para
+  ampliar") → texto de apoio em cartão próprio, com `white-space: pre-line`
+  (versos e quadrinhos em linhas separadas) → pergunta → fonte. Botões da
+  questão fixos no rodapé (`.quiz-nav--fixa`). O simulado esconde a barra de
+  baixo. **Imagem em tela cheia:** `<dialog>` nativo (foco preso, Esc, voltar
+  do celular fecha via `history.pushState`), zoom por pinça ou botões +/−
+  (100–300%), área rolável focável pelo teclado. O texto alternativo fica no
+  botão que abre a imagem. Com "reduzir movimento", o CSS do projeto dá
+  transição de 0,01 ms a tudo: testes que medem largura precisam esperar.
+- **Progresso** (`src/screens/progresso.js`): resumo em atividades da prova
+  escolhida (dias seguidos, lições, % de acertos), "Continuar estudando" pela
+  matéria estudada por último, um cartão por matéria (aulas vistas e questões
+  acertadas) e o histórico, tudo filtrado por `state.nivel`.
 - **Escolha de prova no app:** `#/nivel` (`src/screens/nivel.js`), guardada em
   `estudae:nivel`; o router manda para lá quem ainda não escolheu. Início,
   simulado e Progresso filtram por `state.nivel` (`materiasDoNivel` em
