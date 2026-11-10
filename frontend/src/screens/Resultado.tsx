@@ -17,13 +17,17 @@ export default function Resultado() {
   const subjects = useApp((s) => s.subjects)
   const valueRef = useRef<SVGCircleElement>(null)
 
+  const watched = useApp((s) => s.watched)
   const r = results[+idx]
   const s = r && subjects[r.subject]
 
   // Anima o donut (o stroke-dashoffset sai do círculo cheio para o valor).
   useEffect(() => {
     const v = valueRef.current
-    if (v) requestAnimationFrame(() => v.style.setProperty('stroke-dashoffset', v.dataset.offset!))
+    if (v)
+      requestAnimationFrame(() =>
+        v.style.setProperty('stroke-dashoffset', v.dataset.offset!),
+      )
   }, [idx])
 
   if (!r || !s) return <Navigate to={urls.progresso} replace />
@@ -36,6 +40,16 @@ export default function Resultado() {
   const recomendado = t ?? fraco
   const recTi = t ? r.topic! : r.weakTopic!
   const watch = recomendado?.videos ? urls.video(r.subject, recTi, 0) : null
+
+  // Situação das videoaulas do tema recomendado: destaque quando concluídas.
+  const aulasTotal = recomendado?.videos ?? 0
+  const aulasVistas = recomendado
+    ? recomendado.lessons.filter(
+        (_, j) => watched[`${r.subject}/${recTi}/${j}`],
+      ).length
+    : 0
+  const aulaVista = aulasTotal > 0 && aulasVistas === aulasTotal
+  const perfeito = r.correct === r.total
 
   return (
     <Screen cls="screen--nav" nav="progresso">
@@ -86,14 +100,29 @@ export default function Resultado() {
       </div>
       {sim && (
         <p className="small center" style={{ marginTop: '.75rem' }}>
-          <Icon name="clock" /> Tempo usado: {minutos(r.usedMs!)} de {minutos(r.limitMs!)} minutos
+          <Icon name="clock" /> Tempo usado: {minutos(r.usedMs!)} de{' '}
+          {minutos(r.limitMs!)} minutos
           {r.treino ? ' · simulado de treino com questões autorais' : ''}
         </p>
       )}
-      <div className="tip">
-        {r.correct === r.total ? (
+      <div className={`tip${perfeito && aulaVista ? ' tip--ok' : ''}`}>
+        {aulasTotal > 0 && (
+          <p className={`tip-aula${aulaVista ? ' tip-aula--ok' : ''}`}>
+            <Icon name={aulaVista ? 'check' : 'video'} />
+            {aulaVista
+              ? aulasTotal > 1
+                ? `Todas as ${aulasTotal} aulas do tema assistidas`
+                : 'Aula do tema já assistida'
+              : `${aulasVistas} de ${aulasTotal} aula${aulasTotal > 1 ? 's' : ''} do tema assistida${aulasTotal > 1 ? 's' : ''}`}
+          </p>
+        )}
+        {perfeito ? (
           <>
-            <p>Você acertou todas as questões. Excelente trabalho!</p>
+            <p>
+              Você acertou todas as questões
+              {aulaVista ? ' e já assistiu à aula — tema concluído' : ''}.
+              Excelente trabalho!
+            </p>
             <p>
               {sim
                 ? 'Continue praticando para manter o ritmo até a prova.'
@@ -103,18 +132,32 @@ export default function Resultado() {
         ) : sim && fraco ? (
           <>
             <p>O tema com mais erros foi “{fraco.title}”.</p>
-            <p>Rever a aula dele pode ajudar no próximo simulado.</p>
+            <p>
+              {aulaVista ? 'Rever' : 'Assistir a'} a aula dele pode ajudar no
+              próximo simulado.
+            </p>
           </>
         ) : (
           <>
-            <p>Que tal rever a aula deste tema antes de praticar de novo?</p>
+            <p>
+              {aulaVista
+                ? 'Você já assistiu à aula deste tema — vale revê-la ou conferir a correção abaixo.'
+                : 'Que tal assistir à aula deste tema antes de praticar de novo?'}
+            </p>
             <p>Na próxima lição as questões vêm em outra ordem.</p>
           </>
         )}
-        {watch && r.correct < r.total && (
-          <Link className="btn btn--primary btn--sm" to={watch}>
-            <Icon name="video" />
-            {sim ? `Assistir a aula de ${recomendado!.title}` : 'Assistir a aula deste tema'}
+        {watch && !perfeito && (
+          <Link
+            className={`btn btn--sm ${aulaVista ? 'btn--outline' : 'btn--primary'}`}
+            to={watch}
+          >
+            <Icon name={aulaVista ? 'undo' : 'video'} />
+            {sim
+              ? `Assistir a aula de ${recomendado!.title}`
+              : aulaVista
+                ? 'Assistir à aula de novo'
+                : 'Assistir à aula deste tema'}
           </Link>
         )}
       </div>
@@ -124,12 +167,15 @@ export default function Resultado() {
           // A correção (resposta certa e explicação) veio da API e foi guardada no resultado.
           <div className={`review-item ${x.ok ? 'ok' : 'bad'}`} key={k}>
             <p>
-              <span className="mark">{x.ok ? 'Acertou' : 'Errou'}</span> — {k + 1}.{' '}
-              <Tex>{x.ask}</Tex>
+              <span className="mark">{x.ok ? 'Acertou' : 'Errou'}</span> —{' '}
+              {k + 1}. <Tex>{x.ask}</Tex>
             </p>
             <p>
-              Resposta certa: {LETTERS[x.answer]}) <Tex>{x.options[x.answer]}</Tex>
-              {!x.ok && x.chosen !== undefined ? ` · Você marcou ${LETTERS[x.chosen]}` : ''}
+              Resposta certa: {LETTERS[x.answer]}){' '}
+              <Tex>{x.options[x.answer]}</Tex>
+              {!x.ok && x.chosen !== undefined
+                ? ` · Você marcou ${LETTERS[x.chosen]}`
+                : ''}
             </p>
             <p>
               <Tex>{x.why}</Tex>
