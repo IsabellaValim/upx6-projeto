@@ -87,6 +87,23 @@ public class ValidadorConteudoTests
         AssertUnicoErro(ValidarComQuestao(q => q.Remove(campo)), campo);
     }
 
+    private static readonly string[] CamposProva = ["prova_ano", "prova_edicao", "prova_nivel", "prova_numero"];
+
+    [Fact]
+    public void Questao_autoral_sem_nenhum_campo_de_prova_e_valida()
+    {
+        Assert.Empty(ValidarComQuestao(q => { foreach (var c in CamposProva) q.Remove(c); }));
+    }
+
+    [Fact]
+    public void Origem_incompleta_aponta_cada_campo_que_falta()
+    {
+        // Só o ano: é tratada como questão do INEP, então os outros três faltam.
+        var erros = ValidarComQuestao(q => { foreach (var c in CamposProva[1..]) q.Remove(c); });
+        Assert.Equal(CamposProva[1..], erros.Select(e => e.Campo));
+        Assert.All(erros, e => Assert.Contains("questão autoral", e.Mensagem));
+    }
+
     [Fact]
     public void Texto_so_com_espacos_conta_como_ausente()
     {

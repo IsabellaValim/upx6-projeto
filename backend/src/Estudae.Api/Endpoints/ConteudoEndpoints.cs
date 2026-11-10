@@ -20,7 +20,8 @@ public static class ConteudoEndpoints
     public sealed record VideoDto(int Id, string Titulo, string YoutubeId, int? DuracaoSegundos);
     public sealed record TemaDto(string Slug, string Titulo, string Sobre, int TotalQuestoes, List<VideoDto> Videos);
     public sealed record ProvaDto(int? Ano, string? Edicao, string? Nivel, int? Numero);
-    public sealed record QuestaoDto(int Id, string? TextoBase, string Enunciado, List<string> Alternativas, ProvaDto Prova);
+    // Prova = null: questão autoral (sem origem no INEP).
+    public sealed record QuestaoDto(int Id, string? TextoBase, string Enunciado, List<string> Alternativas, ProvaDto? Prova);
     public sealed record RespostaRequest(string? Alternativa);
     public sealed record CorrecaoDto(bool Acertou, string RespostaCorreta, string Resolucao);
 
@@ -73,7 +74,7 @@ public static class ConteudoEndpoints
             .OrderBy(q => q.Id)
             .Select(q => new QuestaoDto(
                 q.Id, q.TextoBase, q.Enunciado, q.Alternativas,
-                new ProvaDto(q.ProvaAno, q.ProvaEdicao, q.ProvaNivel, q.ProvaNumero)))
+                q.ProvaAno == null ? null : new ProvaDto(q.ProvaAno, q.ProvaEdicao, q.ProvaNivel, q.ProvaNumero)))
             .ToListAsync(ct);
 
         // Embaralha as alternativas a cada pedido. É seguro porque a correção
