@@ -4,6 +4,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
 import { Tex } from '../components/Tex'
+import { topicProgress } from '../core/stats'
 import { useApp } from '../core/store'
 import { LETTERS, pct } from '../core/utils'
 import { urls } from '../core/urls'
@@ -50,6 +51,11 @@ export default function Resultado() {
     : 0
   const aulaVista = aulasTotal > 0 && aulasVistas === aulasTotal
   const perfeito = r.correct === r.total
+  // Progresso do tema da lição (aulas vistas + questões acertadas ao menos 1x).
+  const progTema = t ? topicProgress(r.subject, r.topic!) : null
+  // Com 0 acertos a dica ganha uma frase de incentivo antes da sugestão.
+  const incentivo =
+    r.correct === 0 ? 'Não desanime — cada erro mostra o que revisar. ' : ''
 
   return (
     <Screen cls="screen--nav" nav="progresso">
@@ -84,20 +90,21 @@ export default function Resultado() {
           <span>de aproveitamento</span>
         </div>
       </div>
-      <div className="stats">
-        <div className="stat stat--ok">
-          <strong>{r.correct}</strong>
-          <span>Acertos</span>
-        </div>
-        <div className="stat stat--bad">
-          <strong>{r.total - r.correct}</strong>
-          <span>Erros</span>
-        </div>
-        <div className="stat">
-          <strong>{r.total}</strong>
-          <span>Questões</span>
-        </div>
-      </div>
+      {/* Uma linha só, em vez de três caixinhas: "Acertou 0 de 5 questões"
+          é mais fácil de ler do que decorar Acertos/Erros/Questões. */}
+      <p className="result-summary">
+        Acertou <strong>{r.correct}</strong> de <strong>{r.total}</strong>{' '}
+        questões
+      </p>
+      {progTema && (
+        <p className="small center result-progresso">
+          Deste tema, você já concluiu{' '}
+          <strong>
+            {progTema.done} de {progTema.total}
+          </strong>{' '}
+          atividades
+        </p>
+      )}
       {sim && (
         <p className="small center" style={{ marginTop: '.75rem' }}>
           <Icon name="clock" /> Tempo usado: {minutos(r.usedMs!)} de{' '}
@@ -140,6 +147,7 @@ export default function Resultado() {
         ) : (
           <>
             <p>
+              {incentivo}
               {aulaVista
                 ? 'Você já assistiu à aula deste tema — vale revê-la ou conferir a correção abaixo.'
                 : 'Que tal assistir à aula deste tema antes de praticar de novo?'}
@@ -161,8 +169,14 @@ export default function Resultado() {
           </Link>
         )}
       </div>
-      <details className="review">
-        <summary>Ver correção das questões</summary>
+      {/* A correção é o conteúdo mais útil depois de um erro: aberta por
+          padrão quando houve questão errada, com o título dizendo o que tem. */}
+      <details className="review" open={!perfeito}>
+        <summary>
+          {perfeito
+            ? 'Ver a correção das questões'
+            : `Correção das questões — ${r.total - r.correct} errada${r.total - r.correct > 1 ? 's' : ''}`}
+        </summary>
         {r.items.map((x, k) => (
           // A correção (resposta certa e explicação) veio da API e foi guardada no resultado.
           <div className={`review-item ${x.ok ? 'ok' : 'bad'}`} key={k}>
@@ -183,28 +197,69 @@ export default function Resultado() {
           </div>
         ))}
       </details>
+      {/* Um único CTA primário, sempre o próximo passo certo, e vem primeiro:
+          com erro -> praticar de novo / estudar os temas; gabaritou -> seguir em
+          frente (outro tema ou outro simulado). */}
       {sim ? (
+        perfeito ? (
+          <>
+            <Link
+              className="btn btn--primary"
+              style={{ marginTop: '1rem' }}
+              to={urls.simulado(r.subject)}
+            >
+              Fazer outro simulado
+            </Link>
+            <Link
+              className="btn btn--outline"
+              style={{ marginTop: '.75rem' }}
+              to={urls.area(r.subject)}
+            >
+              Estudar os temas
+            </Link>
+          </>
+        ) : (
+          <>
+            <Link
+              className="btn btn--primary"
+              style={{ marginTop: '1rem' }}
+              to={urls.area(r.subject)}
+            >
+              Estudar os temas
+            </Link>
+            <Link
+              className="btn btn--outline"
+              style={{ marginTop: '.75rem' }}
+              to={urls.simulado(r.subject)}
+            >
+              Fazer outro simulado
+            </Link>
+          </>
+        )
+      ) : perfeito ? (
         <>
           <Link
-            className="btn btn--outline"
+            className="btn btn--primary"
             style={{ marginTop: '1rem' }}
-            to={urls.simulado(r.subject)}
-          >
-            Fazer outro simulado
-          </Link>
-          <Link
-            className="btn btn--outline"
-            style={{ marginTop: '.75rem' }}
             to={urls.area(r.subject)}
           >
-            Estudar os temas
+            Escolher outro tema
           </Link>
+          {t && (
+            <Link
+              className="btn btn--outline"
+              style={{ marginTop: '.75rem' }}
+              to={urls.quiz(r.subject, r.topic!)}
+            >
+              Praticar de novo
+            </Link>
+          )}
         </>
       ) : (
         <>
           {t && (
             <Link
-              className="btn btn--outline"
+              className="btn btn--primary"
               style={{ marginTop: '1rem' }}
               to={urls.quiz(r.subject, r.topic!)}
             >

@@ -1,4 +1,4 @@
-/* Resultado: destaque da videoaula assistida e CTA que muda com a situação. */
+/* Resultado: destaque da videoaula, resumo em linha e CTA contextual. */
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import App from '../App'
@@ -15,8 +15,24 @@ const RESULTADO: Resultado = {
   total: 2,
   weakTopic: null,
   items: [
-    { ask: 'P1?', options: ['a', 'b'], chosen: 0, answer: 1, why: 'porque', ok: false, topic: 0 },
-    { ask: 'P2?', options: ['a', 'b'], chosen: 1, answer: 0, why: 'porque', ok: false, topic: 0 },
+    {
+      ask: 'P1?',
+      options: ['a', 'b'],
+      chosen: 0,
+      answer: 1,
+      why: 'porque',
+      ok: false,
+      topic: 0,
+    },
+    {
+      ask: 'P2?',
+      options: ['a', 'b'],
+      chosen: 1,
+      answer: 0,
+      why: 'porque',
+      ok: false,
+      topic: 0,
+    },
   ],
 }
 
@@ -47,7 +63,9 @@ beforeEach(() => reset())
 describe('Resultado: destaque da videoaula', () => {
   it('aula não assistida: "0 de 1" e CTA primária "Assistir à aula"', async () => {
     abrir()
-    expect(await screen.findByText('0 de 1 aula do tema assistida')).toBeInTheDocument()
+    expect(
+      await screen.findByText('0 de 1 aula do tema assistida'),
+    ).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: /Assistir à aula deste tema/ }),
     ).toHaveClass('btn--primary')
@@ -56,7 +74,9 @@ describe('Resultado: destaque da videoaula', () => {
   it('aula assistida: destaque "já assistida" e CTA de rever (outline)', async () => {
     reset({ watched: { 'matematica/0/0': 1 } })
     abrir()
-    expect(await screen.findByText('Aula do tema já assistida')).toBeInTheDocument()
+    expect(
+      await screen.findByText('Aula do tema já assistida'),
+    ).toBeInTheDocument()
     expect(
       screen.getByRole('link', { name: /Assistir à aula de novo/ }),
     ).toHaveClass('btn--outline')
@@ -79,6 +99,60 @@ describe('Resultado: destaque da videoaula', () => {
     abrir()
     expect(await screen.findByText(/tema concluído/)).toBeInTheDocument()
     expect(document.querySelector('.tip--ok')).toBeInTheDocument()
-    expect(screen.queryByRole('link', { name: /Assistir à aula/ })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: /Assistir à aula/ }),
+    ).not.toBeInTheDocument()
+  })
+})
+
+describe('Resultado: UI para idosos', () => {
+  it('resumo em uma linha e progresso do tema', async () => {
+    abrir()
+    expect(
+      await screen.findByText(
+        (_, el) => el?.textContent === 'Acertou 0 de 2 questões',
+      ),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText(
+        (_, el) =>
+          el?.textContent === 'Deste tema, você já concluiu 0 de 4 atividades',
+      ),
+    ).toBeInTheDocument()
+  })
+
+  it('com erro: correção aberta e "Praticar de novo" primário', async () => {
+    abrir()
+    const review = await screen.findByText(/Correção das questões — 2 erradas/)
+    expect(review.closest('details')).toHaveAttribute('open')
+    expect(screen.getByRole('link', { name: 'Praticar de novo' })).toHaveClass(
+      'btn--primary',
+    )
+    expect(
+      screen.getByRole('link', { name: 'Escolher outro tema' }),
+    ).toHaveClass('btn--outline')
+    // Incentivo com 0 acertos.
+    expect(screen.getByText(/Não desanime/)).toBeInTheDocument()
+  })
+
+  it('com nota máxima: correção fechada e "Escolher outro tema" primário', async () => {
+    reset({
+      results: [
+        {
+          ...RESULTADO,
+          correct: 2,
+          items: RESULTADO.items.map((x) => ({ ...x, ok: true })),
+        },
+      ],
+    })
+    abrir()
+    const review = await screen.findByText('Ver a correção das questões')
+    expect(review.closest('details')).not.toHaveAttribute('open')
+    expect(
+      screen.getByRole('link', { name: 'Escolher outro tema' }),
+    ).toHaveClass('btn--primary')
+    expect(screen.getByRole('link', { name: 'Praticar de novo' })).toHaveClass(
+      'btn--outline',
+    )
   })
 })

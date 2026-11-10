@@ -518,6 +518,25 @@
   color: var(--muted);
 }
 
+/* Linha-resumo do resultado: "Acertou X de Y questões" — mais direta que as
+   três caixinhas de Acertos/Erros/Questões. */
+.result-summary {
+  margin-top: 1rem;
+  text-align: center;
+  font-size: 1.125rem;
+  font-family: var(--serif);
+  color: var(--ink);
+}
+.result-summary strong {
+  color: var(--plum-dark);
+}
+.result-progresso {
+  margin-top: 0.375rem;
+}
+.result-progresso strong {
+  color: var(--plum-dark);
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
