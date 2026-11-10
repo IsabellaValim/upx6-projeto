@@ -80,6 +80,8 @@ public sealed class ApiFixture : IAsyncLifetime
             Alternativas = ["3", "4"],
             RespostaCorreta = "4",
             Resolucao = "2 + 2 = 4.",
+            ImagemUrl = "teste/figura.webp",
+            ImagemDescricao = "Figura de teste.",
             Status = StatusQuestao.Publicada,
             CriadoEm = DateTime.UtcNow,
         });

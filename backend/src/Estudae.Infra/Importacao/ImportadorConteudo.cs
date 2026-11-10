@@ -45,6 +45,7 @@ public sealed class ImportadorConteudo(EstudaeDbContext db)
         }
         disciplina.Nome = dj.Nome!;
         disciplina.Icone = dj.Icone;
+        disciplina.Nivel = dj.Nivel ?? NivelEnsino.Medio;
 
         // Questões do arquivo que já existem no banco, em qualquer disciplina
         // (o código é único no banco todo; mudar de tema no JSON move a questão).
@@ -123,6 +124,8 @@ public sealed class ImportadorConteudo(EstudaeDbContext db)
                 questao.ProvaEdicao = qj.ProvaEdicao;
                 questao.ProvaNivel = qj.ProvaNivel;
                 questao.ProvaNumero = qj.ProvaNumero;
+                questao.ImagemUrl = qj.Imagem?.Arquivo;
+                questao.ImagemDescricao = qj.Imagem?.Descricao;
                 questao.Status = status;
             }
         }

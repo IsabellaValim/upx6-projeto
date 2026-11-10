@@ -49,7 +49,7 @@ Lista as disciplinas, em ordem alfabética do nome.
 
 ```json
 [
-  { "slug": "matematica", "nome": "Matemática", "icone": "percent", "totalQuestoes": 2 }
+  { "slug": "matematica", "nome": "Matemática", "icone": "percent", "nivel": "medio", "totalQuestoes": 2 }
 ]
 ```
 
@@ -58,6 +58,7 @@ Lista as disciplinas, em ordem alfabética do nome.
 | `slug` | string | usar nas próximas chamadas |
 | `nome` | string | para exibir |
 | `icone` | string \| null | nome do ícone do front (`pen`, `percent`) |
+| `nivel` | string | `"medio"` ou `"fundamental"`: a prova do Encceja. O front mostra só as da prova escolhida |
 | `totalQuestoes` | number | só questões publicadas, somando todos os temas |
 
 ## `GET /api/disciplinas/{disciplina}/temas`
@@ -111,7 +112,8 @@ Questões **publicadas** do tema, em ordem fixa. **Não traz gabarito nem resolu
 | `id` | number | usar no `POST` de resposta |
 | `textoBase` | string \| null | texto de apoio; mostrar antes do enunciado quando houver |
 | `enunciado` | string | |
-| `alternativas` | string[] | de 2 a 5. **Já vêm embaralhadas**, em ordem nova a cada pedido |
+| `alternativas` | string[] | de 2 a 5. **Já vêm embaralhadas**, em ordem nova a cada pedido. **Exceção:** questão com `imagem` vem na ordem da prova, porque o recorte mostra as letras originais |
+| `imagem` | objeto \| null | recorte da prova (figura, tabela, gráfico...): `{ "url": "conteudo/imagens/2022/x.webp", "descricao": "..." }`. `url` é relativa à raiz do site; `descricao` é o texto alternativo (`alt` e leitura em voz alta) |
 | `prova` | objeto \| null | origem da questão. Exibir como fonte: *"Encceja {ano}, {edicao}, questão {numero}"*. **`null` = questão autoral** (escrita pela equipe): exibir "Questão autoral Estudaê" |
 
 - Lista vazia (`[]`) quando o tema ainda não tem questões publicadas.

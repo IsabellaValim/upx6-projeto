@@ -46,6 +46,16 @@ public static class ImportarComando
         var (arquivo, erroLeitura) = LeitorConteudo.Ler(await File.ReadAllTextAsync(caminho));
         var erros = erroLeitura is not null ? [erroLeitura] : ValidadorConteudo.Validar(arquivo!);
 
+        // Imagens: o arquivo precisa existir em imagens/, ao lado do JSON
+        // (conteudo/imagens/ no repo; /app/conteudo/imagens/ na imagem Docker).
+        if (erros.Count == 0)
+        {
+            var pasta = Path.Combine(Path.GetDirectoryName(Path.GetFullPath(caminho))!, "imagens");
+            foreach (var q in arquivo!.Temas!.SelectMany(t => t.Questoes ?? []))
+                if (q.Imagem?.Arquivo is { } arq && !File.Exists(Path.Combine(pasta, arq)))
+                    erros.Add(new ErroImportacao($"questão \"{q.Codigo}\"", "imagem.arquivo", $"arquivo não encontrado: {Path.Combine(pasta, arq)}"));
+        }
+
         if (erros.Count > 0)
         {
             Console.Error.WriteLine($"{caminho}: {erros.Count} erro(s). NADA foi gravado.");
