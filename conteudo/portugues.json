@@ -1,0 +1,216 @@
+{
+  "disciplina": {
+    "slug": "portugues",
+    "nome": "Português",
+    "icone": "pen"
+  },
+  "temas": [
+    {
+      "slug": "interpretacao-de-texto",
+      "titulo": "Interpretação de texto",
+      "sobre": "Leia avisos, mensagens e pequenos relatos para localizar informações, fazer inferências e separar fatos de opiniões.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=nkcQjccZr3g",
+          "titulo": "Interpretação de texto para o Encceja (Termine Seus Estudos)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-pt-int-001",
+          "texto_base": "Aviso da biblioteca: de segunda a sexta, atendimento até as 18h. Aos sábados, atendimento das 9h às 14h.",
+          "enunciado": "Em que horário a biblioteca fecha no sábado?",
+          "alternativas": [
+            "Ao meio-dia",
+            "Às 14h",
+            "Às 17h",
+            "Às 18h"
+          ],
+          "resposta_correta": "Às 14h",
+          "resolucao": "O primeiro horário vale de segunda a sexta. A frase seguinte informa que, no sábado, a biblioteca funciona até as 14h."
+        },
+        {
+          "codigo": "aut-pt-int-002",
+          "texto_base": "Mensagem da associação: recebemos seu nome para a oficina de fotografia. A confirmação das vagas será enviada na sexta.",
+          "enunciado": "O que a mensagem permite concluir sobre as vagas?",
+          "alternativas": [
+            "A lista já foi encerrada.",
+            "Quem chegou primeiro já foi inscrito.",
+            "Entrar na lista ainda não garante uma vaga.",
+            "O encontro foi cancelado."
+          ],
+          "resposta_correta": "Entrar na lista ainda não garante uma vaga.",
+          "resolucao": "Se a confirmação será enviada na sexta, entrar na lista é só a primeira etapa. O texto ainda não confirma quem conseguiu vaga."
+        },
+        {
+          "codigo": "aut-pt-int-003",
+          "texto_base": "A feira começou em maio. Acontece aos domingos e tem doze barracas. Para mim, a feira deixou o bairro mais acolhedor.",
+          "enunciado": "Qual trecho expressa uma opinião da autora?",
+          "alternativas": [
+            "A feira começou em maio.",
+            "A feira acontece aos domingos.",
+            "A feira tem doze barracas.",
+            "A feira deixou o bairro mais acolhedor."
+          ],
+          "resposta_correta": "A feira deixou o bairro mais acolhedor.",
+          "resolucao": "A expressão “mais acolhedor” traz a avaliação da autora. Os outros trechos apresentam informações que podem ser verificadas, como o dia e a quantidade de barracas."
+        }
+      ]
+    },
+    {
+      "slug": "generos-textuais",
+      "titulo": "Gêneros textuais",
+      "sobre": "Reconheça o objetivo de textos como avisos, notícias e pedidos formais.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=7J_VPmdqdwM",
+          "titulo": "Tipos e gêneros textuais: conceitos e diferenças (Português com Carla Holz)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-pt-gen-001",
+          "texto_base": "Aviso de transporte: durante a obra na praça, o ônibus da linha 12 vai parar em frente ao mercado, de segunda a quinta.",
+          "enunciado": "Qual é a finalidade principal desse aviso?",
+          "alternativas": [
+            "Vender passagens antecipadas.",
+            "Informar uma mudança no ponto de embarque.",
+            "Explicar por que o ônibus faz todo o trajeto.",
+            "Contar como a praça foi construída."
+          ],
+          "resposta_correta": "Informar uma mudança no ponto de embarque.",
+          "resolucao": "O aviso informa onde embarcar durante a obra. O lugar e o período da mudança são as informações centrais."
+        },
+        {
+          "codigo": "aut-pt-gen-002",
+          "texto_base": "Na terça-feira, a praça do bairro reabriu após dois meses de obras. Na primeira manhã, cerca de 60 pessoas participaram da caminhada de inauguração.",
+          "enunciado": "O que aproxima esse texto de uma notícia?",
+          "alternativas": [
+            "Apresenta passos de montagem.",
+            "Pede uma doação a quem lê.",
+            "Relata um acontecimento com local e data.",
+            "Defende a opinião de que a praça deveria fechar."
+          ],
+          "resposta_correta": "Relata um acontecimento com local e data.",
+          "resolucao": "O texto informa o que aconteceu, onde e quando. Esses detalhes ajudam a identificar o gênero notícia."
+        },
+        {
+          "codigo": "aut-pt-gen-003",
+          "texto_base": "A associação de moradores quer enviar à prefeitura um pedido formal para consertar a iluminação de uma rua.",
+          "enunciado": "Que gênero atende melhor ao objetivo da associação?",
+          "alternativas": [
+            "Uma receita com orientações de preparo",
+            "Um anúncio de venda de imóveis",
+            "Uma notícia sobre a história do bairro",
+            "Um ofício solicitando o reparo"
+          ],
+          "resposta_correta": "Um ofício solicitando o reparo",
+          "resolucao": "O ofício serve para registrar um pedido formal dirigido a uma instituição. Nele, a associação pode identificar a rua e explicar o problema."
+        }
+      ]
+    },
+    {
+      "slug": "variacao-linguistica",
+      "titulo": "Variação linguística",
+      "sobre": "Veja como região, situação e relação entre as pessoas influenciam a maneira de falar e escrever.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=6fBOVygtNoU",
+          "titulo": "Variação linguística (Professor Noslen)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-pt-var-001",
+          "texto_base": "No mercado, Rita pediu mandioca. O feirante mostrou a raiz e disse: “Na região de onde eu vim, muita gente chama isso de macaxeira.”",
+          "enunciado": "Que tipo de variação o diálogo exemplifica?",
+          "alternativas": [
+            "Variação de sentido provocada pela pontuação.",
+            "Variação regional no nome do mesmo alimento.",
+            "Variação de tempo verbal.",
+            "Variação na grafia de uma única palavra."
+          ],
+          "resposta_correta": "Variação regional no nome do mesmo alimento.",
+          "resolucao": "No diálogo, as duas palavras nomeiam o mesmo alimento. O costume de usar uma ou outra forma pode variar conforme a região."
+        },
+        {
+          "codigo": "aut-pt-var-002",
+          "texto_base": "Paulo precisa pedir à secretaria de um curso a data de entrega do comprovante de matrícula.",
+          "enunciado": "Qual mensagem combina melhor com uma solicitação formal por e-mail?",
+          "alternativas": [
+            "Oi! Cê me diz quando a gente pega o papel?",
+            "E aí, saiu aquilo que falei?",
+            "Olá. Gostaria de saber quando o comprovante estará disponível. Agradeço a atenção.",
+            "Manda aí quando tiver pronto."
+          ],
+          "resposta_correta": "Olá. Gostaria de saber quando o comprovante estará disponível. Agradeço a atenção.",
+          "resolucao": "Essa mensagem identifica o assunto com clareza, faz o pedido de forma respeitosa e é adequada a um e-mail dirigido à instituição."
+        },
+        {
+          "codigo": "aut-pt-var-003",
+          "enunciado": "Por que a afirmação de que toda fala regional é “português errado” é inadequada?",
+          "alternativas": [
+            "Porque as variedades são parte da língua e sua adequação depende do contexto.",
+            "Porque só a língua escrita tem regras.",
+            "Porque toda situação pede o mesmo jeito de falar.",
+            "Porque os sotaques só existem em conversas informais."
+          ],
+          "resposta_correta": "Porque as variedades são parte da língua e sua adequação depende do contexto.",
+          "resolucao": "As variedades regionais fazem parte do português. Uma conversa, uma entrevista e um documento formal podem pedir modos diferentes de usar a língua."
+        }
+      ]
+    },
+    {
+      "slug": "gramatica",
+      "titulo": "Gramática no texto",
+      "sobre": "Entenda como palavras de ligação e pronomes ajudam a construir o sentido.",
+      "videos": [
+        {
+          "youtube": "https://www.youtube.com/watch?v=IIU6i3UXyi0",
+          "titulo": "Coesão e coerência (Professor Noslen)"
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-pt-gra-001",
+          "texto_base": "Eu ia me inscrever na terça, mas o prazo terminou na segunda.",
+          "enunciado": "Que relação a palavra “mas” estabelece entre as duas ideias?",
+          "alternativas": [
+            "Explica a causa da inscrição.",
+            "Indica que as duas ações aconteceram ao mesmo tempo.",
+            "Mostra um contraste entre a intenção e o que aconteceu.",
+            "Apresenta uma condição para participar."
+          ],
+          "resposta_correta": "Mostra um contraste entre a intenção e o que aconteceu.",
+          "resolucao": "A primeira ideia mostra que a pessoa pretendia se inscrever. A segunda mostra o impedimento. “Mas” liga essas duas ideias de contraste."
+        },
+        {
+          "codigo": "aut-pt-gra-002",
+          "texto_base": "A equipe colocou um mural na entrada. Nele, anotou o horário da próxima visita.",
+          "enunciado": "A palavra “nele” retoma qual elemento?",
+          "alternativas": [
+            "O horário",
+            "O mural",
+            "A visita",
+            "A equipe"
+          ],
+          "resposta_correta": "O mural",
+          "resolucao": "“Nele” significa “no mural”. O pronome retoma o lugar onde o horário foi anotado."
+        },
+        {
+          "codigo": "aut-pt-gra-003",
+          "texto_base": "A rua alagou. Por isso, a entrega foi remarcada.",
+          "enunciado": "Qual expressão mantém o sentido de “por isso” nesse texto?",
+          "alternativas": [
+            "Apesar disso",
+            "Antes disso",
+            "Por exemplo",
+            "Por esse motivo"
+          ],
+          "resposta_correta": "Por esse motivo",
+          "resolucao": "A rua alagada é o motivo da mudança. Tanto “por isso” quanto “por esse motivo” introduzem a consequência."
+        }
+      ]
+    }
+  ]
+}
