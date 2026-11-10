@@ -16,6 +16,7 @@ const primeiraFrase = (texto: string | null) =>
 export default function Area() {
   const { id = '' } = useParams()
   const subjects = useApp((s) => s.subjects)
+  const watched = useApp((s) => s.watched)
   const s = subjects[id]
   const next = s ? nextActivity(id) : null
   const [openIdx, setOpenIdx] = useState(next?.ti ?? -1)
@@ -45,12 +46,19 @@ export default function Area() {
           sub={`${next.titulo} · ${next.kind === 'aula' ? 'ver a aula' : 'praticar'}`}
         />
       )}
-      <section className="card progress-card" aria-labelledby="progresso-materia">
+      <section
+        className="card progress-card"
+        aria-labelledby="progresso-materia"
+      >
         <h2 id="progresso-materia">Seu progresso</h2>
         <p>
           <strong>{geral.done}</strong> de {geral.total} atividades
         </p>
-        <Bar done={geral.done} total={geral.total} rotulo={`Progresso em ${s.name}`} />
+        <Bar
+          done={geral.done}
+          total={geral.total}
+          rotulo={`Progresso em ${s.name}`}
+        />
       </section>
       <h2 className="section-label">Temas</h2>
       <div className="topic-list">
@@ -69,19 +77,36 @@ export default function Area() {
           ) : (
             `${p.done} de ${p.total} atividades concluídas`
           )
+          // Conclusão por ação: todas as aulas vistas / todas as questões
+          // acertadas ao menos uma vez. O botão vira verde com check e muda o
+          // verbo ("Rever aula", "Praticar de novo") — ainda dá para refazer.
+          const aulasFeitas = t.videos > 0 && p.aulas >= t.videos
+          const praticaFeita =
+            t.totalQuestoes > 0 && p.questoes >= t.totalQuestoes
+          // "Ver aula" leva à primeira ainda não vista; todas vistas -> 0.
+          const proximaAula = Math.max(
+            0,
+            t.lessons.findIndex((_, j) => !watched[`${id}/${i}/${j}`]),
+          )
           const acoes =
             t.totalQuestoes || t.videos ? (
               <>
                 {t.totalQuestoes > 0 && (
-                  <Link className="btn btn--primary" to={urls.quiz(id, i)}>
-                    <Icon name="checkSquare" />
-                    Praticar
+                  <Link
+                    className={`btn ${praticaFeita ? 'btn--outline btn--done' : 'btn--primary'}`}
+                    to={urls.quiz(id, i)}
+                  >
+                    <Icon name={praticaFeita ? 'check' : 'checkSquare'} />
+                    {praticaFeita ? 'Praticar de novo' : 'Praticar'}
                   </Link>
                 )}
                 {t.videos > 0 && (
-                  <Link className="btn btn--outline" to={urls.video(id, i, 0)}>
-                    <Icon name="playCircle" />
-                    Ver aula
+                  <Link
+                    className={`btn btn--outline${aulasFeitas ? ' btn--done' : ''}`}
+                    to={urls.video(id, i, proximaAula)}
+                  >
+                    <Icon name={aulasFeitas ? 'check' : 'playCircle'} />
+                    {aulasFeitas ? 'Rever aula' : 'Ver aula'}
                   </Link>
                 )}
               </>
