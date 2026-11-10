@@ -24,9 +24,14 @@ Docker, deploy e CI/CD. Ao trabalhar aqui:
 - **Meta:** MVP até 09/11/2026 (segunda à noite). Deploy na segunda à
   tarde: plano A é uma VM com compose + Caddy, e o plano B é o Render a partir do
   Dockerfile. A decisão é da pessoa, na segunda.
-- **Frontend (`src/`, `index.html`):** todas as telas da SPA existem, ainda
-  com **conteúdo placeholder** (`src/data.js`). A integração com a API
-  (contrato em `docs/api.md`) está com a pessoa do front.
+- **Frontend (`src/`, `index.html`):** as telas originais, agora com o
+  conteúdo vindo da API (contrato em `docs/api.md`), na branch
+  `feat/front-api` (10/11/2026). Um patch alternativo, que redesenhava o front,
+  foi descartado por mudar demais a estrutura (backup local em
+  `backup/frontend-mvp-codex`).
+- **Conteúdo:** `conteudo/portugues.json` e `matematica.json`, 4 temas, 4
+  vídeos e 12 questões **autorais** cada. Questões do INEP em revisão em
+  `conteudo/curadoria-inep.md`. Ainda não há ambiente de demonstração publicado.
 - **Backend:** fases 1 a 5 concluídas, mais o primeiro ticket de conteúdo:
   tabelas de conteúdo, importador, endpoints de leitura e correção,
   Dockerfile, compose completo e CI. Fora do MVP: login e tentativas.
@@ -54,29 +59,39 @@ http.server` ou `npx serve .`.
   `results` (histórico de quizzes), `watched` (aulas concluídas), `quiz`
   (sessão em andamento, não persistida). Persistência em
   `src/core/store.js` via `localStorage` (prefixo `estudae:`).
-- **Conteúdo placeholder:** `src/data.js` — `SUBJECTS` (pt/mat, tópicos,
-  vídeo-aulas, questões com gabarito e explicação) e `LESSON_KINDS`. As telas
-  foram feitas com conteúdo de exemplo, então **`data.js` não é
-  especificação**: a estrutura dele (rótulos de "area", tipos de vídeo etc.)
-  só indica a experiência pretendida. O modelo real é o de
-  `backend/DatabaseDocs/ModelodeDados.md`.
+- **Conteúdo (API):** `src/core/api.js` faz as chamadas (mesma origem ou
+  `localStorage` `estudae:api` em dev). `src/data.js` mantém os nomes que as
+  telas já usavam (`SUBJECTS`, `lessonsFor`), mas preenchidos pela API:
+  `carregarCatalogo()` roda no início (o `router` só renderiza depois; se
+  falhar, tela com "Tentar de novo"). `SUBJECTS` é indexado pelo **slug** da
+  disciplina; `#/video/{slug}/{tema}/{aula}` usa a posição do tema e da aula.
+  O quiz é **por matéria**: `carregarQuestoes()` junta as questões de todos os
+  temas; em "Ver resultado", cada resposta vai no `POST` (texto da
+  alternativa) e o resultado guarda enunciado, resposta certa e resolução
+  (gabarito nunca fica no front). `fonte()` mostra a origem ou "Questão
+  autoral Estudaê". Todo texto da API passa por `esc()`.
+- **Vídeo-aula:** iframe do `youtube-nocookie.com` no layout original.
+  "Legendas" recarrega o player com `cc_load_policy`; "Velocidade calma"
+  manda `setPlaybackRate` pela API de iframe (`enablejsapi=1`).
 - **O que fica no `localStorage` hoje:** tudo existe só no navegador, sem
   conta real por trás, então **não há progresso para migrar** para o banco.
   - `estudae:user`: visitante ou um usuário de mentira do login/cadastro.
   - `estudae:a11y`: preferências de acessibilidade (fonte, contraste etc.).
     Não é progresso — **continua no navegador para todo mundo**, inclusive
     visitante.
-  - `estudae:results`: **uma entrada por quiz inteiro** (`subject`, `date`,
-    `correct`, `total`, `weakTopic`), com as respostas aninhadas em `items`
-    (`q`, `chosen`, `ok`). `chosen` é a *posição* da alternativa, não o
-    texto. Versão inicial de `Tentativa`, mas o banco guarda uma tentativa
+  - `estudae:results`: **uma entrada por quiz inteiro** (`v: 2`, `subject`,
+    `date`, `correct`, `total`, `weakTopic`), com as respostas em `items`
+    (`ask`, `options`, `chosen`, `answer`, `why`, `topic`, `ok`). `chosen` e
+    `answer` são *posições* em `options`. Entradas sem `v: 2` (do conteúdo de
+    exemplo antigo) são ignoradas ao carregar. Versão inicial de `Tentativa`, mas o banco guarda uma tentativa
     por questão; sessão de quiz está fora do escopo por enquanto.
   - `estudae:watched`: mapa `"materia/tema/aula"` → timestamp. É um
     liga/desliga (desmarcar apaga a chave), ou seja, uma marca por aula,
     como o `AulaAssistida` atual.
-- **Decisão do MVP para o frontend:** visitante não grava nada. Em vez de
-  adaptar Progresso e Perfil, **esconder as duas telas da navegação** e parar
-  de escrever `results`/`watched`. Quiz por tema, corrigido pelo `POST` da API.
+- **Decisão do MVP para o frontend (revista em 10/11/2026):** a ideia inicial
+  era esconder Progresso e Perfil e fazer o quiz por tema. A pessoa preferiu
+  manter as telas como estão (login, progresso e perfil continuam só no
+  `localStorage`) e o quiz por matéria, trocando só a fonte dos dados.
 - **Componentes reutilizáveis:** `src/components/` — `nav.js` (bottom-nav +
   botão voltar), `sheet.js` (bottom-sheet de escolha rápida), `progress.js`
   (barras de aproveitamento + histórico, usados em Progresso e Perfil).
@@ -143,7 +158,7 @@ docker compose down -v                   # APAGA os dados
 - **Host/porta:** `localhost:${DB_PORT}`, publicada só em `127.0.0.1`. A
   porta do host vem de `DB_PORT` no `.env` (não comitado; ver
   `.env.example`) e cai para 5432 se não estiver definida. Nesta máquina o
-  `.env` define `DB_PORT=5433`, porque a 5432 já está ocupada por um Postgres
+  `.env` define `DB_PORT=5434`, porque a 5432 e a 5433 já estão ocupadas por um Postgres
   nativo do Windows. Dentro do container o Postgres continua sempre na 5432.
   Importante: `ss`/`netstat` dentro do WSL **não** mostram listeners do
   Windows, então conflito de porta só aparece na hora do bind.
@@ -153,7 +168,7 @@ docker compose down -v                   # APAGA os dados
 - **Volume:** `upx6-projeto_pgdata` (o Compose prefixa nomes de volume com o
   nome do projeto, que por padrão é o nome da pasta).
 - **A connection string depende de onde a API roda:** no host (fase 3) usa
-  `Host=localhost;Port=<DB_PORT>` (5433 nesta máquina); dentro do Compose
+  `Host=localhost;Port=<DB_PORT>` (5434 nesta máquina); dentro do Compose
   usa `Host=db;Port=5432` — nome do serviço e porta interna. Dentro
   de um container, `localhost` é o próprio container, não o banco. Como ela
   chega na API: ver "Walking skeleton" abaixo.
@@ -355,9 +370,12 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 
 ## Pontos de atenção para quem for continuar o projeto
 
-- O conteúdo do frontend é placeholder (`src/data.js`) — poucas questões por
-  matéria. Qualquer feature que dependa de volume de conteúdo real vai expor
-  isso.
+- O catálogo ainda é pequeno (12 questões autorais por matéria, um vídeo por
+  tema). Qualquer feature que dependa de volume de conteúdo vai expor isso.
+- Os JSONs de `conteudo/` vão dentro da imagem: depois de editar, rebuild
+  (`docker compose up -d --build --wait`) antes de importar.
+- Esta máquina não tem o .NET SDK: build e testes do backend rodaram no
+  container `mcr.microsoft.com/dotnet/sdk:10.0`.
 - Testes: `backend/tests/Estudae.Tests` (xUnit, `dotnet test`). Os de
   integração (`Api/`) precisam de Postgres: o `ApiFixture` usa
   `ConnectionStrings__Estudae` ou os user-secrets da Api e cria/apaga um

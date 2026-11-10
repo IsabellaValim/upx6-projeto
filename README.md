@@ -8,19 +8,29 @@ Projeto acadêmico desenvolvido para a UPX.
 
 ## O que o MVP faz
 
-- **Português e Matemática** do Ensino Médio, com questões de provas anteriores do INEP
-  (cada questão mostra a fonte: ano, edição e número na prova).
-- **Temas** em cada disciplina, cada um com **vídeo-aulas** (embeds do YouTube) e um **quiz**.
-- **Quiz por tema:** alternativas embaralhadas e correção logo após cada resposta, com a
-  explicação de como chegar à resposta certa.
+- **Português e Matemática** do Ensino Médio, com o conteúdo vindo da API (contrato em
+  [`docs/api.md`](docs/api.md)).
+- **Temas** em cada disciplina, cada um com **vídeo-aulas** (YouTube incorporado, com
+  legenda e velocidade calma opcionais).
+- **Quiz por matéria:** junta as questões de todos os temas, em ordem aleatória. No fim,
+  cada resposta é corrigida pela API, e o resultado mostra a resposta certa e a explicação.
+- **Origem da questão:** questões de provas anteriores mostram a fonte (ano, edição, número);
+  as escritas pela equipe aparecem como "Questão autoral Estudaê".
 - **Acessibilidade:** três tamanhos de fonte, alto contraste, redução de animações e
   leitura em voz alta.
-- Uso **sem conta**, como visitante. Nada é gravado: login e histórico de progresso ficam
-  para depois do MVP.
+- Login, cadastro, progresso e perfil ainda são **só do navegador** (`localStorage`), sem
+  conta de verdade no servidor. Contas reais ficam para depois do MVP.
 
-> Estado em 08/11/2026: o backend (API, banco, importador, CI) está pronto. As telas ainda
-> usam o conteúdo de exemplo de `src/data.js` e estão sendo ligadas à API (contrato em
-> [`docs/api.md`](docs/api.md)).
+### Conteúdo disponível hoje
+
+| Matéria | Temas | Vídeo-aulas | Questões |
+|---|---|---|---|
+| Português | 4 | 4 | 12 autorais |
+| Matemática | 4 | 4 | 12 autorais |
+
+Num banco novo o site mostra "Ainda não há matérias disponíveis": importe o conteúdo (abaixo).
+Questões de provas anteriores escolhidas para cada tema aguardam revisão em
+[`conteudo/curadoria-inep.md`](conteudo/curadoria-inep.md).
 
 ## Tecnologias
 
@@ -135,7 +145,9 @@ com IA: [`conteudo/README.md`](conteudo/README.md).
 
 ## Próximos passos
 
-- [ ] Ligar as telas à API e publicar o site
+- [x] Ligar as telas à API de conteúdo
+- [ ] Publicar o site num ambiente de demonstração (VM + Caddy ou Render)
+- [ ] Revisar e incluir as questões de `conteudo/curadoria-inep.md`
 - [ ] Contas de aluno (login) e histórico de progresso
 - [ ] Mais áreas do exame (Ciências, História, Geografia)
 - [ ] Questões com figura e tabela

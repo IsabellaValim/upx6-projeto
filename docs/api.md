@@ -112,7 +112,7 @@ Questões **publicadas** do tema, em ordem fixa. **Não traz gabarito nem resolu
 | `textoBase` | string \| null | texto de apoio; mostrar antes do enunciado quando houver |
 | `enunciado` | string | |
 | `alternativas` | string[] | de 2 a 5. **Já vêm embaralhadas**, em ordem nova a cada pedido |
-| `prova` | objeto | origem da questão. Exibir como fonte: *"Encceja {ano}, {edicao}, questão {numero}"* |
+| `prova` | objeto \| null | origem da questão. Exibir como fonte: *"Encceja {ano}, {edicao}, questão {numero}"*. **`null` = questão autoral** (escrita pela equipe): exibir "Questão autoral Estudaê" |
 
 - Lista vazia (`[]`) quando o tema ainda não tem questões publicadas.
 - Se quiser embaralhar também a ordem das questões, faça no front.
@@ -203,7 +203,7 @@ usa o mínimo possível de fórmula, então a maior parte é texto puro.
 - **Quiz por tema** (não mais por disciplina), corrigido questão a questão pelo `POST`, que
   devolve a resolução logo após cada resposta.
 - **Player de verdade** com o embed do YouTube, no lugar do player simulado.
-- **Rotas por slug**, e `src/data.js` sai.
+- **Rotas por slug**. O `src/data.js` continua, mas preenchido pela API (sem conteúdo fixo).
 - Login e cadastro estão fora do MVP.
 
 ## Fora do contrato por enquanto

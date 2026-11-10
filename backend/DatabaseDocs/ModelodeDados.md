@@ -238,7 +238,10 @@ migration (`InicialIdentity`).
 - **Fluxo planejado (depois do MVP):** um script em **Python** extrai os rascunhos dos PDFs com
   IA, fora da aplicação publicada, e o importador continua sendo a porta de entrada.
 - **Fonte:** toda questão do INEP leva `prova_ano`, `prova_edicao`, `prova_nivel` e
-  `prova_numero`, exibidos ao aluno como citação da fonte.
+  `prova_numero`, exibidos ao aluno como citação da fonte. Os quatro são **tudo ou nada**
+  (10/11/2026): sem nenhum, a questão é **autoral** (escrita pela equipe) e aparece como
+  "Questão autoral Estudaê"; origem pela metade é recusada pelo importador. Sem mudança de
+  schema: as colunas já eram anuláveis.
 - **Matemática** é escrita em **LaTeX** dentro das colunas de texto (`enunciado`,
   `alternativas`, `resolucao`) e renderizada no frontend com **KaTeX**.
 - **Delimitadores:** `\( ... \)` para fórmula na linha e `\[ ... \]` para fórmula em
