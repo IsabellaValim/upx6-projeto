@@ -1,5 +1,7 @@
 # Estudaê
 
+![CI](https://github.com/IsabellaValim/upx6-projeto/actions/workflows/ci.yml/badge.svg)
+
 **Estude para o Encceja no seu ritmo, pelo celular.**
 
 O **Estudaê** é uma plataforma web de preparação para o Exame Nacional para Certificação de Competências de Jovens e Adultos (Encceja), desenvolvida como projeto acadêmico de UPX. Seu foco é tornar o estudo acessível, especialmente para pessoas idosas e estudantes que retomam a escolarização: navegação simples, textos legíveis, alto contraste, atividades curtas e apoio de leitura em voz alta.
@@ -39,13 +41,13 @@ Essas funcionalidades fazem parte do projeto, mas ainda precisam de validação 
 
 ## Conteúdo disponível
 
-| Nível | Matéria | Temas | Videoaulas no banco de referência | Questões |
-| --- | --- | ---: | ---: | ---: |
-| Ensino Médio | Linguagens | 10 | 4 | 72 (60 oficiais de 2022 + 12 autorais) |
-| Ensino Médio | Matemática | 9 | 4 | 72 (60 oficiais de 2022 + 12 autorais) |
-| Ensino Fundamental | Linguagens | 10 | 0 | 60 oficiais de 2022 |
-| Ensino Fundamental | Matemática | 8 | 0 | 60 oficiais de 2022 |
-| **Total** | **4 combinações de nível/matéria** | **37** | **8** | **264** |
+| Nível              | Matéria                            |  Temas | Videoaulas no banco de referência |                               Questões |
+| ------------------ | ---------------------------------- | -----: | --------------------------------: | -------------------------------------: |
+| Ensino Médio       | Linguagens                         |     10 |                                 4 | 72 (60 oficiais de 2022 + 12 autorais) |
+| Ensino Médio       | Matemática                         |      9 |                                 4 | 72 (60 oficiais de 2022 + 12 autorais) |
+| Ensino Fundamental | Linguagens                         |     10 |                                 0 |                    60 oficiais de 2022 |
+| Ensino Fundamental | Matemática                         |      8 |                                 0 |                    60 oficiais de 2022 |
+| **Total**          | **4 combinações de nível/matéria** | **37** |                             **8** |                                **264** |
 
 **Importante:** os números acima descrevem a base informada no levantamento do projeto, **antes da importação dos novos arquivos de videoaulas**. Os quatro arquivos JSON de curadoria entregues separadamente propõem **duas videoaulas por tema (74 vínculos no total)**; isso só será refletido no aplicativo **depois da validação e importação**.
 
@@ -55,16 +57,16 @@ O Encceja oficial abrange mais áreas do que a versão atual do Estudaê. **Ciê
 
 ## Tecnologias
 
-| Camada | Tecnologia |
-| --- | --- |
-| Frontend | HTML, CSS e JavaScript (ES Modules), sem etapa de build |
-| Backend | ASP.NET Core / .NET 10 |
-| Persistência | Entity Framework Core 10 + Npgsql |
-| Banco de dados | PostgreSQL 16 |
-| Execução local | Docker e Docker Compose |
-| Automação | GitHub Actions (build, testes e smoke test) |
+| Camada         | Tecnologia                                                      |
+| -------------- | --------------------------------------------------------------- |
+| Frontend       | React 19 + TypeScript + Vite (SPA, URLs limpas), Zustand, KaTeX |
+| Backend        | ASP.NET Core / .NET 10                                          |
+| Persistência   | Entity Framework Core 10 + Npgsql                               |
+| Banco de dados | PostgreSQL 16                                                   |
+| Execução local | Docker e Docker Compose                                         |
+| Automação      | GitHub Actions (build, testes e smoke test)                     |
 
-A própria API entrega os arquivos do frontend pela pasta `wwwroot`. Em uma instalação integrada, frontend e API usam **a mesma origem**, dispensando CORS em produção.
+A própria API entrega os arquivos do frontend pela pasta `wwwroot` (o `dist` do build do Vite, gerado num estágio Node do Dockerfile). Em uma instalação integrada, frontend e API usam **a mesma origem**, dispensando CORS em produção. Como o React Router usa URLs limpas (`/home`, `/area/matematica`...), a API devolve o `index.html` para qualquer caminho que não seja arquivo nem `/api` — e `/api` desconhecida responde 404 de verdade.
 
 ## Executar localmente com Docker
 
@@ -123,21 +125,21 @@ Os testes de integração podem depender de uma instância de banco ativa.
 
 ## Trabalhar apenas no frontend
 
-Por usar ES Modules, o frontend precisa ser servido por HTTP; abrir `index.html` via `file://` não funciona.
+O app React mora em `frontend/` e roda com o dev server do Vite, que já faz
+proxy de `/api` e `/conteudo` para `http://localhost:5151` (a API do
+`dotnet run` — suba o banco e a API como na seção acima):
 
 ```bash
-python -m http.server 8000
-# Alternativa: npx serve .
+cd frontend
+npm ci          # primeira vez
+npm run dev     # http://localhost:5173
+npm test        # testes (Vitest)
+npm run lint    # oxlint
+npm run build   # gera frontend/dist (o que vai para o wwwroot na imagem)
 ```
 
-Para apontar o frontend isolado para a API local, execute no console do navegador:
-
-```js
-localStorage.setItem('estudae:api', 'http://localhost:5151');
-location.reload();
-```
-
-O acesso de desenvolvimento depende da configuração de CORS habilitada na API local.
+Progresso, preferências e escolha de prova continuam no `localStorage` do
+navegador (chaves `estudae:*`), sem conta real por trás.
 
 ## Conteúdo e importação
 
@@ -236,8 +238,7 @@ Configure a aplicação com `ConnectionStrings__Estudae` via variável de ambien
 ## Estrutura do projeto
 
 ```text
-index.html                  Entrada do frontend
-src/                        SPA, estilos e módulos JavaScript
+frontend/                   app React + TS + Vite (src/, testes; ver CLAUDE.md)
 backend/
   src/Estudae.Domain/       Entidades e regras de domínio
   src/Estudae.Infra/        EF Core, migrations e importador

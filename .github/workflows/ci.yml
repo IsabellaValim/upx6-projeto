@@ -1,7 +1,8 @@
 # CI do Estudae: roda em todo PR, em push na main e manualmente (aba Actions).
-# Dois jobs em paralelo:
-#   backend -> build, testes (unidade + integracao com Postgres) e validacao dos JSONs de conteudo
-#   compose -> sobe o docker compose de verdade num banco vazio e faz um smoke test
+# Tres jobs em paralelo:
+#   backend  -> build, testes (unidade + integracao com Postgres) e validacao dos JSONs de conteudo
+#   frontend -> npm ci, lint, testes (Vitest) e build do Vite
+#   compose  -> sobe o docker compose de verdade num banco vazio e faz um smoke test
 name: CI
 
 on:
@@ -73,6 +74,36 @@ jobs:
       - name: Validar exemplo de conteudo
         run: dotnet run --no-build -c Release --project src/Estudae.Api -- importar "$GITHUB_WORKSPACE/docs/conteudo/exemplos/exemplo-valido.json" --validar
 
+  frontend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Node 22: a mesma major do estagio do front no backend/Dockerfile.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: npm ci
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Testes
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
   compose:
     runs-on: ubuntu-24.04
     timeout-minutes: 15
@@ -92,7 +123,11 @@ jobs:
       - name: Smoke test
         run: |
           curl --fail --silent --show-error http://localhost:8080/health | grep -x Healthy
-          curl --fail --silent --show-error http://localhost:8080/ | grep -q 'src/main.js'
+          # O shell do app React sobe na raiz e em qualquer URL limpa (fallback de SPA).
+          curl --fail --silent --show-error http://localhost:8080/ | grep -q 'id="app"'
+          curl --fail --silent --show-error http://localhost:8080/home | grep -q 'id="app"'
+          # Mas /api desconhecida e 404 de verdade, nao o index.html.
+          test "$(curl --silent --output /dev/null --write-out '%{http_code}' http://localhost:8080/api/rota-que-nao-existe)" = "404"
           curl --fail --silent --show-error http://localhost:8080/api/disciplinas | grep -x '\[\]'
           docker compose logs migrate | grep -q "Migrations aplicadas"
 

@@ -11,15 +11,17 @@
 #    - para compilar a API;
 !backend/global.json
 !backend/src/
-#    - o front, que vai para o wwwroot (o "src/" aqui e o da raiz, nao o do backend);
-!index.html
-!src/
+#    - o front (frontend/ vira dist/ no wwwroot via estagio Node do Dockerfile);
+!frontend/
 #    (o conteudo mora no banco; nada de conteudo/ ou docs/ entra na imagem.)
 
 # 3. Volta a excluir, dentro do que foi liberado:
 #    bin/ e obj/ do host (obj/ traz caminhos da maquina e quebra o --no-restore);
 **/bin/
 **/obj/
+#    node_modules e dist do front (o Dockerfile roda npm ci + npm run build);
+**/node_modules/
+frontend/dist/
 #    arquivos ignorados pelo Git (a imagem so leva o que o Git tem);
 **/appsettings.Development.json
 **/*.user

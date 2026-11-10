@@ -159,3 +159,6 @@ pgdata/
 
 # Exportações do banco (scripts/banco/exportar.*): podem ter dados, não vão para o git
 backups/
+
+# JSONs de conteúdo em trabalho (montados para o "api importar"): o conteúdo mora só no banco
+novo/

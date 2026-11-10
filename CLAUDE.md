@@ -24,11 +24,11 @@ Docker, deploy e CI/CD. Ao trabalhar aqui:
 - **Meta:** MVP até 09/11/2026 (segunda à noite). Deploy na segunda à
   tarde: plano A é uma VM com compose + Caddy, e o plano B é o Render a partir do
   Dockerfile. A decisão é da pessoa, na segunda.
-- **Frontend (`src/`, `index.html`):** as telas originais, agora com o
-  conteúdo vindo da API (contrato em `docs/api.md`), na branch
-  `feat/front-api` (10/11/2026). Um patch alternativo, que redesenhava o front,
-  foi descartado por mudar demais a estrutura (backup local em
-  `backup/frontend-mvp-codex`).
+- **Frontend (`frontend/`):** rescrito em **React 19 + TypeScript + Vite**
+  na branch `feat/front-react` (11/11/2026), com paridade de telas e
+  acessibilidade + KaTeX nas fórmulas. O front antigo (HTML/CSS/JS puro em
+  `src/` + `index.html` na raiz) foi removido no mesmo PR — o histórico do
+  git preserva o original.
 - **Conteúdo (10/11/2026, branch `feat/questoes-2022`):** 4 disciplinas —
   `matematica` e `linguagens` (Ensino Médio, 72 questões cada: 60 do Encceja
   2022 + 12 autorais) e `matematica-fundamental` e `linguagens-fundamental`
@@ -54,37 +54,42 @@ Docker, deploy e CI/CD. Ao trabalhar aqui:
 
 ## Frontend — arquitetura
 
-Sem build, sem dependências: **HTML + CSS + JS puro (ES Modules)**. Precisa
-ser servido por HTTP (não abrir `index.html` via `file://`) — `python -m
-http.server` ou `npx serve .`.
+**React 19 + TypeScript + Vite**, SPA em `frontend/` (`npm run dev` com proxy
+de `/api` e `/conteudo` para `localhost:5151`). Zustand para o estado global,
+React Router com **URLs limpas** e KaTeX para as fórmulas `\( \)`/`\[ \]` que
+a API manda. O design é o mesmo dos seis arquivos CSS originais, copiados sem
+mudança para `frontend/src/styles/` (base, layout, components, screens,
+navigation, responsive); o app monta em `#app` e os SVGs da marca moram em
+`frontend/public/branding/`.
 
-- **Roteamento:** `src/router.js` — SPA por hash (`#/rota`). Rotas públicas
-  (`loading`, `boas-vindas`, `login`, `cadastro`) ficam em `PUBLIC`; qualquer
-  outra rota exige `state.user`. Novas URLs entram em `src/core/urls.js`
-  (mapa central) — não espalhar hashes hardcoded pelas telas.
-- **Contrato de tela:** cada arquivo em `src/screens/` exporta uma função
-  `(...params) => { cls, nav, html, after }`. `html` é a marcação (string),
-  `after({ rerender })` roda pós-inserção no DOM (listeners, side effects).
-  `src/core/mount.js` injeta isso em `#app`, monta a bottom-nav se `nav`
-  estiver definido, e foca o `<h1>` da tela. Telas são registradas em
-  `src/screens/index.js`.
-- **Estado global:** `src/core/state.js` (`state`, `save.*`) — `user`, `a11y`,
-  `results` (histórico de quizzes), `watched` (aulas concluídas), `quiz`
-  (sessão em andamento, não persistida). Persistência em
-  `src/core/store.js` via `localStorage` (prefixo `estudae:`).
-- **Conteúdo (API):** `src/core/api.js` faz as chamadas (mesma origem ou
-  `localStorage` `estudae:api` em dev). `src/data.js` mantém os nomes que as
-  telas já usavam (`SUBJECTS`, `lessonsFor`), mas preenchidos pela API:
-  `carregarCatalogo()` roda no início (o `router` só renderiza depois; se
-  falhar, tela com "Tentar de novo"). `SUBJECTS` é indexado pelo **slug** da
-  disciplina; `#/video/{slug}/{tema}/{aula}` e `#/quiz/{slug}/{tema}` usam a
-  posição do tema (e da aula). A **lição é por tema** (`src/screens/quiz.js`,
-  até `TAMANHO_LICAO` = 5 questões sorteadas de `carregarQuestoes(id, ti)`):
-  marcar → "Conferir" (`POST` com o texto da alternativa) → correção na hora
-  (certa/errada em texto e cor, resolução) → "Continuar". O resultado guarda
-  enunciado, resposta certa e resolução (gabarito nunca fica no front). `fonte()` mostra a origem ou "Questão
-  autoral Estudaê". Todo texto da API passa por `esc()`.
-- **Vídeo-aula** (`src/screens/video.js`, refeita em 10/11/2026): topo com o
+- **Roteamento:** `src/App.tsx` — `<BrowserRouter>` com `<Routes>`. Públicas:
+  `/boas-vindas`, `/login`, `/cadastro`. `RequireUser` guarda o resto;
+  `RequireNivel` exige a prova escolhida (exceto `/nivel` e `/acessibilidade`,
+  como antes). `/videos/:id` e `/quiz/:id` legados redirecionam para a área.
+  Novas URLs entram em `src/core/urls.ts` (mapa central). A API devolve o
+  `index.html` para qualquer URL limpa (`MapFallbackToFile`, ver Backend).
+- **Contrato de tela:** cada arquivo em `src/screens/` exporta um componente.
+  `<Screen>` (`src/components/Screen.tsx`) equivale ao antigo mount: `<main
+class="screen ...">`, monta a bottom-nav se `nav` definido, rola ao topo,
+  para a leitura em voz alta, foca o `<h1>` e ajusta o `document.title`.
+- **Estado global:** `src/core/store.ts` (`useApp`, zustand) — `user`, `a11y`,
+  `results`, `watched`, `quiz`/`simulado` (sessões em andamento, não
+  persistidas) e `subjects`/`catalogoStatus`. Persiste nas **mesmas chaves**
+  `estudae:*` do front antigo, gravadas na hora em cada ação (sem middleware):
+  quem já usou o site não perde nada.
+- **Conteúdo (API):** `src/core/api.ts` (fetch tipado, mesma origem; o proxy
+  do Vite cobre o dev — a chave `estudae:api` deixou de existir).
+  `src/core/catalogo.ts` tem `carregarCatalogo()` (dedup em voo + early-return
+  em `ready`; o `CatalogoGate` do App segura a renderização até `ready`, com
+  erro + "Tentar de novo"), `carregarQuestoes()`, `NIVEIS`, `materiasDoNivel()`
+  e `fonte()`. `subjects` é indexado pelo **slug** da disciplina; as rotas de
+  vídeo/quiz usam a **posição** do tema (e da aula). A **lição é por tema**
+  (`src/screens/Quiz.tsx`, até 5 questões sorteadas): marcar → "Conferir"
+  (`POST` com o texto da alternativa) → correção na hora → "Continuar". O
+  resultado guarda enunciado, resposta certa e resolução (gabarito nunca fica
+  no front). Textos da API renderizam como texto puro ou via `<Tex>` (só a
+  saída do KaTeX vira HTML); `esc()` deixou de existir porque o JSX escapa.
+- **Vídeo-aula** (`src/screens/Video.tsx`, refeita em 10/11/2026): topo com o
   nome do tema, iframe do `youtube-nocookie.com`, o título da aula como `<h1>`
   (o canal entre parênteses no título vira a linha de baixo), descrição e
   **uma ação principal**: "Terminei a aula, quero praticar" (marca a aula
@@ -117,17 +122,17 @@ name="temas">`, um aberto por vez, com uma frase de descrição, "Praticar"
   em destaque e "Ver aula") → vídeo ou lição. Desenho rascunhado pela pessoa
   em 10/11/2026; a tela própria de cada tema fica para quando houver assuntos
   com mais material.
-- **Atividades** (`src/core/stats.js`: `topicProgress`, `subjectProgress`,
+- **Atividades** (`src/core/stats.ts`: `topicProgress`, `subjectProgress`,
   `nextActivity`): cada vídeo-aula conta quando marcada como concluída, e cada
   questão quando acertada ao menos uma vez (as lições guardam o `id` da
   questão). "Continuar estudando" = aula não vista do primeiro tema
   incompleto, senão a prática dele.
-- **Fonte padrão:** "Grande" para quem ainda não escolheu (`state.js`).
+- **Fonte padrão:** "Grande" para quem ainda não escolheu (`store.ts`).
 - **Início** (10/11/2026): logo, saudação, "Continuar estudando", "Estudar por
   matéria" (cartões largos com progresso) e "Testar o que aprendeu"
   (Simulado, com contorno, separado de estudar).
-- **Simulado** (`src/screens/simulado.js`, `#/simulado` e
-  `#/simulado/{matéria}`): questões de todos os temas da matéria, sorteadas,
+- **Simulado** (`src/screens/Simulado.tsx`, `/simulado` e
+  `/simulado/{matéria}`): questões de todos os temas da matéria, sorteadas,
   sem correção até a entrega. Usa só as oficiais (`prova` preenchida) quando
   houver o suficiente; senão, as autorais, com o aviso "Simulado de treino".
   Relógio sempre visível; aviso nos minutos finais; ao zerar mostra "Tempo
@@ -138,30 +143,31 @@ name="temas">`, um aberto por vez, com uma frase de descrição, "Praticar"
   tempo usado e o tema com mais erros. **Tamanho e tempo:** objeto `SIMULADO`
   no topo do arquivo (hoje 30 questões no máximo e 3 min por questão), para
   ajustar ao edital do Encceja.
-- **Marca:** SVGs em `src/assets/branding/` (`logo-primary`, `logo-white`,
-  `symbol-primary`, `symbol-white`, `symbol-purple`, `icon`). Não há `public/`:
-  o Dockerfile copia `src/` inteiro. Uso: `logo-primary` no início,
+- **Marca:** SVGs em `frontend/public/branding/` (`logo-primary`, `logo-white`,
+  `symbol-primary`, `symbol-white`, `symbol-purple`, `icon`) — o Vite copia
+  `public/` para o `dist`. Uso: `logo-primary` no início,
   boas-vindas e login; `icon` no favicon e na tela de carregamento. O roxo da
   marca é o `--plum-dark` (`#4D3159`). Saíram a tela "Escolha como
   deseja estudar", a lista separada de vídeo-aulas e a folha "qual matéria?";
-  `#/videos/{m}` e `#/quiz/{m}` antigos redirecionam para a área.
+  `/videos/{m}` e `/quiz/{m}` antigos redirecionam para a área.
   `estudae:results` com `v: 3` = lição por tema (tem `topic`).
 - **Cores de texto de acerto/erro:** `--ok-text` e `--bad-text` (base.css),
   mais escuras que `--ok`/`--bad`, para passar de 4.5:1 sobre os fundos claros.
-- **Componentes reutilizáveis:** `src/components/` — `nav.js` (bottom-nav +
-  botão voltar) e `progress.js` (linhas de progresso por matéria + histórico,
-  usados só em Progresso; o Perfil tem identidade e ajustes, sem progresso).
-  O `sheet.js` (folha "qual matéria?") saiu junto com
-  os atalhos redundantes do início; o CSS dele e o `#sheet-root` ficaram, sem uso.
-- **Utilitários:** `src/core/utils.js` (puro, sem DOM/estado: `esc`, `go`,
-  `pct`, `shuffle`, etc.), `src/core/stats.js` (métricas derivadas: streak,
-  score por matéria, aulas assistidas), `src/core/speech.js` (Web Speech API),
-  `src/core/toast.js`, `src/core/dom.js` (refs de `#app`/`#sheet-root`/`#toast`).
-- **Estilos:** `src/styles/` dividido por responsabilidade — `base.css`
-  (tokens/reset), `layout.css`, `components.css`, `screens.css`,
-  `navigation.css`, `responsive.css`.
-- **Convenções:** comentários e nomes de tela/arquivo em pt-BR; sem
-  TypeScript, sem framework, sem bundler.
+- **Componentes reutilizáveis:** `src/components/` — `Icon.tsx` (SVGs),
+  `Nav.tsx` (bottom-nav + voltar), `Screen.tsx`, `Toaster.tsx`,
+  `Progress.tsx` (barras, histórico, "Continuar"), `Switch.tsx` (interruptores
+  e links de ajuste), `Tex.tsx` (KaTeX), `Alternativas.tsx` (radiogroup com
+  roving tabindex: setas movem E marcam), `Enunciado.tsx` + `ImageViewer.tsx`
+  (imagem da questão em `<dialog>` com zoom).
+- **Utilitários:** `src/core/utils.ts` (puro, sem DOM/estado: `pct`,
+  `shuffle`, `initials`, `formatDay`, `LETTERS`), `src/core/stats.ts`
+  (métricas derivadas: streak, progresso por matéria/tema, `nextActivity`),
+  `src/core/speech.ts` (Web Speech API; `stripTex` tira o LaTeX antes de
+  falar), `src/core/toast.ts`, `src/core/tex.ts` (`splitTex`/`stripTex`).
+- **Testes:** Vitest + Testing Library em `frontend/src/**/*.test.ts(x)`
+  (`npm test`) — core puro e integração do App (guardas, rotas, gate).
+- **Convenções:** comentários e nomes de tela/arquivo em pt-BR; TS estrito;
+  estilo do Prettier do `frontend/.prettierrc.json` (aspas simples, sem `;`).
 
 ## Backend
 
@@ -174,12 +180,16 @@ Fases 1 a 5 prontas, mais o conteúdo do MVP; o resto do plano segue abaixo.
     nov/2026; a troca foi feita antes de existir código. `backend/global.json`
     fixa o SDK em 10.0.x.
 - **Banco de dados:** PostgreSQL rodando em Docker
-- **Frontend:** as telas vanilla JS já existentes, servidas pelo `wwwroot` da
-  própria API (mesma origem, um container só, sem CORS). Revisitar se surgir
-  um time de frontend separado ou um app mobile. O front continua na raiz
-  do repo; o **Dockerfile copia** `index.html` e `src/` para `/app/wwwroot`
-  (só existe dentro da imagem). Servido com `Cache-Control: no-cache` (ETag),
-  porque sem bundler não há nome de arquivo com hash.
+- **Frontend:** React 19 + TS + Vite em `frontend/`, servido pelo `wwwroot`
+  da própria API (mesma origem, um container só, sem CORS). Revisitar se
+  surgir um time de frontend separado ou um app mobile. O **Dockerfile** tem
+  um estágio Node (`node:22-alpine`) que roda `npm ci` + `npm run build` e
+  copia `frontend/dist` para `/app/wwwroot` (só existe dentro da imagem).
+  `/assets/*` (nomes com hash do Vite): `Cache-Control: immutable`; o resto,
+  `no-cache` (ETag). Como o React Router usa URLs limpas, a API devolve o
+  `index.html` para todo caminho sem arquivo que não seja `/api`
+  (`MapFallbackToFile` com `no-cache`), e `/api` desconhecida responde 404
+  de verdade (`app.Map("/api/{**_}")`).
 - **Auth:** ASP.NET Identity com autenticação por cookie HttpOnly, não JWT (login e cadastro
   fazem parte do escopo desde o início). Dois papéis, via roles do Identity:
   **Administrador** (gerencia conteúdo; a área admin é um ticket próprio,
@@ -471,15 +481,15 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
   (100–300%), área rolável focável pelo teclado. O texto alternativo fica no
   botão que abre a imagem. Com "reduzir movimento", o CSS do projeto dá
   transição de 0,01 ms a tudo: testes que medem largura precisam esperar.
-- **Progresso** (`src/screens/progresso.js`): resumo em atividades da prova
+- **Progresso** (`src/screens/Progresso.tsx`): resumo em atividades da prova
   escolhida (dias seguidos, lições, % de acertos), "Continuar estudando" pela
   matéria estudada por último, um cartão por matéria (aulas vistas e questões
-  acertadas) e o histórico, tudo filtrado por `state.nivel`.
-- **Escolha de prova no app:** `#/nivel` (`src/screens/nivel.js`), guardada em
-  `estudae:nivel`; o router manda para lá quem ainda não escolheu. Início,
-  simulado e Progresso filtram por `state.nivel` (`materiasDoNivel` em
-  `data.js`). Na interface se chama "prova", porque "nível" já é a
-  gamificação do Perfil.
+  acertadas) e o histórico, tudo filtrado pelo `nivel` do store.
+- **Escolha de prova no app:** `/nivel` (`src/screens/Nivel.tsx`), guardada em
+  `estudae:nivel`; a guarda `RequireNivel` manda para lá quem ainda não
+  escolheu. Início, simulado e Progresso filtram por `nivel` no store
+  (`materiasDoNivel` em `core/catalogo.ts`). Na interface se chama "prova",
+  porque "nível" já é a gamificação do Perfil.
 - O conteúdo não está no repo: um clone novo sobe com o site vazio até
   restaurar um `.dump`. Exporte depois de mudar conteúdo.
 - Esta máquina não tem o .NET SDK: build e testes do backend rodaram no
