@@ -102,7 +102,7 @@ export interface User {
   guardian?: string | null
 }
 
-export type FontSize = 'normal' | 'grande' | 'extragrande'
+export type FontSize = 'padrao' | 'grande' | 'extragrande'
 
 export interface A11y {
   font: FontSize
