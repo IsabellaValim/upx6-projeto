@@ -1,0 +1,266 @@
+import { criarServicoAprendizagem } from './aprendizagem/servico'
+import type {
+  ContextoTentativa,
+  GravacaoAprendizagem,
+  ServicoAprendizagem,
+} from './aprendizagem/servico'
+import type {
+  QuestaoAprendizagem,
+  SessaoAprendizagem,
+} from './aprendizagem/tipos'
+import { toast } from './toast'
+import { local, useApp } from './store'
+import type { QuestaoItem, Resultado } from '../types'
+
+let servico: ServicoAprendizagem = criarServicoAprendizagem()
+
+const apresentadas = new Set<string>()
+const avisadas = new Set<string>()
+
+export function definirServicoAprendizagem(s: ServicoAprendizagem): void {
+  servico = s
+  apresentadas.clear()
+  avisadas.clear()
+}
+
+export function obterServicoAprendizagem(): ServicoAprendizagem {
+  return servico
+}
+
+const AVISO_DEGRADADO =
+  'Não foi possível salvar o registro detalhado de estudo. Você pode continuar normalmente.'
+
+function avisarDegradacao(sessao: SessaoAprendizagem): void {
+  if (avisadas.has(sessao.id)) return
+  avisadas.add(sessao.id)
+  toast(AVISO_DEGRADADO)
+}
+
+type QuestaoCaptura = QuestaoAprendizagem & {
+  legadoIncerto?: boolean
+  semCodigo?: boolean
+}
+
+async function chamar(
+  sessao: SessaoAprendizagem | null | undefined,
+  questao: QuestaoAprendizagem | null,
+  op: () => Promise<GravacaoAprendizagem>,
+): Promise<boolean> {
+  if (!sessao || !sessao.confiavel) return false
+  if (questao && (questao as QuestaoCaptura).semCodigo) {
+    sessao.confiavel = false
+    avisarDegradacao(sessao)
+    return false
+  }
+  try {
+    return (await op()).status === 'salvo'
+  } catch {
+    avisarDegradacao(sessao)
+    return false
+  }
+}
+
+export const tentativaId = (
+  sessao: SessaoAprendizagem | null | undefined,
+  posicao: number,
+): string => `${sessao?.id ?? ''}/${posicao}`
+
+export function questaoAprendizagem(
+  item: QuestaoItem,
+  disciplina: string,
+  tema: string,
+): QuestaoCaptura {
+  const legadoIncerto = useApp
+    .getState()
+    .results.some(
+      (resultado) =>
+        resultado.subject === disciplina &&
+        resultado.v >= 2 &&
+        (!Array.isArray(resultado.items) ||
+          resultado.items.length === 0 ||
+          resultado.items.some(
+            (anterior) =>
+              !Number.isInteger(anterior.id) || anterior.id === item.id,
+          )),
+    )
+  const codigo = typeof item.codigo === 'string' ? item.codigo.trim() : ''
+  return {
+    legadoIncerto,
+    semCodigo: !codigo,
+    codigo,
+    disciplina,
+    tema,
+    revisaoApi: item.revisaoConteudo,
+    pedagogia: item.pedagogia,
+  }
+}
+
+const ctx = (
+  sessao: SessaoAprendizagem,
+  questao: QuestaoAprendizagem,
+  id: string,
+): ContextoTentativa => ({ sessao, questao, tentativaId: id })
+
+export async function novaSessaoCaptura(
+  modalidade: SessaoAprendizagem['modalidade'],
+): Promise<SessaoAprendizagem | null> {
+  try {
+    return await servico.iniciarSessao(modalidade)
+  } catch {
+    if (!avisadas.has('abertura')) {
+      avisadas.add('abertura')
+      toast(AVISO_DEGRADADO)
+    }
+    return null
+  }
+}
+
+export function apresentar(
+  sessao: SessaoAprendizagem | null | undefined,
+  questao: QuestaoAprendizagem,
+  id: string,
+): Promise<boolean> {
+  if (sessao?.confiavel && apresentadas.has(id)) return Promise.resolve(true)
+  return chamar(sessao, questao, async () => {
+    const r = await servico.apresentar(ctx(sessao!, questao, id))
+    if (r.status === 'salvo') apresentadas.add(id)
+    return r
+  })
+}
+
+export function submeter(
+  sessao: SessaoAprendizagem | null | undefined,
+  questao: QuestaoAprendizagem,
+  id: string,
+  respondeu: boolean,
+  incerta = false,
+  respostaTexto?: string,
+): Promise<boolean> {
+  return chamar(sessao, questao, () =>
+    servico.submeter(
+      ctx(sessao!, questao, id),
+      respondeu,
+      incerta ||
+        !questao.revisaoApi ||
+        !!(questao as QuestaoCaptura).legadoIncerto,
+      respostaTexto,
+      questao.revisaoApi,
+    ),
+  )
+}
+
+export function corrigir(
+  sessao: SessaoAprendizagem | null | undefined,
+  questao: QuestaoAprendizagem,
+  id: string,
+  acertou: boolean,
+  incerta = false,
+  revisaoApi?: string,
+  codigo?: string,
+): Promise<boolean> {
+  return chamar(sessao, questao, () =>
+    servico.corrigir(
+      ctx(sessao!, questao, id),
+      acertou,
+      incerta ||
+        !revisaoApi ||
+        revisaoApi !== questao.revisaoApi ||
+        codigo !== questao.codigo,
+      revisaoApi,
+    ),
+  )
+}
+
+export function concluirSessao(
+  sessao: SessaoAprendizagem | null | undefined,
+): Promise<boolean> {
+  return chamar(sessao, null, () => servico.concluir(sessao!))
+}
+
+const CHAVE_LIMPEZA = 'estudae:aprendizagem:limpeza'
+
+function lerLegado(): {
+  results: Resultado[]
+  watched: Record<string, number>
+} {
+  return {
+    results: local.get<Resultado[]>('results', []).filter((r) => r && r.v >= 2),
+    watched: local.get<Record<string, number>>('watched', {}),
+  }
+}
+
+export async function resetAprendizagem(): Promise<boolean> {
+  useApp.setState({ quiz: null, simulado: null })
+  apresentadas.clear()
+  avisadas.clear()
+  let marcado = false
+  try {
+    localStorage.setItem(CHAVE_LIMPEZA, 'true')
+    marcado = localStorage.getItem(CHAVE_LIMPEZA) === 'true'
+  } catch {
+    marcado = false
+  }
+  let adaptativo = false
+  try {
+    await servico.reiniciar()
+    adaptativo = true
+  } catch {
+    adaptativo = false
+  }
+  let legado = false
+  try {
+    localStorage.removeItem('estudae:results')
+    localStorage.removeItem('estudae:watched')
+    legado =
+      localStorage.getItem('estudae:results') === null &&
+      localStorage.getItem('estudae:watched') === null
+  } catch {
+    legado = false
+  }
+  useApp.setState({ quiz: null, simulado: null })
+  if (legado) useApp.setState({ results: [], watched: {} })
+  if (!marcado || !adaptativo || !legado) return false
+  try {
+    localStorage.removeItem(CHAVE_LIMPEZA)
+    return localStorage.getItem(CHAVE_LIMPEZA) === null
+  } catch {
+    return false
+  }
+}
+
+let retomada: Promise<void> | null = null
+
+export function iniciarCaptura(): () => void {
+  const aoMudar = (event: StorageEvent) => {
+    if (event.key === CHAVE_LIMPEZA && event.newValue !== null)
+      useApp.setState({ quiz: null, simulado: null })
+    if (
+      event.key === null ||
+      event.key === CHAVE_LIMPEZA ||
+      event.key === 'estudae:results' ||
+      event.key === 'estudae:watched'
+    )
+      useApp.setState(lerLegado())
+  }
+  window.addEventListener('storage', aoMudar)
+  retomada ??= (async () => {
+    let pendente = false
+    try {
+      pendente = localStorage.getItem(CHAVE_LIMPEZA) !== null
+    } catch {
+      pendente = false
+    }
+    if (pendente) {
+      await resetAprendizagem()
+      return
+    }
+    try {
+      await servico.ler()
+    } catch {
+      return
+    }
+  })().finally(() => {
+    retomada = null
+  })
+  return () => window.removeEventListener('storage', aoMudar)
+}
