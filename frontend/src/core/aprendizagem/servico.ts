@@ -1,10 +1,14 @@
 import { aprendizagemAtiva, CONFIG_APRENDIZAGEM } from './config'
+import { avaliarDominio } from './dominio'
+import { avaliarPreparacao } from './preparacao'
 import { criarPersistencia, ErroAprendizagem } from './persistencia'
 import { recomendar } from './recomendacao'
 import type { PersistenciaAprendizagem } from './persistencia'
 import type {
   ConfiguracaoAprendizagem,
   ConclusaoAprendizagem,
+  DiagnosticoDominio,
+  DiagnosticoPreparacao,
   EstadoAprendizagem,
   EventoAprendizagem,
   MatrizTema,
@@ -296,10 +300,26 @@ export function criarServicoAprendizagem(
         : Promise.resolve(null)
     },
     recomendar(matrizes: readonly MatrizTema[], instante = agora()) {
-      if (!ativa()) return Promise.resolve(null)
+      if (!ativa() || config.recomendacoes !== true)
+        return Promise.resolve(null)
       return serializar(async () => {
         const estado = await persistencia.ler()
         return estado ? recomendar(estado, matrizes, instante) : null
+      })
+    },
+    avaliar(matrizes: readonly MatrizTema[]): Promise<{
+      dominios: Record<string, DiagnosticoDominio>
+      preparacao: DiagnosticoPreparacao
+    } | null> {
+      if (!ativa() || config.dominio !== true) return Promise.resolve(null)
+      return serializar(async () => {
+        const estado = await persistencia.ler()
+        if (!estado) return null
+        const dominios: Record<string, DiagnosticoDominio> = {}
+        for (const m of matrizes)
+          if (m.validada && m.habilidades.some((h) => h.essencial))
+            dominios[m.tema] = avaliarDominio(estado, m)
+        return { dominios, preparacao: avaliarPreparacao(estado, matrizes) }
       })
     },
     pendente(c: ContextoTentativa): Promise<EventoAprendizagem | null> {

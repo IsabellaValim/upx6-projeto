@@ -4,9 +4,6 @@ import type {
   GravacaoAprendizagem,
   ServicoAprendizagem,
 } from './aprendizagem/servico'
-import { avaliarDominio } from './aprendizagem/dominio'
-import { avaliarPreparacao } from './aprendizagem/preparacao'
-import { recomendar } from './aprendizagem/recomendacao'
 import type {
   DiagnosticoDominio,
   DiagnosticoPreparacao,
@@ -236,20 +233,17 @@ export async function avaliarArea(
   disciplina: string,
 ): Promise<AvaliacaoEstudo | null> {
   try {
-    const [pedagogia, estado] = await Promise.all([
-      api.pedagogia(disciplina),
-      servico.ler(),
-    ])
-    if (!estado) return null
+    const pedagogia = await api.pedagogia(disciplina)
     const matrizes = matrizesAprendizagem(pedagogia)
-    const dominios: Record<string, DiagnosticoDominio> = {}
-    for (const m of matrizes)
-      if (m.validada && m.habilidades.some((h) => h.essencial))
-        dominios[m.tema] = avaliarDominio(estado, m)
+    const [av, rec] = await Promise.all([
+      servico.avaliar(matrizes),
+      servico.recomendar(matrizes),
+    ])
+    if (!av) return null
     return {
-      recomendacao: recomendar(estado, matrizes, Date.now()).recomendacao,
-      preparacao: avaliarPreparacao(estado, matrizes),
-      dominios,
+      recomendacao: rec?.recomendacao ?? null,
+      preparacao: av.preparacao,
+      dominios: av.dominios,
     }
   } catch {
     return null
@@ -261,16 +255,13 @@ export async function sugestaoDoDia(
   disciplinas: readonly string[],
 ): Promise<RecomendacaoTema | null> {
   try {
-    const [estado, pedagogias] = await Promise.all([
-      servico.ler(),
-      Promise.all(disciplinas.map((d) => api.pedagogia(d))),
-    ])
-    if (!estado) return null
-    return recomendar(
-      estado,
-      pedagogias.flatMap(matrizesAprendizagem),
-      Date.now(),
-    ).recomendacao
+    const pedagogias = await Promise.all(
+      disciplinas.map((d) => api.pedagogia(d)),
+    )
+    return (
+      (await servico.recomendar(pedagogias.flatMap(matrizesAprendizagem)))
+        ?.recomendacao ?? null
+    )
   } catch {
     return null
   }

@@ -200,7 +200,10 @@ describe('serviço de aprendizagem', () => {
       eventos: [],
       conclusoes: [],
     })
-    const ligado = criarServicoAprendizagem(config, { persistencia: p })
+    const ligado = criarServicoAprendizagem(
+      { ...config, recomendacoes: true },
+      { persistencia: p },
+    )
     expect(await ligado.recomendar([matriz])).toEqual({
       recomendacao: {
         disciplina: 'matematica',
