@@ -1,9 +1,8 @@
 using Estudae.Api.Cli;
+using Estudae.Api.Conta;
 using Estudae.Api.Endpoints;
 using Estudae.Infra;
-using Estudae.Infra.Identity;
 using Estudae.Infra.Persistence;
-using Microsoft.AspNetCore.Identity;
 
 // Subcomandos: rodam e saem, sem subir o servidor web (ver Cli/).
 //   dotnet Estudae.Api.dll importar <arquivo.json> [--publicar] [--validar]
@@ -20,11 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfra(builder.Configuration);
 
-// Identity com autenticação por cookie (HttpOnly por padrão). Endpoints de login e
-// cadastro ficam para o ticket de autenticação.
-builder.Services
-    .AddIdentity<Usuario, IdentityRole>()
-    .AddEntityFrameworkStores<EstudaeDbContext>();
+// Conta do aluno: Identity + cookie de sessão + chaves no banco + e-mail
+// (tudo em Conta/ConfiguracaoConta.cs; regras em Infra/Identity/PoliticaConta.cs).
+builder.Services.AddConta(builder.Configuration, builder.Environment);
 
 // AddIdentity registra a autenticação, mas não a autorização (exigida por UseAuthorization).
 builder.Services.AddAuthorization();
@@ -74,6 +71,7 @@ app.UseAuthorization();
 
 app.MapHealthChecks("/health");
 app.MapConteudo();
+app.MapConta();
 
 // /api/* que não casou com endpoint nenhum: 404 de verdade — nunca o index.html
 // do fallback de SPA. Endpoints exatos de /api ganham deste catch-all pela
