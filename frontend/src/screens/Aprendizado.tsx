@@ -17,11 +17,7 @@ import {
 } from '../core/capturaAprendizagem'
 import type { AprendizadoNivel } from '../core/capturaAprendizagem'
 import type { AcaoJornada } from '../core/aprendizagem/jornada'
-import {
-  destaqueEvolucao,
-  fraseEvolucao,
-  tituloEvolucao,
-} from '../core/aprendizagem/evolucao'
+import { tituloEvolucao } from '../core/aprendizagem/evolucao'
 import { useApp } from '../core/store'
 import { urls } from '../core/urls'
 import type { CatalogSubject } from '../types'
@@ -171,13 +167,18 @@ export default function Aprendizado() {
         <h2 className="section-label">Por matéria</h2>
         <div className="card card--flush">
           {materias.map((s) => {
-            const ev =
-              dados?.evolucoes.filter((e) => e.disciplina === s.id) ?? []
-            const destaqueMateria = destaqueEvolucao(ev)
+            const pct = dados?.pctPorMateria[s.id]
             return (
               <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
                 <strong>{s.name}</strong>
-                <small>{fraseEvolucao(subjects, destaqueMateria)}</small>
+                <small>
+                  {pct === undefined
+                    ? 'Ainda não começou.'
+                    : `${pct}% de aprendizado`}
+                </small>
+                <span className="mini-bar" aria-hidden="true">
+                  <i style={{ width: `${pct ?? 0}%` }} />
+                </span>
               </SubjectRow>
             )
           })}

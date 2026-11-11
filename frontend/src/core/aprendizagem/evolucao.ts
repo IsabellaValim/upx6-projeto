@@ -311,17 +311,3 @@ export function tituloEvolucao(
     e.tema
   )
 }
-
-export function fraseEvolucao(
-  subjects: Record<string, CatalogSubject>,
-  e: EvolucaoTema | null,
-): string {
-  if (!e || !e.rodadas.length) return 'Ainda não começou.'
-  const tema = tituloEvolucao(subjects, e)
-  if (e.comparavel) {
-    if (e.interpretacao === 'melhorou') return `Você melhorou em ${tema}.`
-    if (e.interpretacao === 'manteve') return `Bom desempenho em ${tema}.`
-    return `Praticando ${tema}.`
-  }
-  return `Começou em ${tema}.`
-}
