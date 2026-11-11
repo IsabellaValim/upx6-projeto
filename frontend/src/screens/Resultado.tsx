@@ -3,7 +3,7 @@
    a evolução do tema quando o comparador tem duas rodadas para parear, e
    o próximo passo vem do orquestrador, não da nota. Nada aqui declara
    "tema concluído": concluída é a ATIVIDADE — domínio é critério do motor. */
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
@@ -17,12 +17,61 @@ import {
 } from '../core/capturaAprendizagem'
 import type { AcaoJornada } from '../core/aprendizagem/jornada'
 import type { EvolucaoTema } from '../core/aprendizagem/evolucao'
-import { PARAMETROS_DOMINIO } from '../core/aprendizagem/config'
 import { useApp } from '../core/store'
-import { LETTERS } from '../core/utils'
+import { LETTERS, pct } from '../core/utils'
 import { urls } from '../core/urls'
 
 const minutos = (ms: number) => Math.max(1, Math.round(ms / 60000))
+
+// O placar visual da atividade — só ela, nunca o tema.
+function Donut({ correct, total }: { correct: number; total: number }) {
+  const R = 56
+  const C = 2 * Math.PI * R
+  const final = pct(correct, total)
+  const valueRef = useRef<SVGCircleElement>(null)
+  useEffect(() => {
+    const el = valueRef.current
+    if (!el) return
+    el.style.transition = 'none'
+    el.style.strokeDashoffset = String(C)
+    const raf = requestAnimationFrame(() => {
+      el.style.transition = 'stroke-dashoffset 1.1s ease .2s'
+      el.style.strokeDashoffset = String(C - C * (final / 100))
+    })
+    return () => cancelAnimationFrame(raf)
+  }, [C, final])
+  return (
+    <div
+      className="donut"
+      role="img"
+      aria-label={`Você acertou ${correct} de ${total} questões (${final}%)`}
+    >
+      <svg viewBox="0 0 140 140" aria-hidden="true">
+        <circle
+          className="donut-track"
+          cx="70"
+          cy="70"
+          r={R}
+          strokeDasharray={C}
+        />
+        <circle
+          className="donut-val"
+          cx="70"
+          cy="70"
+          r={R}
+          strokeDasharray={C}
+          ref={valueRef}
+        />
+        <text x="70" y="70" className="donut-num">
+          {final}%
+        </text>
+        <text x="70" y="93" className="donut-sub">
+          {correct} de {total}
+        </text>
+      </svg>
+    </div>
+  )
+}
 
 export default function Resultado() {
   const { idx = '0' } = useParams()
@@ -59,12 +108,7 @@ export default function Resultado() {
         )
         if (e && (e.referencia ?? e.ultima)) setEvolucao(e)
         const d = a.dominios[temaEvolucao.slug]
-        if (d)
-          setEstagio(
-            d.estado === 'em-pratica'
-              ? `${ESTADO_TEXTO[d.estado]} · ${d.janela.length} de ${PARAMETROS_DOMINIO.boaMin} boas práticas`
-              : ESTADO_TEXTO[d.estado],
-          )
+        if (d) setEstagio(ESTADO_TEXTO[d.estado])
       }
     })
     return () => {
@@ -100,6 +144,7 @@ export default function Resultado() {
           <Icon name="xBox" />
         </Link>
       </div>
+      <Donut correct={r.correct} total={r.total} />
       <div className="stats">
         <div className="stat stat--ok">
           <strong>{r.correct}</strong>
@@ -204,9 +249,6 @@ export default function Resultado() {
       >
         Ver meu aprendizado
       </Link>
-      <p className="small center" style={{ marginTop: '1rem' }}>
-        Sua evolução fica registrada em Meu aprendizado.
-      </p>
     </Screen>
   )
 }

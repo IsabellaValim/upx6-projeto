@@ -432,6 +432,7 @@ export interface AvaliacaoEstudo {
   recomendacao: RecomendacaoTema | null
   preparacao: DiagnosticoPreparacao
   dominios: Record<string, DiagnosticoDominio>
+  evolucoes: EvolucaoTema[]
 }
 
 export const MOTIVO_TEXTO: Record<MotivoRecomendacao, string> = {
@@ -454,6 +455,8 @@ export async function avaliarArea(
   disciplina: string,
 ): Promise<AvaliacaoEstudo | null> {
   try {
+    const estado = await servico.ler()
+    if (!estado) return null
     const pedagogia = await api.pedagogia(disciplina)
     const matrizes = matrizesAprendizagem(pedagogia)
     const [av, rec] = await Promise.all([
@@ -465,6 +468,7 @@ export async function avaliarArea(
       recomendacao: rec?.recomendacao ?? null,
       preparacao: av.preparacao,
       dominios: av.dominios,
+      evolucoes: compararDesempenho(estado, matrizes),
     }
   } catch {
     return null

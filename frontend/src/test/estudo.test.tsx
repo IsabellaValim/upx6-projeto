@@ -254,13 +254,9 @@ describe('Estudo adaptativo: estágio na Área', () => {
     }
     await waitFor(() => expect(useApp.getState().results.length).toBe(1))
     // O próprio resultado já mostra a evolução do tema.
-    expect(
-      await screen.findByText(/Em progresso · 3 de 4 boas práticas/),
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Em progresso')).toBeInTheDocument()
     cleanup()
     abrir('/area/matematica')
-    expect(
-      await screen.findByText(/Em progresso · 3 de 4 boas práticas/),
-    ).toBeInTheDocument()
+    expect(await screen.findByText('Em progresso')).toBeInTheDocument()
   })
 })

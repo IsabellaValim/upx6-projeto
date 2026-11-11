@@ -9,7 +9,7 @@ import type {
   ParametrosRecomendacao,
   SessaoAprendizagem,
 } from './tipos'
-import type { Resultado } from '../../types'
+import type { CatalogSubject, Resultado } from '../../types'
 
 /** Feedback de atividades reais, separado de domínio e preparo para o exame.
  *  Inclui tentativas repetidas, portanto NUNCA serve de prova de domínio. */
@@ -294,4 +294,34 @@ export function habilidadesBoas(
       (a, b) => Number(essenciais.has(b.slug)) - Number(essenciais.has(a.slug)),
     )
     .map((h) => h.slug)
+}
+
+/* ---------- Frases curtas para as telas ----------
+
+   Os componentes compartilham estas duas resoluções de texto: o título do
+   tema pelo catálogo e a frase-resumo de uma matéria. Textos de linha
+   única, feitos para serem lidos de relance. */
+
+export function tituloEvolucao(
+  subjects: Record<string, CatalogSubject>,
+  e: EvolucaoTema,
+): string {
+  return (
+    subjects[e.disciplina]?.topics.find((t) => t.slug === e.tema)?.title ??
+    e.tema
+  )
+}
+
+export function fraseEvolucao(
+  subjects: Record<string, CatalogSubject>,
+  e: EvolucaoTema | null,
+): string {
+  if (!e || !e.rodadas.length) return 'Ainda não começou.'
+  const tema = tituloEvolucao(subjects, e)
+  if (e.comparavel) {
+    if (e.interpretacao === 'melhorou') return `Você melhorou em ${tema}.`
+    if (e.interpretacao === 'manteve') return `Bom desempenho em ${tema}.`
+    return `Praticando ${tema}.`
+  }
+  return `Começou em ${tema}.`
 }

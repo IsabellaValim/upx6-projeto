@@ -9,7 +9,7 @@ import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
 import { ContinueBtn, HistoryList, SubjectRow } from '../components/Progress'
 import { ComparacaoTema } from '../components/Evolucao'
-import { materiasDoNivel, NIVEIS } from '../core/catalogo'
+import { materiasDoNivel } from '../core/catalogo'
 import {
   avaliarAprendizado,
   linkDaAcao,
@@ -19,21 +19,12 @@ import type { AprendizadoNivel } from '../core/capturaAprendizagem'
 import type { AcaoJornada } from '../core/aprendizagem/jornada'
 import {
   destaqueEvolucao,
-  type EvolucaoTema,
+  fraseEvolucao,
+  tituloEvolucao,
 } from '../core/aprendizagem/evolucao'
 import { useApp } from '../core/store'
 import { urls } from '../core/urls'
 import type { CatalogSubject } from '../types'
-
-function tituloTema(
-  subjects: Record<string, CatalogSubject>,
-  e: EvolucaoTema,
-): string {
-  return (
-    subjects[e.disciplina]?.topics.find((t) => t.slug === e.tema)?.title ??
-    e.tema
-  )
-}
 
 function tituloHabilidade(
   subjects: Record<string, CatalogSubject>,
@@ -48,23 +39,6 @@ function tituloHabilidade(
   )
 }
 
-/* Frase curta do cartão de cada matéria, na mesma ordem de evidência da
-   seção principal: comparação → prática recente → nada ainda. */
-function fraseMateria(
-  subjects: Record<string, CatalogSubject>,
-  e: EvolucaoTema | null,
-): string {
-  if (!e || !e.rodadas.length) return 'Ainda não começou.'
-  const tema = tituloTema(subjects, e)
-  if (e.comparavel) {
-    if (e.interpretacao === 'melhorou') return `Você melhorou em ${tema}.`
-    if (e.interpretacao === 'manteve')
-      return `Você manteve um bom desempenho em ${tema}.`
-    return `Você está praticando ${tema}.`
-  }
-  return `Você começou a estudar ${tema}.`
-}
-
 export default function Aprendizado() {
   const nivel = useApp((s) => s.nivel)
   const subjects = useApp((s) => s.subjects)
@@ -73,7 +47,6 @@ export default function Aprendizado() {
   const [dados, setDados] = useState<AprendizadoNivel | null>(null)
   const [acao, setAcao] = useState<AcaoJornada | null>(null)
   const [carregado, setCarregado] = useState(false)
-  const prova = nivel ? NIVEIS[nivel]?.nome : null
 
   useEffect(() => {
     let vivo = true
@@ -94,7 +67,7 @@ export default function Aprendizado() {
 
   const destaque = dados?.destaque ?? null
   const materias = materiasDoNivel(subjects, nivel)
-  const temaDestaque = destaque ? tituloTema(subjects, destaque) : null
+  const temaDestaque = destaque ? tituloEvolucao(subjects, destaque) : null
   const materiaDestaque = destaque
     ? (subjects[destaque.disciplina]?.name ?? destaque.disciplina)
     : null
@@ -139,11 +112,6 @@ export default function Aprendizado() {
       <header className="topbar">
         <h1>Meu aprendizado</h1>
       </header>
-      <p className="lede">
-        {prova
-          ? `Sua evolução na prova de ${prova}.`
-          : 'Sua evolução nos estudos.'}
-      </p>
       <p className="aprendizado-msg" role="status">
         {msgTopo}
       </p>
@@ -162,10 +130,7 @@ export default function Aprendizado() {
 
       {carregado && !destaque && (
         <div className="empty">
-          <p>
-            Responda algumas questões de qualquer matéria. Depois de duas
-            atividades sobre o mesmo assunto, sua evolução aparece aqui.
-          </p>
+          <p>Responda algumas questões — sua evolução aparece aqui.</p>
         </div>
       )}
 
@@ -212,7 +177,7 @@ export default function Aprendizado() {
             return (
               <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
                 <strong>{s.name}</strong>
-                <small>{fraseMateria(subjects, destaqueMateria)}</small>
+                <small>{fraseEvolucao(subjects, destaqueMateria)}</small>
               </SubjectRow>
             )
           })}

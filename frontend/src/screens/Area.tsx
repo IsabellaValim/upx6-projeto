@@ -1,9 +1,10 @@
-/* Área: progresso da matéria e os temas, um aberto por vez */
+/* Área: evolução da matéria e os temas, um aberto por vez */
 import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { BackBtn } from '../components/Nav'
-import { Bar, ContinueBtn } from '../components/Progress'
+import { ContinueBtn } from '../components/Progress'
+import { ComparacaoTema } from '../components/Evolucao'
 import { Screen } from '../components/Screen'
 import {
   ESTADO_TEXTO,
@@ -11,7 +12,7 @@ import {
   avaliarArea,
 } from '../core/capturaAprendizagem'
 import type { AvaliacaoEstudo } from '../core/capturaAprendizagem'
-import { PARAMETROS_DOMINIO } from '../core/aprendizagem/config'
+import { destaqueEvolucao, tituloEvolucao } from '../core/aprendizagem/evolucao'
 import { useApp } from '../core/store'
 import { nextActivity, subjectProgress, topicProgress } from '../core/stats'
 import { urls } from '../core/urls'
@@ -48,6 +49,7 @@ export default function Area() {
   if (!s) return <Navigate to={urls.home} replace />
   const geral = subjectProgress(id)
   const comecou = geral.done > 0
+  const destaque = destaqueEvolucao(avaliacao?.evolucoes ?? [])
 
   return (
     <Screen cls="screen--nav" nav="inicio">
@@ -57,7 +59,7 @@ export default function Area() {
       <h1 className="title">{s.name}</h1>
       <p className="lede">
         {!next
-          ? 'Você explorou as atividades disponíveis. Pode praticar novamente quando quiser.'
+          ? 'Você já explorou tudo — pode praticar de novo.'
           : comecou
             ? 'Continue de onde você parou.'
             : 'Comece pelo primeiro tema.'}
@@ -88,20 +90,15 @@ export default function Area() {
             />
           )
         })()}
-      <section
-        className="card progress-card"
-        aria-labelledby="progresso-materia"
-      >
-        <h2 id="progresso-materia">Seu progresso</h2>
-        <p>
-          <strong>{geral.done}</strong> de {geral.total} atividades
-        </p>
-        <Bar
-          done={geral.done}
-          total={geral.total}
-          rotulo={`Progresso em ${s.name}`}
-        />
-      </section>
+      {/* "Seu progresso" virou "Sua evolução": em vez de contar atividades
+          fechadas, mostra o antes/depois do tema com mais evidência —
+          o mesmo recorte da tela Meu aprendizado, só desta matéria. */}
+      {destaque && (destaque.referencia ?? destaque.ultima) && (
+        <section className="card" aria-label={`Sua evolução em ${s.name}`}>
+          <h2 className="card-title">{tituloEvolucao(subjects, destaque)}</h2>
+          <ComparacaoTema e={destaque} />
+        </section>
+      )}
       <h2 className="section-label">Temas</h2>
       <div className="topic-list">
         {s.topics.length === 0 && (
@@ -111,20 +108,20 @@ export default function Area() {
         )}
         {s.topics.map((t, i) => {
           const p = topicProgress(id, i)
+          const ev = avaliacao?.evolucoes.find((e) => e.tema === t.slug)
           const status = p.completo ? (
             <>
               <Icon name="check" />
-              Atividades realizadas
+              Atividades feitas
             </>
+          ) : ev?.ultima ? (
+            `Última: ${ev.ultima.acertos} de ${ev.ultima.total} certas`
           ) : (
-            `${p.done} de ${p.total} atividades concluídas`
+            'Ainda não estudada'
           )
           // Estágio adaptativo do tema (só aparece onde a curadoria validou).
-          const dom = avaliacao?.dominios[t.slug]
-          const estagio = dom
-            ? dom.estado === 'em-pratica'
-              ? `${ESTADO_TEXTO[dom.estado]} · ${dom.janela.length} de ${PARAMETROS_DOMINIO.boaMin} boas práticas`
-              : ESTADO_TEXTO[dom.estado]
+          const estagio = avaliacao?.dominios[t.slug]
+            ? ESTADO_TEXTO[avaliacao.dominios[t.slug]!.estado]
             : null
           // Conclusão por ação: todas as aulas vistas / todas as questões
           // acertadas ao menos uma vez. O botão vira verde com check e muda o

@@ -4,11 +4,17 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ContinueBtn, SubjectRow } from '../components/Progress'
 import { Screen } from '../components/Screen'
-import { linkDaAcao, proximaAcaoNivel } from '../core/capturaAprendizagem'
+import {
+  avaliarAprendizado,
+  linkDaAcao,
+  proximaAcaoNivel,
+} from '../core/capturaAprendizagem'
+import type { AprendizadoNivel } from '../core/capturaAprendizagem'
 import type { AcaoJornada } from '../core/aprendizagem/jornada'
+import { destaqueEvolucao, fraseEvolucao } from '../core/aprendizagem/evolucao'
 import { NIVEIS, materiasDoNivel } from '../core/catalogo'
 import { useApp } from '../core/store'
-import { nextActivity, subjectProgress } from '../core/stats'
+import { nextActivity } from '../core/stats'
 import { urls } from '../core/urls'
 
 export default function Home() {
@@ -54,6 +60,17 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idsMaterias, nivel, results, watched])
   const jornada = acao?.k === idsMaterias ? linkDaAcao(acao.a) : null
+  // Frase de evolução sob cada matéria (o comparador, não o contador).
+  const [dados, setDados] = useState<AprendizadoNivel | null>(null)
+  useEffect(() => {
+    let ativo = true
+    void avaliarAprendizado(nivel).then((a) => {
+      if (ativo) setDados(a)
+    })
+    return () => {
+      ativo = false
+    }
+  }, [nivel, results.length])
   const proxima =
     jornada ??
     (next && ultima
@@ -93,24 +110,21 @@ export default function Home() {
       <h2 className="section-label">Estudar por matéria</h2>
       {materias.length ? (
         <div className="subject-list">
-          {materias.map((s) => {
-            const p = subjectProgress(s.id)
-            return (
-              <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
-                <strong>{s.name}</strong>
-                <small>
-                  {p.done} de {p.total} atividades
-                </small>
-                <span className="mini-bar" aria-hidden="true">
-                  <i
-                    style={{
-                      width: `${p.total ? (p.done / p.total) * 100 : 0}%`,
-                    }}
-                  />
-                </span>
-              </SubjectRow>
-            )
-          })}
+          {materias.map((s) => (
+            <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
+              <strong>{s.name}</strong>
+              <small>
+                {fraseEvolucao(
+                  subjects,
+                  dados
+                    ? destaqueEvolucao(
+                        dados.evolucoes.filter((e) => e.disciplina === s.id),
+                      )
+                    : null,
+                )}
+              </small>
+            </SubjectRow>
+          ))}
         </div>
       ) : (
         <div className="empty">

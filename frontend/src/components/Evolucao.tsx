@@ -11,18 +11,17 @@ import type {
 import { Bar } from './Progress'
 
 const INTERPRETACAO_TEXTO: Record<InterpretacaoEvolucao, string> = {
-  melhorou:
-    'Você acertou mais questões — seu desempenho melhorou neste assunto.',
+  melhorou: 'Você acertou mais desta vez!',
   manteve: 'Você manteve um bom desempenho.',
-  continuar: 'Vamos continuar praticando este assunto.',
+  continuar: 'Vamos continuar praticando.',
 }
 
 const MOTIVO_COMPARACAO_TEXTO: Record<MotivoNaoComparavel, string> = {
-  'poucas-questoes': 'A última atividade foi curtinha demais para comparar.',
-  'habilidades-distintas': 'As duas atividades medem habilidades diferentes.',
-  'dificuldade-diferente': 'As questões desta vez eram mais difíceis.',
-  'questoes-repetidas': 'As questões se repetiram — repetição não conta.',
-  'familias-repetidas': 'As questões se repetiram — repetição não conta.',
+  'poucas-questoes': 'Atividade curta demais para comparar.',
+  'habilidades-distintas': 'Mediram coisas diferentes — não dá para comparar.',
+  'dificuldade-diferente': 'Questões mais difíceis — não dá para comparar.',
+  'questoes-repetidas': 'Questões repetidas — não contam.',
+  'familias-repetidas': 'Questões repetidas — não contam.',
 }
 
 function Placar({
@@ -81,9 +80,8 @@ export function ComparacaoTema({ e }: { e: EvolucaoTema }) {
   if (!r) return null
   return (
     <p>
-      <strong>Seu primeiro resultado:</strong> você acertou {r.acertos} de{' '}
-      {r.total} questões. Continue — na próxima atividade, questões novas medem
-      sua evolução.
+      <strong>Primeira vez neste assunto:</strong> {r.acertos} de {r.total}{' '}
+      certas. Continue!
     </p>
   )
 }
