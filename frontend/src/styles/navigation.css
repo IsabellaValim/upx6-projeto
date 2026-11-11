@@ -11,7 +11,7 @@
   width: 100%;
   max-width: 430px;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   background: var(--lilac-soft);
   border-top: 1px solid var(--lilac);
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -42,7 +42,7 @@
 }
 .bottom-nav a[aria-current="page"] .ico {
   background: var(--lilac);
-  padding: 0.25rem 1rem;
+  padding: 0.25rem 0.65rem;
 }
 
 /* ---------- Folha inferior (escolher área) ---------- */

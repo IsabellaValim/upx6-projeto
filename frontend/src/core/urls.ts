@@ -8,6 +8,7 @@ export const urls = {
   home: '/home',
   nivel: '/nivel', // escolha da prova (Fundamental ou Médio)
   progresso: '/progresso',
+  preparacao: '/preparacao',
   perfil: '/perfil',
   acessibilidade: '/acessibilidade',
   // Área = lista de temas da matéria, cada um com "Assistir aula" e "Praticar".
