@@ -461,7 +461,7 @@ export const ESTADO_TEXTO: Record<DiagnosticoDominio['estado'], string> = {
   insuficiente: 'Para começar',
   'em-pratica': 'Em progresso',
   'bom-desempenho': 'Indo bem',
-  'dominio-confirmado': 'Consolidado',
+  'dominio-confirmado': 'Concluído',
 }
 
 // Avaliação completa de UMA área: recomendação, preparo e estágio por tema.

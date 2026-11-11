@@ -119,7 +119,18 @@ export default function Area() {
         {s.topics.map((t, i) => {
           const p = topicProgress(id, i)
           const ev = avaliacao?.evolucoes.find((e) => e.tema === t.slug)
-          const status = p.completo ? (
+          // Estágio adaptativo do tema (só aparece onde a curadoria validou).
+          // 'dominio-confirmado' = aprendido de verdade: verificação boa em
+          // questões novas depois de já estar indo bem — vira "Concluído".
+          const dominio = avaliacao?.dominios[t.slug]
+          const aprendido = dominio?.estado === 'dominio-confirmado'
+          const estagio = dominio ? ESTADO_TEXTO[dominio.estado] : null
+          const status = aprendido ? (
+            <>
+              <Icon name="check" />
+              Concluído
+            </>
+          ) : p.completo ? (
             <>
               <Icon name="check" />
               Atividades feitas
@@ -129,10 +140,6 @@ export default function Area() {
           ) : (
             'Ainda não estudada'
           )
-          // Estágio adaptativo do tema (só aparece onde a curadoria validou).
-          const estagio = avaliacao?.dominios[t.slug]
-            ? ESTADO_TEXTO[avaliacao.dominios[t.slug]!.estado]
-            : null
           // Conclusão por ação: todas as aulas vistas / todas as questões
           // acertadas ao menos uma vez. O botão vira verde com check e muda o
           // verbo ("Rever aula", "Praticar de novo") — ainda dá para refazer.
@@ -172,7 +179,7 @@ export default function Area() {
           return (
             <details
               key={t.slug}
-              className={`topic-item ${p.completo ? 'is-done' : ''}`}
+              className={`topic-item ${p.completo || aprendido ? 'is-done' : ''}`}
               name="temas"
               open={openIdx === i}
               // Um tema aberto por vez (o atributo name já faz isso nos
@@ -185,7 +192,7 @@ export default function Area() {
             >
               <summary>
                 <span className="topic-item__num" aria-hidden="true">
-                  {p.completo ? <Icon name="check" /> : i + 1}
+                  {p.completo || aprendido ? <Icon name="check" /> : i + 1}
                 </span>
                 <span className="topic-item__text">
                   <strong>{t.title}</strong>
