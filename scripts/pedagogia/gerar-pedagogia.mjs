@@ -2033,6 +2033,1034 @@ const LING = {
   },
 };
 
+// ==================== LINGUAGENS (FUNDAMENTAL) ======================
+const LING_EF = {
+  disciplina: "linguagens-fundamental",
+  versao: "estudae-ef-2026-11",
+  tipoPadrao: "interpretacao",
+  temas: {
+    "interpretacao-de-texto": {
+      habilidades: [
+        [
+          "compreender-ideia-central",
+          "Compreender a ideia central e as informações do texto",
+          true,
+        ],
+        [
+          "inferir-sentido-e-intencao",
+          "Inferir sentido e intenção além do que está escrito",
+          true,
+        ],
+        [
+          "reconhecer-estrategia-argumentativa",
+          "Reconhecer estratégias usadas para convencer",
+          false,
+        ],
+      ],
+      videos: {
+        pHRXFkx7pes: [
+          "compreender-ideia-central",
+          "inferir-sentido-e-intencao",
+        ],
+        y5jvOIM3XNo: [
+          "compreender-ideia-central",
+          "inferir-sentido-e-intencao",
+        ],
+      },
+      questoes: [
+        q(
+          "encceja-ef-2019-regular-linguagens-01",
+          "compreender-ideia-central",
+          "proposito-do-texto",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-02",
+          "compreender-ideia-central",
+          "proposito-do-texto",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-03",
+          "compreender-ideia-central",
+          "ideia-central",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-08",
+          "inferir-sentido-e-intencao",
+          "inferencia-e-intencao",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-09",
+          "compreender-ideia-central",
+          "ideia-central",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-11",
+          "inferir-sentido-e-intencao",
+          "inferencia-e-intencao",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-19",
+          "reconhecer-estrategia-argumentativa",
+          "estrategia-argumentativa",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-22",
+          "inferir-sentido-e-intencao",
+          "relacao-entre-textos",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-24",
+          "reconhecer-estrategia-argumentativa",
+          "estrategia-argumentativa",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-27",
+          "compreender-ideia-central",
+          "palavras-e-sentido",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-28",
+          "compreender-ideia-central",
+          "palavras-e-sentido",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-29",
+          "reconhecer-estrategia-argumentativa",
+          "estrategia-argumentativa",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-30",
+          "inferir-sentido-e-intencao",
+          "inferencia-e-intencao",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-001",
+          "inferir-sentido-e-intencao",
+          "inferencia-e-intencao",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-003",
+          "inferir-sentido-e-intencao",
+          "inferencia-e-intencao",
+          "avancada",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-020",
+          "inferir-sentido-e-intencao",
+          "sentido-da-palavra",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-022",
+          "reconhecer-estrategia-argumentativa",
+          "estrategia-argumentativa",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-025",
+          "inferir-sentido-e-intencao",
+          "inferencia-e-intencao",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-027",
+          "inferir-sentido-e-intencao",
+          "inferencia-e-intencao",
+          "avancada",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-030",
+          "inferir-sentido-e-intencao",
+          "evidencia-no-trecho",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-011",
+          "inferir-sentido-e-intencao",
+          "evidencia-no-trecho",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-012",
+          "inferir-sentido-e-intencao",
+          "relacao-entre-textos",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-017",
+          "inferir-sentido-e-intencao",
+          "evidencia-no-trecho",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-018",
+          "inferir-sentido-e-intencao",
+          "intertextualidade",
+          "avancada",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-022",
+          "reconhecer-estrategia-argumentativa",
+          "estrategia-argumentativa",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-028",
+          "compreender-ideia-central",
+          "palavras-e-sentido",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-002",
+          "inferir-sentido-e-intencao",
+          "evidencia-no-trecho",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-003",
+          "inferir-sentido-e-intencao",
+          "sentido-da-palavra",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-004",
+          "compreender-ideia-central",
+          "ideia-central",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-005",
+          "inferir-sentido-e-intencao",
+          "relacao-entre-textos",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-010",
+          "reconhecer-estrategia-argumentativa",
+          "estrategia-argumentativa",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-027",
+          "compreender-ideia-central",
+          "ideia-central",
+          "introdutoria",
+        ),
+      ],
+    },
+    "generos-textuais": {
+      habilidades: [
+        [
+          "reconhecer-genero-textual",
+          "Reconhecer o gênero de um texto pelas características",
+          true,
+        ],
+        [
+          "identificar-finalidade-do-genero",
+          "Identificar para que serve cada gênero textual",
+          true,
+        ],
+      ],
+      videos: {
+        YZ_xKcTuIAw: [
+          "reconhecer-genero-textual",
+          "identificar-finalidade-do-genero",
+        ],
+        "1LKtJ1aOAc0": [
+          "reconhecer-genero-textual",
+          "identificar-finalidade-do-genero",
+        ],
+      },
+      questoes: [
+        q(
+          "encceja-ef-2019-regular-linguagens-16",
+          "reconhecer-genero-textual",
+          "caracterizar-genero",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-17",
+          "identificar-finalidade-do-genero",
+          "finalidade-do-genero",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-024",
+          "reconhecer-genero-textual",
+          "caracterizar-genero",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-026",
+          "identificar-finalidade-do-genero",
+          "finalidade-do-genero",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-005",
+          "reconhecer-genero-textual",
+          "caracterizar-genero",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-008",
+          "reconhecer-genero-textual",
+          "caracterizar-genero",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-014",
+          "reconhecer-genero-textual",
+          "caracterizar-genero",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-025",
+          "identificar-finalidade-do-genero",
+          "finalidade-do-genero",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-014",
+          "reconhecer-genero-textual",
+          "evidencia-do-genero",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-016",
+          "identificar-finalidade-do-genero",
+          "finalidade-do-genero",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-017",
+          "identificar-finalidade-do-genero",
+          "finalidade-do-genero",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-018",
+          "reconhecer-genero-textual",
+          "caracterizar-genero",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-019",
+          "identificar-finalidade-do-genero",
+          "finalidade-do-genero",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-021",
+          "reconhecer-genero-textual",
+          "recurso-do-genero",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-018",
+          "reconhecer-genero-textual",
+          "caracterizar-genero",
+        ),
+      ],
+    },
+    "variacao-linguistica": {
+      habilidades: [
+        [
+          "reconhecer-variedades-da-lingua",
+          "Reconhecer variedades da língua e seus usos",
+          true,
+        ],
+        [
+          "refletir-sobre-preconceito-linguistico",
+          "Refletir sobre o preconceito linguístico",
+          false,
+        ],
+      ],
+      videos: {
+        "6fBOVygtNoU": ["reconhecer-variedades-da-lingua"],
+        Ks6GACE5DDA: [
+          "reconhecer-variedades-da-lingua",
+          "refletir-sobre-preconceito-linguistico",
+        ],
+      },
+      questoes: [
+        q(
+          "encceja-ef-2019-regular-linguagens-23",
+          "reconhecer-variedades-da-lingua",
+          "registro-e-contexto",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-019",
+          "reconhecer-variedades-da-lingua",
+          "variedades-e-origem",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-023",
+          "reconhecer-variedades-da-lingua",
+          "registro-e-contexto",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-021",
+          "reconhecer-variedades-da-lingua",
+          "variedades-e-origem",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-028",
+          "refletir-sobre-preconceito-linguistico",
+          "preconceito-linguistico",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-029",
+          "reconhecer-variedades-da-lingua",
+          "registro-e-contexto",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-020",
+          "reconhecer-variedades-da-lingua",
+          "variedades-e-origem",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-024",
+          "reconhecer-variedades-da-lingua",
+          "variedades-e-origem",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-025",
+          "reconhecer-variedades-da-lingua",
+          "registro-e-contexto",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-026",
+          "refletir-sobre-preconceito-linguistico",
+          "preconceito-linguistico",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-006",
+          "reconhecer-variedades-da-lingua",
+          "variedades-e-origem",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-007",
+          "reconhecer-variedades-da-lingua",
+          "variedades-e-origem",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-008",
+          "reconhecer-variedades-da-lingua",
+          "registro-e-contexto",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-009",
+          "reconhecer-variedades-da-lingua",
+          "registro-e-contexto",
+          "avancada",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-011",
+          "reconhecer-variedades-da-lingua",
+          "variedades-e-origem",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-014",
+          "reconhecer-variedades-da-lingua",
+          "registro-e-contexto",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-019",
+          "refletir-sobre-preconceito-linguistico",
+          "preconceito-linguistico",
+          "avancada",
+        ),
+      ],
+    },
+    gramatica: {
+      habilidades: [
+        [
+          "reconhecer-conectivos-e-coesao",
+          "Reconhecer o papel de conectivos na coesão do texto",
+          false,
+        ],
+        [
+          "interpretar-referentes",
+          "Identificar o que uma palavra retoma ou significa",
+          true,
+        ],
+      ],
+      videos: {
+        eehRPa7e8T4: [
+          "reconhecer-conectivos-e-coesao",
+          "interpretar-referentes",
+        ],
+        FYjTTHVuRJA: ["interpretar-referentes"],
+      },
+      questoes: [
+        q(
+          "encceja-ef-nacional-2020-ling-016",
+          "interpretar-referentes",
+          "sentido-de-palavras",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-021",
+          "interpretar-referentes",
+          "referentes-e-funcao",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-003",
+          "interpretar-referentes",
+          "sentido-de-palavras",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-027",
+          "interpretar-referentes",
+          "sentido-de-palavras",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-029",
+          "reconhecer-conectivos-e-coesao",
+          "conectivos",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-015",
+          "interpretar-referentes",
+          "referentes-e-funcao",
+          "avancada",
+        ),
+      ],
+    },
+    literatura: {
+      habilidades: [
+        [
+          "analisar-texto-literario",
+          "Analisar sentido e tema de textos literários",
+          true,
+        ],
+        [
+          "reconhecer-recurso-expressivo",
+          "Reconhecer recursos expressivos da linguagem literária",
+          true,
+        ],
+      ],
+      videos: {
+        G1O9WMNUU4g: [
+          "analisar-texto-literario",
+          "reconhecer-recurso-expressivo",
+        ],
+        n4X1AG0pY8U: ["analisar-texto-literario"],
+      },
+      questoes: [
+        q(
+          "encceja-ef-2019-regular-linguagens-10",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+          "avancada",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-12",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+          "avancada",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-13",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-14",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-15",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-18",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-20",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-25",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-002",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+          "avancada",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-004",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-007",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-017",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-013",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-015",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-019",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-026",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-030",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-011",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-012",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-013",
+          "reconhecer-recurso-expressivo",
+          "linguagem-e-recurso",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-013",
+          "analisar-texto-literario",
+          "sentido-e-tema",
+          "avancada",
+        ),
+      ],
+    },
+    "comunicacao-e-midias": {
+      habilidades: [
+        [
+          "analisar-texto-publicitario",
+          "Analisar propagandas, cartazes e recursos de persuasão",
+          true,
+        ],
+        [
+          "refletir-sobre-midias",
+          "Refletir sobre o impacto das mídias na vida cotidiana",
+          false,
+        ],
+        [
+          "identificar-finalidade-do-texto",
+          "Identificar a finalidade de um texto",
+          false,
+        ],
+      ],
+      videos: {
+        YZ_xKcTuIAw: ["analisar-texto-publicitario"],
+        "32t-A3lIO2s": ["analisar-texto-publicitario"],
+      },
+      questoes: [
+        q(
+          "encceja-ef-2019-regular-linguagens-04",
+          "analisar-texto-publicitario",
+          "verbale-nao-verbal",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-015",
+          "identificar-finalidade-do-texto",
+          "finalidade-do-texto",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-018",
+          "analisar-texto-publicitario",
+          "persuasao-e-recurso",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-028",
+          "analisar-texto-publicitario",
+          "verbale-nao-verbal",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-029",
+          "analisar-texto-publicitario",
+          "complemento-entre-textos",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-016",
+          "identificar-finalidade-do-texto",
+          "finalidade-do-texto",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-023",
+          "analisar-texto-publicitario",
+          "persuasao-e-recurso",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-015",
+          "analisar-texto-publicitario",
+          "persuasao-e-recurso",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-022",
+          "analisar-texto-publicitario",
+          "persuasao-e-recurso",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-023",
+          "refletir-sobre-midias",
+          "impacto-das-midias",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-022",
+          "analisar-texto-publicitario",
+          "verbale-nao-verbal",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-028",
+          "analisar-texto-publicitario",
+          "verbale-nao-verbal",
+        ),
+      ],
+    },
+    "lingua-inglesa": {
+      habilidades: [
+        [
+          "interpretar-texto-em-ingles",
+          "Interpretar a ideia e a finalidade de textos em inglês",
+          true,
+        ],
+        [
+          "reconhecer-vocabulo-em-ingles",
+          "Reconhecer palavras e expressões em inglês",
+          false,
+        ],
+      ],
+      videos: {
+        "73EBFdt5r7E": ["interpretar-texto-em-ingles"],
+        SKK_Q3RJqh0: ["reconhecer-vocabulo-em-ingles"],
+      },
+      questoes: [
+        q(
+          "encceja-ef-2019-regular-linguagens-06",
+          "reconhecer-vocabulo-em-ingles",
+          "palavras-e-expressoes-in",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-07",
+          "reconhecer-vocabulo-em-ingles",
+          "palavras-e-expressoes-in",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-013",
+          "interpretar-texto-em-ingles",
+          "finalidade-e-ideia-in",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-014",
+          "reconhecer-vocabulo-em-ingles",
+          "palavras-e-expressoes-in",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-006",
+          "interpretar-texto-em-ingles",
+          "finalidade-e-ideia-in",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-020",
+          "reconhecer-vocabulo-em-ingles",
+          "palavras-e-expressoes-in",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-001",
+          "interpretar-texto-em-ingles",
+          "finalidade-e-ideia-in",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-004",
+          "reconhecer-vocabulo-em-ingles",
+          "palavras-e-expressoes-in",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-012",
+          "interpretar-texto-em-ingles",
+          "finalidade-e-ideia-in",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-016",
+          "interpretar-texto-em-ingles",
+          "finalidade-e-ideia-in",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-017",
+          "interpretar-texto-em-ingles",
+          "finalidade-e-ideia-in",
+        ),
+      ],
+    },
+    "lingua-espanhola": {
+      habilidades: [
+        [
+          "interpretar-texto-em-espanhol",
+          "Interpretar a ideia e a finalidade de textos em espanhol",
+          true,
+        ],
+        [
+          "localizar-informacao-em-espanhol",
+          "Localizar informações e elementos em textos em espanhol",
+          false,
+        ],
+      ],
+      videos: {
+        yJ0XQkdhEfc: [
+          "interpretar-texto-em-espanhol",
+          "localizar-informacao-em-espanhol",
+        ],
+        "4J_dYPUMFsM": [
+          "interpretar-texto-em-espanhol",
+          "localizar-informacao-em-espanhol",
+        ],
+      },
+      questoes: [
+        q(
+          "encceja-ef-2019-regular-linguagens-05",
+          "interpretar-texto-em-espanhol",
+          "finalidade-e-ideia-es",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-011",
+          "interpretar-texto-em-espanhol",
+          "finalidade-e-ideia-es",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-012",
+          "interpretar-texto-em-espanhol",
+          "finalidade-e-ideia-es",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-001",
+          "interpretar-texto-em-espanhol",
+          "finalidade-e-ideia-es",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-024",
+          "localizar-informacao-em-espanhol",
+          "informacao-e-elementos-es",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-002",
+          "interpretar-texto-em-espanhol",
+          "finalidade-e-ideia-es",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-003",
+          "localizar-informacao-em-espanhol",
+          "informacao-e-elementos-es",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-020",
+          "localizar-informacao-em-espanhol",
+          "informacao-e-elementos-es",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-030",
+          "interpretar-texto-em-espanhol",
+          "finalidade-e-ideia-es",
+        ),
+      ],
+    },
+    arte: {
+      habilidades: [
+        [
+          "analisar-obra-artistica",
+          "Analisar o sentido de obras e imagens artísticas",
+          true,
+        ],
+        [
+          "relacionar-arte-e-contexto",
+          "Relacionar arte e contexto social e histórico",
+          true,
+        ],
+      ],
+      videos: {
+        ksblph0NNNM: ["analisar-obra-artistica"],
+        JShfqng4lGU: ["relacionar-arte-e-contexto"],
+      },
+      questoes: [
+        q(
+          "encceja-ef-2019-regular-linguagens-21",
+          "analisar-obra-artistica",
+          "sentido-da-obra",
+        ),
+        q(
+          "encceja-ef-2019-regular-linguagens-26",
+          "analisar-obra-artistica",
+          "sentido-da-obra",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-005",
+          "analisar-obra-artistica",
+          "conceito-e-tecnica",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-006",
+          "analisar-obra-artistica",
+          "conceito-e-tecnica",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-004",
+          "analisar-obra-artistica",
+          "sentido-da-obra",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-007",
+          "analisar-obra-artistica",
+          "conceito-e-tecnica",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-027",
+          "relacionar-arte-e-contexto",
+          "arte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-008",
+          "relacionar-arte-e-contexto",
+          "arte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-009",
+          "relacionar-arte-e-contexto",
+          "arte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-010",
+          "analisar-obra-artistica",
+          "sentido-da-obra",
+          "avancada",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-030",
+          "analisar-obra-artistica",
+          "conceito-e-tecnica",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-001",
+          "relacionar-arte-e-contexto",
+          "arte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-024",
+          "relacionar-arte-e-contexto",
+          "arte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-025",
+          "analisar-obra-artistica",
+          "sentido-da-obra",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-026",
+          "relacionar-arte-e-contexto",
+          "arte-e-sociedade",
+        ),
+      ],
+    },
+    "educacao-fisica": {
+      habilidades: [
+        [
+          "entender-esporte-como-cultura",
+          "Entender o esporte como prática cultural e social",
+          true,
+        ],
+        [
+          "entender-saude-e-habitos",
+          "Entender textos sobre saúde, corpo e hábitos de vida",
+          true,
+        ],
+      ],
+      videos: {
+        NxCtyHFVJko: [
+          "entender-esporte-como-cultura",
+          "entender-saude-e-habitos",
+        ],
+        "1ldFZtxknhk": ["entender-esporte-como-cultura"],
+      },
+      questoes: [
+        q(
+          "encceja-ef-nacional-2020-ling-008",
+          "entender-esporte-como-cultura",
+          "conceito-de-esporte-e-jogo",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-009",
+          "entender-esporte-como-cultura",
+          "esporte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-nacional-2020-ling-010",
+          "entender-esporte-como-cultura",
+          "esporte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-002",
+          "entender-saude-e-habitos",
+          "saude-e-corpo",
+          "introdutoria",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-009",
+          "entender-esporte-como-cultura",
+          "conceito-de-esporte-e-jogo",
+        ),
+        q(
+          "encceja-ef-nacional-2022-ling-010",
+          "entender-esporte-como-cultura",
+          "esporte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-005",
+          "entender-esporte-como-cultura",
+          "esporte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-006",
+          "entender-esporte-como-cultura",
+          "esporte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-ppl-2020-ling-007",
+          "entender-saude-e-habitos",
+          "saude-e-corpo",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-021",
+          "entender-esporte-como-cultura",
+          "esporte-e-sociedade",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-023",
+          "entender-esporte-como-cultura",
+          "etica-no-esporte",
+        ),
+        q(
+          "encceja-ef-ppl-2022-ling-029",
+          "entender-saude-e-habitos",
+          "saude-e-corpo",
+          "introdutoria",
+        ),
+      ],
+    },
+  },
+};
+
 // ============================= Geração =============================
 function gerar(config, impressoesPath) {
   const impressoes = JSON.parse(
@@ -2116,7 +3144,7 @@ function gerar(config, impressoesPath) {
     formato: 1,
     revisor: REVISOR,
     disciplina: config.disciplina,
-    matriz: { versao: VERSAO, validada: true },
+    matriz: { versao: config.versao ?? VERSAO, validada: true },
     temas,
   };
 }
@@ -2126,6 +3154,7 @@ mkdirSync(out, { recursive: true });
 for (const [cfg, dump] of [
   [MAT, join(RAIZ, "backups", "impressoes-matematica.json")],
   [LING, join(RAIZ, "backups", "impressoes-linguagens.json")],
+  [LING_EF, join(RAIZ, "backups", "impressoes-linguagens-fundamental.json")],
 ]) {
   const arquivo = gerar(cfg, dump);
   const destino = join(out, `pedagogia-${cfg.disciplina}.json`);
