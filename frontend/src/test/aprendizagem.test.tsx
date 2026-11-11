@@ -117,7 +117,13 @@ beforeEach(async () => {
 
 describe('Aprendizagem: flag desligada (fluxo tradicional)', () => {
   it('lição funciona sem gravar nada no motor', async () => {
-    const svc = criarServicoAprendizagem()
+    const svc = criarServicoAprendizagem({
+      habilitado: false,
+      registrarEventos: false,
+      dominio: false,
+      recomendacoes: false,
+      disciplinas: [],
+    })
     cap.definirServicoAprendizagem(svc)
     vi.stubGlobal('fetch', mockFetch())
     abrir('/quiz/matematica/0')

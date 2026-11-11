@@ -31,22 +31,32 @@ function fronteira() {
 }
 
 describe('serviço de aprendizagem', () => {
-  it('todos os flags começam desligados e a allowlist vazia', () => {
+  it('flags ligados cobrem as quatro disciplinas da prova', () => {
     expect(CONFIG_APRENDIZAGEM).toEqual({
-      habilitado: false,
-      registrarEventos: false,
-      dominio: false,
-      recomendacoes: false,
-      disciplinas: [],
-      temas: [],
+      habilitado: true,
+      registrarEventos: true,
+      dominio: true,
+      recomendacoes: true,
+      disciplinas: [
+        'matematica',
+        'linguagens',
+        'matematica-fundamental',
+        'linguagens-fundamental',
+      ],
     })
   })
   it('desativado nunca acessa persistência e não retorna salvo', async () => {
     const p = fronteira()
-    const s = criarServicoAprendizagem(undefined, {
-      persistencia: p,
-      novoId: () => 's',
-    })
+    const s = criarServicoAprendizagem(
+      {
+        habilitado: false,
+        registrarEventos: false,
+        dominio: false,
+        recomendacoes: false,
+        disciplinas: [],
+      },
+      { persistencia: p, novoId: () => 's' },
+    )
     const sessao = await s.iniciarSessao('licao')
     const c = { sessao, questao, tentativaId: 't' }
     expect(sessao.confiavel).toBe(false)
@@ -165,9 +175,16 @@ describe('serviço de aprendizagem', () => {
       habilidades: [{ slug: 'contar', essencial: true }],
       questoes: [],
     }
-    const desligado = criarServicoAprendizagem(undefined, {
-      persistencia: fronteira(),
-    })
+    const desligado = criarServicoAprendizagem(
+      {
+        habilitado: false,
+        registrarEventos: false,
+        dominio: false,
+        recomendacoes: false,
+        disciplinas: [],
+      },
+      { persistencia: fronteira() },
+    )
     expect(await desligado.recomendar([matriz])).toBeNull()
     const p = fronteira()
     p.ler.mockResolvedValue({
