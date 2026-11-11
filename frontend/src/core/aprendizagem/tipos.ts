@@ -166,6 +166,7 @@ export interface DiagnosticoRecomendacao {
 export interface ParametrosPreparacao {
   minTemas: number
   temasConfirmados: number
+  habilitarConclusaoFavoravel?: boolean
 }
 
 export type EstadoPreparacao = 'sem-dados' | 'em-progresso' | 'boa-preparacao'

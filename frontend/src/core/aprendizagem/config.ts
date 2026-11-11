@@ -26,6 +26,8 @@ export const PARAMETROS_PREPARACAO: Readonly<ParametrosPreparacao> =
   Object.freeze({
     minTemas: 3,
     temasConfirmados: 2,
+    // Apenas critérios experimentais: falta matriz oficial e simulado representativo.
+    habilitarConclusaoFavoravel: false,
   })
 
 export const CONFIG_APRENDIZAGEM: Readonly<ConfiguracaoAprendizagem> =
