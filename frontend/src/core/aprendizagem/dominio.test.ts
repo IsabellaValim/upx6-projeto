@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { avaliarDemonstracao, avaliarDominio } from './dominio'
+import { avaliarDominio } from './dominio'
 import { extrairEvidencias } from './evidencias'
 import { PARAMETROS_DOMINIO } from './config'
 import type {
@@ -529,47 +529,5 @@ describe('parâmetros de domínio injetados', () => {
     expect(() =>
       avaliarDominio(estado, matriz, { ...PARAMETROS_DOMINIO, ...alteracao }),
     ).toThrow('Parâmetros de domínio inválidos')
-  })
-})
-
-describe('demonstração por iterações, sem retenção ou promoção persistida', () => {
-  it('mostra progresso em três iterações independentes, sem relógio', () => {
-    const iteracoes = [1, 2, 3].map((i) => ({
-      id: `i${i}`,
-      total: 2,
-      acertos: 2,
-    }))
-    expect(avaliarDemonstracao(iteracoes.slice(0, 1)).progresso).toBeCloseTo(
-      1 / 3,
-    )
-    expect(avaliarDemonstracao(iteracoes)).toEqual({
-      estado: 'demonstracao',
-      iteracoesConcluidas: 3,
-      metaIteracoes: 3,
-      progresso: 1,
-      concluida: true,
-      dominioConfirmado: false,
-      confirmacaoTemporal: false,
-    })
-  })
-  it('não duplica iterações nem aceita contagens inválidas ou resultado insuficiente', () => {
-    expect(
-      avaliarDemonstracao([
-        { id: '1', total: 2, acertos: 2 },
-        { id: '1', total: 2, acertos: 2 },
-        { id: '2', total: 3, acertos: 2 },
-        { id: '3', total: 2, acertos: 5 },
-      ]).iteracoesConcluidas,
-    ).toBe(1)
-  })
-  it('não altera o estado de produção nem contorna suas exigências temporais', () => {
-    const { estado, matriz, adicionar } = cenario()
-    for (let i = 1; i <= 6; i++) adicionar(i)
-    const antes = structuredClone(estado)
-    avaliarDemonstracao(
-      [1, 2, 3].map((i) => ({ id: String(i), total: 2, acertos: 2 })),
-    )
-    expect(estado).toEqual(antes)
-    expect(avaliarDominio(estado, matriz).estado).not.toBe('dominio-confirmado')
   })
 })

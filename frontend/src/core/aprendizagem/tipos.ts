@@ -119,29 +119,6 @@ export interface ParametrosDominio {
   confirmacaoMin: number
 }
 
-export interface ConfiguracaoDemonstracao {
-  modo: 'demonstracao'
-  metaIteracoes: number
-  minimoQuestoes: number
-  taxaMinima: number
-}
-
-export interface IteracaoDemonstracao {
-  id: string
-  acertos: number
-  total: number
-}
-
-export interface DiagnosticoDemonstracao {
-  estado: 'demonstracao'
-  iteracoesConcluidas: number
-  metaIteracoes: number
-  progresso: number
-  concluida: boolean
-  dominioConfirmado: false
-  confirmacaoTemporal: false
-}
-
 export interface DiagnosticoDominio {
   estado:
     | 'insuficiente'
