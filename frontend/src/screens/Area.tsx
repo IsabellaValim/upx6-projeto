@@ -57,7 +57,7 @@ export default function Area() {
       <h1 className="title">{s.name}</h1>
       <p className="lede">
         {!next
-          ? 'Você concluiu todas as atividades. Pratique de novo quando quiser.'
+          ? 'Você explorou as atividades disponíveis. Pode praticar novamente quando quiser.'
           : comecou
             ? 'Continue de onde você parou.'
             : 'Comece pelo primeiro tema.'}
@@ -101,9 +101,6 @@ export default function Area() {
           total={geral.total}
           rotulo={`Progresso em ${s.name}`}
         />
-        {avaliacao?.preparacao.estado === 'boa-preparacao' && (
-          <p className="preparo">Você está indo muito bem nesta área.</p>
-        )}
       </section>
       <h2 className="section-label">Temas</h2>
       <div className="topic-list">
@@ -117,7 +114,7 @@ export default function Area() {
           const status = p.completo ? (
             <>
               <Icon name="check" />
-              Tema concluído
+              Atividades realizadas
             </>
           ) : (
             `${p.done} de ${p.total} atividades concluídas`
