@@ -3,6 +3,8 @@
    formato das telas e estado persistido (localStorage estudae:*)
    ========================================================== */
 
+import type { SessaoAprendizagem } from './core/aprendizagem/tipos'
+
 // ---------- API (docs/api.md) ----------
 export interface DisciplinaApi {
   slug: string
@@ -17,6 +19,13 @@ export interface VideoApi {
   titulo: string
   youtubeId: string
   duracaoSegundos: number | null
+  habilidades: string[]
+}
+
+export interface HabilidadeApi {
+  slug: string
+  titulo: string
+  essencial: boolean
 }
 
 export interface TemaApi {
@@ -25,6 +34,7 @@ export interface TemaApi {
   sobre: string | null
   totalQuestoes: number
   videos: VideoApi[]
+  habilidades: HabilidadeApi[]
 }
 
 export interface ImagemApi {
@@ -39,19 +49,58 @@ export interface ProvaApi {
   numero?: number
 }
 
+export interface PedagogiaQuestaoApi {
+  habilidade: string
+  secundarias: string[]
+  familia: string
+  dificuldade: string | null
+  tipo: string | null
+  revisao: 'pendente' | 'aprovada' | 'rejeitada'
+  elegivel: boolean
+  versao: number
+}
+
 export interface QuestaoApi {
   id: number
+  codigo?: string
+  revisaoConteudo?: string
   textoBase: string | null
   enunciado: string
   alternativas: string[] // já embaralhadas pela API (ordem da prova se tem imagem)
   prova: ProvaApi | null // null = questão autoral
   imagem: ImagemApi | null
+  pedagogia: PedagogiaQuestaoApi | null
 }
 
 export interface RespostaApi {
   acertou: boolean
   respostaCorreta: string
   resolucao: string
+  codigo?: string
+  revisaoConteudo?: string
+}
+
+export interface MatrizApi {
+  versao: string | null
+  validada: boolean
+}
+
+export interface QuestaoIndiceApi {
+  codigo?: string
+  revisaoConteudo?: string
+  pedagogia: PedagogiaQuestaoApi | null
+}
+
+export interface TemaPedagogiaApi {
+  slug: string
+  habilidades: HabilidadeApi[]
+  questoes: QuestaoIndiceApi[]
+}
+
+export interface DisciplinaPedagogiaApi {
+  disciplina: string
+  matriz: MatrizApi | null
+  temas: TemaPedagogiaApi[]
 }
 
 // ---------- Catálogo (mesmo formato que o data.js antigo dava às telas) ----------
@@ -84,12 +133,15 @@ export interface CatalogSubject {
 // ---------- Questão no formato das telas ----------
 export interface QuestaoItem {
   id: number
+  codigo?: string
+  revisaoConteudo?: string
   topic: number // posição do tema em subject.topics
   text: string | null // textoBase
   ask: string // enunciado
   options: string[] // alternativas (letras A–E são da posição)
   prova: ProvaApi | null
   imagem: ImagemApi | null
+  pedagogia: PedagogiaQuestaoApi | null
 }
 
 // ---------- Estado persistido (localStorage estudae:*) ----------
@@ -148,7 +200,15 @@ export interface QuizSession {
   i: number
   chosen: (number | undefined)[]
   results: (RespostaApi | undefined)[] // correção da API por questão conferida
+  pendente?: (string | undefined)[]
+  captura?: SessaoAprendizagem | null
   finished: boolean
+}
+
+export interface EntregaSimulado {
+  congeladas: (number | undefined)[]
+  correcoes: (RespostaApi | undefined)[]
+  registrado: boolean
 }
 
 export interface SimuladoSession {
@@ -161,5 +221,7 @@ export interface SimuladoSession {
   limitMs: number
   warned: boolean // toast "Faltam N minutos" já foi
   overWarned?: boolean // toast "tempo esgotado" já foi
+  entrega?: EntregaSimulado | null
+  captura?: SessaoAprendizagem | null
   finished: boolean
 }

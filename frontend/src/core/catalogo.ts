@@ -86,12 +86,15 @@ export async function carregarQuestoes(
   const questoes = await api.questoes(id, t.slug)
   return questoes.map((q) => ({
     id: q.id,
+    codigo: q.codigo,
+    revisaoConteudo: q.revisaoConteudo,
     topic: ti,
     text: q.textoBase,
     ask: q.enunciado,
     options: q.alternativas,
     prova: q.prova,
     imagem: q.imagem, // { url, descricao } ou null: recorte da prova (figura, tabela...)
+    pedagogia: q.pedagogia,
   }))
 }
 
