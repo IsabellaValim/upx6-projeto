@@ -2,6 +2,7 @@ export interface MetadadosQuestao {
   habilidade: string
   secundarias: string[]
   familia: string
+  dificuldade?: string | null
   revisao: 'pendente' | 'aprovada' | 'rejeitada'
   elegivel: boolean
   versao: number
