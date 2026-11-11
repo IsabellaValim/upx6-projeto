@@ -535,6 +535,11 @@
 .result-progresso strong {
   color: var(--plum-dark);
 }
+.result-estagio {
+  margin-top: 0.25rem;
+  text-align: center;
+  color: var(--plum-dark);
+}
 
 .stats {
   display: grid;
