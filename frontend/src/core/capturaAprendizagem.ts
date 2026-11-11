@@ -12,7 +12,7 @@ import {
   habilidadesBoas,
 } from './aprendizagem/evolucao'
 import type { EvolucaoTema } from './aprendizagem/evolucao'
-import { aprendizadoPct } from './aprendizagem/dominio'
+import { aprendizadoPct } from './aprendizagem/recomendacao'
 import { selecionarQuestoes, selecionarRodada } from './aprendizagem/selecao'
 import { carregarQuestoes, materiasDoNivel } from './catalogo'
 import type {

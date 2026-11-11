@@ -42,8 +42,7 @@ function recorrenciaResolvida(
   if (erros.length < pd.erroRecorrente) return true
   const ultimo = propria.lastIndexOf(erros[erros.length - 1]!)
   return (
-    propria.slice(ultimo + 1).filter((e) => e.acertou).length >=
-    pd.skillCorrect
+    propria.slice(ultimo + 1).filter((e) => e.acertou).length >= pd.skillCorrect
   )
 }
 
@@ -125,9 +124,7 @@ function candidato(
       habilidade: revisoes[0]!.slug,
       revisarEm: revisoes[0]!.revisarEm,
     }
-  const nova = essenciais.find(
-    (h) => situacoes.get(h.slug) === 'sem-evidencia',
-  )
+  const nova = essenciais.find((h) => situacoes.get(h.slug) === 'sem-evidencia')
   if (nova)
     return {
       ...base,
@@ -144,6 +141,46 @@ function candidato(
       revisarEm: null,
     }
   return null
+}
+
+/* % de aprendizado de um recorte (matéria ou prova): dentro de cada tema
+   avaliável, a média do peso da situação de cada habilidade essencial —
+   e depois a média dos temas (tema grande não vale mais que tema pequeno).
+   'revisar' conta como aprendida: a evidência continua valendo, a revisão
+   é só lembrete. Uma atividade move pontos percentuais, não dezenas —
+   o número cresce no ritmo do conteúdo, não da interface. */
+const PESO_SITUACAO: Record<SituacaoHabilidade, number> = {
+  'sem-evidencia': 0,
+  dificuldade: 0.1,
+  'em-pratica': 0.4,
+  revisar: 1,
+  boa: 1,
+}
+
+export function aprendizadoPct(
+  estado: EstadoAprendizagem,
+  matrizes: readonly MatrizTema[],
+  agora = Date.now(),
+  pr: Readonly<ParametrosRecomendacao> = PARAMETROS_RECOMENDACAO,
+  pd: Readonly<ParametrosDominio> = PARAMETROS_DOMINIO,
+): number | null {
+  const avaliaveis = matrizes.filter(
+    (m) => m.validada && m.habilidades.some((h) => h.essencial),
+  )
+  if (!avaliaveis.length) return null
+  const soma = avaliaveis.reduce((acc, m) => {
+    const evidencias = extrairEvidencias(estado, m)
+    const essenciais = m.habilidades.filter((h) => h.essencial)
+    const porHabilidade =
+      essenciais.reduce(
+        (s, h) =>
+          s +
+          PESO_SITUACAO[situacaoHabilidade(evidencias, h.slug, agora, pr, pd)],
+        0,
+      ) / essenciais.length
+    return acc + porHabilidade
+  }, 0)
+  return Math.round((100 * soma) / avaliaveis.length)
 }
 
 export function recomendar(

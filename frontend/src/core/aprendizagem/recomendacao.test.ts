@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { recomendar, situacaoHabilidade } from './recomendacao'
+import { aprendizadoPct, recomendar, situacaoHabilidade } from './recomendacao'
 import { PARAMETROS_DOMINIO, PARAMETROS_RECOMENDACAO } from './config'
 import type {
   EstadoAprendizagem,
@@ -283,5 +283,39 @@ describe('recomendar', () => {
     const segundo = recomendar(e, [a, b], agora)
     expect(primeiro).toEqual(segundo)
     expect(primeiro.recomendacao?.tema).toBe('a')
+  })
+})
+
+describe('aprendizadoPct', () => {
+  it('uma habilidade boa entre muitas vale pouco — % cresce no ritmo real', () => {
+    const e = estado()
+    const m1 = matriz('t1', [
+      { slug: 'h1', essencial: true },
+      { slug: 'h2', essencial: true },
+      { slug: 'h3', essencial: true },
+    ])
+    const m2 = matriz('t2', [{ slug: 'h4', essencial: true }])
+    // h1 'boa' (2 acertos), o resto sem evidência:
+    // tema1 = (1 + 0 + 0)/3, tema2 = 0 → média ≈ 16,7% → 17%.
+    evidencia(e, m1, 'h1', true, agora - hora)
+    evidencia(e, m1, 'h1', true, agora - hora / 2)
+    expect(aprendizadoPct(e, [m1, m2], agora)).toBe(17)
+  })
+
+  it('habilidade em prática pesa pouco; boa e atrasada pesam tudo', () => {
+    const e = estado()
+    const m = matriz('t', [{ slug: 'h1', essencial: true }])
+    evidencia(e, m, 'h1', true, agora - hora)
+    expect(aprendizadoPct(e, [m], agora)).toBe(40) // 1 acerto = em-pratica
+    evidencia(e, m, 'h1', true, agora - hora / 2)
+    expect(aprendizadoPct(e, [m], agora)).toBe(100) // 2 acertos = boa
+  })
+
+  it('sem tema avaliável devolve null', () => {
+    const e = estado()
+    const m = matriz('t', [{ slug: 'h', essencial: false }])
+    expect(aprendizadoPct(e, [m], agora)).toBeNull()
+    m.validada = false
+    expect(aprendizadoPct(e, [m], agora)).toBeNull()
   })
 })

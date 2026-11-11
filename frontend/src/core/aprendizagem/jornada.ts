@@ -6,9 +6,9 @@
    e, quando nada disso falta, reconhecer o escopo avaliado como preparado
    ou sugerir o simulado. Nunca inventa caminho: sem matrizes avaliáveis,
    devolve null e o chamador segue no fluxo tradicional. */
-import { aprendizadoPct, avaliarDominio } from './dominio'
+import { avaliarDominio } from './dominio'
 import { extrairEvidencias } from './evidencias'
-import { recomendar } from './recomendacao'
+import { aprendizadoPct, recomendar } from './recomendacao'
 import type {
   DiagnosticoDominio,
   EstadoAprendizagem,
@@ -247,9 +247,20 @@ export function proximaAcaoEquilibrada(
       pd,
       pr,
     )
-    return acao
-      ? [{ acao, pct: aprendizadoPct(estado, d.matrizes, pd) ?? 0 }]
-      : []
+    if (!acao) return []
+    const tocados = d.matrizes.filter(
+      (m) =>
+        m.validada &&
+        m.habilidades.some((h) => h.essencial) &&
+        extrairEvidencias(estado, m).length > 0,
+    ).length
+    return [
+      {
+        acao,
+        pct: aprendizadoPct(estado, d.matrizes, agora, pr, pd) ?? 0,
+        tocados,
+      },
+    ]
   })
   if (!candidatas.length) return null
   const reparos = candidatas.filter(
@@ -261,9 +272,13 @@ export function proximaAcaoEquilibrada(
   const acao = escolhida.acao
   /* Simulado gradual: "continue praticando" (nada urgente) numa matéria já
      adiantada vale mais como treino amplo que como mais do mesmo — e o
-     treino cresce com o nível até o simulado completo. Reparos e
-     verificações pendentes nunca viram simulado. */
-  if (acao.tipo === 'simulado' || acao.motivo === 'continuar') {
+     treino cresce com o nível até o simulado completo. Exige largura de
+     verdade (vários temas tocados): um tema bom não é matéria aprendida.
+     Reparos e verificações pendentes nunca viram simulado. */
+  const treinavel =
+    acao.tipo === 'simulado' ||
+    (acao.motivo === 'continuar' && escolhida.tocados >= pj.minTemas)
+  if (treinavel) {
     const treino = (tamanho?: number): AcaoJornada => ({
       ...acao,
       tipo: 'simulado',

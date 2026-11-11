@@ -190,4 +190,5 @@ export interface ParametrosJornada {
   simuladoPct: number // fração 0..1: mínimo para o simulado completo
   treinoCurto: number // questões do treino curto
   treinoMedio: number // questões do treino médio
+  minTemas: number // largura mínima: temas com evidência p/ treino amplo
 }

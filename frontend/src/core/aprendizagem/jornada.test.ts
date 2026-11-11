@@ -322,10 +322,38 @@ describe('proximaAcaoEquilibrada', () => {
     expect(acao.motivo).toBe('dificuldade')
   })
 
-  it('bom nível sem urgência vira treino de simulado graduado', () => {
-    // h1 consolidada (4 acertos) + h2 iniciada (1 acerto): o tema fica em
-    // bom-desempenho, mas sem essenciais atendidas não há verificação —
-    // a recomendação é 'continuar'. Com 67% de aprendizado, vira treino de 10.
+  it('bom nível com largura (≥3 temas) vira treino de simulado graduado', () => {
+    // Em cada tema: h1 consolidada (4 acertos) + h2 iniciada (1 acerto).
+    // Bom desempenho sem essenciais atendidas → a recomendação é 'continuar'.
+    // Com 70% de aprendizado e 3 temas tocados, vira treino de 10.
+    const c = cenario(
+      [
+        { slug: 't1', essenciais: ['h1', 'h2'] },
+        { slug: 't2', essenciais: ['h1', 'h2'] },
+        { slug: 't3', essenciais: ['h1', 'h2'] },
+      ],
+      'matematica',
+    )
+    for (const t of ['t1', 't2', 't3']) {
+      for (let i = 0; i < 4; i++) c.questao(t, `${t}a${i}`, 'h1', `${t}fa${i}`)
+      c.questao(t, `${t}b0`, 'h2', `${t}fb0`)
+    }
+    for (const t of ['t1', 't2', 't3']) {
+      for (let i = 0; i < 4; i++) c.responder(`${t}a${i}`, true, `s${t}`)
+      c.responder(`${t}b0`, true, `s${t}`)
+    }
+    const acao = proximaAcaoEquilibrada(
+      c.estado,
+      [{ disciplina: 'matematica', matrizes: c.matrizes }],
+      undefined,
+      100_000,
+    )!
+    expect(acao.tipo).toBe('simulado')
+    expect(acao.tamanho).toBe(10)
+    expect(acao.tema).toBeNull()
+  })
+
+  it('um tema só, mesmo indo bem, ainda não é treino de simulado', () => {
     const c = cenario([{ slug: 't', essenciais: ['h1', 'h2'] }], 'matematica')
     for (let i = 0; i < 4; i++) c.questao('t', `a${i}`, 'h1', `fa${i}`)
     c.questao('t', 'b0', 'h2', 'fb0')
@@ -337,9 +365,8 @@ describe('proximaAcaoEquilibrada', () => {
       undefined,
       100_000,
     )!
-    expect(acao.tipo).toBe('simulado')
-    expect(acao.tamanho).toBe(10)
-    expect(acao.tema).toBeNull()
+    expect(acao.tipo).toBe('pratica')
+    expect(acao.motivo).toBe('continuar')
   })
 
   it('nível baixo mantém a prática normal — sem simulado cedo demais', () => {

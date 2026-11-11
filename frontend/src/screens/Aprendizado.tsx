@@ -172,9 +172,7 @@ export default function Aprendizado() {
               <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
                 <strong>{s.name}</strong>
                 <small>
-                  {pct === undefined
-                    ? 'Ainda não começou.'
-                    : `${pct}% de aprendizado`}
+                  {!pct ? 'Ainda não começou.' : `${pct}% de aprendizado`}
                 </small>
                 <span className="mini-bar" aria-hidden="true">
                   <i style={{ width: `${pct ?? 0}%` }} />

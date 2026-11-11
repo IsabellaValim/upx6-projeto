@@ -30,14 +30,16 @@ export const PARAMETROS_PREPARACAO: Readonly<ParametrosPreparacao> =
     habilitarConclusaoFavoravel: false,
   })
 
-/* Graduação do treino amplo: com menos de 50% de aprendizado a rodada
-   curta (6 questões) treina sem cansar; de 50 a 74% sobe para 10; a partir
-   de 75% o simulado completo já vale a pena. */
+/* Graduação do treino amplo: só entra em cena quando a matéria tem largura
+   (≥3 temas já tocados — um tema bom não é matéria aprendida). Com menos
+   de 50% de aprendizado a rodada curta (6 questões) treina sem cansar; de
+   50 a 74% sobe para 10; a partir de 75% o simulado completo vale a pena. */
 export const PARAMETROS_JORNADA: Readonly<ParametrosJornada> = Object.freeze({
   treinoPct: 0.5,
   simuladoPct: 0.75,
   treinoCurto: 6,
   treinoMedio: 10,
+  minTemas: 3,
 })
 
 export const CONFIG_APRENDIZAGEM: Readonly<ConfiguracaoAprendizagem> =
