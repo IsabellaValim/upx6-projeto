@@ -2,6 +2,7 @@ import type {
   ConfiguracaoAprendizagem,
   ConfiguracaoDemonstracao,
   ParametrosDominio,
+  ParametrosPreparacao,
   ParametrosRecomendacao,
 } from './tipos'
 
@@ -20,6 +21,12 @@ export const PARAMETROS_DOMINIO: Readonly<ParametrosDominio> = Object.freeze({
 export const PARAMETROS_RECOMENDACAO: Readonly<ParametrosRecomendacao> =
   Object.freeze({
     revisaoHoras: 72,
+  })
+
+export const PARAMETROS_PREPARACAO: Readonly<ParametrosPreparacao> =
+  Object.freeze({
+    minTemas: 3,
+    temasConfirmados: 2,
   })
 
 export const CONFIG_DEMONSTRACAO: Readonly<ConfiguracaoDemonstracao> =

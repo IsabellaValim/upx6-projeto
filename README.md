@@ -49,6 +49,8 @@ que estudar agora: dificuldade recorrente, revisão vencida (`PARAMETROS_RECOMEN
 habilidade essencial nova ou continuação da prática — nessa ordem. O cálculo é
 determinístico e não aparece na interface; `servico.recomendar` e
 `recomendarEstudo` existem apenas para verificação e para a futura superfície.
+`avaliarPreparacao` agrega o domínio por tema numa indicação conservadora
+(`sem-dados`, `em-progresso`, `boa-preparacao`) — nunca promete aprovação.
 
 Para demonstrar a avaliação por **iterações, sem esperar horas**, execute em `frontend/`:
 
