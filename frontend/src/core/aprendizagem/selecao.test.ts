@@ -268,12 +268,21 @@ describe('selecionarRodada', () => {
   it('espalha a rodada entre temas em vez de esgotar um só', () => {
     const a = fabrica('tema-a', ['h1'])
     const b = fabrica('tema-b', ['h2'])
-    for (let i = 0; i < 3; i++) a.questao(`a${i}`, 'h1', `fa${i}`)
-    for (let i = 0; i < 3; i++) b.questao(`b${i}`, 'h2', `fb${i}`)
-    const s = selecionarRodada([a.matriz, b.matriz], a.estado, 4)
-    const temas = new Set(s.questoes.map((q) => q.tema))
-    expect(temas).toEqual(new Set(['tema-a', 'tema-b']))
-    expect(new Set(s.questoes.map((q) => q.codigo)).size).toBe(4)
+    const c = fabrica('tema-c', ['h3'])
+    for (let i = 0; i < 4; i++) a.questao(`a${i}`, 'h1', `fa${i}`)
+    for (let i = 0; i < 4; i++) b.questao(`b${i}`, 'h2', `fb${i}`)
+    for (let i = 0; i < 4; i++) c.questao(`c${i}`, 'h3', `fc${i}`)
+    const s = selecionarRodada([a.matriz, b.matriz, c.matriz], a.estado, 6)
+    // Intercalado a,b,c,a,b,c — nunca 4 do tema-a antes de ir ao b.
+    expect(s.questoes.map((q) => q.tema)).toEqual([
+      'tema-a',
+      'tema-b',
+      'tema-c',
+      'tema-a',
+      'tema-b',
+      'tema-c',
+    ])
+    expect(new Set(s.questoes.map((q) => q.codigo)).size).toBe(6)
   })
 
   it('prioriza o tema com mais habilidades sem evidência', () => {

@@ -275,25 +275,30 @@ export function selecionarRodada(
   )
   const escolhidas: QuestaoAprendizagem[] = []
   const familiasCobertas = new Set<string>()
+  // Round-robin pelos temas: cada volta tenta o próximo da fila, para a
+  // rodada espalhar cobertura em vez de esgotar um tema antes dos outros.
+  let cursor = 0
   while (escolhidas.length < tamanho) {
     const ativas = porMatriz.filter((p) => p.fila.length)
     if (!ativas.length) break
+    cursor %= ativas.length
     let escolhida: Candidata | undefined
-    for (const p of ativas) {
+    for (let k = 0; k < ativas.length; k++) {
+      const p = ativas[(cursor + k) % ativas.length]!
       const i = p.fila.findIndex(
         (c) => !familiasCobertas.has(c.q.pedagogia!.familia),
       )
-      const c = i >= 0 ? p.fila.splice(i, 1)[0]! : undefined
-      if (c) {
-        escolhida = c
+      if (i >= 0) {
+        escolhida = p.fila.splice(i, 1)[0]!
+        cursor += k + 1
         break
       }
     }
     if (!escolhida) {
       // Toda família elegível já coberta: aceita repetir família, não questão.
-      const p = ativas[0]!
-      escolhida = p.fila.shift()
+      escolhida = ativas[cursor]!.fila.shift()
       if (!escolhida) break
+      cursor += 1
     }
     escolhidas.push(escolhida.q)
     familiasCobertas.add(escolhida.q.pedagogia!.familia)
