@@ -19,6 +19,7 @@ import type {
 } from './aprendizagem/tipos'
 import { toast } from './toast'
 import { api } from './api'
+import { urls } from './urls'
 import { local, useApp } from './store'
 import type { DisciplinaPedagogiaApi, QuestaoItem, Resultado } from '../types'
 
@@ -351,6 +352,74 @@ export async function montarRodada(
     /* índice ou motor indisponível: cai no plano abaixo */
   }
   return porTema.flat().slice(0, tamanho)
+}
+
+// Traduz a ação do orquestrador em link e textos prontos para os cartões.
+// A tela não decide nada: mostra a ação ou o fluxo tradicional.
+export function linkDaAcao(acao: AcaoJornada | null): {
+  href: string
+  kind: 'aula' | 'pratica'
+  titulo: string
+  sub: string
+} | null {
+  if (!acao) return null
+  const s = useApp.getState().subjects[acao.disciplina]
+  if (!s) return null
+  const ti = acao.tema ? s.topics.findIndex((t) => t.slug === acao.tema) : -1
+  const t = ti >= 0 ? s.topics[ti]! : null
+  const onde = t ? `${s.name} · ${t.title}` : s.name
+  switch (acao.tipo) {
+    case 'diagnostico':
+      return {
+        href: urls.estudo(s.id),
+        kind: 'pratica',
+        titulo: 'Começar meu estudo',
+        sub: `${s.name} · algumas questões para começar`,
+      }
+    case 'aula':
+      return t && acao.aula !== null
+        ? {
+            href: urls.video(s.id, ti, acao.aula),
+            kind: 'aula',
+            titulo: 'Ver a aula',
+            sub: onde,
+          }
+        : null
+    case 'verificacao':
+      return t
+        ? {
+            href: urls.quiz(s.id, ti),
+            kind: 'pratica',
+            titulo: 'Verificar o que aprendeu',
+            sub: `${onde} — questões novas`,
+          }
+        : null
+    case 'revisar':
+      return t
+        ? {
+            href: urls.quiz(s.id, ti, acao.habilidade ?? undefined),
+            kind: 'pratica',
+            titulo: 'Revisar',
+            sub: onde,
+          }
+        : null
+    case 'pratica':
+      return t
+        ? {
+            href: urls.quiz(s.id, ti, acao.habilidade ?? undefined),
+            kind: 'pratica',
+            titulo: 'Praticar',
+            sub: onde,
+          }
+        : null
+    case 'simulado':
+      return {
+        href: urls.simulado(s.id),
+        kind: 'pratica',
+        titulo: 'Treinar com o simulado',
+        sub: s.name,
+      }
+  }
 }
 
 export interface AvaliacaoEstudo {

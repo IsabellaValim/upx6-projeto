@@ -1,9 +1,11 @@
-/* Início: logo, continuar, estudar por matéria e testar com o simulado */
+/* Início: logo, a próxima ação da jornada guiada (o orquestrador decide),
+   estudar por matéria e testar com o simulado */
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ContinueBtn, SubjectRow } from '../components/Progress'
 import { Screen } from '../components/Screen'
-import { MOTIVO_TEXTO, sugestaoDoDia } from '../core/capturaAprendizagem'
+import { linkDaAcao, proximaAcaoNivel } from '../core/capturaAprendizagem'
+import type { AcaoJornada } from '../core/aprendizagem/jornada'
 import { NIVEIS, materiasDoNivel } from '../core/catalogo'
 import { useApp } from '../core/store'
 import { nextActivity, subjectProgress } from '../core/stats'
@@ -33,46 +35,35 @@ export default function Home() {
     .sort((a, b) => quando[b] - quando[a])[0]
   const next = ultima ? nextActivity(ultima) : null
 
-  // Sugestão adaptativa: o motor escolhe o tema mais útil agora
-  // (dificuldade, revisão vencida, assunto novo ou continuar).
-  interface Sugestao {
-    titulo: string
-    sub: string
-    href: string
-    kind: 'aula' | 'pratica'
-  }
-  const [sug, setSug] = useState<{ k: string; s: Sugestao } | null>(null)
+  // Ação única: o orquestrador decide a próxima coisa certa agora
+  // (diagnóstico, aula, prática dirigida, verificação, revisão ou simulado).
   const idsMaterias = materias.map((m) => m.id).join(',')
+  const [acao, setAcao] = useState<{ k: string; a: AcaoJornada | null } | null>(
+    null,
+  )
   useEffect(() => {
     let ativo = true
     if (!idsMaterias) return
-    void sugestaoDoDia(idsMaterias.split(',')).then((r) => {
-      if (!ativo || !r) return
-      const s = subjects[r.disciplina]
-      const ti = s?.topics.findIndex((t) => t.slug === r.tema) ?? -1
-      if (!s || ti < 0) return
-      const t = s.topics[ti]!
-      const aulaPendente = t.lessons.findIndex(
-        (_, j) => !watched[`${s.id}/${ti}/${j}`],
-      )
-      const aula = r.motivo === 'nova-habilidade' && aulaPendente >= 0
-      setSug({
-        k: idsMaterias,
-        s: {
-          href: aula ? urls.video(s.id, ti, aulaPendente) : urls.quiz(s.id, ti),
-          kind: aula ? 'aula' : 'pratica',
-          titulo: 'Sugestão de hoje',
-          sub: `${s.name} · ${t.title} — ${MOTIVO_TEXTO[r.motivo]}`,
-        },
-      })
+    void proximaAcaoNivel(nivel).then((a) => {
+      if (ativo) setAcao({ k: idsMaterias, a })
     })
     return () => {
       ativo = false
     }
-    // idsMaterias cobre materias; watched/subjects mudam junto com o estudo.
+    // results/watched mudam junto com o estudo; a ação reflete o estado novo.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idsMaterias, subjects, watched])
-  const sugestao = sug?.k === idsMaterias ? sug.s : null
+  }, [idsMaterias, nivel, results, watched])
+  const jornada = acao?.k === idsMaterias ? linkDaAcao(acao.a) : null
+  const proxima =
+    jornada ??
+    (next && ultima
+      ? {
+          href: next.href,
+          kind: next.kind,
+          titulo: 'Continuar estudando',
+          sub: `${subjects[ultima].name} · ${next.titulo}`,
+        }
+      : null)
 
   return (
     <Screen cls="screen--nav" nav="inicio">
@@ -91,20 +82,12 @@ export default function Home() {
           Trocar
         </Link>
       </p>
-      {sugestao && (
+      {proxima && (
         <ContinueBtn
-          to={sugestao.href}
-          kind={sugestao.kind}
-          titulo={sugestao.titulo}
-          sub={sugestao.sub}
-        />
-      )}
-      {next && ultima && (
-        <ContinueBtn
-          to={next.href}
-          kind={next.kind}
-          titulo="Continuar estudando"
-          sub={`${subjects[ultima].name} · ${next.titulo}`}
+          to={proxima.href}
+          kind={proxima.kind}
+          titulo={proxima.titulo}
+          sub={proxima.sub}
         />
       )}
       <h2 className="section-label">Estudar por matéria</h2>

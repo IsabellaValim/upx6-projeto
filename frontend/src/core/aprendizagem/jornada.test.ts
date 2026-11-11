@@ -247,6 +247,21 @@ describe('proximaAcao', () => {
     expect(acao.motivo).toBe('continuar')
   })
 
+  it('habilidades boas mas evidência insuficiente segue praticando, não simulado', () => {
+    const c = cenario([{ slug: 't', essenciais: ['h1'] }])
+    for (let i = 0; i < 3; i++) c.questao('t', `q${i}`, 'h1', `f${i}`)
+    for (let i = 0; i < 3; i++) c.responder(`q${i}`, true, 's1')
+    // 3 acertos deixam a essencial 'boa' (sem candidato a recomendar), mas o
+    // tema está em-pratica: ainda não é verificação nem simulado.
+    const acao = proximaAcao({
+      estado: c.estado,
+      matrizes: c.matrizes,
+      agora: 100_000,
+    })!
+    expect(acao.tipo).toBe('pratica')
+    expect(acao.motivo).toBe('continuar')
+  })
+
   it('tudo confirmado sugere simulado e marca o escopo preparado', () => {
     const c = cenario([{ slug: 't', essenciais: ['h1'] }])
     for (let i = 0; i < 6; i++) c.questao('t', `q${i}`, 'h1', `f${i}`)

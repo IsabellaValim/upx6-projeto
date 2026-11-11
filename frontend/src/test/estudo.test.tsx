@@ -133,24 +133,43 @@ beforeEach(async () => {
   cap.definirServicoAprendizagem(criarServicoAprendizagem({ ...ATIVO }))
 })
 
-describe('Estudo adaptativo: sugestão no Início', () => {
-  it('tema novo aparece como "Sugestão de hoje" apontando para a aula', async () => {
+describe('Estudo adaptativo: jornada guiada no Início', () => {
+  it('primeiro acesso mostra "Começar meu estudo" para a rodada de diagnóstico', async () => {
     vi.stubGlobal('fetch', mockFetch())
     abrir('/home')
-    const card = await screen.findByText('Sugestão de hoje')
+    const card = await screen.findByText('Começar meu estudo')
     const link = card.closest('a')!
-    expect(link.getAttribute('href')).toBe('/video/matematica/0/0')
-    expect(link).toHaveTextContent(
-      'Matemática · Porcentagem — um assunto novo para conhecer',
-    )
+    expect(link.getAttribute('href')).toBe('/estudo/matematica')
+    expect(link).toHaveTextContent('Matemática · algumas questões para começar')
   })
 
-  it('sem pedagogia disponível não aparece sugestão', async () => {
+  it('depois do diagnóstico, o Início aponta a prática seguinte', async () => {
+    vi.stubGlobal('fetch', mockFetch())
+    abrir('/estudo/matematica')
+    // A rodada mistura os temas da disciplina; aqui há um só, com 3 itens.
+    for (let k = 0; k < 3; k++) {
+      fireEvent.click(await screen.findByRole('radio', { name: /certa/ }))
+      fireEvent.click(screen.getByRole('button', { name: 'Conferir' }))
+      await screen.findByText('Você acertou!')
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: k === 2 ? 'Ver resultado' : 'Continuar',
+        }),
+      )
+    }
+    await waitFor(() => expect(useApp.getState().results.length).toBe(1))
+    cleanup()
+    abrir('/home')
+    const card = await screen.findByText('Praticar')
+    expect(card.closest('a')!.getAttribute('href')).toBe('/quiz/matematica/0')
+  })
+
+  it('sem pedagogia disponível o Início fica no fluxo tradicional', async () => {
     vi.stubGlobal('fetch', mockFetch({ pedagogia: false }))
     abrir('/home')
     expect(await screen.findByText('Estudar por matéria')).toBeInTheDocument()
     await waitFor(() =>
-      expect(screen.queryByText('Sugestão de hoje')).toBeNull(),
+      expect(screen.queryByText('Começar meu estudo')).toBeNull(),
     )
   })
 })

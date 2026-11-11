@@ -129,12 +129,7 @@ export function proximaAcao(
         x.disciplina === recomendacao.disciplina &&
         x.tema === recomendacao.tema,
     )!
-    const aula = aulaPara(
-      aulas,
-      m.disciplina,
-      m.tema,
-      recomendacao.habilidade,
-    )
+    const aula = aulaPara(aulas, m.disciplina, m.tema, recomendacao.habilidade)
     if (aula !== null)
       return {
         tipo: 'aula',
@@ -193,8 +188,21 @@ export function proximaAcao(
     }
   }
 
-  // Nenhuma pendência recomendável: tudo que dá para provar já foi provado.
-  // O próximo passo é treino amplo — o estado preparado já vai no escopo.
+  // Nenhuma pendência recomendável, mas há tema em andamento (evidência sem
+  // confirmação): continua praticando nele — o simulado é para quando nada
+  // mais está em aberto.
+  const emAndamento = avaliaveis.find((m) => {
+    const d = dominios.get(m)!
+    return d.janela.length > 0 && d.estado !== 'dominio-confirmado'
+  })
+  if (emAndamento)
+    return {
+      tipo: 'pratica',
+      ...base(emAndamento),
+      habilidade: null,
+      aula: null,
+      motivo: 'continuar',
+    }
   return {
     tipo: 'simulado',
     disciplina: avaliaveis[0]!.disciplina,
