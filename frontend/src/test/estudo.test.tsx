@@ -174,6 +174,56 @@ describe('Estudo adaptativo: jornada guiada no Início', () => {
   })
 })
 
+describe('Estudo adaptativo: próxima ação no Resultado', () => {
+  it('a CTA primária vem do orquestrador, não da nota da rodada', async () => {
+    vi.stubGlobal('fetch', mockFetch())
+    abrir('/estudo/matematica')
+    for (let k = 0; k < 3; k++) {
+      fireEvent.click(await screen.findByRole('radio', { name: /certa/ }))
+      fireEvent.click(screen.getByRole('button', { name: 'Conferir' }))
+      await screen.findByText('Você acertou!')
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: k === 2 ? 'Ver resultado' : 'Continuar',
+        }),
+      )
+    }
+    await waitFor(() => expect(useApp.getState().results.length).toBe(1))
+    // Nota 100% não decide nada: quem manda é a jornada (evidência ainda
+    // insuficiente → continuar praticando o tema).
+    const cta = await screen.findByRole('link', {
+      name: /Praticar — Matemática/,
+    })
+    expect(cta.getAttribute('href')).toBe('/quiz/matematica/0')
+    expect(screen.queryByRole('link', { name: 'Praticar de novo' })).toBeNull()
+    expect(
+      screen.queryByRole('link', { name: 'Escolher outro tema' }),
+    ).toBeNull()
+  })
+
+  it('sem pedagogia o Resultado mantém o par de sempre', async () => {
+    vi.stubGlobal('fetch', mockFetch({ pedagogia: false }))
+    abrir('/quiz/matematica/0')
+    for (let k = 0; k < 3; k++) {
+      fireEvent.click(await screen.findByRole('radio', { name: /certa/ }))
+      fireEvent.click(screen.getByRole('button', { name: 'Conferir' }))
+      await screen.findByText('Você acertou!')
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: k === 2 ? 'Ver resultado' : 'Continuar',
+        }),
+      )
+    }
+    await waitFor(() => expect(useApp.getState().results.length).toBe(1))
+    expect(
+      await screen.findByRole('link', { name: 'Escolher outro tema' }),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('link', { name: /Praticar — Matemática/ }),
+    ).toBeNull()
+  })
+})
+
 describe('Estudo adaptativo: estágio na Área', () => {
   it('tema sem evidência aparece "Para começar" com a sugestão', async () => {
     vi.stubGlobal('fetch', mockFetch())
