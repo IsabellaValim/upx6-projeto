@@ -185,3 +185,24 @@ export interface DiagnosticoRecomendacao {
   recomendacao: RecomendacaoTema | null
   candidatos: RecomendacaoTema[]
 }
+
+export interface ParametrosPreparacao {
+  minTemas: number
+  temasConfirmados: number
+}
+
+export type EstadoPreparacao = 'sem-dados' | 'em-progresso' | 'boa-preparacao'
+
+export interface PreparacaoTema {
+  disciplina: string
+  tema: string
+  estado: DiagnosticoDominio['estado']
+}
+
+export interface DiagnosticoPreparacao {
+  estado: EstadoPreparacao
+  temasAvaliados: number
+  confirmados: number
+  bomDesempenho: number
+  detalhes: PreparacaoTema[]
+}
