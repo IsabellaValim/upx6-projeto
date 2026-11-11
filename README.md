@@ -357,15 +357,15 @@ Projeto de UPX, com foco em estudantes que desejam se preparar para o Encceja pe
 
 Fontes oficiais: [Sobre o Encceja (Inep)](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/encceja) · [Provas e gabaritos](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/encceja/provas-e-gabaritos) · [Matrizes de referência e documentos](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/encceja/outros-documentos).
 
-### Aba Preparo: evolução imediata, sem simulação
+### Meu aprendizado: dois estados honestos, sem simulação
 
-A aba **Preparo** usa atividades realmente concluídas no navegador. Após uma
-lição curta, mostra resultados recentes por matéria e mensagens como **Indo
-bem nas atividades**. Esse indicador imediato não equivale a domínio confirmado.
-A confirmação pedagógica exige questões classificadas e revisões posteriores.
+A aba **Meu aprendizado** usa atividades realmente concluídas no navegador e
+reduz o estágio de cada matéria a duas mensagens: **Continue estudando** ou
+**Você está preparado(a)**, sempre com o escopo explícito — "nos temas
+avaliados desta matéria; a prova tem outros conteúdos". O detalhe histórico
+fica em segundo plano; acertos recentes não equivalem a domínio confirmado,
+que exige a rodada de verificação independente.
 
-Por enquanto a mensagem **Estou pronto(a) para o Encceja?** responde
-**Ainda não dá para saber**: o projeto cobre somente Matemática e
-Linguagens, sem avaliar todas as áreas nem a redação. O critério antigo de
-"boa preparação" baseado apenas em três temas foi desativado. Não existe
-modo de demonstração ou nota simulada para a apresentação acadêmica.
+O projeto cobre somente Matemática e Linguagens, sem avaliar todas as áreas
+nem a redação — a tela diz isso em rodapé permanente. Não existe modo de
+demonstração nem nota simulada para a apresentação acadêmica.
