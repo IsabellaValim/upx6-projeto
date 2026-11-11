@@ -88,6 +88,11 @@
   font-family: var(--serif);
   font-size: 1.5rem;
 }
+.progress-card .preparo {
+  margin: 0.25rem 0 0;
+  color: var(--ok-text);
+  font-weight: 600;
+}
 
 /* Temas: lista que abre, um tema por vez */
 .topic-list {
@@ -156,6 +161,10 @@
 .topic-item__text small .ico {
   width: 0.9rem;
   height: 0.9rem;
+}
+.topic-item__text .estagio {
+  color: var(--plum-dark);
+  font-weight: 600;
 }
 .topic-item .chev {
   margin-left: auto;

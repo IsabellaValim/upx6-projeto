@@ -299,7 +299,7 @@ export function criarServicoAprendizagem(
       if (!ativa()) return Promise.resolve(null)
       return serializar(async () => {
         const estado = await persistencia.ler()
-        return recomendar(estado, matrizes, instante)
+        return estado ? recomendar(estado, matrizes, instante) : null
       })
     },
     pendente(c: ContextoTentativa): Promise<EventoAprendizagem | null> {

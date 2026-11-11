@@ -39,12 +39,16 @@ export const CONFIG_DEMONSTRACAO: Readonly<ConfiguracaoDemonstracao> =
 
 export const CONFIG_APRENDIZAGEM: Readonly<ConfiguracaoAprendizagem> =
   Object.freeze({
-    habilitado: false,
-    registrarEventos: false,
-    dominio: false,
-    recomendacoes: false,
-    disciplinas: Object.freeze([] as string[]),
-    temas: Object.freeze([] as string[]),
+    habilitado: true,
+    registrarEventos: true,
+    dominio: true,
+    recomendacoes: true,
+    disciplinas: Object.freeze([
+      'matematica',
+      'linguagens',
+      'matematica-fundamental',
+      'linguagens-fundamental',
+    ]),
   })
 
 const lista = (v: unknown): v is readonly string[] =>
