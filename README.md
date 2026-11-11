@@ -124,15 +124,13 @@ Essas funcionalidades fazem parte do projeto, mas ainda precisam de validação 
 
 ## Conteúdo disponível
 
-| Nível              | Matéria                            |  Temas | Videoaulas no banco de referência |                               Questões |
-| ------------------ | ---------------------------------- | -----: | --------------------------------: | -------------------------------------: |
-| Ensino Médio       | Linguagens                         |     10 |                                 4 | 72 (60 oficiais de 2022 + 12 autorais) |
-| Ensino Médio       | Matemática                         |      9 |                                 4 | 72 (60 oficiais de 2022 + 12 autorais) |
-| Ensino Fundamental | Linguagens                         |     10 |                                 0 |                    60 oficiais de 2022 |
-| Ensino Fundamental | Matemática                         |      8 |                                 0 |                    60 oficiais de 2022 |
-| **Total**          | **4 combinações de nível/matéria** | **37** |                             **8** |                                **264** |
-
-**Importante:** os números acima descrevem a base informada no levantamento do projeto, **antes da importação dos novos arquivos de videoaulas**. Os quatro arquivos JSON de curadoria entregues separadamente propõem **duas videoaulas por tema (74 vínculos no total)**; isso só será refletido no aplicativo **depois da validação e importação**.
+| Nível              | Matéria                            |  Temas | Videoaulas |                                   Questões |
+| ------------------ | ---------------------------------- | -----: | ---------: | -----------------------------------------: |
+| Ensino Médio       | Linguagens                         |     10 |         20 | 161 (149 oficiais 2019–2022 + 12 autorais) |
+| Ensino Médio       | Matemática                         |      9 |         18 | 162 (150 oficiais 2019–2022 + 12 autorais) |
+| Ensino Fundamental | Linguagens                         |     10 |         20 |                       150 oficiais de 2022 |
+| Ensino Fundamental | Matemática                         |      8 |         16 |                       150 oficiais de 2022 |
+| **Total**          | **4 combinações de nível/matéria** | **37** |     **74** |                                    **623** |
 
 As questões oficiais identificam a prova e o ano de origem. As criadas pela equipe exibem **Questão autoral Estudaê**. As questões com imagens utilizam recortes das provas armazenados no banco de dados.
 

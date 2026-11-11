@@ -468,9 +468,11 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 
 ## Pontos de atenção para quem for continuar o projeto
 
-- Catálogo: 264 questões (só 2022 entre as oficiais). Os temas novos não têm
-  vídeo; os do Fundamental, nenhum. As 480 referências de outros anos do pacote
-  de questões não têm texto e ficaram de fora.
+- Catálogo (estado real do banco em 11/2026): 623 questões — EM: matematica
+  162 (150 oficiais 2019–2022 + 12 autorais), linguagens 161 (149 + 12); EF:
+  150 oficiais de 2022 por disciplina. Todos os 37 temas têm 2 videoaulas.
+  As 480 referências de outros anos do pacote de questões não têm texto e
+  ficaram de fora.
 - **Tela da questão** (`src/components/questao.js`, usado pela lição e pelo
   simulado): "Ouvir questão" no topo → imagem em largura total ("Toque para
   ampliar") → texto de apoio em cartão próprio, com `white-space: pre-line`
