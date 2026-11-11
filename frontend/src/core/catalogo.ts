@@ -48,6 +48,7 @@ async function carregarCatalogoDeFato(): Promise<void> {
         about: t.sobre,
         videos: t.videos.length,
         totalQuestoes: t.totalQuestoes,
+        habilidades: t.habilidades,
         lessons: t.videos.map((v) => ({
           id: v.id,
           kind: v.titulo,
@@ -55,6 +56,7 @@ async function carregarCatalogoDeFato(): Promise<void> {
             ? Math.max(1, Math.round(v.duracaoSegundos / 60))
             : null,
           youtubeId: v.youtubeId,
+          habilidades: v.habilidades ?? [],
         })),
       }))
       subjects[d.slug] = {

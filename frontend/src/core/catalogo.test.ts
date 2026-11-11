@@ -78,6 +78,7 @@ describe('carregarCatalogo', () => {
       kind: 'Aula (Canal X)',
       min: 3, // 200s arredonda para 3min (mínimo 1)
       youtubeId: 'AAAAAAAAAAA',
+      habilidades: [],
     })
   })
 

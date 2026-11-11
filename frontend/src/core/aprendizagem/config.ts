@@ -13,7 +13,6 @@ export const PARAMETROS_DOMINIO: Readonly<ParametrosDominio> = Object.freeze({
   skillWindow: 4,
   skillCorrect: 2,
   erroRecorrente: 2,
-  confirmacaoHoras: 48,
   confirmacaoMin: 2,
 })
 

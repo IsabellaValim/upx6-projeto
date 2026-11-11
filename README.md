@@ -29,9 +29,26 @@ O simulado seleciona questões de diferentes temas da mesma matéria. Há cronô
 
 A seção **Progresso** apresenta atividades concluídas, dias de sequência de estudos e histórico de acertos. Nesta versão, a escolha de prova, as preferências e o progresso são guardados **localmente no navegador** (`localStorage`). Isso significa que os dados podem desaparecer se o armazenamento for apagado e **não são sincronizados entre aparelhos**.
 
+### Jornada guiada — o app escolhe o próximo passo
+
+Em vez de um catálogo para o estudante navegar sozinho, o app responde a
+pergunta "o que devo fazer agora?" com **uma ação principal**. No primeiro
+acesso é uma rodada de diagnóstico (questões de vários temas da matéria);
+depois, o orquestrador (`core/aprendizagem/jornada.ts`) escolhe entre
+continuar a prática, rever uma habilidade com dificuldade, assistir à aula
+ligada a ela, fazer uma rodada de verificação ou treinar com o simulado —
+sempre a partir das evidências reais gravadas no navegador.
+
+A mesma ação aparece no **Início** ("Seu próximo estudo") e como saída da
+tela de **Resultado**: a nota deixa de mandar no próximo passo. A aba
+**Meu aprendizado** mostra, por matéria, só dois estados honestos —
+"Continue estudando" ou "Você está preparado(a) **no conteúdo avaliado**" —
+com o detalhe histórico em segundo plano. O "preparado" é por tema e por
+matéria, nunca para o Encceja inteiro.
+
 ### Orientação adaptativa — motor local com superfície simples
 
-A classificação pedagógica é separada do conteúdo oficial. O novo histórico usa
+A classificação pedagógica é separada do conteúdo oficial. O histórico usa
 IndexedDB transacional (`estudae-aprendizagem`), sem substituir o legado em
 `localStorage`. A captura está ativa para as quatro disciplinas
 (`CONFIG_APRENDIZAGEM`); as evidências só contam onde a curadoria pedagógica
@@ -45,16 +62,42 @@ simulado não são tentativas fictícias. O Perfil oferece exclusão confirmada 
 progresso de ambos os níveis, preservando identidade, prova escolhida e
 acessibilidade. Falha parcial não é anunciada como sucesso.
 
-Na interface, o adaptativo aparece só onde a curadoria validou a matriz: o
-Início mostra **"Sugestão de hoje"** e a Área mostra **sugestão do tema**,
-**estágio por tema** (Para começar → Em progresso, com a contagem de boas
-práticas → Indo bem → Consolidado) e a frase de preparo. A evolução é visível
-desde a primeira lição; só "Consolidado" exige a confirmação temporal
-(uma segunda sessão boa em outro dia). Nada de pontos, rankings ou
-probabilidades: o motor decide nos bastidores (dificuldade recorrente,
-revisão vencida, habilidade essencial nova, continuar) e a indicação de
-preparo (`sem-dados`, `em-progresso`, `boa-preparacao`) nunca promete
+A confirmação de domínio não é por relógio: exige uma **rodada de verificação
+independente** (outra sessão, com questões de famílias ainda não usadas como
+evidência). Várias rodadas podem acontecer no mesmo dia, mas um mesmo dia
+não prova retenção — a regra é de independência da sessão, não do calendário.
+Várias questões da mesma **família** contam uma vez só; o seletor
+(`core/aprendizagem/selecao.ts`) espalha a rodada entre temas, habilidades
+e famílias e informa explicitamente quando o banco não cobre a seleção,
+em vez de disfarçar a limitação.
+
+Na interface, o adaptativo aparece só onde a curadoria validou a matriz.
+A Área mostra a sugestão do tema e o estágio interno (Para começar →
+Em progresso, com a contagem de boas práticas → Indo bem → Consolidado);
+o que o estudante vê como destino são sempre os dois estados simples.
+Nada de pontos, rankings ou probabilidades, e nenhuma promessa de
 aprovação.
+
+#### Curadoria pedagógica
+
+Os arquivos de curadoria de Matemática e Linguagens (Ensino Médio) ficam em
+`docs/conteudo/pedagogia/` e são gerados por
+`scripts/pedagogia/gerar-pedagogia.mjs`, que exige cobertura 1:1 com o banco:
+45 habilidades por tema, famílias de itens equivalentes, dificuldade e tipo
+das 323 questões das duas disciplinas, e o vínculo aula→habilidade das
+videoaulas. A impressão SHA-256 de cada questão sai do subcomando
+`impressoes` da API e vai no arquivo: se o conteúdo mudar depois, a
+aprovação é recusada na importação. Aplicar:
+
+```sh
+docker compose run --rm api impressoes matematica > backups/impressoes-matematica.json
+node scripts/pedagogia/gerar-pedagogia.mjs
+docker compose run --rm -v "$PWD/docs/conteudo/pedagogia:/p:ro" api importar-pedagogia /p/pedagogia-matematica.json --validar
+docker compose run --rm -v "$PWD/docs/conteudo/pedagogia:/p:ro" api importar-pedagogia /p/pedagogia-matematica.json --aplicar
+```
+
+A matriz `estudae-em-2026-11` está validada em desenvolvimento; a revisão
+por outra pessoa continua pendente antes de qualquer publicação.
 
 Para demonstrar a avaliação por **iterações, sem esperar horas**, execute em `frontend/`:
 
@@ -81,15 +124,13 @@ Essas funcionalidades fazem parte do projeto, mas ainda precisam de validação 
 
 ## Conteúdo disponível
 
-| Nível              | Matéria                            |  Temas | Videoaulas no banco de referência |                               Questões |
-| ------------------ | ---------------------------------- | -----: | --------------------------------: | -------------------------------------: |
-| Ensino Médio       | Linguagens                         |     10 |                                 4 | 72 (60 oficiais de 2022 + 12 autorais) |
-| Ensino Médio       | Matemática                         |      9 |                                 4 | 72 (60 oficiais de 2022 + 12 autorais) |
-| Ensino Fundamental | Linguagens                         |     10 |                                 0 |                    60 oficiais de 2022 |
-| Ensino Fundamental | Matemática                         |      8 |                                 0 |                    60 oficiais de 2022 |
-| **Total**          | **4 combinações de nível/matéria** | **37** |                             **8** |                                **264** |
-
-**Importante:** os números acima descrevem a base informada no levantamento do projeto, **antes da importação dos novos arquivos de videoaulas**. Os quatro arquivos JSON de curadoria entregues separadamente propõem **duas videoaulas por tema (74 vínculos no total)**; isso só será refletido no aplicativo **depois da validação e importação**.
+| Nível              | Matéria                            |  Temas | Videoaulas |                                   Questões |
+| ------------------ | ---------------------------------- | -----: | ---------: | -----------------------------------------: |
+| Ensino Médio       | Linguagens                         |     10 |         20 | 161 (149 oficiais 2019–2022 + 12 autorais) |
+| Ensino Médio       | Matemática                         |      9 |         18 | 162 (150 oficiais 2019–2022 + 12 autorais) |
+| Ensino Fundamental | Linguagens                         |     10 |         20 |                       150 oficiais de 2022 |
+| Ensino Fundamental | Matemática                         |      8 |         16 |                       150 oficiais de 2022 |
+| **Total**          | **4 combinações de nível/matéria** | **37** |     **74** |                                    **623** |
 
 As questões oficiais identificam a prova e o ano de origem. As criadas pela equipe exibem **Questão autoral Estudaê**. As questões com imagens utilizam recortes das provas armazenados no banco de dados.
 
@@ -314,15 +355,15 @@ Projeto de UPX, com foco em estudantes que desejam se preparar para o Encceja pe
 
 Fontes oficiais: [Sobre o Encceja (Inep)](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/encceja) · [Provas e gabaritos](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/encceja/provas-e-gabaritos) · [Matrizes de referência e documentos](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/encceja/outros-documentos).
 
-### Aba Preparo: evolução imediata, sem simulação
+### Meu aprendizado: dois estados honestos, sem simulação
 
-A aba **Preparo** usa atividades realmente concluídas no navegador. Após uma
-lição curta, mostra resultados recentes por matéria e mensagens como **Indo
-bem nas atividades**. Esse indicador imediato não equivale a domínio confirmado.
-A confirmação pedagógica exige questões classificadas e revisões posteriores.
+A aba **Meu aprendizado** usa atividades realmente concluídas no navegador e
+reduz o estágio de cada matéria a duas mensagens: **Continue estudando** ou
+**Você está preparado(a)**, sempre com o escopo explícito — "nos temas
+avaliados desta matéria; a prova tem outros conteúdos". O detalhe histórico
+fica em segundo plano; acertos recentes não equivalem a domínio confirmado,
+que exige a rodada de verificação independente.
 
-Por enquanto a mensagem **Estou pronto(a) para o Encceja?** responde
-**Ainda não dá para saber**: o projeto cobre somente Matemática e
-Linguagens, sem avaliar todas as áreas nem a redação. O critério antigo de
-"boa preparação" baseado apenas em três temas foi desativado. Não existe
-modo de demonstração ou nota simulada para a apresentação acadêmica.
+O projeto cobre somente Matemática e Linguagens, sem avaliar todas as áreas
+nem a redação — a tela diz isso em rodapé permanente. Não existe modo de
+demonstração nem nota simulada para a apresentação acadêmica.

@@ -1,6 +1,14 @@
-/* Lição: até 5 questões de UM tema, com a correção logo após cada resposta */
+/* Lição: até 5 questões de UM tema, com a correção logo após cada resposta.
+   A ordem vem da seleção adaptativa (cobertura de habilidades, inéditas,
+   famílias); ?h=slug direciona para a habilidade em intervenção. */
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import {
+  Link,
+  Navigate,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom'
 import { Alternativas } from '../components/Alternativas'
 import { Enunciado } from '../components/Enunciado'
 import { Icon } from '../components/Icon'
@@ -12,6 +20,7 @@ import {
   concluirSessao,
   corrigir,
   novaSessaoCaptura,
+  ordenarLicao,
   questaoAprendizagem,
   submeter,
   tentativaId,
@@ -20,7 +29,7 @@ import { carregarQuestoes } from '../core/catalogo'
 import { speak, stopSpeaking } from '../core/speech'
 import { useApp } from '../core/store'
 import type { QuestaoItem, QuizSession, RespostaApi } from '../types'
-import { LETTERS, shuffle } from '../core/utils'
+import { LETTERS } from '../core/utils'
 import { urls } from '../core/urls'
 
 const TAMANHO_LICAO = 5
@@ -37,7 +46,9 @@ const novaSessao = (subject: string, topic: number): QuizSession => ({
 
 export default function Quiz() {
   const { id = '', ti = '0' } = useParams()
+  const [params] = useSearchParams()
   const topic = +ti
+  const alvo = params.get('h')
   const subjects = useApp((s) => s.subjects)
   const quiz = useApp((s) => s.quiz)
   const setQuiz = useApp((s) => s.setQuiz)
@@ -62,7 +73,7 @@ export default function Quiz() {
   return (
     <Screen>
       {!ativa ? (
-        <QuizLoader subject={id} topic={topic} />
+        <QuizLoader subject={id} topic={topic} alvo={alvo} />
       ) : (
         <QuizQuestao quiz={quiz} />
       )}
@@ -71,7 +82,15 @@ export default function Quiz() {
 }
 
 /* ---------- Carregamento das questões ---------- */
-function QuizLoader({ subject, topic }: { subject: string; topic: number }) {
+function QuizLoader({
+  subject,
+  topic,
+  alvo,
+}: {
+  subject: string
+  topic: number
+  alvo: string | null
+}) {
   const subjects = useApp((s) => s.subjects)
   const [fase, setFase] = useState<'carregando' | 'vazio' | 'erro'>(
     'carregando',
@@ -90,7 +109,13 @@ function QuizLoader({ subject, topic }: { subject: string; topic: number }) {
       if (q !== original) return
       // A pessoa já saiu da tela (sessão limpa ou outra lição).
       if (!q || q.subject !== subject || q.topic !== topic || q.finished) return
-      const questions = shuffle(all).slice(0, TAMANHO_LICAO)
+      const ordenadas = await ordenarLicao(
+        subject,
+        topic,
+        all,
+        alvo ?? undefined,
+      )
+      const questions = ordenadas.slice(0, TAMANHO_LICAO)
       if (!questions.length) {
         setFase('vazio')
         return
@@ -104,7 +129,7 @@ function QuizLoader({ subject, topic }: { subject: string; topic: number }) {
     } finally {
       emVoo.current = false
     }
-  }, [subjects, subject, topic])
+  }, [subjects, subject, topic, alvo])
 
   useEffect(() => {
     // Busca de dados: os setState dentro de load() só acontecem depois do await.
@@ -167,7 +192,7 @@ function QuizLoader({ subject, topic }: { subject: string; topic: number }) {
 }
 
 /* ---------- A questão em si ---------- */
-function QuizQuestao({ quiz }: { quiz: QuizSession }) {
+export function QuizQuestao({ quiz }: { quiz: QuizSession }) {
   const subjects = useApp((s) => s.subjects)
   const setQuiz = useApp((s) => s.setQuiz)
   const pushResult = useApp((s) => s.pushResult)
@@ -175,8 +200,8 @@ function QuizQuestao({ quiz }: { quiz: QuizSession }) {
   const navigate = useNavigate()
 
   const s = subjects[quiz.subject]
-  const t = s.topics[quiz.topic]
   const item = quiz.questions![quiz.i]
+  const t = s.topics[item.topic] // o tema é de cada questão (rodada mistura)
   const total = quiz.questions!.length
   const chosen = quiz.chosen[quiz.i]
   const result = quiz.results[quiz.i]
@@ -264,15 +289,32 @@ function QuizQuestao({ quiz }: { quiz: QuizSession }) {
         }
       })
       const correct = items.filter((x) => x.ok).length
+      // Rodada multi-tema: o tema fraco é o que mais errou (empate → menor
+      // índice). Na lição por tema, é o próprio tema quando houve erro.
+      const fraco = q.estudo
+        ? ([
+            ...items
+              .reduce(
+                (m, x) =>
+                  x.ok || x.topic === undefined
+                    ? m
+                    : m.set(x.topic, (m.get(x.topic) ?? 0) + 1),
+                new Map<number, number>(),
+              )
+              .entries(),
+          ].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0]?.[0] ?? null)
+        : correct < items.length
+          ? q.topic
+          : null
       pushResult({
-        v: 3, // lição por tema
+        v: q.estudo ? 4 : 3, // 3 = lição por tema; 4 = rodada multi-tema
         subject: q.subject,
-        topic: q.topic,
+        ...(q.estudo ? {} : { topic: q.topic }),
         date: Date.now(),
         correct,
         total: items.length,
         items,
-        weakTopic: correct < items.length ? q.topic : null,
+        weakTopic: fraco,
       })
       setQuiz({ ...q, finished: true })
       navigate(urls.resultado(useApp.getState().results.length - 1))
@@ -386,7 +428,7 @@ function QuestaoBox({
     setChecking(true)
     setCheckError(false)
     stopSpeaking()
-    const temaSlug = subjects[quiz.subject].topics[quiz.topic].slug
+    const temaSlug = subjects[quiz.subject].topics[item.topic].slug
     const questao = questaoAprendizagem(item, quiz.subject, temaSlug)
     const sess = quiz.captura ?? null
     const atual = () =>

@@ -4,7 +4,13 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
 import { Tex } from '../components/Tex'
-import { ESTADO_TEXTO, avaliarArea } from '../core/capturaAprendizagem'
+import {
+  ESTADO_TEXTO,
+  avaliarArea,
+  linkDaAcao,
+  proximaAcaoNivel,
+} from '../core/capturaAprendizagem'
+import type { AcaoJornada } from '../core/aprendizagem/jornada'
 import { PARAMETROS_DOMINIO } from '../core/aprendizagem/config'
 import { topicProgress } from '../core/stats'
 import { useApp } from '../core/store'
@@ -28,12 +34,18 @@ export default function Resultado() {
       ? s.topics[r.topic]
       : null
   const [estagio, setEstagio] = useState<string | null>(null)
+  const nivel = useApp((s) => s.nivel)
+  const [acao, setAcao] = useState<AcaoJornada | null>(null)
 
-  // Estágio adaptativo do tema da lição: a evolução aparece no próprio
-  // resultado, sem depender da confirmação temporal.
+  // Estágio adaptativo do tema da lição + a próxima ação do orquestrador
+  // (ele decide o que vem depois, não o resultado em si).
   useEffect(() => {
-    if (!r || !tema) return
+    if (!r) return
     let ativo = true
+    void proximaAcaoNivel(nivel).then((a) => {
+      if (ativo) setAcao(a)
+    })
+    if (!tema) return
     void avaliarArea(r.subject).then((a) => {
       const d = a?.dominios[tema.slug]
       if (!ativo || !d) return
@@ -46,7 +58,8 @@ export default function Resultado() {
     return () => {
       ativo = false
     }
-  }, [r, tema])
+  }, [r, tema, nivel])
+  const proxima = linkDaAcao(acao)
 
   // Anima o donut (o stroke-dashoffset sai do círculo cheio para o valor).
   useEffect(() => {
@@ -224,10 +237,27 @@ export default function Resultado() {
           </div>
         ))}
       </details>
-      {/* Um único CTA primário, sempre o próximo passo certo, e vem primeiro:
-          com erro -> praticar de novo / estudar os temas; gabaritou -> seguir em
-          frente (outro tema ou outro simulado). */}
-      {sim ? (
+      {/* Um único CTA primário: a próxima ação da jornada decidida pelo
+          orquestrador a partir do estado que esta sessão deixou. Sem motor
+          (ou sem caminho), o par de sempre continua disponível. */}
+      {proxima ? (
+        <>
+          <Link
+            className="btn btn--primary"
+            style={{ marginTop: '1rem' }}
+            to={proxima.href}
+          >
+            {proxima.titulo} — {proxima.sub}
+          </Link>
+          <Link
+            className="btn btn--outline"
+            style={{ marginTop: '.75rem' }}
+            to={urls.area(r.subject)}
+          >
+            Estudar os temas
+          </Link>
+        </>
+      ) : sim ? (
         perfeito ? (
           <>
             <Link

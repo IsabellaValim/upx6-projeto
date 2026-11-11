@@ -4,6 +4,10 @@ import type {
   GravacaoAprendizagem,
   ServicoAprendizagem,
 } from './aprendizagem/servico'
+import { proximaAcao } from './aprendizagem/jornada'
+import type { AcaoJornada, AulaTema } from './aprendizagem/jornada'
+import { selecionarQuestoes, selecionarRodada } from './aprendizagem/selecao'
+import { carregarQuestoes, materiasDoNivel } from './catalogo'
 import type {
   DiagnosticoDominio,
   DiagnosticoPreparacao,
@@ -15,6 +19,7 @@ import type {
 } from './aprendizagem/tipos'
 import { toast } from './toast'
 import { api } from './api'
+import { urls } from './urls'
 import { local, useApp } from './store'
 import type { DisciplinaPedagogiaApi, QuestaoItem, Resultado } from '../types'
 
@@ -205,6 +210,216 @@ export function matrizesAprendizagem(
         pedagogia: q.pedagogia,
       })),
   }))
+}
+
+/* ---------- Jornada guiada ---------- */
+
+// Matriz de UM tema montada do catálogo + questões carregadas: a lição
+// seleciona sem precisar do índice de pedagogia (validada fica false —
+// só a seleção a usa, e ela olha a elegibilidade por questão).
+function matrizDoTema(
+  disciplina: string,
+  ti: number,
+  questoes: QuestaoItem[],
+): MatrizTema {
+  const t = useApp.getState().subjects[disciplina].topics[ti]
+  return {
+    disciplina,
+    tema: t.slug,
+    validada: false,
+    habilidades: t.habilidades.map((h) => ({
+      slug: h.slug,
+      essencial: h.essencial,
+    })),
+    questoes: questoes
+      .filter((q) => typeof q.codigo === 'string' && q.codigo !== '')
+      .map((q) => ({
+        codigo: q.codigo!,
+        disciplina,
+        tema: t.slug,
+        revisaoApi: q.revisaoConteudo,
+        pedagogia: q.pedagogia,
+      })),
+  }
+}
+
+// Reordena as questões da lição pela seleção adaptativa (o tamanho continua
+// cortado no chamador). Com o motor fora ou qualquer falha, a ordem da API.
+export async function ordenarLicao(
+  disciplina: string,
+  ti: number,
+  questoes: QuestaoItem[],
+  habilidade?: string,
+): Promise<QuestaoItem[]> {
+  try {
+    const estado = await servico.ler()
+    if (!estado) return questoes
+    const selecao = selecionarQuestoes(
+      matrizDoTema(disciplina, ti, questoes),
+      estado,
+      questoes.length,
+      habilidade ? { habilidade } : {},
+    )
+    const ordem = new Map(
+      selecao.questoes.map((q, i) => [q.codigo, i] as const),
+    )
+    return [...questoes].sort(
+      (a, b) =>
+        (ordem.get(a.codigo ?? '') ?? questoes.length) -
+        (ordem.get(b.codigo ?? '') ?? questoes.length),
+    )
+  } catch {
+    return questoes
+  }
+}
+
+// Mapa disciplina/tema → aulas com o vínculo curado e a marca de assistida.
+function aulasDoNivel(nivel: string | null): Map<string, AulaTema[]> {
+  const { subjects, watched } = useApp.getState()
+  const mapa = new Map<string, AulaTema[]>()
+  for (const s of materiasDoNivel(subjects, nivel))
+    s.topics.forEach((t, ti) =>
+      mapa.set(
+        `${s.id}/${t.slug}`,
+        t.lessons.map((l, li) => ({
+          habilidades: l.habilidades,
+          assistida: !!watched[`${s.id}/${ti}/${li}`],
+        })),
+      ),
+    )
+  return mapa
+}
+
+// A próxima ação da jornada, cruzando TODAS as matérias da prova escolhida.
+// null = sem matrizes avaliáveis (ou motor fora) → fluxo tradicional.
+export async function proximaAcaoNivel(
+  nivel: string | null,
+): Promise<AcaoJornada | null> {
+  try {
+    const estado = await servico.ler()
+    if (!estado) return null
+    const disciplinas = materiasDoNivel(useApp.getState().subjects, nivel)
+    const pedagogias = await Promise.all(
+      disciplinas.map((s) => api.pedagogia(s.id)),
+    )
+    const matrizes = pedagogias.flatMap(matrizesAprendizagem)
+    return proximaAcao({
+      estado,
+      matrizes,
+      aulas: aulasDoNivel(nivel),
+    })
+  } catch {
+    return null
+  }
+}
+
+// Itens de uma rodada multi-tema (diagnóstico ou verificação por matéria):
+// seleção adaptativa cruzando os temas validados. Sem motor, sem índice ou
+// sem elegíveis, cai nas primeiras questões do catálogo — praticar nunca
+// para por falta de curadoria.
+export async function montarRodada(
+  disciplina: string,
+  tamanho: number,
+): Promise<QuestaoItem[]> {
+  const s = useApp.getState().subjects[disciplina]
+  if (!s) return []
+  const porTema = await Promise.all(
+    s.topics.map((t, ti) =>
+      t.totalQuestoes
+        ? carregarQuestoes(useApp.getState().subjects, disciplina, ti)
+        : Promise.resolve([]),
+    ),
+  )
+  try {
+    const [pedagogia, estado] = await Promise.all([
+      api.pedagogia(disciplina),
+      servico.ler(),
+    ])
+    if (!estado) throw new Error('sem motor')
+    const selecao = selecionarRodada(
+      matrizesAprendizagem(pedagogia),
+      estado,
+      tamanho,
+    )
+    const porCodigo = new Map(
+      porTema.flat().map((q) => [q.codigo ?? '', q] as const),
+    )
+    const itens = selecao.questoes
+      .map((q) => porCodigo.get(q.codigo))
+      .filter((q): q is QuestaoItem => !!q)
+    if (itens.length) return itens
+  } catch {
+    /* índice ou motor indisponível: cai no plano abaixo */
+  }
+  return porTema.flat().slice(0, tamanho)
+}
+
+// Traduz a ação do orquestrador em link e textos prontos para os cartões.
+// A tela não decide nada: mostra a ação ou o fluxo tradicional.
+export function linkDaAcao(acao: AcaoJornada | null): {
+  href: string
+  kind: 'aula' | 'pratica'
+  titulo: string
+  sub: string
+} | null {
+  if (!acao) return null
+  const s = useApp.getState().subjects[acao.disciplina]
+  if (!s) return null
+  const ti = acao.tema ? s.topics.findIndex((t) => t.slug === acao.tema) : -1
+  const t = ti >= 0 ? s.topics[ti]! : null
+  const onde = t ? `${s.name} · ${t.title}` : s.name
+  switch (acao.tipo) {
+    case 'diagnostico':
+      return {
+        href: urls.estudo(s.id),
+        kind: 'pratica',
+        titulo: 'Começar meu estudo',
+        sub: `${s.name} · algumas questões para começar`,
+      }
+    case 'aula':
+      return t && acao.aula !== null
+        ? {
+            href: urls.video(s.id, ti, acao.aula),
+            kind: 'aula',
+            titulo: 'Ver a aula',
+            sub: onde,
+          }
+        : null
+    case 'verificacao':
+      return t
+        ? {
+            href: urls.quiz(s.id, ti),
+            kind: 'pratica',
+            titulo: 'Verificar o que aprendeu',
+            sub: `${onde} — questões novas`,
+          }
+        : null
+    case 'revisar':
+      return t
+        ? {
+            href: urls.quiz(s.id, ti, acao.habilidade ?? undefined),
+            kind: 'pratica',
+            titulo: 'Revisar',
+            sub: onde,
+          }
+        : null
+    case 'pratica':
+      return t
+        ? {
+            href: urls.quiz(s.id, ti, acao.habilidade ?? undefined),
+            kind: 'pratica',
+            titulo: 'Praticar',
+            sub: onde,
+          }
+        : null
+    case 'simulado':
+      return {
+        href: urls.simulado(s.id),
+        kind: 'pratica',
+        titulo: 'Treinar com o simulado',
+        sub: s.name,
+      }
+  }
 }
 
 export interface AvaliacaoEstudo {

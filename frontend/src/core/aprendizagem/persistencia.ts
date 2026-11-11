@@ -95,7 +95,7 @@ function validarEstado(valor: unknown): asserts valor is EstadoAprendizagem {
       !finito(e.instante) ||
       typeof e.dataLocal !== 'string' ||
       !/^\d{4}-\d{2}-\d{2}$/.test(e.dataLocal) ||
-      !['licao', 'simulado'].includes(e.modalidade as string) ||
+      !['licao', 'simulado', 'rodada'].includes(e.modalidade as string) ||
       !['apresentacao', 'submissao', 'correcao', 'exposicao', 'ajuda'].includes(
         e.tipo as string,
       ) ||

@@ -29,6 +29,7 @@ import Home from './screens/Home'
 import Area from './screens/Area'
 import Video from './screens/Video'
 import Quiz from './screens/Quiz'
+import Estudo from './screens/Estudo'
 import Simulado from './screens/Simulado'
 import Resultado from './screens/Resultado'
 import Progresso from './screens/Progresso'
@@ -147,6 +148,7 @@ function AppRoutes() {
             <Route path="/area/:id" element={<Area />} />
             <Route path="/video/:id/:ti/:li" element={<Video />} />
             <Route path="/quiz/:id/:ti" element={<Quiz />} />
+            <Route path="/estudo/:id" element={<Estudo />} />
             <Route path="/simulado" element={<Simulado />} />
             <Route path="/simulado/:id" element={<Simulado />} />
             <Route path="/resultado/:idx" element={<Resultado />} />

@@ -109,6 +109,7 @@ export interface CatalogLesson {
   kind: string // título da videoaula
   min: number | null // duração em minutos, arredondada; null = não informada
   youtubeId: string
+  habilidades: string[] // vínculo curado (videoaula_habilidade), vazio = não ligada
 }
 
 export interface CatalogTopic {
@@ -118,6 +119,7 @@ export interface CatalogTopic {
   videos: number
   totalQuestoes: number
   lessons: CatalogLesson[]
+  habilidades: HabilidadeApi[] // matriz pedagógica do tema (slug, titulo, essencial)
 }
 
 export interface CatalogSubject {
@@ -196,6 +198,7 @@ export interface Resultado {
 export interface QuizSession {
   subject: string
   topic: number
+  estudo?: string // disciplina de uma rodada multi-tema (diagnóstico)
   questions: QuestaoItem[] | null // chegam da API
   i: number
   chosen: (number | undefined)[]

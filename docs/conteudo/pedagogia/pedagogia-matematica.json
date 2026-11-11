@@ -1,0 +1,2112 @@
+{
+  "formato": 1,
+  "revisor": "Equipe Estudaê — curadoria inicial assistida (revisar antes de publicar)",
+  "disciplina": "matematica",
+  "matriz": {
+    "versao": "estudae-em-2026-11",
+    "validada": true
+  },
+  "temas": [
+    {
+      "slug": "equacoes",
+      "habilidades": [
+        {
+          "slug": "traduzir-contexto-em-equacao",
+          "titulo": "Traduzir uma situação do dia a dia em equação",
+          "essencial": true
+        },
+        {
+          "slug": "resolver-equacao-primeiro-grau",
+          "titulo": "Resolver equação do primeiro grau e isolar a incógnita",
+          "essencial": true
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "TLkqE_CWY2E",
+          "habilidades": [
+            "resolver-equacao-primeiro-grau",
+            "traduzir-contexto-em-equacao"
+          ]
+        },
+        {
+          "youtube": "H15tdoHlCSM",
+          "habilidades": [
+            "resolver-equacao-primeiro-grau",
+            "traduzir-contexto-em-equacao"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-mat-equ-001",
+          "habilidade": "traduzir-contexto-em-equacao",
+          "secundarias": [],
+          "familia": "equacao-contexto-cotidiano",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "08a0126284a8fa7ab1873d971a59eec03fde50dc229d4d9f5b9320a83237e66b"
+        },
+        {
+          "codigo": "aut-mat-equ-002",
+          "habilidade": "traduzir-contexto-em-equacao",
+          "secundarias": [],
+          "familia": "equacao-contexto-cotidiano",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d44f1e24bcccbbb5a0ff80d3f7f85a50d89435c8e396c034d12161ec2f216f22"
+        },
+        {
+          "codigo": "aut-mat-equ-003",
+          "habilidade": "traduzir-contexto-em-equacao",
+          "secundarias": [],
+          "familia": "equacao-contexto-cotidiano",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0ed242f43d74c947c7a08f1fc7f446c94b96ffe22d1b2fcfcc9315bc093b96ac"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-038",
+          "habilidade": "traduzir-contexto-em-equacao",
+          "secundarias": [],
+          "familia": "mistura-e-concentracao",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b2f2f62205dc582bfd7072db09e9b2d71183a069fff767ac3763d00e55f9ca07"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-046",
+          "habilidade": "traduzir-contexto-em-equacao",
+          "secundarias": [],
+          "familia": "valor-minimo-e-inequacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b8ec9d68a2ac96a146cabacd61b23a42eaff4538ea9a8ac6bf520e54f7fe723c"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-048",
+          "habilidade": "traduzir-contexto-em-equacao",
+          "secundarias": [],
+          "familia": "equacao-custo-comercial",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "09107a2d485225717b6a954cfbbdfbb87df22a68929d453d75dd90eead05c924"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-047",
+          "habilidade": "resolver-equacao-primeiro-grau",
+          "secundarias": [],
+          "familia": "isolar-incognita-em-formula",
+          "dificuldade": "avancada",
+          "tipo": "conceitual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "699833868e5d342b20890f38ee8a17da0795e8b0b4f6aeb14114cf0cf66983dd"
+        }
+      ]
+    },
+    {
+      "slug": "estatistica-basica",
+      "habilidades": [
+        {
+          "slug": "calcular-media-mediana-moda",
+          "titulo": "Calcular média, moda e mediana de um conjunto de dados",
+          "essencial": true
+        },
+        {
+          "slug": "ler-e-comparar-dados",
+          "titulo": "Ler tabelas e gráficos e comparar valores para decidir",
+          "essencial": true
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "GIzwKJL33_g",
+          "habilidades": [
+            "calcular-media-mediana-moda"
+          ]
+        },
+        {
+          "youtube": "cSk6fn1J3Ig",
+          "habilidades": [
+            "calcular-media-mediana-moda",
+            "ler-e-comparar-dados"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-mat-est-001",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-simples",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "fb64711c9aa3f98ea87861e737ee1337e49684aa88b1a8e185795f056e1e03db"
+        },
+        {
+          "codigo": "aut-mat-est-002",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "moda",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f402380eb49593192c31281d8a3a6bcbbb60fd8809b469f2a4989b0b070d83b4"
+        },
+        {
+          "codigo": "aut-mat-est-003",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "mediana",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f705719f7165ba9f027ffbac9ef39d732abb4829a2c42f1a77ed3bfdb578878b"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-035",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-com-meta",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5d58f4cad1cd911a79ef0811157105c8379f39bb35b1f6d4cadf2d9df88ac5cc"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-053",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "39d1530364813cfbcc3f2fe66a60706a1232c965d4d7d2d1d698196bc9c4f794"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-055",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-simples",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "35563a5b41d3967db28b0172c9b099b98d4afa0c65d618ed3797248663300055"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-043",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "993cdc16630e254b8988acbabda6bc676b8511c6cea39eb2422b717af649751c"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-044",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "3658b899a2e3daa43c6c1936b10ba8fad2ad0efdd5d275a968e1de26c84bcda9"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-045",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-simples",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d59ef38202e5f13e130af77f35a7554f996cb2fac1e38aff3fd23fb6431fd818"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-054",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-com-meta",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "3d136947291ff49ef3c5326ce622a38e3ff5169ac1ca3aab4de6b33b806eff10"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-056",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "decisao-por-criterio",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5e5876daf6a05ac536251d9a2179c7598e6f38868308a43800e5e50266b8065d"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-049",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "54d53248e0f233d770c9bfc19a830e6f17876063c44559c7bdd94857a2fec659"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-057",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "390a272e6b86342af2b27966e68481412935a4a86fb7252c01c9c05832396f26"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-058",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-simples",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b063dfcee5e223f51892c537ae52b116a1988c6c363cf46db8e30b0558a78a6f"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-059",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-simples",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0c182381213ec0138c27f0608403cc9c6486fe2695b84031ec3979d76fdf182f"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-034",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "4d1a1e407f424900459f22ac11982a206c2b9fb35fba48241dd86c8bb2b88827"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-039",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-simples",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "be3a297e93921aea4ff684b1a74467824813b762666ea4c200f159e10204172a"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-042",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "decisao-por-criterio",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "ab062bff5c03ce5c3dd5d588d89e4275a1c329e754d17ddcec77852d85d0df26"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-052",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "decisao-por-criterio",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5e022518cde009c23cd4b5f1f06c8456a1de1b3bd986a3e9b8d865798cf4e81e"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-054",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "17abb17d74f50e47f0ee8b4055b56586a36007c582d0a06d3660aebdf816bc1e"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-031",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a040d0af80420a93e9b382b5639694bde2f0f7ef5417231e5fc4ea94b71655b2"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-033",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "decisao-por-criterio",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "e8037a35abb0c93b767bdde320398fc69dae62f3cdbe126f549610172c502471"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-035",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-simples",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "fc7711be639e7aaa9b3e1642fbd2b8fd0f179761c20b153cb59140ca1a4a9d12"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-041",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "1a3872a85fa8ebf105208ffe60df118e676c3c3c9464117aa2a68ac826a9accf"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-044",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "bc1a98cf6786523b2c5fc202973c68f270dab4c2a5ffc8f739bbd93203b5b1f1"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-045",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "decisao-por-criterio",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d4efcdd4a8eb8fd64769428a889aea692c7055a0f99c8a0be3bd5310d270a666"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-049",
+          "habilidade": "ler-e-comparar-dados",
+          "secundarias": [],
+          "familia": "leitura-e-comparacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "81a8d79b8043111734fdbf521cb224deba67b1db3c9a714dad6202be0664e2b9"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-057",
+          "habilidade": "calcular-media-mediana-moda",
+          "secundarias": [],
+          "familia": "media-simples",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "6cf1588042a2461b1fcae353754229ab96d326b47c62f08092f813ccc2263fc5"
+        }
+      ]
+    },
+    {
+      "slug": "funcoes",
+      "habilidades": [
+        {
+          "slug": "traduzir-situacao-em-funcao",
+          "titulo": "Escrever a expressão algébrica de uma situação do dia a dia",
+          "essencial": true
+        },
+        {
+          "slug": "interpretar-grafico-de-funcao",
+          "titulo": "Escolher o gráfico que representa uma situação",
+          "essencial": true
+        },
+        {
+          "slug": "calcular-valor-de-funcao",
+          "titulo": "Calcular valores e projeções a partir da função",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "_kbkCpoiWq4",
+          "habilidades": [
+            "traduzir-situacao-em-funcao",
+            "interpretar-grafico-de-funcao"
+          ]
+        },
+        {
+          "youtube": "5rz7jkOvrCc",
+          "habilidades": [
+            "interpretar-grafico-de-funcao",
+            "calcular-valor-de-funcao"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2019-mat-042",
+          "habilidade": "traduzir-situacao-em-funcao",
+          "secundarias": [],
+          "familia": "expressao-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "cd636a1b85b959d4ef4c9476e73d2c182451ff2f47b93b844a59873696bc783c"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-045",
+          "habilidade": "traduzir-situacao-em-funcao",
+          "secundarias": [],
+          "familia": "expressao-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "664674cc0098b913e4c4e0b01a7d76dab734ac7bc3a66b65953f561f0980b343"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-050",
+          "habilidade": "calcular-valor-de-funcao",
+          "secundarias": [],
+          "familia": "valor-e-projecao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "e5d05089b85ccbdb22bbbf781e092362a7a4f0e916d089021170c50722c6a03f"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-059",
+          "habilidade": "interpretar-grafico-de-funcao",
+          "secundarias": [],
+          "familia": "grafico-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f7b14490aa5a8f0ad58bb34668b01bea439828ae5e308900dc283c4a0b720200"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-036",
+          "habilidade": "interpretar-grafico-de-funcao",
+          "secundarias": [],
+          "familia": "grafico-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "7ae6d4e3f46d171ee098a840eac057f30bed353994f43fb48ebddf319419711c"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-048",
+          "habilidade": "calcular-valor-de-funcao",
+          "secundarias": [],
+          "familia": "valor-e-projecao",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "422c3150d5c4deca369b31a0a38ef8513fcf805977ffa609475060f94f335c51"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-052",
+          "habilidade": "traduzir-situacao-em-funcao",
+          "secundarias": [],
+          "familia": "expressao-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5b882a21c9cd2a78051ae2cb4ba691a9ffa1d3cc7060ce35818290ddc3962c4a"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-055",
+          "habilidade": "traduzir-situacao-em-funcao",
+          "secundarias": [],
+          "familia": "expressao-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "96db2720a339bb28e09abc4c82308ae50eff1cb59abba28ab8d2af3dc83e375e"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-040",
+          "habilidade": "calcular-valor-de-funcao",
+          "secundarias": [],
+          "familia": "valor-e-projecao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b59826400427efa50e87136f2b07d64dccd06d9883242152cb23f9e26ae79b4b"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-046",
+          "habilidade": "calcular-valor-de-funcao",
+          "secundarias": [],
+          "familia": "valor-e-projecao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "18de655c1ce6c63ece5df98e4ac3e14c90aca46c908d2516923bb3e76d1e1dde"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-052",
+          "habilidade": "traduzir-situacao-em-funcao",
+          "secundarias": [],
+          "familia": "expressao-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "02c956236bd32fec03f3e260d5b689c510e2b59488093ef91ad6f57f33063143"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-055",
+          "habilidade": "traduzir-situacao-em-funcao",
+          "secundarias": [],
+          "familia": "expressao-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "80d3c887ae64589d044e4f873d684eebb74e2d013056c3c1f92351a88afd5b2c"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-056",
+          "habilidade": "interpretar-grafico-de-funcao",
+          "secundarias": [],
+          "familia": "grafico-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "fef0bf99834d0b12e4c25aec0a82b4476681c260f00f1643e95a25bd82fb049d"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-043",
+          "habilidade": "interpretar-grafico-de-funcao",
+          "secundarias": [],
+          "familia": "grafico-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "64ef3900d79907b1f8a29c307abc57e2ffd84af0d6998ca4d5da11f9bdf4f0a9"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-047",
+          "habilidade": "calcular-valor-de-funcao",
+          "secundarias": [],
+          "familia": "valor-e-projecao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "569507eb5702879e94459d4c96874ca80ddc392fe5c0d2d48cb8b4a81e16d298"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-055",
+          "habilidade": "traduzir-situacao-em-funcao",
+          "secundarias": [],
+          "familia": "expressao-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "cb1a151626c89d901fcac467a9c546cadb2556bcb3878119365c1242fd09d2d1"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-039",
+          "habilidade": "traduzir-situacao-em-funcao",
+          "secundarias": [],
+          "familia": "expressao-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b835c344d397c03d15565c84a8f848c1c0fd186b80498ce22889d46b5e8dc230"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-060",
+          "habilidade": "traduzir-situacao-em-funcao",
+          "secundarias": [],
+          "familia": "expressao-do-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d40a400e16954590944bfce713e150e67c0681131f0e7c19d8bf139284f98e58"
+        }
+      ]
+    },
+    {
+      "slug": "geometria-espacial",
+      "habilidades": [
+        {
+          "slug": "identificar-solidos-e-formas",
+          "titulo": "Reconhecer sólidos geométricos e suas vistas",
+          "essencial": true
+        },
+        {
+          "slug": "calcular-volume-e-capacidade",
+          "titulo": "Calcular volume e capacidade de sólidos",
+          "essencial": true
+        },
+        {
+          "slug": "contar-elementos-do-solido",
+          "titulo": "Contar faces, vértices e arestas de sólidos",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "d6ky8uyGkBI",
+          "habilidades": [
+            "calcular-volume-e-capacidade"
+          ]
+        },
+        {
+          "youtube": "UYIK18dih00",
+          "habilidades": [
+            "calcular-volume-e-capacidade",
+            "identificar-solidos-e-formas"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2019-mat-031",
+          "habilidade": "identificar-solidos-e-formas",
+          "secundarias": [],
+          "familia": "identificar-forma",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d50dd44b48caa23cdb2c7a11af78b77af094f2a84a256a9de78b0a00387cb155"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-033",
+          "habilidade": "identificar-solidos-e-formas",
+          "secundarias": [],
+          "familia": "projecao-e-vista",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5b1681532c71e8c1ab9a3ece0b000ca135033da1d182e80a4991ff480333184f"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-034",
+          "habilidade": "identificar-solidos-e-formas",
+          "secundarias": [],
+          "familia": "identificar-forma",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5d0f1345a227beb741fee8d8d2dcb47846053644f782f7b1ef7866b0be33d1d1"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-046",
+          "habilidade": "calcular-volume-e-capacidade",
+          "secundarias": [],
+          "familia": "volume-e-capacidade",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "786831fad285b1616865be83a9be4c18b5b32eee1725a2e0452b95f18b342e2c"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-051",
+          "habilidade": "calcular-volume-e-capacidade",
+          "secundarias": [],
+          "familia": "volume-e-capacidade",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a7499591525a43fcd516698d1ad158360d2baf9e1a35a3893169b4d8009249f6"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-056",
+          "habilidade": "contar-elementos-do-solido",
+          "secundarias": [],
+          "familia": "faces-vertices-e-arestas",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "98d9ee0b61420b3b33ae3452b3325be253b7e25056d4bc6d802f0be53707a27c"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-036",
+          "habilidade": "contar-elementos-do-solido",
+          "secundarias": [],
+          "familia": "faces-vertices-e-arestas",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0d1629c2fc98b89fe53221ddc3e1a7aeee056b83a5e6b5c6337eccb56c39a0a3"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-054",
+          "habilidade": "calcular-volume-e-capacidade",
+          "secundarias": [],
+          "familia": "volume-e-capacidade",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "8f770d56c2290f1b357a7e87e6c1e36cfd298a181aedf8374089b92b55d1b38d"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-058",
+          "habilidade": "contar-elementos-do-solido",
+          "secundarias": [],
+          "familia": "faces-vertices-e-arestas",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a4537a6b8f80a3b43728ff719d6c0f57fb583bfe2f39393ebb34a572676a1303"
+        }
+      ]
+    },
+    {
+      "slug": "geometria-plana",
+      "habilidades": [
+        {
+          "slug": "calcular-area-e-perimetro",
+          "titulo": "Calcular área e perímetro em situações práticas",
+          "essencial": true
+        },
+        {
+          "slug": "medir-angulos-e-figuras",
+          "titulo": "Medir ângulos e partes de figuras planas",
+          "essencial": true
+        },
+        {
+          "slug": "posicionar-figuras-e-trajetos",
+          "titulo": "Ler posição, vistas e trajetos em figuras",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "aIKxhaxynJ8",
+          "habilidades": [
+            "calcular-area-e-perimetro"
+          ]
+        },
+        {
+          "youtube": "PalDzybqElQ",
+          "habilidades": [
+            "calcular-area-e-perimetro",
+            "medir-angulos-e-figuras"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-mat-geo-001",
+          "habilidade": "calcular-area-e-perimetro",
+          "secundarias": [],
+          "familia": "area-e-perimetro",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "ef0f1cac0f0c584dfb456f14b0e6cd7aabff8195072beb49635b7b0a861f3121"
+        },
+        {
+          "codigo": "aut-mat-geo-002",
+          "habilidade": "calcular-area-e-perimetro",
+          "secundarias": [],
+          "familia": "area-e-perimetro",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "63ae50a128bd4709c5e0af763ec1044067421c49de2a4e0408c15a0a44ba2b46"
+        },
+        {
+          "codigo": "aut-mat-geo-003",
+          "habilidade": "calcular-area-e-perimetro",
+          "secundarias": [],
+          "familia": "area-e-perimetro",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d67fc268bd90122f42e8fc3858156457880b880be29dbc224cf4377d982eda86"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-036",
+          "habilidade": "posicionar-figuras-e-trajetos",
+          "secundarias": [],
+          "familia": "posicao-e-trajeto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "68e3b8f8564f9e94920570e7c03df13ac15f9cc3e367f17ebde8eedd42394395"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-043",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "angulos",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "09a7d762138d05744052bf46ded2517e2d7fd24d87cd5cde407133fa1ef202ca"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-049",
+          "habilidade": "calcular-area-e-perimetro",
+          "secundarias": [],
+          "familia": "area-e-perimetro",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "39549ea67ca623664931f0a4dc9eb937e68e00ec91208648b1e0d7581d69a64f"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-054",
+          "habilidade": "posicionar-figuras-e-trajetos",
+          "secundarias": [],
+          "familia": "posicao-e-trajeto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "ca5bdbe374e00ae3e15f8a5fd85e20b21ab1f23754825472da54a0aee1a2d2a1"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-058",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "angulos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "574271d2ee241ab05144099cd3a0457c25e5cf7199057111352ea538bfff1c64"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-039",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "medidas-figura",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "3de9beb8723fe06f3ac15c6d0781df091f94826bee13398e0e3641c1135f8367"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-041",
+          "habilidade": "posicionar-figuras-e-trajetos",
+          "secundarias": [],
+          "familia": "posicao-e-trajeto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "cfac2ed22b25b40a80714de320538ce83299ab8e3ed93ca8a25d4f17e79c14f5"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-053",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "angulos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "8d2b320c0cf71e8992d081aa3bfded2804d4f0deb4bd42195b9dc28833718127"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-041",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "medidas-figura",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d1802a0dc16e6d7f8d2b3009fbbb62406504c2728b781ea76f49ad3fb2736abf"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-042",
+          "habilidade": "posicionar-figuras-e-trajetos",
+          "secundarias": [],
+          "familia": "posicao-e-trajeto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "490805a51274e97d3382a01e6f3a374b387d229a4f54fe996ba1b5d11b0736a2"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-044",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "angulos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f1a61a6691992249b004b4ed7db909c33ea9db55daf39c381798675c3435058c"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-045",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "medidas-figura",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "9d3aa27190b7daefef4a858a5bfd6260fdf23b5476ff636c0a08731a0270137b"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-048",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "medidas-figura",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "bfe78ca183532359cbff2062bc54116f92b0c4d74660a7b48c88226b48119178"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-050",
+          "habilidade": "calcular-area-e-perimetro",
+          "secundarias": [],
+          "familia": "area-e-perimetro",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "1c06ec49a6628758ee2c54432f39ce9dcf536e39071fb7ffc0fb9381181c0823"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-037",
+          "habilidade": "posicionar-figuras-e-trajetos",
+          "secundarias": [],
+          "familia": "posicao-e-trajeto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a95cc41029773af13c61d9188cbd7c13ceb8a8ebe074fbef30dd8d3f5bbadac1"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-040",
+          "habilidade": "calcular-area-e-perimetro",
+          "secundarias": [],
+          "familia": "area-e-perimetro",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "24ac7e1b2fed27e147c358ebe61b534dc3c423d083966f792928a004defd2926"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-044",
+          "habilidade": "posicionar-figuras-e-trajetos",
+          "secundarias": [],
+          "familia": "posicao-e-trajeto",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a7b3c7af50e881493efcf088858229377ae040eeb1a5fff2fdc7b952df1b392e"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-059",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "medidas-figura",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "ef63b6c091ce9657fcaf8a38dbb607bd83f30d95e366eb1fd46725914bbe40f2"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-042",
+          "habilidade": "medir-angulos-e-figuras",
+          "secundarias": [],
+          "familia": "medidas-figura",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "1ead3031c606600d6235b17f57db162445ff0dc9c1dae10c502aff217e1a0e05"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-048",
+          "habilidade": "calcular-area-e-perimetro",
+          "secundarias": [],
+          "familia": "area-e-perimetro",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d9466ff77b42a712ef152e7bfbfb5603ab2fc4f31ae0e3b3b9d003dc84e9a470"
+        }
+      ]
+    },
+    {
+      "slug": "grandezas-e-medidas",
+      "habilidades": [
+        {
+          "slug": "converter-unidades",
+          "titulo": "Converter entre unidades de medida",
+          "essencial": true
+        },
+        {
+          "slug": "usar-escala",
+          "titulo": "Usar escala em mapas e plantas",
+          "essencial": true
+        },
+        {
+          "slug": "calcular-com-unidades",
+          "titulo": "Fazer contas mantendo as unidades corretas",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "IQHZeOryTNQ",
+          "habilidades": [
+            "converter-unidades",
+            "usar-escala"
+          ]
+        },
+        {
+          "youtube": "UYIK18dih00",
+          "habilidades": [
+            "converter-unidades"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2019-mat-032",
+          "habilidade": "calcular-com-unidades",
+          "secundarias": [],
+          "familia": "calculo-com-medidas",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b576f6f3c5dcd9e0c92fca4187dd4fca91296055fc78c249f3af32b3f6168b2b"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-033",
+          "habilidade": "converter-unidades",
+          "secundarias": [],
+          "familia": "conversao-de-unidades",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "7c0f4be8c96fb3b0baa38928ed9ec3376107f355d8f7cde33b6230e8a6b56713"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-037",
+          "habilidade": "calcular-com-unidades",
+          "secundarias": [],
+          "familia": "calculo-com-medidas",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "4995fec81bfd805de4ea1a2f1f18f3c247a3cf8715e4dfdf7253ce6b10e42d3a"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-040",
+          "habilidade": "converter-unidades",
+          "secundarias": [],
+          "familia": "conversao-de-unidades",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "8f7c3ca1a3f28080dd5ed97e65a18c998a15788e863d254a28f0e2e372f45e99"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-051",
+          "habilidade": "usar-escala",
+          "secundarias": [],
+          "familia": "escala-e-planta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "74cf136e115b83acfcaec8025b192a0e22c884c402a4dd85cf867daba4993eb2"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-031",
+          "habilidade": "converter-unidades",
+          "secundarias": [],
+          "familia": "conversao-de-unidades",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a68045856906fb6f31b8c605929a10705b999c636c8f43df48100c44899252e8"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-040",
+          "habilidade": "converter-unidades",
+          "secundarias": [],
+          "familia": "conversao-de-unidades",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0c9c0dc9131c8841849e20ec0e67c1bb45ee647e7e675ad3736a5d7c0b1bc157"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-051",
+          "habilidade": "calcular-com-unidades",
+          "secundarias": [],
+          "familia": "calculo-com-medidas",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f1592a8e3f8974c2f13220cd2911b127c343a6fd7204e2cec548bb2a9272a0d2"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-060",
+          "habilidade": "usar-escala",
+          "secundarias": [],
+          "familia": "escala-e-planta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "db31da8b8b1d725cff9315a5ae096db86417b7cee34a6989414159f84bac678d"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-031",
+          "habilidade": "converter-unidades",
+          "secundarias": [],
+          "familia": "conversao-de-unidades",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "1c97c6c1a4a7cf1f244453ad7a1c8f1ef2e8fe085f3d421a88f5071f2b671976"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-033",
+          "habilidade": "calcular-com-unidades",
+          "secundarias": [],
+          "familia": "calculo-com-medidas",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "6101f85114c8ddeba597b62980e3c2cf40a63e811a373ca42ff21350a2939739"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-038",
+          "habilidade": "calcular-com-unidades",
+          "secundarias": [],
+          "familia": "calculo-com-medidas",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "c25e0bd73e9b233e9d583a3f1792152589b59557348bf28ecfa1c640fdf808f6"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-047",
+          "habilidade": "usar-escala",
+          "secundarias": [],
+          "familia": "escala-e-planta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2244c83ce311dd42a15f4e43628b03bb8309ddd1637b71c59b24db5dc0b8e1e4"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-036",
+          "habilidade": "calcular-com-unidades",
+          "secundarias": [],
+          "familia": "calculo-com-medidas",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "56d743e79f1fac62473dfee236a02969066f4fcca9e71f3044cfffd6c283102a"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-038",
+          "habilidade": "usar-escala",
+          "secundarias": [],
+          "familia": "escala-e-planta",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "06e4102c7f4998648b7e6c6e5e53712413f23697a61f692dfb3a979e6f5b29cd"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-053",
+          "habilidade": "calcular-com-unidades",
+          "secundarias": [],
+          "familia": "calculo-com-medidas",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "83fcd9ce0b1caa4f734763dbb00408d7d504966da173c6621902cdc1b32bb092"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-060",
+          "habilidade": "converter-unidades",
+          "secundarias": [],
+          "familia": "conversao-de-unidades",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "aee39246d82608646f9f6a7733fa58665155b6270e3625c7a91272e30fa71369"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-034",
+          "habilidade": "usar-escala",
+          "secundarias": [],
+          "familia": "escala-e-planta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "6c1290a46f1c4220c7294c9e914cdbab6dd638215fb390febf52029a605db42f"
+        }
+      ]
+    },
+    {
+      "slug": "numeros-e-operacoes",
+      "habilidades": [
+        {
+          "slug": "operacoes-com-numeros",
+          "titulo": "Usar as quatro operações no dia a dia",
+          "essencial": true
+        },
+        {
+          "slug": "comparar-precos-e-planos",
+          "titulo": "Comparar preços e planos para economizar",
+          "essencial": true
+        },
+        {
+          "slug": "representar-numeros",
+          "titulo": "Ler e representar números (fração, decimal, posicional)",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "hTL9IHLORj4",
+          "habilidades": [
+            "operacoes-com-numeros"
+          ]
+        },
+        {
+          "youtube": "k72XW_wdtvA",
+          "habilidades": [
+            "operacoes-com-numeros",
+            "representar-numeros"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2019-mat-039",
+          "habilidade": "operacoes-com-numeros",
+          "secundarias": [],
+          "familia": "operacoes-do-dia-a-dia",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "af9e633b4b01992305f8f1d02ec299dcaac051960c9bff8bc1da5a3dba06f065"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-048",
+          "habilidade": "representar-numeros",
+          "secundarias": [],
+          "familia": "representar-e-ler-numeros",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d0eb8dc5d32b4c39c57f1b8f58fdbf2e753dd46a6967c02cfbc2007f534c6d76"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-052",
+          "habilidade": "comparar-precos-e-planos",
+          "secundarias": [],
+          "familia": "comparar-precos-e-planos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "db984ebe6cee470ba7b78e5ba905c93d383cea896a3b0fdab4e413229f69225d"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-037",
+          "habilidade": "comparar-precos-e-planos",
+          "secundarias": [],
+          "familia": "comparar-precos-e-planos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "feac5d1ea224298da30c20c772a06ca6e7e2ae5f3ba7b2d2f7bc07e92de188f5"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-047",
+          "habilidade": "operacoes-com-numeros",
+          "secundarias": [],
+          "familia": "divisao-e-organizacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "101ec33a2a3e440f5d38e3e9ac027d466e1ae0c3f8a99f8bab4a47a260c59f94"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-032",
+          "habilidade": "representar-numeros",
+          "secundarias": [],
+          "familia": "representar-e-ler-numeros",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d7181ecd5ad3cb53446a986445a7317229dcb82ee861ad0252ce8245cae30255"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-034",
+          "habilidade": "representar-numeros",
+          "secundarias": [],
+          "familia": "representar-e-ler-numeros",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "fd21c066195ccd92a488945efa1758eb1fd98dd588bab194bd3c1c189e614d8a"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-036",
+          "habilidade": "operacoes-com-numeros",
+          "secundarias": [],
+          "familia": "operacoes-do-dia-a-dia",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "4a7c4a5409796270424c3e38f50e245690e89cd1cb1ed440a871e25b02ba10b6"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-039",
+          "habilidade": "operacoes-com-numeros",
+          "secundarias": [],
+          "familia": "operacoes-do-dia-a-dia",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "7f38367f37cb68d2042cc97f63d93ce86f1647908def8c0ced7889aedb6c7540"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-051",
+          "habilidade": "comparar-precos-e-planos",
+          "secundarias": [],
+          "familia": "comparar-precos-e-planos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "1ed4ca116cd5fd528fc03c80dbf258ed21d1858deeefed200028da4092517863"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-053",
+          "habilidade": "operacoes-com-numeros",
+          "secundarias": [],
+          "familia": "divisao-e-organizacao",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2c4262c89ab077e6b00d50b83cea2eed2c6122af3e12cf94151a9fba46c8db6e"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-031",
+          "habilidade": "representar-numeros",
+          "secundarias": [],
+          "familia": "representar-e-ler-numeros",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d716ead499931fe5b3ad40fbf15f1a092b3c87f9dc9a4bff8547999ee7c000ba"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-035",
+          "habilidade": "operacoes-com-numeros",
+          "secundarias": [],
+          "familia": "operacoes-do-dia-a-dia",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d6a19fdecca4aa807749f01d0bce1db661cbb9455f7c9aecc81f03a57bdf5967"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-041",
+          "habilidade": "representar-numeros",
+          "secundarias": [],
+          "familia": "representar-e-ler-numeros",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "23ad8d27b79fe8228743b26de304153dab82b913abfb1e1c0d20140e6d6d93b3"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-045",
+          "habilidade": "comparar-precos-e-planos",
+          "secundarias": [],
+          "familia": "comparar-precos-e-planos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "7044a9eab1d03ab95b5fc5119ff5bce463cb09d70eaa6abc469069b4f0c8d9cc"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-049",
+          "habilidade": "representar-numeros",
+          "secundarias": [],
+          "familia": "representar-e-ler-numeros",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "04e04e00be7a0000aebecd4d90e1122e26aaceb66f1e49a268679139cc86f2e3"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-057",
+          "habilidade": "comparar-precos-e-planos",
+          "secundarias": [],
+          "familia": "comparar-precos-e-planos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "05428a6e5e5e2ad038df54c6692e8a3b04b2697c21233c7b576775af1870d616"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-032",
+          "habilidade": "representar-numeros",
+          "secundarias": [],
+          "familia": "representar-e-ler-numeros",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "4d77a25fc3d944b109b7d56de67a37d027db4f355610a6ba44a6adc401774ed9"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-038",
+          "habilidade": "operacoes-com-numeros",
+          "secundarias": [],
+          "familia": "operacoes-do-dia-a-dia",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "dc00c1c67a37f31c5c78e111556b5bbe4b88151a55ca969a85288bd000dc495c"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-040",
+          "habilidade": "comparar-precos-e-planos",
+          "secundarias": [],
+          "familia": "comparar-precos-e-planos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "9b45b003396e4460ae66a251f54326eebc12084b1ca1025f1036f48ba333e796"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-046",
+          "habilidade": "comparar-precos-e-planos",
+          "secundarias": [],
+          "familia": "comparar-precos-e-planos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "18928871e5959c2176a1e7daefc946ffa6cf6fee8920941e6fbbbbc56c4dbf79"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-050",
+          "habilidade": "operacoes-com-numeros",
+          "secundarias": [],
+          "familia": "operacoes-do-dia-a-dia",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "8f4eca29efbc20eeadb81d7af17a84d2c778b279337d798d40a343a9fc2b9d14"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-052",
+          "habilidade": "representar-numeros",
+          "secundarias": [],
+          "familia": "representar-e-ler-numeros",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a207863bd7058a612a1a505397831b4028514545044175446287807d96cdd28f"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-059",
+          "habilidade": "operacoes-com-numeros",
+          "secundarias": [],
+          "familia": "operacoes-do-dia-a-dia",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b3a916d8c66aefd745c8546c655509701ff398d7ecc6275dacb3a0fdf63a0fc5"
+        }
+      ]
+    },
+    {
+      "slug": "porcentagem-e-proporcao",
+      "habilidades": [
+        {
+          "slug": "calcular-porcentagem",
+          "titulo": "Calcular porcentagem, desconto, aumento e juros",
+          "essencial": true
+        },
+        {
+          "slug": "usar-regra-de-tres",
+          "titulo": "Usar regra de três direta e inversa",
+          "essencial": true
+        },
+        {
+          "slug": "comparar-porcentagens",
+          "titulo": "Comparar preços e percentuais entre opções",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "OjOyNmTt7Mw",
+          "habilidades": [
+            "calcular-porcentagem"
+          ]
+        },
+        {
+          "youtube": "Qt1CTaMBNnM",
+          "habilidades": [
+            "usar-regra-de-tres",
+            "calcular-porcentagem"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "aut-mat-por-001",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "porcentagem-direta",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "8ff2e5d514a5fdcbf7253672e3e324b5f7b087fb779cf3c905293fee790c0824"
+        },
+        {
+          "codigo": "aut-mat-por-002",
+          "habilidade": "usar-regra-de-tres",
+          "secundarias": [],
+          "familia": "regra-de-tres",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "42829500ff0217f7871233af614cc2b912f8d3d8a6b1e720d1d2db2c8078308d"
+        },
+        {
+          "codigo": "aut-mat-por-003",
+          "habilidade": "comparar-porcentagens",
+          "secundarias": [],
+          "familia": "comparar-precos",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "e29874161fb7ba7aa7a4fa45df9af7ea3b4fc5d7ff439586b41b264966e53d64"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-034",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "lucro-e-preco",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "bf7b12393fca6c133207259f6235f91975ffbc64dc5ee94c1bd10ae26131f01d"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-041",
+          "habilidade": "comparar-porcentagens",
+          "secundarias": [],
+          "familia": "comparar-precos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "655d3136bbbd4a9db3c2317ebdb088d473db53f007892eddf3cf1839fc9bb062"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-044",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "porcentagem-direta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "231dde8145e99c55b63fe477a64fb6751f1c3c0bb86774d7e6c0a95ea75a9c03"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-056",
+          "habilidade": "comparar-porcentagens",
+          "secundarias": [],
+          "familia": "comparar-precos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "93e6ef3e0efbe7aba718b3bbc1edd8a84e61a4947d981993c2270ef5370eee69"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-057",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "porcentagem-direta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2167b65e89857c03a0dd8c16081529071b03b2d7e13250b7a30576750bb4b596"
+        },
+        {
+          "codigo": "encceja-em-nacional-2019-mat-060",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "porcentagem-direta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "275e347638a35915f1e33a38b35aa688564925a2395319847cfeba99443dd7d3"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-032",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "porcentagem-direta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "c75de08c825d7d6a1e50e94a852933cc0c1d6f723a2915795ba1c927c372dc01"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-035",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "porcentagem-direta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "41c32711aa52883b793906958a8512153544f1ce597464646558f5ab7dd1c639"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-038",
+          "habilidade": "usar-regra-de-tres",
+          "secundarias": [],
+          "familia": "regra-de-tres",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d4ca5a5a9cf9087740dde70dc25e08e9ef248fdebdb00deff5ee08e4ca6db809"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-042",
+          "habilidade": "comparar-porcentagens",
+          "secundarias": [],
+          "familia": "comparar-percentuais",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "8c985fadf5b16b39c4e02fed6086a86a1b50ff7f6a83563c9566949e81506575"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-049",
+          "habilidade": "usar-regra-de-tres",
+          "secundarias": [],
+          "familia": "regra-de-tres",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a0d5b72233d619ea9628a51b60a9070ac8abc601cc51ec260954892f148829f3"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-058",
+          "habilidade": "comparar-porcentagens",
+          "secundarias": [],
+          "familia": "comparar-precos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "81c2abbafeb83765dc63be716d158367ea8cea51858c86fb5e12843f12c26806"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-059",
+          "habilidade": "usar-regra-de-tres",
+          "secundarias": [],
+          "familia": "regra-de-tres-inversa",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d10e87aab7613faa25fada68a5fdd3b2727bce947232c6f458ebda92de9fb953"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-035",
+          "habilidade": "usar-regra-de-tres",
+          "secundarias": [],
+          "familia": "regra-de-tres",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "ca2442688214979120a4515f5ad619a01819997c30d21e04b270cf803e9e32be"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-037",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "juros-e-taxa",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0f130df197f39b84b5e2cc07158496cb2adb1383a28969538a1752789b1ab280"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-054",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "lucro-e-preco",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "100c111e322a94b63f65e6a8088b5f2836cfd28284b9084b45e8d21889d6d7f6"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-032",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "juros-e-taxa",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "08243296fb80774f695d046ef287665cda492d8590e7e96be2c5d29a89befe67"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-033",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "porcentagem-direta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a528f78d89f0fb189cef58f738096143ae94abacf8bb5ee16a55fe1cee36c64d"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-046",
+          "habilidade": "comparar-porcentagens",
+          "secundarias": [],
+          "familia": "comparar-precos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "34bbfa61ab2f9523dbb23e79c7c36d94cdac89cd96c75a03fa2569897677c265"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-058",
+          "habilidade": "comparar-porcentagens",
+          "secundarias": [],
+          "familia": "comparar-percentuais",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5118b30886e46648bbbc3f87fb70ac5db06a48ec733b37782455dd0b62cb1b5b"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-037",
+          "habilidade": "comparar-porcentagens",
+          "secundarias": [],
+          "familia": "comparar-precos",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b07a0bace5ed91766e58e0c348227477f6271166ca6a9ffa14305e0c763f5854"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-051",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "porcentagem-direta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f366fa5aed53ebfdf983b32b90db29046eb27ba57b331d93559a539220ff961c"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-053",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "lucro-e-preco",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "83c0765c1cd622b04c58ce82c99086e666f7f8687d781033a36db10738e5874c"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-055",
+          "habilidade": "comparar-porcentagens",
+          "secundarias": [],
+          "familia": "comparar-percentuais",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "4635f71a4e9cd30d51e6104b30fa64d3027474bd9db984f02f547fbc1ac07c80"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-056",
+          "habilidade": "calcular-porcentagem",
+          "secundarias": [],
+          "familia": "porcentagem-direta",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b8af9bb7be244bf0fff25d54c021b61057428e119f32694ba923d88e5a51740e"
+        }
+      ]
+    },
+    {
+      "slug": "probabilidade-e-contagem",
+      "habilidades": [
+        {
+          "slug": "calcular-probabilidade",
+          "titulo": "Calcular probabilidade de um evento",
+          "essencial": true
+        },
+        {
+          "slug": "contar-agrupamentos",
+          "titulo": "Contar agrupamentos e combinações possíveis",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "THkQvksYZjs",
+          "habilidades": [
+            "calcular-probabilidade"
+          ]
+        },
+        {
+          "youtube": "N1iXSpirpDE",
+          "habilidades": [
+            "contar-agrupamentos"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-em-nacional-2019-mat-047",
+          "habilidade": "contar-agrupamentos",
+          "secundarias": [],
+          "familia": "contagem",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0cffcf3d65c04059405f141c0169472f1c53fc545bb188815443c3512f9f6254"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-050",
+          "habilidade": "calcular-probabilidade",
+          "secundarias": [],
+          "familia": "probabilidade-simples",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "7dbb86188ad40309d42bb5a70071290e17265ad23ae5a834b532397604864a88"
+        },
+        {
+          "codigo": "encceja-em-nacional-2020-mat-057",
+          "habilidade": "calcular-probabilidade",
+          "secundarias": [],
+          "familia": "probabilidade-simples",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "3027847c5254190b5d29d4f019a2a42161e8c2713039afb80cb7f794761f7b75"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-043",
+          "habilidade": "calcular-probabilidade",
+          "secundarias": [],
+          "familia": "probabilidade-simples",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5f74b43e4ee2a544e576590954b2e4b12118ca76b7f49802290f0fe4070caa48"
+        },
+        {
+          "codigo": "encceja-em-nacional-2022-mat-060",
+          "habilidade": "calcular-probabilidade",
+          "secundarias": [],
+          "familia": "probabilidade-com-meta",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "e995f37b81764e2d68b9decbfe08a36e26ba86dec4004212cdaaf07e810a8ad3"
+        },
+        {
+          "codigo": "encceja-em-ppl-2020-mat-050",
+          "habilidade": "calcular-probabilidade",
+          "secundarias": [],
+          "familia": "probabilidade-com-meta",
+          "dificuldade": "avancada",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2b71d436929184d712f40e1026f8460f281159f0b8f264a9645c0c4f2cbc598f"
+        },
+        {
+          "codigo": "encceja-em-ppl-2022-mat-043",
+          "habilidade": "contar-agrupamentos",
+          "secundarias": [],
+          "familia": "contagem",
+          "dificuldade": "intermediaria",
+          "tipo": "contextual",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "92be53bb867cdb7e82cd05f1688957a9fb6d429b89cd6b6b519c24a67d74fda2"
+        }
+      ]
+    }
+  ]
+}

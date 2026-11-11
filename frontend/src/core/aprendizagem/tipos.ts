@@ -2,6 +2,7 @@ export interface MetadadosQuestao {
   habilidade: string
   secundarias: string[]
   familia: string
+  dificuldade?: string | null
   revisao: 'pendente' | 'aprovada' | 'rejeitada'
   elegivel: boolean
   versao: number
@@ -19,7 +20,7 @@ export interface SessaoAprendizagem {
   id: string
   geracao: number
   confiavel: boolean
-  modalidade: 'licao' | 'simulado'
+  modalidade: 'licao' | 'simulado' | 'rodada'
   inicio: number
   localLearnerId?: string
 }
@@ -115,7 +116,6 @@ export interface ParametrosDominio {
   skillWindow: number
   skillCorrect: number
   erroRecorrente: number
-  confirmacaoHoras: number
   confirmacaoMin: number
 }
 
@@ -130,7 +130,7 @@ export interface DiagnosticoDominio {
   essenciaisAtendidas: boolean
   recorrenciasResolvidas: boolean
   marcoBomDesempenho: Evidencia | null
-  confirmacaoTemporal: boolean
+  verificacaoIndependente: boolean
 }
 
 export type SituacaoHabilidade =
