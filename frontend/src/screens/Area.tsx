@@ -71,7 +71,10 @@ export default function Area() {
           />
         </section>
       )}
-      {avaliacao?.recomendacao &&
+      {/* Uma ação principal por vez: com sugestão do motor ela é o próximo
+          passo; sem sugestão, o "continuar" do catálogo assume. Dois botões
+          com temas diferentes confundem — aqui nunca aparecem juntos. */}
+      {avaliacao?.recomendacao ? (
         (() => {
           const r = avaliacao.recomendacao!
           const ti = s.topics.findIndex((t) => t.slug === r.tema)
@@ -88,7 +91,15 @@ export default function Area() {
               sub={`${s.topics[ti]!.title} — ${MOTIVO_TEXTO[r.motivo]}`}
             />
           )
-        })()}
+        })()
+      ) : next ? (
+        <ContinueBtn
+          to={next.href}
+          kind={next.kind}
+          titulo={comecou ? 'Continuar estudando' : 'Começar a estudar'}
+          sub={`${next.titulo} · ${next.kind === 'aula' ? 'ver a aula' : 'praticar'}`}
+        />
+      ) : null}
       {/* "Seu progresso" virou "Sua evolução": em vez de contar atividades
           fechadas, mostra o antes/depois do tema com mais evidência —
           o mesmo recorte da tela Meu aprendizado, só desta matéria. */}
@@ -97,18 +108,6 @@ export default function Area() {
           <h2 className="card-title">{tituloEvolucao(subjects, destaque)}</h2>
           <ComparacaoTema e={destaque} />
         </section>
-      )}
-      {/* "Continuar estudando" com menos destaque: o plano de sempre, a um
-          toque, para quem não quiser seguir a sugestão. */}
-      {next && (
-        <Link
-          className="btn btn--outline"
-          style={{ marginTop: '.75rem' }}
-          to={next.href}
-        >
-          {comecou ? 'Continuar estudando' : 'Começar a estudar'} —{' '}
-          {next.titulo}
-        </Link>
       )}
       <h2 className="section-label">Temas</h2>
       <div className="topic-list">
