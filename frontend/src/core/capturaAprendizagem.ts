@@ -4,7 +4,7 @@ import type {
   GravacaoAprendizagem,
   ServicoAprendizagem,
 } from './aprendizagem/servico'
-import { proximaAcao } from './aprendizagem/jornada'
+import { proximaAcaoEquilibrada } from './aprendizagem/jornada'
 import type { AcaoJornada, AulaTema } from './aprendizagem/jornada'
 import {
   compararDesempenho,
@@ -12,6 +12,7 @@ import {
   habilidadesBoas,
 } from './aprendizagem/evolucao'
 import type { EvolucaoTema } from './aprendizagem/evolucao'
+import { aprendizadoPct } from './aprendizagem/dominio'
 import { selecionarQuestoes, selecionarRodada } from './aprendizagem/selecao'
 import { carregarQuestoes, materiasDoNivel } from './catalogo'
 import type {
@@ -296,8 +297,10 @@ function aulasDoNivel(nivel: string | null): Map<string, AulaTema[]> {
   return mapa
 }
 
-// A próxima ação da jornada, cruzando TODAS as matérias da prova escolhida.
-// null = sem matrizes avaliáveis (ou motor fora) → fluxo tradicional.
+// A próxima ação da jornada, cruzando TODAS as matérias da prova escolhida
+// e alternando entre elas (a menos adiantada primeiro — reparos seguem com
+// prioridade). null = sem matrizes avaliáveis (ou motor fora) → fluxo
+// tradicional.
 export async function proximaAcaoNivel(
   nivel: string | null,
 ): Promise<AcaoJornada | null> {
@@ -308,12 +311,14 @@ export async function proximaAcaoNivel(
     const pedagogias = await Promise.all(
       disciplinas.map((s) => api.pedagogia(s.id)),
     )
-    const matrizes = pedagogias.flatMap(matrizesAprendizagem)
-    return proximaAcao({
+    return proximaAcaoEquilibrada(
       estado,
-      matrizes,
-      aulas: aulasDoNivel(nivel),
-    })
+      disciplinas.map((s, i) => ({
+        disciplina: s.id,
+        matrizes: matrizesAprendizagem(pedagogias[i]!),
+      })),
+      aulasDoNivel(nivel),
+    )
   } catch {
     return null
   }
@@ -419,12 +424,21 @@ export function linkDaAcao(acao: AcaoJornada | null): {
           }
         : null
     case 'simulado':
-      return {
-        href: urls.simulado(s.id),
-        kind: 'pratica',
-        titulo: 'Treinar com o simulado',
-        sub: s.name,
-      }
+      // Graduação: tamanho definido = treino curto pela rodada adaptativa;
+      // sem tamanho = o simulado completo de verdade.
+      return acao.tamanho
+        ? {
+            href: `${urls.estudo(s.id)}?n=${acao.tamanho}`,
+            kind: 'pratica',
+            titulo: 'Treino de simulado',
+            sub: `${s.name} · ${acao.tamanho} questões`,
+          }
+        : {
+            href: urls.simulado(s.id),
+            kind: 'pratica',
+            titulo: 'Treinar com o simulado',
+            sub: s.name,
+          }
   }
 }
 
@@ -433,6 +447,7 @@ export interface AvaliacaoEstudo {
   preparacao: DiagnosticoPreparacao
   dominios: Record<string, DiagnosticoDominio>
   evolucoes: EvolucaoTema[]
+  aprendizado: number | null // % média dos temas avaliáveis (0–100)
 }
 
 export const MOTIVO_TEXTO: Record<MotivoRecomendacao, string> = {
@@ -469,6 +484,7 @@ export async function avaliarArea(
       preparacao: av.preparacao,
       dominios: av.dominios,
       evolucoes: compararDesempenho(estado, matrizes),
+      aprendizado: aprendizadoPct(estado, matrizes),
     }
   } catch {
     return null
@@ -485,6 +501,7 @@ export interface AprendizadoNivel {
   boasPorTema: Record<string, string[]> // "disc/tema" → slugs em situação "boa"
   dominios: Record<string, DiagnosticoDominio>
   preparacao: DiagnosticoPreparacao
+  pctPorMateria: Record<string, number> // disciplina → % de aprendizado
 }
 
 export async function avaliarAprendizado(
@@ -506,12 +523,21 @@ export async function avaliarAprendizado(
       const boas = habilidadesBoas(estado, m)
       if (boas.length) boasPorTema[`${m.disciplina}/${m.tema}`] = boas
     }
+    const pctPorMateria: Record<string, number> = {}
+    for (const d of disciplinas) {
+      const p = aprendizadoPct(
+        estado,
+        matrizes.filter((m) => m.disciplina === d.id),
+      )
+      if (p !== null) pctPorMateria[d.id] = p
+    }
     return {
       evolucoes,
       destaque: destaqueEvolucao(evolucoes),
       boasPorTema,
       dominios: av.dominios,
       preparacao: av.preparacao,
+      pctPorMateria,
     }
   } catch {
     return null

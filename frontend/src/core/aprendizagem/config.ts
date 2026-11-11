@@ -1,6 +1,7 @@
 import type {
   ConfiguracaoAprendizagem,
   ParametrosDominio,
+  ParametrosJornada,
   ParametrosPreparacao,
   ParametrosRecomendacao,
 } from './tipos'
@@ -28,6 +29,16 @@ export const PARAMETROS_PREPARACAO: Readonly<ParametrosPreparacao> =
     // Apenas critérios experimentais: falta matriz oficial e simulado representativo.
     habilitarConclusaoFavoravel: false,
   })
+
+/* Graduação do treino amplo: com menos de 50% de aprendizado a rodada
+   curta (6 questões) treina sem cansar; de 50 a 74% sobe para 10; a partir
+   de 75% o simulado completo já vale a pena. */
+export const PARAMETROS_JORNADA: Readonly<ParametrosJornada> = Object.freeze({
+  treinoPct: 0.5,
+  simuladoPct: 0.75,
+  treinoCurto: 6,
+  treinoMedio: 10,
+})
 
 export const CONFIG_APRENDIZAGEM: Readonly<ConfiguracaoAprendizagem> =
   Object.freeze({

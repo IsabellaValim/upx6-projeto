@@ -184,3 +184,10 @@ export interface DiagnosticoPreparacao {
   bomDesempenho: number
   detalhes: PreparacaoTema[]
 }
+
+export interface ParametrosJornada {
+  treinoPct: number // fração 0..1: aprendizado mínimo para o treino médio
+  simuladoPct: number // fração 0..1: mínimo para o simulado completo
+  treinoCurto: number // questões do treino curto
+  treinoMedio: number // questões do treino médio
+}

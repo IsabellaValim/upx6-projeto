@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { proximaAcao, estadoPreparo } from './jornada'
+import { proximaAcao, proximaAcaoEquilibrada, estadoPreparo } from './jornada'
 import type { AulaTema } from './jornada'
 import type {
   EstadoAprendizagem,
@@ -28,10 +28,13 @@ function estadoVazio(): EstadoAprendizagem {
 
 /* Cenário com N temas compartilhando o mesmo estado (como a vida real:
    sessões misturam temas da disciplina). */
-function cenario(temas: { slug: string; essenciais: string[] }[]) {
+function cenario(
+  temas: { slug: string; essenciais: string[] }[],
+  disciplina = 'matematica',
+) {
   const estado = estadoVazio()
   const matrizes: MatrizTema[] = temas.map((t) => ({
-    disciplina: 'matematica',
+    disciplina,
     tema: t.slug,
     validada: true,
     habilidades: t.essenciais.map((slug) => ({ slug, essencial: true })),
@@ -47,7 +50,7 @@ function cenario(temas: { slug: string; essenciais: string[] }[]) {
     const m = matrizes.find((x) => x.tema === tema)!
     const q: QuestaoAprendizagem = {
       codigo,
-      disciplina: 'matematica',
+      disciplina,
       tema,
       pedagogia: {
         habilidade,
@@ -72,7 +75,7 @@ function cenario(temas: { slug: string; essenciais: string[] }[]) {
     const base: EventoAprendizagem = {
       id: `${codigo}-${instante}`,
       codigo,
-      disciplina: 'matematica',
+      disciplina,
       tema: m.tema,
       geracao: 0,
       sessaoId,
@@ -276,6 +279,94 @@ describe('proximaAcao', () => {
     expect(acao.tipo).toBe('simulado')
     expect(acao.motivo).toBe('consolidado')
     expect(acao.escopoPreparado).toEqual(['t'])
+  })
+})
+
+describe('proximaAcaoEquilibrada', () => {
+  /* Junta os eventos de dois cenários num Estado só (responder() escreve
+     no estado do próprio cenário — por isso responde-se antes de unir). */
+  function juntar(...cs: ReturnType<typeof cenario>[]): EstadoAprendizagem {
+    const base = cs[0]!.estado
+    return {
+      ...base,
+      eventos: cs.flatMap((c) => c.estado.eventos),
+      conclusoes: cs.flatMap((c) => c.estado.conclusoes),
+    }
+  }
+
+  it('sem evidência em uma matéria, ela é a próxima (evolução uniforme)', () => {
+    const a = cenario([{ slug: 'ta', essenciais: ['h1'] }], 'matematica')
+    a.questao('ta', 'q1', 'h1', 'f1')
+    a.responder('q1', true, 's1')
+    const b = cenario([{ slug: 'tb', essenciais: ['h2'] }], 'linguagens')
+    const acao = proximaAcaoEquilibrada(juntar(a, b), [
+      { disciplina: 'matematica', matrizes: a.matrizes },
+      { disciplina: 'linguagens', matrizes: b.matrizes },
+    ])!
+    expect(acao.disciplina).toBe('linguagens')
+    expect(acao.tipo).toBe('diagnostico')
+  })
+
+  it('dificuldade recorrente vence o equilíbrio de matérias', () => {
+    const a = cenario([{ slug: 'ta', essenciais: ['h1'] }], 'matematica')
+    a.questao('ta', 'q1', 'h1', 'f1')
+    a.questao('ta', 'q2', 'h1', 'f2')
+    a.responder('q1', false, 's1')
+    a.responder('q2', false, 's1')
+    const b = cenario([{ slug: 'tb', essenciais: ['h2'] }], 'linguagens')
+    const acao = proximaAcaoEquilibrada(juntar(a, b), [
+      { disciplina: 'matematica', matrizes: a.matrizes },
+      { disciplina: 'linguagens', matrizes: b.matrizes },
+    ])!
+    expect(acao.disciplina).toBe('matematica')
+    expect(acao.motivo).toBe('dificuldade')
+  })
+
+  it('bom nível sem urgência vira treino de simulado graduado', () => {
+    // h1 consolidada (4 acertos) + h2 iniciada (1 acerto): o tema fica em
+    // bom-desempenho, mas sem essenciais atendidas não há verificação —
+    // a recomendação é 'continuar'. Com 67% de aprendizado, vira treino de 10.
+    const c = cenario([{ slug: 't', essenciais: ['h1', 'h2'] }], 'matematica')
+    for (let i = 0; i < 4; i++) c.questao('t', `a${i}`, 'h1', `fa${i}`)
+    c.questao('t', 'b0', 'h2', 'fb0')
+    for (let i = 0; i < 4; i++) c.responder(`a${i}`, true, 's1')
+    c.responder('b0', true, 's1')
+    const acao = proximaAcaoEquilibrada(
+      c.estado,
+      [{ disciplina: 'matematica', matrizes: c.matrizes }],
+      undefined,
+      100_000,
+    )!
+    expect(acao.tipo).toBe('simulado')
+    expect(acao.tamanho).toBe(10)
+    expect(acao.tema).toBeNull()
+  })
+
+  it('nível baixo mantém a prática normal — sem simulado cedo demais', () => {
+    const c = cenario([{ slug: 't', essenciais: ['h1'] }], 'matematica')
+    c.questao('t', 'q1', 'h1', 'f1')
+    c.responder('q1', true, 's1')
+    const acao = proximaAcaoEquilibrada(c.estado, [
+      { disciplina: 'matematica', matrizes: c.matrizes },
+    ])!
+    expect(acao.tipo).toBe('pratica')
+    expect(acao.motivo).toBe('continuar')
+  })
+
+  it('tudo confirmado libera o simulado completo, sem limite de tamanho', () => {
+    const c = cenario([{ slug: 't', essenciais: ['h1'] }], 'matematica')
+    for (let i = 0; i < 6; i++) c.questao('t', `q${i}`, 'h1', `f${i}`)
+    for (let i = 0; i < 4; i++) c.responder(`q${i}`, true, 's1')
+    c.responder('q4', true, 's2')
+    c.responder('q5', true, 's2')
+    const acao = proximaAcaoEquilibrada(
+      c.estado,
+      [{ disciplina: 'matematica', matrizes: c.matrizes }],
+      undefined,
+      100_000,
+    )!
+    expect(acao.tipo).toBe('simulado')
+    expect(acao.tamanho).toBeUndefined()
   })
 })
 

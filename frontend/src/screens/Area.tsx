@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { BackBtn } from '../components/Nav'
-import { ContinueBtn } from '../components/Progress'
+import { Bar, ContinueBtn } from '../components/Progress'
 import { ComparacaoTema } from '../components/Evolucao'
 import { Screen } from '../components/Screen'
 import {
@@ -16,10 +16,6 @@ import { destaqueEvolucao, tituloEvolucao } from '../core/aprendizagem/evolucao'
 import { useApp } from '../core/store'
 import { nextActivity, subjectProgress, topicProgress } from '../core/stats'
 import { urls } from '../core/urls'
-
-// Uma frase basta na lista (o texto completo fica na tela da aula).
-const primeiraFrase = (texto: string | null) =>
-  ((texto ?? '').match(/^.*?[.!?](\s|$)/)?.[0] ?? texto ?? '').trim()
 
 export default function Area() {
   const { id = '' } = useParams()
@@ -57,20 +53,23 @@ export default function Area() {
         <BackBtn to={urls.home} />
       </div>
       <h1 className="title">{s.name}</h1>
-      <p className="lede">
-        {!next
-          ? 'Você já explorou tudo — pode praticar de novo.'
-          : comecou
-            ? 'Continue de onde você parou.'
-            : 'Comece pelo primeiro tema.'}
-      </p>
-      {next && (
-        <ContinueBtn
-          to={next.href}
-          kind={next.kind}
-          titulo={comecou ? 'Continuar estudando' : 'Começar a estudar'}
-          sub={`${next.titulo} · ${next.kind === 'aula' ? 'ver a aula' : 'praticar'}`}
-        />
+      {/* Primeiro a % de aprendizado (evidência do motor, não contagem);
+          depois a sugestão em destaque; o "continuar" fica mais abaixo. */}
+      {avaliacao?.aprendizado != null && (
+        <section
+          className="card progress-card"
+          aria-label={`Seu aprendizado em ${s.name}`}
+        >
+          <h2 className="card-title">Seu aprendizado</h2>
+          <p>
+            <strong>{avaliacao.aprendizado}%</strong> em {s.name}
+          </p>
+          <Bar
+            done={avaliacao.aprendizado}
+            total={100}
+            rotulo={`Aprendizado em ${s.name}: ${avaliacao.aprendizado}%`}
+          />
+        </section>
       )}
       {avaliacao?.recomendacao &&
         (() => {
@@ -98,6 +97,18 @@ export default function Area() {
           <h2 className="card-title">{tituloEvolucao(subjects, destaque)}</h2>
           <ComparacaoTema e={destaque} />
         </section>
+      )}
+      {/* "Continuar estudando" com menos destaque: o plano de sempre, a um
+          toque, para quem não quiser seguir a sugestão. */}
+      {next && (
+        <Link
+          className="btn btn--outline"
+          style={{ marginTop: '.75rem' }}
+          to={next.href}
+        >
+          {comecou ? 'Continuar estudando' : 'Começar a estudar'} —{' '}
+          {next.titulo}
+        </Link>
       )}
       <h2 className="section-label">Temas</h2>
       <div className="topic-list">
@@ -185,7 +196,6 @@ export default function Area() {
                 <Icon name="chevronDown" cls="chev" />
               </summary>
               <div className="topic-item__body">
-                <p>{primeiraFrase(t.about)}</p>
                 <div className="topic-item__actions">{acoes}</div>
               </div>
             </details>

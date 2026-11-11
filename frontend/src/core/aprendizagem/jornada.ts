@@ -6,7 +6,7 @@
    e, quando nada disso falta, reconhecer o escopo avaliado como preparado
    ou sugerir o simulado. Nunca inventa caminho: sem matrizes avaliáveis,
    devolve null e o chamador segue no fluxo tradicional. */
-import { avaliarDominio } from './dominio'
+import { aprendizadoPct, avaliarDominio } from './dominio'
 import { extrairEvidencias } from './evidencias'
 import { recomendar } from './recomendacao'
 import type {
@@ -15,9 +15,14 @@ import type {
   MatrizTema,
   MotivoRecomendacao,
   ParametrosDominio,
+  ParametrosJornada,
   ParametrosRecomendacao,
 } from './tipos'
-import { PARAMETROS_DOMINIO, PARAMETROS_RECOMENDACAO } from './config'
+import {
+  PARAMETROS_DOMINIO,
+  PARAMETROS_JORNADA,
+  PARAMETROS_RECOMENDACAO,
+} from './config'
 
 export type TipoAcao =
   | 'diagnostico' // primeira sessão: rodada curta cobrindo habilidades variadas
@@ -37,6 +42,7 @@ export interface AcaoJornada {
   aula: number | null // índice da videoaula no tema (quando tipo === 'aula')
   motivo: MotivoAcao
   escopoPreparado: string[] // temas 'dominio-confirmado' neste momento
+  tamanho?: number // simulado gradual: questões do treino (ausente = completo)
 }
 
 export interface AulaTema {
@@ -212,6 +218,66 @@ export function proximaAcao(
     motivo: 'consolidado',
     escopoPreparado,
   }
+}
+
+export interface EntradaEquilibrio {
+  disciplina: string
+  matrizes: readonly MatrizTema[]
+}
+
+/* A ação do nível INTEIRO, alternando as matérias: cada disciplina avalia
+   sua melhor ação; reparos (dificuldade recorrente e verificação pendente)
+   passam na frente; entre o resto, escolhe-se a matéria menos adiantada —
+   as duas evoluem juntas em vez de uma disparar na frente da outra.
+   E quando a escolhida não tem mais nada pendente, o treino amplo cresce
+   com o aprendizado: rodada curta, rodada média e só então o simulado
+   completo. */
+export function proximaAcaoEquilibrada(
+  estado: EstadoAprendizagem,
+  disciplinas: readonly EntradaEquilibrio[],
+  aulas?: ReadonlyMap<string, readonly AulaTema[]>,
+  agora = Date.now(),
+  pd: Readonly<ParametrosDominio> = PARAMETROS_DOMINIO,
+  pr: Readonly<ParametrosRecomendacao> = PARAMETROS_RECOMENDACAO,
+  pj: Readonly<ParametrosJornada> = PARAMETROS_JORNADA,
+): AcaoJornada | null {
+  const candidatas = disciplinas.flatMap((d) => {
+    const acao = proximaAcao(
+      { estado, matrizes: d.matrizes, aulas, agora },
+      pd,
+      pr,
+    )
+    return acao
+      ? [{ acao, pct: aprendizadoPct(estado, d.matrizes, pd) ?? 0 }]
+      : []
+  })
+  if (!candidatas.length) return null
+  const reparos = candidatas.filter(
+    (c) => c.acao.motivo === 'dificuldade' || c.acao.tipo === 'verificacao',
+  )
+  const escolhida = (reparos.length ? reparos : candidatas).reduce((a, b) =>
+    b.pct < a.pct ? b : a,
+  )
+  const acao = escolhida.acao
+  /* Simulado gradual: "continue praticando" (nada urgente) numa matéria já
+     adiantada vale mais como treino amplo que como mais do mesmo — e o
+     treino cresce com o nível até o simulado completo. Reparos e
+     verificações pendentes nunca viram simulado. */
+  if (acao.tipo === 'simulado' || acao.motivo === 'continuar') {
+    const treino = (tamanho?: number): AcaoJornada => ({
+      ...acao,
+      tipo: 'simulado',
+      tema: null,
+      habilidade: null,
+      aula: null,
+      motivo: 'consolidado',
+      tamanho,
+    })
+    if (escolhida.pct >= pj.simuladoPct * 100) return treino()
+    if (escolhida.pct >= pj.treinoPct * 100) return treino(pj.treinoMedio)
+    if (acao.tipo === 'simulado') return treino(pj.treinoCurto)
+  }
+  return acao
 }
 
 /* Dois estados para a tela: 'preparado' só sai de 'dominio-confirmado'

@@ -191,3 +191,31 @@ export function avaliarDominio(
     verificacaoIndependente,
   }
 }
+
+/* % de aprendizado de um recorte (uma matéria ou a prova inteira): média
+   do peso do estágio de cada tema avaliável (matriz validada com ao menos
+   uma habilidade essencial — o mesmo recorte da preparação). Cada estágio
+   vale um degrau: 0, 1/3, 2/3 e 1. É média de evidência, nunca contagem
+   de atividades. null quando não há tema avaliável no recorte. */
+const PESO_ESTADO: Record<DiagnosticoDominio['estado'], number> = {
+  insuficiente: 0,
+  'em-pratica': 1 / 3,
+  'bom-desempenho': 2 / 3,
+  'dominio-confirmado': 1,
+}
+
+export function aprendizadoPct(
+  estado: EstadoAprendizagem,
+  matrizes: readonly MatrizTema[],
+  p: Readonly<ParametrosDominio> = PARAMETROS_DOMINIO,
+): number | null {
+  const avaliaveis = matrizes.filter(
+    (m) => m.validada && m.habilidades.some((h) => h.essencial),
+  )
+  if (!avaliaveis.length) return null
+  const soma = avaliaveis.reduce(
+    (acc, m) => acc + PESO_ESTADO[avaliarDominio(estado, m, p).estado],
+    0,
+  )
+  return Math.round((100 * soma) / avaliaveis.length)
+}

@@ -11,7 +11,6 @@ import {
 } from '../core/capturaAprendizagem'
 import type { AprendizadoNivel } from '../core/capturaAprendizagem'
 import type { AcaoJornada } from '../core/aprendizagem/jornada'
-import { destaqueEvolucao, fraseEvolucao } from '../core/aprendizagem/evolucao'
 import { NIVEIS, materiasDoNivel } from '../core/catalogo'
 import { useApp } from '../core/store'
 import { nextActivity } from '../core/stats'
@@ -60,7 +59,7 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [idsMaterias, nivel, results, watched])
   const jornada = acao?.k === idsMaterias ? linkDaAcao(acao.a) : null
-  // Frase de evolução sob cada matéria (o comparador, não o contador).
+  // % de aprendizado sob cada matéria (o motor, não o contador de atividades).
   const [dados, setDados] = useState<AprendizadoNivel | null>(null)
   useEffect(() => {
     let ativo = true
@@ -110,21 +109,22 @@ export default function Home() {
       <h2 className="section-label">Estudar por matéria</h2>
       {materias.length ? (
         <div className="subject-list">
-          {materias.map((s) => (
-            <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
-              <strong>{s.name}</strong>
-              <small>
-                {fraseEvolucao(
-                  subjects,
-                  dados
-                    ? destaqueEvolucao(
-                        dados.evolucoes.filter((e) => e.disciplina === s.id),
-                      )
-                    : null,
-                )}
-              </small>
-            </SubjectRow>
-          ))}
+          {materias.map((s) => {
+            const pct = dados?.pctPorMateria[s.id]
+            return (
+              <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
+                <strong>{s.name}</strong>
+                <small>
+                  {pct === undefined
+                    ? 'Ainda não começou.'
+                    : `${pct}% de aprendizado`}
+                </small>
+                <span className="mini-bar" aria-hidden="true">
+                  <i style={{ width: `${pct ?? 0}%` }} />
+                </span>
+              </SubjectRow>
+            )
+          })}
         </div>
       ) : (
         <div className="empty">
