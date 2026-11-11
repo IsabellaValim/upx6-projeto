@@ -32,7 +32,11 @@ public class Questao
     public int? ProvaNumero { get; set; }
 
     public StatusQuestao Status { get; set; } = StatusQuestao.Rascunho;
+    public Guid RevisaoConteudo { get; set; }
     public DateTime CriadoEm { get; set; }
+
+    // Classificação pedagógica (1:1, curadoria separada do conteúdo oficial).
+    public MetadadosQuestao? Metadados { get; set; }
 }
 
 // O site só mostra questões publicadas.

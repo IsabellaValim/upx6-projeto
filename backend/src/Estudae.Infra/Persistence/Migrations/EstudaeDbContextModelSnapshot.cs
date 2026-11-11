@@ -23,6 +23,36 @@ namespace Estudae.Infra.Persistence.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Estudae.Domain.Conteudo.ConfiguracaoPedagogicaDisciplina", b =>
+                {
+                    b.Property<int>("DisciplinaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("disciplina_id");
+
+                    b.Property<bool>("MatrizValidada")
+                        .HasColumnType("boolean")
+                        .HasColumnName("matriz_validada");
+
+                    b.Property<DateTime?>("RevisadoEm")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("revisado_em");
+
+                    b.Property<string>("Revisor")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("revisor");
+
+                    b.Property<string>("VersaoMatriz")
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)")
+                        .HasColumnName("versao_matriz");
+
+                    b.HasKey("DisciplinaId")
+                        .HasName("pk_configuracao_pedagogica");
+
+                    b.ToTable("configuracao_pedagogica", (string)null);
+                });
+
             modelBuilder.Entity("Estudae.Domain.Conteudo.Disciplina", b =>
                 {
                     b.Property<int>("Id")
@@ -70,6 +100,56 @@ namespace Estudae.Infra.Persistence.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Estudae.Domain.Conteudo.Habilidade", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<bool>("Essencial")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("boolean")
+                        .HasDefaultValue(true)
+                        .HasColumnName("essencial");
+
+                    b.Property<int>("Ordem")
+                        .HasColumnType("integer")
+                        .HasColumnName("ordem");
+
+                    b.Property<string>("ReferenciaOficial")
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)")
+                        .HasColumnName("referencia_oficial");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)")
+                        .HasColumnName("slug");
+
+                    b.Property<int>("TemaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("tema_id");
+
+                    b.Property<string>("Titulo")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("titulo");
+
+                    b.HasKey("Id")
+                        .HasName("pk_habilidade");
+
+                    b.HasIndex("TemaId", "Slug")
+                        .IsUnique()
+                        .HasDatabaseName("ix_habilidade_tema_id_slug");
+
+                    b.ToTable("habilidade", (string)null);
+                });
+
             modelBuilder.Entity("Estudae.Domain.Conteudo.Imagem", b =>
                 {
                     b.Property<int>("Id")
@@ -115,6 +195,82 @@ namespace Estudae.Infra.Persistence.Migrations
                         .HasDatabaseName("ix_imagem_caminho");
 
                     b.ToTable("imagem", (string)null);
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.MetadadosQuestao", b =>
+                {
+                    b.Property<int>("QuestaoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("questao_id");
+
+                    b.Property<bool>("ConteudoConfere")
+                        .HasColumnType("boolean")
+                        .HasColumnName("conteudo_confere");
+
+                    b.Property<string>("Dificuldade")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("dificuldade");
+
+                    b.Property<bool>("ElegibilidadeSolicitada")
+                        .HasColumnType("boolean")
+                        .HasColumnName("elegibilidade_solicitada");
+
+                    b.Property<string>("Familia")
+                        .IsRequired()
+                        .HasMaxLength(80)
+                        .HasColumnType("character varying(80)")
+                        .HasColumnName("familia");
+
+                    b.Property<int>("HabilidadePrincipalId")
+                        .HasColumnType("integer")
+                        .HasColumnName("habilidade_principal_id");
+
+                    b.Property<string>("ImpressaoConteudo")
+                        .HasMaxLength(64)
+                        .HasColumnType("character(64)")
+                        .HasColumnName("impressao_conteudo")
+                        .IsFixedLength();
+
+                    b.Property<DateTime?>("RevisadoEm")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("revisado_em");
+
+                    b.Property<string>("Revisor")
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("revisor");
+
+                    b.Property<string>("StatusRevisao")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("status_revisao");
+
+                    b.Property<string>("Tipo")
+                        .HasMaxLength(60)
+                        .HasColumnType("character varying(60)")
+                        .HasColumnName("tipo");
+
+                    b.Property<int>("Versao")
+                        .HasColumnType("integer")
+                        .HasColumnName("versao");
+
+                    b.HasKey("QuestaoId")
+                        .HasName("pk_metadados_questao");
+
+                    b.HasIndex("Familia")
+                        .HasDatabaseName("ix_metadados_questao_familia");
+
+                    b.HasIndex("HabilidadePrincipalId")
+                        .HasDatabaseName("ix_metadados_questao_habilidade_principal_id");
+
+                    b.ToTable("metadados_questao", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_metadados_questao_dificuldade", "dificuldade IS NULL OR dificuldade IN ('introdutoria', 'intermediaria', 'avancada')");
+
+                            t.HasCheckConstraint("ck_metadados_questao_status", "status_revisao IN ('pendente', 'aprovada', 'rejeitada')");
+                        });
                 });
 
             modelBuilder.Entity("Estudae.Domain.Conteudo.Questao", b =>
@@ -184,6 +340,12 @@ namespace Estudae.Infra.Persistence.Migrations
                         .HasColumnType("text")
                         .HasColumnName("resposta_correta");
 
+                    b.Property<Guid>("RevisaoConteudo")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("revisao_conteudo")
+                        .HasDefaultValueSql("gen_random_uuid()");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -212,6 +374,25 @@ namespace Estudae.Infra.Persistence.Migrations
                         {
                             t.HasCheckConstraint("ck_questao_status", "status IN ('rascunho', 'publicada')");
                         });
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.QuestaoHabilidadeSecundaria", b =>
+                {
+                    b.Property<int>("QuestaoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("questao_id");
+
+                    b.Property<int>("HabilidadeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("habilidade_id");
+
+                    b.HasKey("QuestaoId", "HabilidadeId")
+                        .HasName("pk_questao_habilidade_secundaria");
+
+                    b.HasIndex("HabilidadeId")
+                        .HasDatabaseName("ix_questao_habilidade_secundaria_habilidade_id");
+
+                    b.ToTable("questao_habilidade_secundaria", (string)null);
                 });
 
             modelBuilder.Entity("Estudae.Domain.Conteudo.Tema", b =>
@@ -304,6 +485,25 @@ namespace Estudae.Infra.Persistence.Migrations
                         .HasDatabaseName("ix_videoaula_tema_id_youtube_id");
 
                     b.ToTable("videoaula", (string)null);
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.VideoaulaHabilidade", b =>
+                {
+                    b.Property<int>("VideoaulaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("videoaula_id");
+
+                    b.Property<int>("HabilidadeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("habilidade_id");
+
+                    b.HasKey("VideoaulaId", "HabilidadeId")
+                        .HasName("pk_videoaula_habilidade");
+
+                    b.HasIndex("HabilidadeId")
+                        .HasDatabaseName("ix_videoaula_habilidade_habilidade_id");
+
+                    b.ToTable("videoaula_habilidade", (string)null);
                 });
 
             modelBuilder.Entity("Estudae.Infra.Identity.Usuario", b =>
@@ -556,6 +756,51 @@ namespace Estudae.Infra.Persistence.Migrations
                     b.ToTable("usuario_token", (string)null);
                 });
 
+            modelBuilder.Entity("Estudae.Domain.Conteudo.ConfiguracaoPedagogicaDisciplina", b =>
+                {
+                    b.HasOne("Estudae.Domain.Conteudo.Disciplina", "Disciplina")
+                        .WithOne("Pedagogia")
+                        .HasForeignKey("Estudae.Domain.Conteudo.ConfiguracaoPedagogicaDisciplina", "DisciplinaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_configuracao_pedagogica_disciplinas_disciplina_id");
+
+                    b.Navigation("Disciplina");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.Habilidade", b =>
+                {
+                    b.HasOne("Estudae.Domain.Conteudo.Tema", "Tema")
+                        .WithMany("Habilidades")
+                        .HasForeignKey("TemaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_habilidade_temas_tema_id");
+
+                    b.Navigation("Tema");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.MetadadosQuestao", b =>
+                {
+                    b.HasOne("Estudae.Domain.Conteudo.Habilidade", "HabilidadePrincipal")
+                        .WithMany()
+                        .HasForeignKey("HabilidadePrincipalId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_metadados_questao_habilidade_habilidade_principal_id");
+
+                    b.HasOne("Estudae.Domain.Conteudo.Questao", "Questao")
+                        .WithOne("Metadados")
+                        .HasForeignKey("Estudae.Domain.Conteudo.MetadadosQuestao", "QuestaoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_metadados_questao_questao");
+
+                    b.Navigation("HabilidadePrincipal");
+
+                    b.Navigation("Questao");
+                });
+
             modelBuilder.Entity("Estudae.Domain.Conteudo.Questao", b =>
                 {
                     b.HasOne("Estudae.Domain.Conteudo.Tema", "Tema")
@@ -566,6 +811,27 @@ namespace Estudae.Infra.Persistence.Migrations
                         .HasConstraintName("fk_questao_tema_tema_id");
 
                     b.Navigation("Tema");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.QuestaoHabilidadeSecundaria", b =>
+                {
+                    b.HasOne("Estudae.Domain.Conteudo.Habilidade", "Habilidade")
+                        .WithMany("Questoes")
+                        .HasForeignKey("HabilidadeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_questao_habilidade_secundaria_habilidade_habilidade_id");
+
+                    b.HasOne("Estudae.Domain.Conteudo.MetadadosQuestao", "Metadados")
+                        .WithMany("Secundarias")
+                        .HasForeignKey("QuestaoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_questao_habilidade_secundaria_metadados_questao_questao_id");
+
+                    b.Navigation("Habilidade");
+
+                    b.Navigation("Metadados");
                 });
 
             modelBuilder.Entity("Estudae.Domain.Conteudo.Tema", b =>
@@ -590,6 +856,27 @@ namespace Estudae.Infra.Persistence.Migrations
                         .HasConstraintName("fk_videoaula_tema_tema_id");
 
                     b.Navigation("Tema");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.VideoaulaHabilidade", b =>
+                {
+                    b.HasOne("Estudae.Domain.Conteudo.Habilidade", "Habilidade")
+                        .WithMany("Videoaulas")
+                        .HasForeignKey("HabilidadeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_videoaula_habilidade_habilidade_habilidade_id");
+
+                    b.HasOne("Estudae.Domain.Conteudo.Videoaula", "Videoaula")
+                        .WithMany("Habilidades")
+                        .HasForeignKey("VideoaulaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_videoaula_habilidade_videoaula_videoaula_id");
+
+                    b.Navigation("Habilidade");
+
+                    b.Navigation("Videoaula");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -651,14 +938,40 @@ namespace Estudae.Infra.Persistence.Migrations
 
             modelBuilder.Entity("Estudae.Domain.Conteudo.Disciplina", b =>
                 {
+                    b.Navigation("Pedagogia");
+
                     b.Navigation("Temas");
                 });
 
-            modelBuilder.Entity("Estudae.Domain.Conteudo.Tema", b =>
+            modelBuilder.Entity("Estudae.Domain.Conteudo.Habilidade", b =>
                 {
                     b.Navigation("Questoes");
 
                     b.Navigation("Videoaulas");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.MetadadosQuestao", b =>
+                {
+                    b.Navigation("Secundarias");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.Questao", b =>
+                {
+                    b.Navigation("Metadados");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.Tema", b =>
+                {
+                    b.Navigation("Habilidades");
+
+                    b.Navigation("Questoes");
+
+                    b.Navigation("Videoaulas");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Conteudo.Videoaula", b =>
+                {
+                    b.Navigation("Habilidades");
                 });
 #pragma warning restore 612, 618
         }

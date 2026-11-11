@@ -14,4 +14,6 @@ public class Tema
 
     public List<Videoaula> Videoaulas { get; set; } = [];
     public List<Questao> Questoes { get; set; } = [];
+    // Habilidades pedagógicas do tema (curadoria; ver MetadadosQuestao).
+    public List<Habilidade> Habilidades { get; set; } = [];
 }
