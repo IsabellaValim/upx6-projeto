@@ -2,6 +2,7 @@ import type {
   ConfiguracaoAprendizagem,
   ConfiguracaoDemonstracao,
   ParametrosDominio,
+  ParametrosRecomendacao,
 } from './tipos'
 
 export const PARAMETROS_DOMINIO: Readonly<ParametrosDominio> = Object.freeze({
@@ -15,6 +16,11 @@ export const PARAMETROS_DOMINIO: Readonly<ParametrosDominio> = Object.freeze({
   confirmacaoHoras: 48,
   confirmacaoMin: 2,
 })
+
+export const PARAMETROS_RECOMENDACAO: Readonly<ParametrosRecomendacao> =
+  Object.freeze({
+    revisaoHoras: 72,
+  })
 
 export const CONFIG_DEMONSTRACAO: Readonly<ConfiguracaoDemonstracao> =
   Object.freeze({

@@ -155,3 +155,33 @@ export interface DiagnosticoDominio {
   marcoBomDesempenho: Evidencia | null
   confirmacaoTemporal: boolean
 }
+
+export type SituacaoHabilidade =
+  | 'sem-evidencia'
+  | 'dificuldade'
+  | 'em-pratica'
+  | 'boa'
+  | 'revisar'
+
+export interface ParametrosRecomendacao {
+  revisaoHoras: number
+}
+
+export type MotivoRecomendacao =
+  | 'dificuldade'
+  | 'revisao'
+  | 'nova-habilidade'
+  | 'continuar'
+
+export interface RecomendacaoTema {
+  disciplina: string
+  tema: string
+  motivo: MotivoRecomendacao
+  habilidade: string | null
+  revisarEm: number | null
+}
+
+export interface DiagnosticoRecomendacao {
+  recomendacao: RecomendacaoTema | null
+  candidatos: RecomendacaoTema[]
+}
