@@ -350,6 +350,14 @@ function ProvaQuestao({ sim }: { sim: SimuladoSession }) {
   const entregar = async () => {
     if (finishing || entregaEmVoo.current) return
     entregaEmVoo.current = true
+    try {
+      await entregarInterno()
+    } finally {
+      entregaEmVoo.current = false
+      setFinishing(false)
+    }
+  }
+  const entregarInterno = async () => {
     setFinishing(true)
     toast('Corrigindo o simulado…')
     const q = useApp.getState().simulado!
@@ -420,7 +428,6 @@ function ProvaQuestao({ sim }: { sim: SimuladoSession }) {
         'Não foi possível corrigir agora. Suas respostas foram mantidas. Tente de novo.',
       )
       setFinishing(false)
-      entregaEmVoo.current = false
       return
     }
     if (!atual()) return

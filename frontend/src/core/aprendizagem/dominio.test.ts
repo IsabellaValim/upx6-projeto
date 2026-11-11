@@ -139,11 +139,20 @@ describe('evidências independentes', () => {
     estado.eventos.push({ ...submissao, id: 'ajuda', tipo: 'ajuda' })
     expect(extrairEvidencias(estado, matriz)).toEqual([])
   })
-  it('não conta repetição depois de submissão pendente ou incerta', () => {
+  it('submissão incerta não consome a novidade da família', () => {
     const { estado, matriz, adicionar } = cenario()
     const primeiro = adicionar(1)
     estado.eventos.splice(1, 1)
     primeiro.submissao.incerta = true
+    adicionar(2, true, 2000, 's2', 'contar', 'f1')
+    expect(extrairEvidencias(estado, matriz).map((e) => e.codigo)).toEqual([
+      'q2',
+    ])
+  })
+  it('submissão íntegra sem correção consome a novidade da família', () => {
+    const { estado, matriz, adicionar } = cenario()
+    adicionar(1)
+    estado.eventos.splice(1, 1)
     adicionar(2, true, 2000, 's2', 'contar', 'f1')
     expect(extrairEvidencias(estado, matriz)).toEqual([])
   })

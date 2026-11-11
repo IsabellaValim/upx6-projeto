@@ -74,7 +74,6 @@ export function extrairEvidencias(
     const repetida = marcas.some(
       (m) => pendentes.has(m) || exposicoes.has(m) || ajudas.has(m),
     )
-    marcas.forEach((m) => pendentes.add(m))
     const m = e.metadados
     if (
       !metadadosValidos(m) ||
@@ -96,6 +95,7 @@ export function extrairEvidencias(
       !matriz.habilidades.some((h) => h.slug === m.habilidade)
     )
       continue
+    marcas.forEach((m) => pendentes.add(m))
     const cs = correcoes.get(JSON.stringify([e.sessaoId, e.tentativaId])) ?? []
     if (cs.length !== 1) continue
     const c = cs[0]!

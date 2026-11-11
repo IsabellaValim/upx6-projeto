@@ -246,35 +246,39 @@ function QuizQuestao({ quiz }: { quiz: QuizSession }) {
     )
       return
     finishingRef.current = true
-    await concluirSessao(q.captura)
-    const depois = useApp.getState().quiz
-    if (depois?.questions !== q.questions || depois.finished) return
-    const items = q.questions!.map((item, k) => {
-      const r = q.results[k]!
-      return {
-        id: item.id, // conta como atividade concluída quando acertada (stats.ts)
-        ask: item.ask,
-        options: item.options,
-        chosen: q.chosen[k],
-        answer: item.options.indexOf(r.respostaCorreta),
-        why: r.resolucao,
-        topic: item.topic,
-        ok: r.acertou,
-      }
-    })
-    const correct = items.filter((x) => x.ok).length
-    pushResult({
-      v: 3, // lição por tema
-      subject: q.subject,
-      topic: q.topic,
-      date: Date.now(),
-      correct,
-      total: items.length,
-      items,
-      weakTopic: correct < items.length ? q.topic : null,
-    })
-    setQuiz({ ...q, finished: true })
-    navigate(urls.resultado(useApp.getState().results.length - 1))
+    try {
+      await concluirSessao(q.captura)
+      const depois = useApp.getState().quiz
+      if (depois?.questions !== q.questions || depois.finished) return
+      const items = q.questions!.map((item, k) => {
+        const r = q.results[k]!
+        return {
+          id: item.id, // conta como atividade concluída quando acertada (stats.ts)
+          ask: item.ask,
+          options: item.options,
+          chosen: q.chosen[k],
+          answer: item.options.indexOf(r.respostaCorreta),
+          why: r.resolucao,
+          topic: item.topic,
+          ok: r.acertou,
+        }
+      })
+      const correct = items.filter((x) => x.ok).length
+      pushResult({
+        v: 3, // lição por tema
+        subject: q.subject,
+        topic: q.topic,
+        date: Date.now(),
+        correct,
+        total: items.length,
+        items,
+        weakTopic: correct < items.length ? q.topic : null,
+      })
+      setQuiz({ ...q, finished: true })
+      navigate(urls.resultado(useApp.getState().results.length - 1))
+    } finally {
+      finishingRef.current = false
+    }
   }
 
   return (
