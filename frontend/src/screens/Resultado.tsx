@@ -1,9 +1,11 @@
 /* Resultado da lição ou do simulado */
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
 import { Tex } from '../components/Tex'
+import { ESTADO_TEXTO, avaliarArea } from '../core/capturaAprendizagem'
+import { PARAMETROS_DOMINIO } from '../core/aprendizagem/config'
 import { topicProgress } from '../core/stats'
 import { useApp } from '../core/store'
 import { LETTERS, pct } from '../core/utils'
@@ -21,6 +23,30 @@ export default function Resultado() {
   const watched = useApp((s) => s.watched)
   const r = results[+idx]
   const s = r && subjects[r.subject]
+  const tema =
+    r && s && r.topic !== undefined && r.kind !== 'simulado'
+      ? s.topics[r.topic]
+      : null
+  const [estagio, setEstagio] = useState<string | null>(null)
+
+  // Estágio adaptativo do tema da lição: a evolução aparece no próprio
+  // resultado, sem depender da confirmação temporal.
+  useEffect(() => {
+    if (!r || !tema) return
+    let ativo = true
+    void avaliarArea(r.subject).then((a) => {
+      const d = a?.dominios[tema.slug]
+      if (!ativo || !d) return
+      setEstagio(
+        d.estado === 'em-pratica'
+          ? `${ESTADO_TEXTO[d.estado]} · ${d.janela.length} de ${PARAMETROS_DOMINIO.boaMin} boas práticas`
+          : ESTADO_TEXTO[d.estado],
+      )
+    })
+    return () => {
+      ativo = false
+    }
+  }, [r, tema])
 
   // Anima o donut (o stroke-dashoffset sai do círculo cheio para o valor).
   useEffect(() => {
@@ -108,6 +134,11 @@ export default function Resultado() {
             {progTema.done} de {progTema.total}
           </strong>{' '}
           atividades
+        </p>
+      )}
+      {estagio && (
+        <p className="small center result-estagio">
+          Neste tema você está: <strong>{estagio}</strong>
         </p>
       )}
       {sim && (
