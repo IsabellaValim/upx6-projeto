@@ -501,7 +501,21 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 - O SVG do modelo de dados ainda é o da v1 (o Mermaid do `.md` é o atual).
 - A imagem loga `Cannot load library libgssapi_krb5.so.2`: é o Npgsql
   procurando Kerberos, e não afeta nada.
-- Não há `package.json` na raiz (frontend não tem dependências de build).
+- Não há `package.json` na raiz; scripts e dependências React/Vite ficam em `frontend/`.
+- Aprendizagem adaptativa (Fase 2): módulos puros e persistência em
+  `frontend/src/core/aprendizagem/`, ponte das telas em `core/capturaAprendizagem.ts`.
+  Flags desligadas e allowlist de temas vazia por padrão. Legado não é promovido a
+  evidência. `fake-indexeddb` é apenas dependência de teste, não storage de produção.
+  Para verificar: `npm test`, `npm run lint`, `npm run build` em `frontend/`.
+- Demonstração por iterações sem relógio: `npx vitest run
+src/core/aprendizagem/dominio.test.ts --testNamePattern="demonstração por iterações"`.
+  Resultado demonstrativo isolado não concede domínio temporal nem grava conquistas.
+  A UI adaptativa ainda depende da fase seguinte e da aprovação do piloto.
+- Integração backend deve usar Postgres isolado sem montar o volume real. O fixture
+  cria e apaga bancos `estudae_teste_<guid>`; confirmar autorização específica antes
+  dessa execução. Escritores de conteúdo/curadoria precisam adquirir o lock comum
+  de `EstudaeDbContext` antes de ler dados a alterar. UUID público de revisão não é
+  a impressão SHA-256 interna exigida para aprovação pedagógica.
 - `.gitignore` cobre padrões de Node/JS e artefatos de build do .NET
   (`bin/`, `obj/`, `.vs/`, `*.user`), e também ignora
   `appsettings.Development.json`.

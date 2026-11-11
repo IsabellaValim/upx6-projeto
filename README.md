@@ -29,6 +29,34 @@ O simulado seleciona questões de diferentes temas da mesma matéria. Há cronô
 
 A seção **Progresso** apresenta atividades concluídas, dias de sequência de estudos e histórico de acertos. Nesta versão, a escolha de prova, as preferências e o progresso são guardados **localmente no navegador** (`localStorage`). Isso significa que os dados podem desaparecer se o armazenamento for apagado e **não são sincronizados entre aparelhos**.
 
+### Orientação adaptativa — base técnica em shadow mode
+
+A classificação pedagógica é separada do conteúdo oficial. O novo histórico usa
+IndexedDB transacional (`estudae-aprendizagem`), sem substituir o legado em
+`localStorage`. A captura e o motor estão **desligados por padrão**, com lista de
+temas autorizados vazia em `frontend/src/core/aprendizagem/config.ts`. Não ativar
+antes da curadoria aprovada e da revisão das migrations; o código não aprova conteúdo.
+
+Na Fase 2, não há diagnóstico, recomendações, conquistas ou preparação favorável
+visíveis. O motor é puro e seus parâmetros experimentais ficam em
+`PARAMETROS_DOMINIO`. Repetições, soluções já vistas e registros incertos não
+criam evidências independentes. Omissões de simulado não são tentativas fictícias.
+O Perfil oferece exclusão confirmada do progresso de ambos os níveis, preservando
+identidade, prova escolhida e acessibilidade. Falha parcial não é anunciada como sucesso.
+
+Para demonstrar a avaliação por **iterações, sem esperar horas**, execute em `frontend/`:
+
+```sh
+npx vitest run src/core/aprendizagem/dominio.test.ts --testNamePattern="demonstração por iterações"
+```
+
+Essa demonstração isolada exercita três iterações de exemplo; não altera o histórico,
+não concede domínio nem comprova retenção. A experiência visual adaptativa vem na
+fase seguinte, mediante revisão. Os testes de IndexedDB usam `fake-indexeddb` apenas
+em desenvolvimento; quotas, ciclo de vida e múltiplas abas em celulares reais ainda
+precisam de verificação. Dados locais não são certificados, não têm backup garantido
+e podem ser perdidos ao limpar o navegador. O backend não recebe progresso anônimo.
+
 ### Ajustar a acessibilidade
 
 - Três tamanhos de fonte, com **Grande** como padrão.
