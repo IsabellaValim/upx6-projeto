@@ -31,10 +31,7 @@ function validarParametros(p: Readonly<ParametrosDominio>): void {
     p.confirmacaoMin > p.window ||
     !Number.isFinite(p.taxa) ||
     p.taxa <= 0 ||
-    p.taxa > 1 ||
-    !Number.isFinite(p.confirmacaoHoras) ||
-    p.confirmacaoHoras * 60 * 60 * 1000 < 1 ||
-    p.confirmacaoHoras * 60 * 60 * 1000 > Number.MAX_SAFE_INTEGER
+    p.taxa > 1
   )
     throw new Error('Parâmetros de domínio inválidos.')
 }
@@ -125,7 +122,7 @@ export function avaliarDominio(
         a.id.localeCompare(b.id),
     )
   let marcoBomDesempenho: Evidencia | null = null
-  let confirmacaoTemporal = false
+  let verificacaoIndependente = false
   for (const sessao of sessoes) {
     const ateAqui = evidencias.filter(
       (e) =>
@@ -151,21 +148,18 @@ export function avaliarDominio(
     const boa = valida && taxaAcerto(sessao.proprias) >= p.taxa
     if (!boa || !parcial.bom || !parcial.recorrenciasResolvidas) {
       marcoBomDesempenho = null
-      confirmacaoTemporal = false
+      verificacaoIndependente = false
       continue
     }
+    // Verificação por rodada independente: basta uma sessão posterior,
+    // concluída, com acertos próprios em questões inéditas — sem esperar
+    // horas nem virar o dia. As evidências já são uma por questão/família.
     if (
       marcoBomDesempenho &&
       sessao.id !== marcoBomDesempenho.sessaoId &&
-      sessao.primeira.instante - marcoBomDesempenho.instante >=
-        p.confirmacaoHoras * 60 * 60 * 1000 &&
-      sessao.primeira.dataLocal !== marcoBomDesempenho.dataLocal &&
-      sessao.proprias.every(
-        (e) => e.dataLocal !== marcoBomDesempenho!.dataLocal,
-      ) &&
       sessao.proprias.filter((e) => e.acertou).length >= p.confirmacaoMin
     )
-      confirmacaoTemporal = true
+      verificacaoIndependente = true
     if (!marcoBomDesempenho) {
       const ultima = sessao.proprias[sessao.proprias.length - 1]!
       marcoBomDesempenho = {
@@ -180,7 +174,7 @@ export function avaliarDominio(
     base.janela.length >= p.min &&
     base.essenciaisAtendidas &&
     base.recorrenciasResolvidas &&
-    confirmacaoTemporal
+    verificacaoIndependente
   return {
     estado: dominio
       ? 'dominio-confirmado'
@@ -194,6 +188,6 @@ export function avaliarDominio(
     essenciaisAtendidas: base.essenciaisAtendidas,
     recorrenciasResolvidas: base.recorrenciasResolvidas,
     marcoBomDesempenho,
-    confirmacaoTemporal,
+    verificacaoIndependente,
   }
 }

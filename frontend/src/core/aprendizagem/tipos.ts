@@ -115,7 +115,6 @@ export interface ParametrosDominio {
   skillWindow: number
   skillCorrect: number
   erroRecorrente: number
-  confirmacaoHoras: number
   confirmacaoMin: number
 }
 
@@ -130,7 +129,7 @@ export interface DiagnosticoDominio {
   essenciaisAtendidas: boolean
   recorrenciasResolvidas: boolean
   marcoBomDesempenho: Evidencia | null
-  confirmacaoTemporal: boolean
+  verificacaoIndependente: boolean
 }
 
 export type SituacaoHabilidade =

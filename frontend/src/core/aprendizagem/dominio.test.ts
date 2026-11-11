@@ -194,37 +194,45 @@ describe('evidências independentes', () => {
 })
 
 describe('domínio conservador', () => {
-  it('bom desempenho requer quatro, domínio requer seis e sessão posterior >=48h', () => {
+  it('bom desempenho requer quatro, domínio requer seis e rodada posterior no mesmo dia', () => {
     const { estado, matriz, adicionar } = cenario()
     for (let i = 1; i <= 3; i++) adicionar(i)
     expect(avaliarDominio(estado, matriz).estado).toBe('em-pratica')
     adicionar(4)
     expect(avaliarDominio(estado, matriz).estado).toBe('bom-desempenho')
-    adicionar(5, true, 2 * dia + 4000, 's2')
+    adicionar(5, true, 5000, 's2')
     expect(avaliarDominio(estado, matriz).estado).toBe('bom-desempenho')
-    adicionar(6, true, 2 * dia + 5000, 's2')
+    adicionar(6, true, 6000, 's2')
     expect(avaliarDominio(estado, matriz).estado).toBe('dominio-confirmado')
   })
-  it('não usa intervalo desde o início da primeira sessão', () => {
+  it('a rodada de verificação precisa ser outra sessão, não a mesma', () => {
     const { estado, matriz, adicionar } = cenario()
-    for (let i = 1; i <= 4; i++) adicionar(i, true, dia + i * 1000)
-    adicionar(5, true, 2 * dia, 's2')
-    adicionar(6, true, 2 * dia + 1, 's2')
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(false)
+    for (let i = 1; i <= 6; i++) adicionar(i)
+    expect(avaliarDominio(estado, matriz).verificacaoIndependente).toBe(false)
+    expect(avaliarDominio(estado, matriz).estado).toBe('bom-desempenho')
   })
-  it('exige mesma sessão posterior com dois acertos e data local distinta', () => {
+  it('os dois acertos da verificação precisam caber na mesma rodada', () => {
     const { estado, matriz, adicionar } = cenario()
     for (let i = 1; i <= 4; i++) adicionar(i)
-    adicionar(5, true, 3 * dia, 's2')
-    adicionar(6, true, 3 * dia + 1, 's3')
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(false)
+    adicionar(5, true, 5000, 's2')
+    adicionar(6, true, 6000, 's3')
+    expect(avaliarDominio(estado, matriz).verificacaoIndependente).toBe(false)
+    // Juntar as duas respostas numa só rodada habilita a verificação.
     estado.eventos
       .filter((e) => e.tentativaId === 't6')
       .forEach((e) => {
         e.sessaoId = 's2'
-        e.dataLocal = '1970-01-01'
       })
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(false)
+    estado.conclusoes = estado.conclusoes.filter((f) => f.sessaoId === 's1')
+    const eventosS2 = estado.eventos.filter((e) => e.sessaoId === 's2')
+    estado.conclusoes.push({
+      id: 's2',
+      sessaoId: 's2',
+      geracao: 0,
+      instante: Math.max(...eventosS2.map((e) => e.instante)) + 1,
+      eventoIds: eventosS2.map((e) => e.id),
+    })
+    expect(avaliarDominio(estado, matriz).verificacaoIndependente).toBe(true)
   })
   it('limita W a oito e exige 80%, sem apagar erros recorrentes antigos', () => {
     const { estado, matriz, adicionar } = cenario()
@@ -288,7 +296,7 @@ describe('domínio conservador', () => {
     expect(extrairEvidencias(estado, matriz)).toHaveLength(10)
     expect(final.janela).toHaveLength(8)
     expect(final.essenciaisAtendidas).toBe(true)
-    expect(final.confirmacaoTemporal).toBe(true)
+    expect(final.verificacaoIndependente).toBe(true)
     expect(final.estado).toBe('dominio-confirmado')
   })
   it('três essenciais confirmam com quatro respostas iniciais e duas na revisão', () => {
@@ -307,7 +315,7 @@ describe('domínio conservador', () => {
     const final = avaliarDominio(estado, matriz)
     expect(final.janela).toHaveLength(6)
     expect(final.essenciaisAtendidas).toBe(true)
-    expect(final.confirmacaoTemporal).toBe(true)
+    expect(final.verificacaoIndependente).toBe(true)
     expect(final.estado).toBe('dominio-confirmado')
   })
   it('marco usa última submissão da sessão, não o quarto item', () => {
@@ -315,31 +323,30 @@ describe('domínio conservador', () => {
     for (let i = 1; i <= 4; i++) adicionar(i)
     adicionar(5, true, dia, 's1')
     adicionar(6, true, 2 * dia + 4000, 's2')
-    adicionar(7, true, 2 * dia + 5000, 's2')
     const d = avaliarDominio(estado, matriz)
     expect(d.marcoBomDesempenho?.instante).toBe(dia)
-    expect(d.confirmacaoTemporal).toBe(false)
+    expect(d.verificacaoIndependente).toBe(false)
   })
-  it('primeira tentativa da confirmação precisa respeitar 48h', () => {
+  it('confirmação independe do intervalo: rodada posterior com acertos basta', () => {
     const { estado, matriz, adicionar } = cenario()
     for (let i = 1; i <= 4; i++) adicionar(i)
     adicionar(5, true, dia, 's2')
     adicionar(6, true, 3 * dia, 's2')
     adicionar(7, true, 3 * dia + 1, 's2')
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(false)
+    expect(avaliarDominio(estado, matriz).verificacaoIndependente).toBe(true)
   })
-  it('dois acertos de três numa revisão não confirmam retenção e invalidam o marco', () => {
+  it('dois acertos de três numa revisão não confirmam verificação e invalidam o marco', () => {
     const { estado, matriz, adicionar } = cenario()
     for (let i = 1; i <= 4; i++) adicionar(i)
     adicionar(5, true, 3 * dia, 's2')
     adicionar(6, false, 3 * dia + 1000, 's2')
     adicionar(7, true, 3 * dia + 2000, 's2')
     expect(avaliarDominio(estado, matriz).taxa).toBeGreaterThanOrEqual(0.8)
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(false)
+    expect(avaliarDominio(estado, matriz).verificacaoIndependente).toBe(false)
     expect(avaliarDominio(estado, matriz).marcoBomDesempenho).toBeNull()
     adicionar(8, true, 6 * dia, 's3')
     adicionar(9, true, 6 * dia + 1, 's3')
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(false)
+    expect(avaliarDominio(estado, matriz).verificacaoIndependente).toBe(false)
   })
   it('ignora sessão intermediária sem evidência por metadados ou repetição', () => {
     const { estado, matriz, adicionar } = cenario()
@@ -353,7 +360,7 @@ describe('domínio conservador', () => {
     adicionar(7, true, 3 * dia, 's3')
     adicionar(8, true, 3 * dia + 1000, 's3')
     const d = avaliarDominio(estado, matriz)
-    expect(d.confirmacaoTemporal).toBe(true)
+    expect(d.verificacaoIndependente).toBe(true)
     expect(d.estado).toBe('dominio-confirmado')
   })
   it('repetição filtrada junto de evidência não apaga marco; erro elegível apaga', () => {
@@ -370,7 +377,7 @@ describe('domínio conservador', () => {
     expect(avaliarDominio(estado, matriz).estado).toBe('dominio-confirmado')
     adicionar(9, false, 5 * dia, 's4')
     expect(avaliarDominio(estado, matriz).marcoBomDesempenho).toBeNull()
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(false)
+    expect(avaliarDominio(estado, matriz).verificacaoIndependente).toBe(false)
   })
   it('confirmação exige sessão concluída e conta apenas tentativas qualificadas', () => {
     const { estado, matriz, adicionar } = cenario()
@@ -379,10 +386,10 @@ describe('domínio conservador', () => {
     adicionar(6, true, 3 * dia + 1000, 's2')
     const terceiro = adicionar(7, true, 3 * dia + 2000, 's2')
     terceiro.submissao.incerta = true
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(true)
+    expect(avaliarDominio(estado, matriz).verificacaoIndependente).toBe(true)
     terceiro.submissao.incerta = false
     estado.conclusoes = estado.conclusoes.filter((f) => f.sessaoId !== 's2')
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(false)
+    expect(avaliarDominio(estado, matriz).verificacaoIndependente).toBe(false)
   })
   it('recorrência considera apenas essenciais e sua janela própria de quatro', () => {
     const { estado, matriz, adicionar } = cenario()
@@ -425,40 +432,31 @@ describe('parâmetros de domínio injetados', () => {
       skillWindow: 4,
       skillCorrect: 2,
       erroRecorrente: 2,
-      confirmacaoHoras: 48,
       confirmacaoMin: 2,
     })
     expect(Object.isFrozen(PARAMETROS_DOMINIO)).toBe(true)
   })
-  it('aplica intervalo e mínimo personalizados sem mudar padrões ou estado', () => {
+  it('aplica mínimo de verificação personalizado sem mudar padrões ou estado', () => {
     const { estado, matriz, adicionar } = cenario()
     for (let i = 1; i <= 4; i++) adicionar(i)
-    adicionar(5, true, dia + 4000, 's2')
-    adicionar(6, true, dia + 5000, 's2')
+    adicionar(5, true, 5000, 's2')
+    adicionar(6, true, 6000, 's2')
     const antes = structuredClone(estado)
-    expect(avaliarDominio(estado, matriz).confirmacaoTemporal).toBe(false)
+    expect(avaliarDominio(estado, matriz).estado).toBe('dominio-confirmado')
     expect(
       avaliarDominio(estado, matriz, {
         ...PARAMETROS_DOMINIO,
-        confirmacaoHoras: 24,
-      }).estado,
-    ).toBe('dominio-confirmado')
-    expect(
-      avaliarDominio(estado, matriz, {
-        ...PARAMETROS_DOMINIO,
-        confirmacaoHoras: 24,
         min: 7,
       }).estado,
     ).toBe('bom-desempenho')
     expect(
       avaliarDominio(estado, matriz, {
         ...PARAMETROS_DOMINIO,
-        confirmacaoHoras: 24,
         confirmacaoMin: 3,
-      }).confirmacaoTemporal,
+      }).verificacaoIndependente,
     ).toBe(false)
     expect(estado).toEqual(antes)
-    expect(PARAMETROS_DOMINIO.confirmacaoHoras).toBe(48)
+    expect(PARAMETROS_DOMINIO.confirmacaoMin).toBe(2)
   })
   it('aplica janela, bom desempenho e cobertura de habilidade personalizados', () => {
     const { estado, matriz, adicionar } = cenario()
@@ -519,11 +517,6 @@ describe('parâmetros de domínio injetados', () => {
     { taxa: 0 },
     { taxa: 1.1 },
     { taxa: NaN },
-    { confirmacaoHoras: 0 },
-    { confirmacaoHoras: -1 },
-    { confirmacaoHoras: Infinity },
-    { confirmacaoHoras: Number.MIN_VALUE },
-    { confirmacaoHoras: Number.MAX_SAFE_INTEGER },
   ])('rejeita parâmetro inválido antes de avaliar: %o', (alteracao) => {
     const { estado, matriz } = cenario()
     expect(() =>
