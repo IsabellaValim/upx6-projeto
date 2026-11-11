@@ -1,11 +1,13 @@
 import { aprendizagemAtiva, CONFIG_APRENDIZAGEM } from './config'
 import { criarPersistencia, ErroAprendizagem } from './persistencia'
+import { recomendar } from './recomendacao'
 import type { PersistenciaAprendizagem } from './persistencia'
 import type {
   ConfiguracaoAprendizagem,
   ConclusaoAprendizagem,
   EstadoAprendizagem,
   EventoAprendizagem,
+  MatrizTema,
   QuestaoAprendizagem,
   SessaoAprendizagem,
 } from './tipos'
@@ -292,6 +294,13 @@ export function criarServicoAprendizagem(
       return ativa()
         ? serializar(() => persistencia.ler())
         : Promise.resolve(null)
+    },
+    recomendar(matrizes: readonly MatrizTema[], instante = agora()) {
+      if (!ativa()) return Promise.resolve(null)
+      return serializar(async () => {
+        const estado = await persistencia.ler()
+        return recomendar(estado, matrizes, instante)
+      })
     },
     pendente(c: ContextoTentativa): Promise<EventoAprendizagem | null> {
       if (!ativa(c.questao)) return Promise.resolve(null)
