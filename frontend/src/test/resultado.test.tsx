@@ -1,4 +1,6 @@
-/* Resultado: destaque da videoaula, caixas de números e CTA contextual. */
+/* Atividade concluída: placar pequeno, evolução do tema quando houver
+   comparação honesta e próximo passo do orquestrador. Nada de "tema
+   concluído" — concluída é a atividade, não o assunto. */
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it } from 'vitest'
 import App from '../App'
@@ -60,30 +62,20 @@ const abrir = () => {
 afterEach(cleanup)
 beforeEach(() => reset())
 
-describe('Resultado: destaque da videoaula', () => {
-  it('aula não assistida: aviso e CTA primária "Assistir à aula"', async () => {
+describe('Atividade concluída: o que a tela diz e o que não diz', () => {
+  it('anuncia a atividade concluída, nunca o tema', async () => {
     abrir()
     expect(
-      await screen.findByText('Você ainda não assistiu à aula'),
+      await screen.findByRole('heading', { name: 'Atividade concluída' }),
     ).toBeInTheDocument()
+    // Nem com o motor desligado a tela inventa "tema concluído".
+    expect(screen.queryByText(/tema concluído/i)).not.toBeInTheDocument()
     expect(
-      screen.getByRole('link', { name: /Assistir à aula deste tema/ }),
-    ).toHaveClass('btn--primary')
+      screen.queryByText(/você já concluiu \d+ de \d+ atividades/i),
+    ).not.toBeInTheDocument()
   })
 
-  it('aula assistida: destaque "já assistida" e CTA de rever (outline)', async () => {
-    reset({ watched: { 'matematica/0/0': 1 } })
-    abrir()
-    expect(await screen.findByText('Aula já assistida')).toBeInTheDocument()
-    expect(
-      screen.getByRole('link', { name: /Assistir à aula de novo/ }),
-    ).toHaveClass('btn--outline')
-    expect(
-      screen.getByText(/vale revê-la ou conferir a correção/),
-    ).toBeInTheDocument()
-  })
-
-  it('nota máxima + aula vista: "tema concluído", cartão verde, sem CTA de aula', async () => {
+  it('nota máxima não vira "tema concluído" nem disfarça a lição', async () => {
     reset({
       watched: { 'matematica/0/0': 1 },
       results: [
@@ -95,63 +87,29 @@ describe('Resultado: destaque da videoaula', () => {
       ],
     })
     abrir()
-    expect(await screen.findByText(/tema concluído/)).toBeInTheDocument()
-    expect(document.querySelector('.tip--ok')).toBeInTheDocument()
     expect(
-      screen.queryByRole('link', { name: /Assistir à aula/ }),
-    ).not.toBeInTheDocument()
+      await screen.findByText(/Você acertou todas as questões/),
+    ).toBeInTheDocument()
+    expect(screen.queryByText(/tema concluído/i)).not.toBeInTheDocument()
   })
-})
 
-describe('Resultado: UI para idosos', () => {
-  it('caixas de números e contexto do tema, sem encher de texto', async () => {
+  it('caixas de números e correção recolhida com contagem no título', async () => {
     abrir()
     expect(await screen.findByText('Acertos')).toBeInTheDocument()
     expect(screen.getByText('Erros')).toBeInTheDocument()
     expect(screen.getByText('Questões')).toBeInTheDocument()
-    // Progresso do tema em uma linha curta.
-    expect(
-      screen.getByText(
-        (_, el) =>
-          el?.textContent === 'Deste tema, você já concluiu 0 de 4 atividades',
-      ),
-    ).toBeInTheDocument()
-  })
-
-  it('correção fica recolhida mesmo com erros (com contagem no título)', async () => {
-    abrir()
-    const review = await screen.findByText(/Correção das questões — 2 erradas/)
+    const review = screen.getByText(/Correção das questões — 2 erradas/)
     expect(review.closest('details')).not.toHaveAttribute('open')
-    // Com 0 acertos, incentivo curto dentro da dica.
     expect(screen.getByText(/Não desanime/)).toBeInTheDocument()
   })
 
-  it('com erro: "Praticar de novo" primário; com nota máxima: "Escolher outro tema"', async () => {
+  it('CTA primário é praticar de novo; o aprendizado fica a um toque', async () => {
     abrir()
     expect(
       await screen.findByRole('link', { name: 'Praticar de novo' }),
     ).toHaveClass('btn--primary')
     expect(
-      screen.getByRole('link', { name: 'Escolher outro tema' }),
-    ).toHaveClass('btn--outline')
-  })
-
-  it('nota máxima: "Escolher outro tema" primário e refazer vira outline', async () => {
-    reset({
-      results: [
-        {
-          ...RESULTADO,
-          correct: 2,
-          items: RESULTADO.items.map((x) => ({ ...x, ok: true })),
-        },
-      ],
-    })
-    abrir()
-    expect(
-      await screen.findByRole('link', { name: 'Escolher outro tema' }),
-    ).toHaveClass('btn--primary')
-    expect(screen.getByRole('link', { name: 'Praticar de novo' })).toHaveClass(
-      'btn--outline',
-    )
+      screen.getByRole('link', { name: 'Ver meu aprendizado' }),
+    ).toHaveAttribute('href', '/aprendizado')
   })
 })

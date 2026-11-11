@@ -7,12 +7,8 @@
 import { useEffect, useState } from 'react'
 import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
-import {
-  Bar,
-  ContinueBtn,
-  HistoryList,
-  SubjectRow,
-} from '../components/Progress'
+import { ContinueBtn, HistoryList, SubjectRow } from '../components/Progress'
+import { ComparacaoTema } from '../components/Evolucao'
 import { materiasDoNivel, NIVEIS } from '../core/catalogo'
 import {
   avaliarAprendizado,
@@ -28,21 +24,6 @@ import {
 import { useApp } from '../core/store'
 import { urls } from '../core/urls'
 import type { CatalogSubject } from '../types'
-
-const MOTIVO_TEXTO: Record<string, string> = {
-  'poucas-questoes': 'A última atividade foi curtinha demais para comparar.',
-  'habilidades-distintas': 'As duas atividades medem habilidades diferentes.',
-  'dificuldade-diferente': 'As questões desta vez eram mais difíceis.',
-  'questoes-repetidas': 'As questões se repetiram — repetição não conta.',
-  'familias-repetidas': 'As questões se repetiram — repetição não conta.',
-}
-
-const INTERPRETACAO_TEXTO: Record<string, string> = {
-  melhorou:
-    'Você acertou mais questões — seu desempenho melhorou neste assunto.',
-  manteve: 'Você manteve um bom desempenho.',
-  continuar: 'Vamos continuar praticando este assunto.',
-}
 
 function tituloTema(
   subjects: Record<string, CatalogSubject>,
@@ -118,9 +99,7 @@ export default function Aprendizado() {
     ? (subjects[destaque.disciplina]?.name ?? destaque.disciplina)
     : null
   const consolidado =
-    destaque &&
-    dados?.dominios[`${destaque.disciplina}/${destaque.tema}`]?.estado ===
-      'dominio-confirmado'
+    destaque && dados?.dominios[destaque.tema]?.estado === 'dominio-confirmado'
 
   // "O que você já conseguiu": no máximo 2 habilidades, começando pelo tema
   // em destaque e seguindo pelos temas mexidos mais recentemente.
@@ -174,78 +153,7 @@ export default function Aprendizado() {
           <h2 className="card-title">
             {materiaDestaque} · {temaDestaque}
           </h2>
-          {destaque.comparavel ? (
-            <>
-              <div className="antes-depois">
-                <div>
-                  <span>Antes de estudar</span>
-                  <strong>
-                    {destaque.referencia!.acertos} de{' '}
-                    {destaque.referencia!.total}
-                  </strong>
-                  <Bar
-                    done={destaque.referencia!.acertos}
-                    total={destaque.referencia!.total}
-                    rotulo={`Antes de estudar: ${destaque.referencia!.acertos} de ${destaque.referencia!.total} questões certas em ${temaDestaque}`}
-                  />
-                </div>
-                <div className="antes-depois--agora">
-                  <span>Depois de estudar</span>
-                  <strong>
-                    {destaque.verificacao!.acertos} de{' '}
-                    {destaque.verificacao!.total}
-                  </strong>
-                  <Bar
-                    done={destaque.verificacao!.acertos}
-                    total={destaque.verificacao!.total}
-                    rotulo={`Depois de estudar: ${destaque.verificacao!.acertos} de ${destaque.verificacao!.total} questões certas em ${temaDestaque}`}
-                  />
-                </div>
-              </div>
-              <p className="evolucao-msg">
-                {INTERPRETACAO_TEXTO[destaque.interpretacao!]}
-              </p>
-            </>
-          ) : destaque.ultima && destaque.referencia ? (
-            <>
-              <div className="antes-depois">
-                <div>
-                  <span>Primeira atividade</span>
-                  <strong>
-                    {destaque.referencia.acertos} de {destaque.referencia.total}
-                  </strong>
-                  <Bar
-                    done={destaque.referencia.acertos}
-                    total={destaque.referencia.total}
-                    rotulo={`Primeira atividade: ${destaque.referencia.acertos} de ${destaque.referencia.total} questões certas em ${temaDestaque}`}
-                  />
-                </div>
-                <div>
-                  <span>Atividade mais recente</span>
-                  <strong>
-                    {destaque.ultima.acertos} de {destaque.ultima.total}
-                  </strong>
-                  <Bar
-                    done={destaque.ultima.acertos}
-                    total={destaque.ultima.total}
-                    rotulo={`Atividade mais recente: ${destaque.ultima.acertos} de ${destaque.ultima.total} questões certas em ${temaDestaque}`}
-                  />
-                </div>
-              </div>
-              <p className="evolucao-msg">
-                {MOTIVO_TEXTO[destaque.motivo ?? ''] ??
-                  'Ainda não dá para comparar essas atividades.'}
-              </p>
-            </>
-          ) : (
-            <p>
-              <strong>Seu primeiro resultado:</strong> você acertou{' '}
-              {(destaque.referencia ?? destaque.ultima)!.acertos} de{' '}
-              {(destaque.referencia ?? destaque.ultima)!.total} questões sobre{' '}
-              {temaDestaque}. Continue — na próxima atividade, questões novas
-              medem sua evolução.
-            </p>
-          )}
+          <ComparacaoTema e={destaque} />
           {consolidado && (
             <p className="evolucao-msg">Você já consolidou este tema.</p>
           )}

@@ -215,9 +215,13 @@ describe('Estudo adaptativo: próxima ação no Resultado', () => {
       )
     }
     await waitFor(() => expect(useApp.getState().results.length).toBe(1))
+    // Sem pedagogia não há ação orquestrada: fica o par simples de sempre.
     expect(
-      await screen.findByRole('link', { name: 'Escolher outro tema' }),
+      await screen.findByRole('link', { name: 'Praticar de novo' }),
     ).toBeInTheDocument()
+    expect(
+      screen.getByRole('link', { name: 'Ver meu aprendizado' }),
+    ).toHaveAttribute('href', '/aprendizado')
     expect(
       screen.queryByRole('link', { name: /Praticar — Matemática/ }),
     ).toBeNull()
