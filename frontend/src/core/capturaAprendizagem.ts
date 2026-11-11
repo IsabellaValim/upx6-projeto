@@ -4,6 +4,10 @@ import type {
   GravacaoAprendizagem,
   ServicoAprendizagem,
 } from './aprendizagem/servico'
+import { proximaAcao } from './aprendizagem/jornada'
+import type { AcaoJornada, AulaTema } from './aprendizagem/jornada'
+import { selecionarQuestoes, selecionarRodada } from './aprendizagem/selecao'
+import { carregarQuestoes, materiasDoNivel } from './catalogo'
 import type {
   DiagnosticoDominio,
   DiagnosticoPreparacao,
@@ -205,6 +209,148 @@ export function matrizesAprendizagem(
         pedagogia: q.pedagogia,
       })),
   }))
+}
+
+/* ---------- Jornada guiada ---------- */
+
+// Matriz de UM tema montada do catálogo + questões carregadas: a lição
+// seleciona sem precisar do índice de pedagogia (validada fica false —
+// só a seleção a usa, e ela olha a elegibilidade por questão).
+function matrizDoTema(
+  disciplina: string,
+  ti: number,
+  questoes: QuestaoItem[],
+): MatrizTema {
+  const t = useApp.getState().subjects[disciplina].topics[ti]
+  return {
+    disciplina,
+    tema: t.slug,
+    validada: false,
+    habilidades: t.habilidades.map((h) => ({
+      slug: h.slug,
+      essencial: h.essencial,
+    })),
+    questoes: questoes
+      .filter((q) => typeof q.codigo === 'string' && q.codigo !== '')
+      .map((q) => ({
+        codigo: q.codigo!,
+        disciplina,
+        tema: t.slug,
+        revisaoApi: q.revisaoConteudo,
+        pedagogia: q.pedagogia,
+      })),
+  }
+}
+
+// Reordena as questões da lição pela seleção adaptativa (o tamanho continua
+// cortado no chamador). Com o motor fora ou qualquer falha, a ordem da API.
+export async function ordenarLicao(
+  disciplina: string,
+  ti: number,
+  questoes: QuestaoItem[],
+  habilidade?: string,
+): Promise<QuestaoItem[]> {
+  try {
+    const estado = await servico.ler()
+    if (!estado) return questoes
+    const selecao = selecionarQuestoes(
+      matrizDoTema(disciplina, ti, questoes),
+      estado,
+      questoes.length,
+      habilidade ? { habilidade } : {},
+    )
+    const ordem = new Map(
+      selecao.questoes.map((q, i) => [q.codigo, i] as const),
+    )
+    return [...questoes].sort(
+      (a, b) =>
+        (ordem.get(a.codigo ?? '') ?? questoes.length) -
+        (ordem.get(b.codigo ?? '') ?? questoes.length),
+    )
+  } catch {
+    return questoes
+  }
+}
+
+// Mapa disciplina/tema → aulas com o vínculo curado e a marca de assistida.
+function aulasDoNivel(nivel: string | null): Map<string, AulaTema[]> {
+  const { subjects, watched } = useApp.getState()
+  const mapa = new Map<string, AulaTema[]>()
+  for (const s of materiasDoNivel(subjects, nivel))
+    s.topics.forEach((t, ti) =>
+      mapa.set(
+        `${s.id}/${t.slug}`,
+        t.lessons.map((l, li) => ({
+          habilidades: l.habilidades,
+          assistida: !!watched[`${s.id}/${ti}/${li}`],
+        })),
+      ),
+    )
+  return mapa
+}
+
+// A próxima ação da jornada, cruzando TODAS as matérias da prova escolhida.
+// null = sem matrizes avaliáveis (ou motor fora) → fluxo tradicional.
+export async function proximaAcaoNivel(
+  nivel: string | null,
+): Promise<AcaoJornada | null> {
+  try {
+    const estado = await servico.ler()
+    if (!estado) return null
+    const disciplinas = materiasDoNivel(useApp.getState().subjects, nivel)
+    const pedagogias = await Promise.all(
+      disciplinas.map((s) => api.pedagogia(s.id)),
+    )
+    const matrizes = pedagogias.flatMap(matrizesAprendizagem)
+    return proximaAcao({
+      estado,
+      matrizes,
+      aulas: aulasDoNivel(nivel),
+    })
+  } catch {
+    return null
+  }
+}
+
+// Itens de uma rodada multi-tema (diagnóstico ou verificação por matéria):
+// seleção adaptativa cruzando os temas validados. Sem motor, sem índice ou
+// sem elegíveis, cai nas primeiras questões do catálogo — praticar nunca
+// para por falta de curadoria.
+export async function montarRodada(
+  disciplina: string,
+  tamanho: number,
+): Promise<QuestaoItem[]> {
+  const s = useApp.getState().subjects[disciplina]
+  if (!s) return []
+  const porTema = await Promise.all(
+    s.topics.map((t, ti) =>
+      t.totalQuestoes
+        ? carregarQuestoes(useApp.getState().subjects, disciplina, ti)
+        : Promise.resolve([]),
+    ),
+  )
+  try {
+    const [pedagogia, estado] = await Promise.all([
+      api.pedagogia(disciplina),
+      servico.ler(),
+    ])
+    if (!estado) throw new Error('sem motor')
+    const selecao = selecionarRodada(
+      matrizesAprendizagem(pedagogia),
+      estado,
+      tamanho,
+    )
+    const porCodigo = new Map(
+      porTema.flat().map((q) => [q.codigo ?? '', q] as const),
+    )
+    const itens = selecao.questoes
+      .map((q) => porCodigo.get(q.codigo))
+      .filter((q): q is QuestaoItem => !!q)
+    if (itens.length) return itens
+  } catch {
+    /* índice ou motor indisponível: cai no plano abaixo */
+  }
+  return porTema.flat().slice(0, tamanho)
 }
 
 export interface AvaliacaoEstudo {

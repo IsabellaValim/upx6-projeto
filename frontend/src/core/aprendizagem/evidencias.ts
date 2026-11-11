@@ -114,7 +114,7 @@ export function extrairEvidencias(
     )
       continue
     if (
-      e.modalidade === 'simulado' &&
+      (e.modalidade === 'simulado' || e.modalidade === 'rodada') &&
       !estado.conclusoes.some(
         (f) =>
           f.geracao === e.geracao &&

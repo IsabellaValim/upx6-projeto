@@ -48,6 +48,7 @@ async function carregarCatalogoDeFato(): Promise<void> {
         about: t.sobre,
         videos: t.videos.length,
         totalQuestoes: t.totalQuestoes,
+        habilidades: t.habilidades,
         lessons: t.videos.map((v) => ({
           id: v.id,
           kind: v.titulo,

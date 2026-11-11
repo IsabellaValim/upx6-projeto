@@ -20,7 +20,7 @@ export interface SessaoAprendizagem {
   id: string
   geracao: number
   confiavel: boolean
-  modalidade: 'licao' | 'simulado'
+  modalidade: 'licao' | 'simulado' | 'rodada'
   inicio: number
   localLearnerId?: string
 }

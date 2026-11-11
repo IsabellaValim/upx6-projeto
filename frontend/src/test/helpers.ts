@@ -27,6 +27,7 @@ export const MATERIA: CatalogSubject = {
       about: 'Aprenda a calcular porcentagem.',
       videos: 1,
       totalQuestoes: 3,
+      habilidades: [],
       lessons: [
         {
           id: 1,

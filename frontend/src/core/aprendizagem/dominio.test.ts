@@ -167,6 +167,21 @@ describe('evidências independentes', () => {
     })
     expect(extrairEvidencias(estado, matriz)).toHaveLength(1)
   })
+  it('rodada exige conclusão como o simulado: é avaliação, não lição', () => {
+    const { estado, matriz, adicionar } = cenario()
+    const { submissao, correcao } = adicionar(1)
+    submissao.modalidade = correcao.modalidade = 'rodada'
+    estado.conclusoes = []
+    expect(extrairEvidencias(estado, matriz)).toHaveLength(0)
+    estado.conclusoes.push({
+      id: 'fim',
+      sessaoId: 's1',
+      geracao: 0,
+      instante: 2000,
+      eventoIds: [submissao.id, correcao.id],
+    })
+    expect(extrairEvidencias(estado, matriz)).toHaveLength(1)
+  })
   it('simulado exige conclusão canônica com submissão e correção', () => {
     const { estado, matriz, adicionar } = cenario()
     const { submissao, correcao } = adicionar(1)

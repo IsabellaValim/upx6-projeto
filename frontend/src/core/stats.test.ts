@@ -24,6 +24,7 @@ const matematica: CatalogSubject = {
       about: null,
       videos: 2,
       totalQuestoes: 5,
+      habilidades: [],
       lessons: [
         {
           id: 1,
@@ -47,6 +48,7 @@ const matematica: CatalogSubject = {
       about: null,
       videos: 1,
       totalQuestoes: 3,
+      habilidades: [],
       lessons: [
         {
           id: 3,

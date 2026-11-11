@@ -119,6 +119,7 @@ export interface CatalogTopic {
   videos: number
   totalQuestoes: number
   lessons: CatalogLesson[]
+  habilidades: HabilidadeApi[] // matriz pedagógica do tema (slug, titulo, essencial)
 }
 
 export interface CatalogSubject {
@@ -197,6 +198,7 @@ export interface Resultado {
 export interface QuizSession {
   subject: string
   topic: number
+  estudo?: string // disciplina de uma rodada multi-tema (diagnóstico)
   questions: QuestaoItem[] | null // chegam da API
   i: number
   chosen: (number | undefined)[]
