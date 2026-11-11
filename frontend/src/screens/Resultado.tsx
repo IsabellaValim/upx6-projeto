@@ -70,7 +70,7 @@ export default function Resultado() {
       )
   }, [idx])
 
-  if (!r || !s) return <Navigate to={urls.progresso} replace />
+  if (!r || !s) return <Navigate to={urls.aprendizado} replace />
 
   const p = pct(r.correct, r.total)
   const sim = r.kind === 'simulado'
@@ -94,7 +94,7 @@ export default function Resultado() {
   const progTema = t ? topicProgress(r.subject, r.topic!) : null
 
   return (
-    <Screen cls="screen--nav" nav="progresso">
+    <Screen cls="screen--nav" nav="aprendizado">
       <div className="topbar topbar--split result-head">
         <div>
           <h1>{sim ? 'Resultado do simulado' : 'Resultado da lição'}</h1>

@@ -32,8 +32,7 @@ import Quiz from './screens/Quiz'
 import Estudo from './screens/Estudo'
 import Simulado from './screens/Simulado'
 import Resultado from './screens/Resultado'
-import Progresso from './screens/Progresso'
-import Preparacao from './screens/Preparacao'
+import Aprendizado from './screens/Aprendizado'
 import Perfil from './screens/Perfil'
 import Acessibilidade from './screens/Acessibilidade'
 
@@ -152,8 +151,16 @@ function AppRoutes() {
             <Route path="/simulado" element={<Simulado />} />
             <Route path="/simulado/:id" element={<Simulado />} />
             <Route path="/resultado/:idx" element={<Resultado />} />
-            <Route path="/progresso" element={<Progresso />} />
-            <Route path="/preparacao" element={<Preparacao />} />
+            <Route path="/aprendizado" element={<Aprendizado />} />
+            {/* As duas visões antigas viraram a tela única Meu aprendizado. */}
+            <Route
+              path="/progresso"
+              element={<Navigate to={urls.aprendizado} replace />}
+            />
+            <Route
+              path="/preparacao"
+              element={<Navigate to={urls.aprendizado} replace />}
+            />
             <Route path="/perfil" element={<Perfil />} />
           </Route>
         </Route>

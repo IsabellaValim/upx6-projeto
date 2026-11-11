@@ -7,8 +7,8 @@ export const urls = {
   cadastro: '/cadastro',
   home: '/home',
   nivel: '/nivel', // escolha da prova (Fundamental ou Médio)
-  progresso: '/progresso',
-  preparacao: '/preparacao',
+  // A única visão de evolução; /progresso e /preparacao redirecionam para cá.
+  aprendizado: '/aprendizado',
   perfil: '/perfil',
   acessibilidade: '/acessibilidade',
   // Área = lista de temas da matéria, cada um com "Assistir aula" e "Praticar".

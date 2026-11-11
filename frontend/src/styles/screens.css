@@ -1149,3 +1149,77 @@
 .preparo-rodape {
   margin: 1.25rem 0;
 }
+
+/* ---------- Meu aprendizado (antes × agora) ---------- */
+
+.aprendizado-msg {
+  margin-top: 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--plum-dark);
+}
+.antes-depois {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+.antes-depois > div {
+  display: grid;
+  gap: 0.375rem;
+  align-content: start;
+  padding: 0.875rem;
+  background: var(--surface);
+  border-radius: var(--r-m);
+}
+.antes-depois span {
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+.antes-depois strong {
+  font-family: var(--serif);
+  font-size: 1.5rem;
+}
+.antes-depois--agora {
+  outline: 2px solid var(--plum);
+  outline-offset: -2px;
+}
+.antes-depois--agora strong {
+  color: var(--plum-dark);
+}
+.evolucao-msg {
+  margin-top: 0.75rem;
+  font-size: 0.9375rem;
+}
+.evolucao-msg strong {
+  color: var(--plum-dark);
+}
+/* Habilidade já demonstrada ("o que você já conseguiu") */
+.linha-boa {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.875rem 1rem;
+}
+.linha-boa + .linha-boa {
+  border-top: 1px solid var(--lilac-line);
+}
+.linha-boa svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  color: var(--ok);
+}
+/* Histórico recolhido: herda o cartão lilás, o summary marca a ação */
+.aprendizado-historico summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--plum-dark);
+}
+.aprendizado-historico .history {
+  margin-top: 0.75rem;
+}
+.historico-aulas {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}

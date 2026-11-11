@@ -6,6 +6,12 @@ import type {
 } from './aprendizagem/servico'
 import { proximaAcao } from './aprendizagem/jornada'
 import type { AcaoJornada, AulaTema } from './aprendizagem/jornada'
+import {
+  compararDesempenho,
+  destaqueEvolucao,
+  habilidadesBoas,
+} from './aprendizagem/evolucao'
+import type { EvolucaoTema } from './aprendizagem/evolucao'
 import { selecionarQuestoes, selecionarRodada } from './aprendizagem/selecao'
 import { carregarQuestoes, materiasDoNivel } from './catalogo'
 import type {
@@ -459,6 +465,49 @@ export async function avaliarArea(
       recomendacao: rec?.recomendacao ?? null,
       preparacao: av.preparacao,
       dominios: av.dominios,
+    }
+  } catch {
+    return null
+  }
+}
+
+/* Tudo que a tela "Meu aprendizado" precisa, numa leitura só: evolução
+   antes/depois por tema, o destaque, as habilidades já demonstradas e o
+   diagnóstico de domínio/preparo do motor (separado por desenho — o
+   comparador nunca confirma domínio). */
+export interface AprendizadoNivel {
+  evolucoes: EvolucaoTema[]
+  destaque: EvolucaoTema | null
+  boasPorTema: Record<string, string[]> // "disc/tema" → slugs em situação "boa"
+  dominios: Record<string, DiagnosticoDominio>
+  preparacao: DiagnosticoPreparacao
+}
+
+export async function avaliarAprendizado(
+  nivel: string | null,
+): Promise<AprendizadoNivel | null> {
+  try {
+    const estado = await servico.ler()
+    if (!estado) return null
+    const disciplinas = materiasDoNivel(useApp.getState().subjects, nivel)
+    const pedagogias = await Promise.all(
+      disciplinas.map((s) => api.pedagogia(s.id)),
+    )
+    const matrizes = pedagogias.flatMap(matrizesAprendizagem)
+    const av = await servico.avaliar(matrizes)
+    if (!av) return null
+    const evolucoes = compararDesempenho(estado, matrizes)
+    const boasPorTema: Record<string, string[]> = {}
+    for (const m of matrizes) {
+      const boas = habilidadesBoas(estado, m)
+      if (boas.length) boasPorTema[`${m.disciplina}/${m.tema}`] = boas
+    }
+    return {
+      evolucoes,
+      destaque: destaqueEvolucao(evolucoes),
+      boasPorTema,
+      dominios: av.dominios,
+      preparacao: av.preparacao,
     }
   } catch {
     return null

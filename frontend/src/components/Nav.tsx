@@ -17,10 +17,11 @@ export function BackBtn({
   )
 }
 
+// Três visões: estudar, ver a própria evolução e os ajustes. As telas
+// "Progresso" e "Aprendizado" viraram uma só (Meu aprendizado).
 const ITEMS = [
   ['inicio', urls.home, 'home', 'Início'],
-  ['progresso', urls.progresso, 'trend', 'Progresso'],
-  ['preparacao', urls.preparacao, 'gauge', 'Aprendizado'],
+  ['aprendizado', urls.aprendizado, 'gauge', 'Aprendizado'],
   ['perfil', urls.perfil, 'user', 'Perfil'],
 ] as const
 
