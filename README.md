@@ -313,3 +313,17 @@ Entre as prioridades estão: validar a importação das videoaulas, revisar ques
 Projeto de UPX, com foco em estudantes que desejam se preparar para o Encceja pelo próprio celular. O Estudaê **não é um sistema oficial do Inep**; provas e gabaritos oficiais devem ter origem identificada, e os conteúdos criados pela equipe devem ser claramente diferenciados.
 
 Fontes oficiais: [Sobre o Encceja (Inep)](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/encceja) · [Provas e gabaritos](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/encceja/provas-e-gabaritos) · [Matrizes de referência e documentos](https://www.gov.br/inep/pt-br/areas-de-atuacao/avaliacao-e-exames-educacionais/encceja/outros-documentos).
+
+
+### Aba Preparo: evolução imediata, sem simulação
+
+A aba **Preparo** usa atividades realmente concluídas no navegador. Após uma
+lição curta, mostra resultados recentes por matéria e mensagens como **Indo
+bem nas atividades**. Esse indicador imediato não equivale a domínio confirmado.
+A confirmação pedagógica exige questões classificadas e revisões posteriores.
+
+Por enquanto a mensagem **Estou pronto(a) para o Encceja?** responde
+**Ainda não é possível confirmar**: o projeto cobre somente Matemática e
+Linguagens, sem avaliar todas as áreas nem a redação. O critério antigo de
+"boa preparação" baseado apenas em três temas foi desativado. Não existe
+modo de demonstração ou nota simulada para a apresentação acadêmica.
