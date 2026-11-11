@@ -1,7 +1,9 @@
 /* Início: logo, continuar, estudar por matéria e testar com o simulado */
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ContinueBtn, SubjectRow } from '../components/Progress'
 import { Screen } from '../components/Screen'
+import { MOTIVO_TEXTO, sugestaoDoDia } from '../core/capturaAprendizagem'
 import { NIVEIS, materiasDoNivel } from '../core/catalogo'
 import { useApp } from '../core/store'
 import { nextActivity, subjectProgress } from '../core/stats'
@@ -31,6 +33,47 @@ export default function Home() {
     .sort((a, b) => quando[b] - quando[a])[0]
   const next = ultima ? nextActivity(ultima) : null
 
+  // Sugestão adaptativa: o motor escolhe o tema mais útil agora
+  // (dificuldade, revisão vencida, assunto novo ou continuar).
+  interface Sugestao {
+    titulo: string
+    sub: string
+    href: string
+    kind: 'aula' | 'pratica'
+  }
+  const [sug, setSug] = useState<{ k: string; s: Sugestao } | null>(null)
+  const idsMaterias = materias.map((m) => m.id).join(',')
+  useEffect(() => {
+    let ativo = true
+    if (!idsMaterias) return
+    void sugestaoDoDia(idsMaterias.split(',')).then((r) => {
+      if (!ativo || !r) return
+      const s = subjects[r.disciplina]
+      const ti = s?.topics.findIndex((t) => t.slug === r.tema) ?? -1
+      if (!s || ti < 0) return
+      const t = s.topics[ti]!
+      const aulaPendente = t.lessons.findIndex(
+        (_, j) => !watched[`${s.id}/${ti}/${j}`],
+      )
+      const aula = r.motivo === 'nova-habilidade' && aulaPendente >= 0
+      setSug({
+        k: idsMaterias,
+        s: {
+          href: aula ? urls.video(s.id, ti, aulaPendente) : urls.quiz(s.id, ti),
+          kind: aula ? 'aula' : 'pratica',
+          titulo: 'Sugestão de hoje',
+          sub: `${s.name} · ${t.title} — ${MOTIVO_TEXTO[r.motivo]}`,
+        },
+      })
+    })
+    return () => {
+      ativo = false
+    }
+    // idsMaterias cobre materias; watched/subjects mudam junto com o estudo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsMaterias, subjects, watched])
+  const sugestao = sug?.k === idsMaterias ? sug.s : null
+
   return (
     <Screen cls="screen--nav" nav="inicio">
       <img
@@ -48,6 +91,14 @@ export default function Home() {
           Trocar
         </Link>
       </p>
+      {sugestao && (
+        <ContinueBtn
+          to={sugestao.href}
+          kind={sugestao.kind}
+          titulo={sugestao.titulo}
+          sub={sugestao.sub}
+        />
+      )}
       {next && ultima && (
         <ContinueBtn
           to={next.href}
