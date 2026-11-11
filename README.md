@@ -29,28 +29,32 @@ O simulado seleciona questões de diferentes temas da mesma matéria. Há cronô
 
 A seção **Progresso** apresenta atividades concluídas, dias de sequência de estudos e histórico de acertos. Nesta versão, a escolha de prova, as preferências e o progresso são guardados **localmente no navegador** (`localStorage`). Isso significa que os dados podem desaparecer se o armazenamento for apagado e **não são sincronizados entre aparelhos**.
 
-### Orientação adaptativa — base técnica em shadow mode
+### Orientação adaptativa — motor local com superfície simples
 
 A classificação pedagógica é separada do conteúdo oficial. O novo histórico usa
 IndexedDB transacional (`estudae-aprendizagem`), sem substituir o legado em
-`localStorage`. A captura e o motor estão **desligados por padrão**, com lista de
-temas autorizados vazia em `frontend/src/core/aprendizagem/config.ts`. Não ativar
-antes da curadoria aprovada e da revisão das migrations; o código não aprova conteúdo.
+`localStorage`. A captura está ativa para as quatro disciplinas
+(`CONFIG_APRENDIZAGEM`); as evidências só contam onde a curadoria pedagógica
+aprovada da matriz (`/disciplinas/{d}/pedagogia`) confirma a questão — o resto
+continua no fluxo tradicional. O código não aprova conteúdo.
 
-Na Fase 2, não há diagnóstico, recomendações, conquistas ou preparação favorável
-visíveis. O motor é puro e seus parâmetros experimentais ficam em
-`PARAMETROS_DOMINIO`. Repetições, soluções já vistas e registros incertos não
-criam evidências independentes. Omissões de simulado não são tentativas fictícias.
-O Perfil oferece exclusão confirmada do progresso de ambos os níveis, preservando
-identidade, prova escolhida e acessibilidade. Falha parcial não é anunciada como sucesso.
+O motor é puro e seus parâmetros experimentais ficam em `PARAMETROS_DOMINIO`,
+`PARAMETROS_RECOMENDACAO` e `PARAMETROS_PREPARACAO`. Repetições, soluções já
+vistas e registros incertos não criam evidências independentes. Omissões de
+simulado não são tentativas fictícias. O Perfil oferece exclusão confirmada do
+progresso de ambos os níveis, preservando identidade, prova escolhida e
+acessibilidade. Falha parcial não é anunciada como sucesso.
 
-Na Fase 3, o motor de recomendação (`recomendacao.ts`) calcula em shadow mode o
-que estudar agora: dificuldade recorrente, revisão vencida (`PARAMETROS_RECOMENDACAO`),
-habilidade essencial nova ou continuação da prática — nessa ordem. O cálculo é
-determinístico e não aparece na interface; `servico.recomendar` e
-`recomendarEstudo` existem apenas para verificação e para a futura superfície.
-`avaliarPreparacao` agrega o domínio por tema numa indicação conservadora
-(`sem-dados`, `em-progresso`, `boa-preparacao`) — nunca promete aprovação.
+Na interface, o adaptativo aparece só onde a curadoria validou a matriz: o
+Início mostra **"Sugestão de hoje"** e a Área mostra **sugestão do tema**,
+**estágio por tema** (Para começar → Em progresso, com a contagem de boas
+práticas → Indo bem → Consolidado) e a frase de preparo. A evolução é visível
+desde a primeira lição; só "Consolidado" exige a confirmação temporal
+(uma segunda sessão boa em outro dia). Nada de pontos, rankings ou
+probabilidades: o motor decide nos bastidores (dificuldade recorrente,
+revisão vencida, habilidade essencial nova, continuar) e a indicação de
+preparo (`sem-dados`, `em-progresso`, `boa-preparacao`) nunca promete
+aprovação.
 
 Para demonstrar a avaliação por **iterações, sem esperar horas**, execute em `frontend/`:
 
@@ -59,11 +63,11 @@ npx vitest run src/core/aprendizagem/dominio.test.ts --testNamePattern="demonstr
 ```
 
 Essa demonstração isolada exercita três iterações de exemplo; não altera o histórico,
-não concede domínio nem comprova retenção. A experiência visual adaptativa vem na
-fase seguinte, mediante revisão. Os testes de IndexedDB usam `fake-indexeddb` apenas
-em desenvolvimento; quotas, ciclo de vida e múltiplas abas em celulares reais ainda
-precisam de verificação. Dados locais não são certificados, não têm backup garantido
-e podem ser perdidos ao limpar o navegador. O backend não recebe progresso anônimo.
+não concede domínio nem comprova retenção. Os testes de IndexedDB usam
+`fake-indexeddb` apenas em desenvolvimento; quotas, ciclo de vida e múltiplas
+abas em celulares reais ainda precisam de verificação. Dados locais não são
+certificados, não têm backup garantido e podem ser perdidos ao limpar o
+navegador. O backend não recebe progresso anônimo.
 
 ### Ajustar a acessibilidade
 
