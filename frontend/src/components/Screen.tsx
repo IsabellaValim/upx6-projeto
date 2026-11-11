@@ -8,7 +8,7 @@ import { useEffect, useRef, type ReactNode } from 'react'
 import { stopSpeaking } from '../core/speech'
 import { BottomNav } from './Nav'
 
-export type NavId = 'inicio' | 'progresso' | 'perfil'
+export type NavId = 'inicio' | 'progresso' | 'preparacao' | 'perfil'
 
 interface ScreenProps {
   cls?: string

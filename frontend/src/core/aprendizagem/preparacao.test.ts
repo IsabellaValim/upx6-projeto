@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { avaliarPreparacao } from './preparacao'
-import { PARAMETROS_DOMINIO } from './config'
+import { PARAMETROS_DOMINIO, PARAMETROS_PREPARACAO } from './config'
 import type {
   EstadoAprendizagem,
   MatrizTema,
@@ -164,13 +164,17 @@ describe('avaliarPreparacao', () => {
     confirmado(e, ms[1])
     for (let i = 0; i < PARAMETROS_DOMINIO.boaMin; i++)
       sessao(e, ms[2], 'h', 1, i * 1000 + 1)
-    const r = avaliarPreparacao(e, ms)
+    const r = avaliarPreparacao(e, ms, {
+      ...PARAMETROS_PREPARACAO,
+      habilitarConclusaoFavoravel: true,
+    })
     expect(r).toMatchObject({
       estado: 'boa-preparacao',
       temasAvaliados: 3,
       confirmados: 2,
       bomDesempenho: 3,
     })
+    expect(avaliarPreparacao(e, ms).estado).toBe('em-progresso')
   })
 
   it('todos bons mas confirmados insuficientes fica em-progresso', () => {

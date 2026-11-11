@@ -1,51 +1,5 @@
 import { extrairEvidencias, ordenarEventos } from './evidencias'
-import { CONFIG_DEMONSTRACAO, PARAMETROS_DOMINIO } from './config'
-import type {
-  ConfiguracaoDemonstracao,
-  DiagnosticoDemonstracao,
-  IteracaoDemonstracao,
-} from './tipos'
-
-export function avaliarDemonstracao(
-  iteracoes: readonly IteracaoDemonstracao[],
-  config: ConfiguracaoDemonstracao = CONFIG_DEMONSTRACAO,
-): DiagnosticoDemonstracao {
-  if (
-    config.modo !== 'demonstracao' ||
-    !Number.isSafeInteger(config.metaIteracoes) ||
-    config.metaIteracoes < 1 ||
-    !Number.isSafeInteger(config.minimoQuestoes) ||
-    config.minimoQuestoes < 1 ||
-    !Number.isFinite(config.taxaMinima) ||
-    config.taxaMinima <= 0 ||
-    config.taxaMinima > 1
-  )
-    throw new Error('Configuração de demonstração inválida.')
-  const vistas = new Set<string>()
-  let iteracoesConcluidas = 0
-  for (const i of iteracoes) {
-    if (!i.id.trim() || vistas.has(i.id)) continue
-    vistas.add(i.id)
-    if (
-      Number.isSafeInteger(i.total) &&
-      Number.isSafeInteger(i.acertos) &&
-      i.total >= config.minimoQuestoes &&
-      i.acertos >= 0 &&
-      i.acertos <= i.total &&
-      i.acertos / i.total >= config.taxaMinima
-    )
-      iteracoesConcluidas++
-  }
-  return {
-    estado: 'demonstracao',
-    iteracoesConcluidas,
-    metaIteracoes: config.metaIteracoes,
-    progresso: Math.min(1, iteracoesConcluidas / config.metaIteracoes),
-    concluida: iteracoesConcluidas >= config.metaIteracoes,
-    dominioConfirmado: false,
-    confirmacaoTemporal: false,
-  }
-}
+import { PARAMETROS_DOMINIO } from './config'
 import type {
   DiagnosticoDominio,
   EstadoAprendizagem,

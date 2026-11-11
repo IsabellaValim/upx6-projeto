@@ -14,6 +14,7 @@ export function BackBtn({ to, label = 'Voltar' }: { to: string; label?: string }
 const ITEMS = [
   ['inicio', urls.home, 'home', 'Início'],
   ['progresso', urls.progresso, 'trend', 'Progresso'],
+  ['preparacao', urls.preparacao, 'gauge', 'Preparo'],
   ['perfil', urls.perfil, 'user', 'Perfil'],
 ] as const
 

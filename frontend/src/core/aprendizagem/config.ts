@@ -1,6 +1,5 @@
 import type {
   ConfiguracaoAprendizagem,
-  ConfiguracaoDemonstracao,
   ParametrosDominio,
   ParametrosPreparacao,
   ParametrosRecomendacao,
@@ -27,14 +26,8 @@ export const PARAMETROS_PREPARACAO: Readonly<ParametrosPreparacao> =
   Object.freeze({
     minTemas: 3,
     temasConfirmados: 2,
-  })
-
-export const CONFIG_DEMONSTRACAO: Readonly<ConfiguracaoDemonstracao> =
-  Object.freeze({
-    modo: 'demonstracao',
-    metaIteracoes: 3,
-    minimoQuestoes: 2,
-    taxaMinima: 0.8,
+    // Apenas critérios experimentais: falta matriz oficial e simulado representativo.
+    habilitarConclusaoFavoravel: false,
   })
 
 export const CONFIG_APRENDIZAGEM: Readonly<ConfiguracaoAprendizagem> =

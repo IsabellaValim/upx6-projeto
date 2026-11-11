@@ -45,7 +45,8 @@ export function avaliarPreparacao(
   const estado_: DiagnosticoPreparacao['estado'] =
     detalhes.length < pp.minTemas
       ? 'sem-dados'
-      : bomDesempenho === detalhes.length &&
+      : pp.habilitarConclusaoFavoravel === true &&
+          bomDesempenho === detalhes.length &&
           confirmados >= pp.temasConfirmados
         ? 'boa-preparacao'
         : 'em-progresso'
