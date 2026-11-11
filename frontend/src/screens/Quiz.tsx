@@ -7,6 +7,15 @@ import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
 import { Tex } from '../components/Tex'
 import { api } from '../core/api'
+import {
+  apresentar,
+  concluirSessao,
+  corrigir,
+  novaSessaoCaptura,
+  questaoAprendizagem,
+  submeter,
+  tentativaId,
+} from '../core/capturaAprendizagem'
 import { carregarQuestoes } from '../core/catalogo'
 import { speak, stopSpeaking } from '../core/speech'
 import { useApp } from '../core/store'
@@ -73,9 +82,12 @@ function QuizLoader({ subject, topic }: { subject: string; topic: number }) {
   const load = useCallback(async () => {
     if (emVoo.current) return
     emVoo.current = true
+    await Promise.resolve()
+    const original = useApp.getState().quiz
     try {
       const all = await carregarQuestoes(subjects, subject, topic)
       const q = useApp.getState().quiz
+      if (q !== original) return
       // A pessoa já saiu da tela (sessão limpa ou outra lição).
       if (!q || q.subject !== subject || q.topic !== topic || q.finished) return
       const questions = shuffle(all).slice(0, TAMANHO_LICAO)
@@ -83,7 +95,10 @@ function QuizLoader({ subject, topic }: { subject: string; topic: number }) {
         setFase('vazio')
         return
       }
-      useApp.getState().setQuiz({ ...q, questions })
+      const captura = await novaSessaoCaptura('licao')
+      const atual = useApp.getState().quiz
+      if (!atual || atual !== q || atual.finished) return
+      useApp.getState().setQuiz({ ...atual, questions, captura })
     } catch {
       setFase('erro')
     } finally {
@@ -183,6 +198,14 @@ function QuizQuestao({ quiz }: { quiz: QuizSession }) {
     [quiz.i, item],
   )
 
+  useEffect(() => {
+    void apresentar(
+      quiz.captura,
+      questaoAprendizagem(item, quiz.subject, t.slug),
+      tentativaId(quiz.captura, quiz.i),
+    )
+  }, [quiz.captura, quiz.i, quiz.subject, item, t.slug])
+
   // Avançou (Continuar): foca o h1 e rola para o topo (focusTitle antigo),
   // e lê a questão se "voz alta" estiver ligada.
   useEffect(() => {
@@ -205,14 +228,27 @@ function QuizQuestao({ quiz }: { quiz: QuizSession }) {
 
   const escolher = (k: number) => {
     const q = useApp.getState().quiz!
+    if (q.captura?.confiavel && q.pendente?.[q.i] !== undefined) return
     const chosen = q.chosen.slice()
     chosen[q.i] = k
     setQuiz({ ...q, chosen })
   }
 
   // Guarda o resumo da lição (com a correção que veio da API) e abre o resultado.
-  const finishLesson = () => {
-    const q = useApp.getState().quiz!
+  const finishingRef = useRef(false)
+  const finishLesson = async () => {
+    const q = useApp.getState().quiz
+    if (
+      !q ||
+      q.questions !== quiz.questions ||
+      q.finished ||
+      finishingRef.current
+    )
+      return
+    finishingRef.current = true
+    await concluirSessao(q.captura)
+    const depois = useApp.getState().quiz
+    if (depois?.questions !== q.questions || depois.finished) return
     const items = q.questions!.map((item, k) => {
       const r = q.results[k]!
       return {
@@ -312,10 +348,12 @@ function QuestaoBox({
   onNext: () => void
 }) {
   const [checking, setChecking] = useState(false)
+  const checkingRef = useRef(false)
   const [checkError, setCheckError] = useState(false)
   const checkRef = useRef<HTMLButtonElement>(null)
   const fbRef = useRef<HTMLHeadingElement>(null)
   const speakOn = useApp((s) => s.a11y.speak)
+  const subjects = useApp((s) => s.subjects)
 
   // Correção chegou: foca o título do feedback e lê em voz alta se ligado.
   useEffect(() => {
@@ -339,18 +377,54 @@ function QuestaoBox({
 
   // Conferir: manda o TEXTO da alternativa para a API e mostra a correção na hora.
   const conferir = async () => {
-    if (checking || chosen === undefined) return
+    if (checking || checkingRef.current || chosen === undefined) return
+    checkingRef.current = true
     setChecking(true)
     setCheckError(false)
     stopSpeaking()
+    const temaSlug = subjects[quiz.subject].topics[quiz.topic].slug
+    const questao = questaoAprendizagem(item, quiz.subject, temaSlug)
+    const sess = quiz.captura ?? null
+    const atual = () =>
+      useApp.getState().quiz?.questions === quiz.questions &&
+      !useApp.getState().quiz?.finished
+    if (!atual()) return
+    const tid = tentativaId(sess, quiz.i)
+    const texto =
+      useApp.getState().quiz?.pendente?.[quiz.i] ?? item.options[chosen]
+    if (sess) {
+      const gravada = await submeter(sess, questao, tid, true, false, texto)
+      if (!atual()) return
+      if (gravada) {
+        const q0 = useApp.getState().quiz!
+        const pendente = (q0.pendente ?? []).slice()
+        pendente[quiz.i] = texto
+        useApp.getState().setQuiz({ ...q0, pendente })
+      }
+    }
     try {
-      const r = await api.resposta(item.id, item.options[chosen])
+      if (!atual()) return
+      const r = await api.resposta(item.id, texto)
+      if (!atual()) return
+      if (sess)
+        await corrigir(
+          sess,
+          questao,
+          tid,
+          r.acertou,
+          false,
+          r.revisaoConteudo,
+          r.codigo,
+        )
+      if (!atual()) return
       const q = useApp.getState().quiz
-      if (!q || q.subject !== quiz.subject || q.topic !== quiz.topic) return
+      if (!q || q.questions !== quiz.questions) return
       const results = q.results.slice()
       results[quiz.i] = r
       useApp.getState().setQuiz({ ...q, results })
     } catch {
+      if (!atual()) return
+      checkingRef.current = false
       setCheckError(true)
       setChecking(false)
     }
