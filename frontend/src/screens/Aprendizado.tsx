@@ -165,7 +165,7 @@ export default function Aprendizado() {
 
       <section aria-label="Outras matérias">
         <h2 className="section-label">Por matéria</h2>
-        <div className="card card--flush">
+        <div className="subject-list">
           {materias.map((s) => {
             const pct = dados?.pctPorMateria[s.id]
             return (

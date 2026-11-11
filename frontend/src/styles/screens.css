@@ -834,7 +834,8 @@
   height: 6px;
   margin-top: 0.5rem;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.7);
+  /* Trilho discreto da cor do cartÃ£o â€” nada de fundo branco. */
+  background: rgba(77, 49, 89, 0.14);
   overflow: hidden;
 }
 .subject-row .mini-bar i {
@@ -1150,7 +1151,7 @@
   margin: 1.25rem 0;
 }
 
-/* ---------- Meu aprendizado (antes × agora) ---------- */
+/* ---------- Meu aprendizado (antes ï¿½ agora) ---------- */
 
 .aprendizado-msg {
   margin-top: 0.5rem;
@@ -1193,7 +1194,7 @@
 .evolucao-msg strong {
   color: var(--plum-dark);
 }
-/* Habilidade já demonstrada ("o que você já conseguiu") */
+/* Habilidade jï¿½ demonstrada ("o que vocï¿½ jï¿½ conseguiu") */
 .linha-boa {
   display: flex;
   align-items: center;
@@ -1209,7 +1210,7 @@
   flex-shrink: 0;
   color: var(--ok);
 }
-/* Histórico recolhido: herda o cartão lilás, o summary marca a ação */
+/* Histï¿½rico recolhido: herda o cartï¿½o lilï¿½s, o summary marca a aï¿½ï¿½o */
 .aprendizado-historico summary {
   cursor: pointer;
   font-weight: 600;
