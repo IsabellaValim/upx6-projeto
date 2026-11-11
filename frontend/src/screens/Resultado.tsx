@@ -47,28 +47,22 @@ function Donut({ correct, total }: { correct: number; total: number }) {
       aria-label={`Você acertou ${correct} de ${total} questões (${final}%)`}
     >
       <svg viewBox="0 0 140 140" aria-hidden="true">
+        <circle className="track" cx="70" cy="70" r={R} strokeDasharray={C} />
         <circle
-          className="donut-track"
-          cx="70"
-          cy="70"
-          r={R}
-          strokeDasharray={C}
-        />
-        <circle
-          className="donut-val"
+          className="value"
           cx="70"
           cy="70"
           r={R}
           strokeDasharray={C}
           ref={valueRef}
         />
-        <text x="70" y="70" className="donut-num">
-          {final}%
-        </text>
-        <text x="70" y="93" className="donut-sub">
-          {correct} de {total}
-        </text>
       </svg>
+      <div className="donut-label">
+        <strong>{final}%</strong>
+        <span>
+          {correct} de {total}
+        </span>
+      </div>
     </div>
   )
 }
