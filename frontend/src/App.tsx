@@ -16,6 +16,7 @@ import {
   useParams,
 } from 'react-router-dom'
 import { carregarCatalogo } from './core/catalogo'
+import { iniciarCaptura } from './core/capturaAprendizagem'
 import { applyA11y, useApp } from './core/store'
 import { urls } from './core/urls'
 import { Toaster } from './components/Toaster'
@@ -28,9 +29,10 @@ import Home from './screens/Home'
 import Area from './screens/Area'
 import Video from './screens/Video'
 import Quiz from './screens/Quiz'
+import Estudo from './screens/Estudo'
 import Simulado from './screens/Simulado'
 import Resultado from './screens/Resultado'
-import Progresso from './screens/Progresso'
+import Aprendizado from './screens/Aprendizado'
 import Perfil from './screens/Perfil'
 import Acessibilidade from './screens/Acessibilidade'
 
@@ -145,10 +147,20 @@ function AppRoutes() {
             <Route path="/area/:id" element={<Area />} />
             <Route path="/video/:id/:ti/:li" element={<Video />} />
             <Route path="/quiz/:id/:ti" element={<Quiz />} />
+            <Route path="/estudo/:id" element={<Estudo />} />
             <Route path="/simulado" element={<Simulado />} />
             <Route path="/simulado/:id" element={<Simulado />} />
             <Route path="/resultado/:idx" element={<Resultado />} />
-            <Route path="/progresso" element={<Progresso />} />
+            <Route path="/aprendizado" element={<Aprendizado />} />
+            {/* As duas visões antigas viraram a tela única Meu aprendizado. */}
+            <Route
+              path="/progresso"
+              element={<Navigate to={urls.aprendizado} replace />}
+            />
+            <Route
+              path="/preparacao"
+              element={<Navigate to={urls.aprendizado} replace />}
+            />
             <Route path="/perfil" element={<Perfil />} />
           </Route>
         </Route>
@@ -162,6 +174,7 @@ function AppRoutes() {
 }
 
 export default function App() {
+  useEffect(() => iniciarCaptura(), [])
   return (
     <BrowserRouter>
       <A11ySync />

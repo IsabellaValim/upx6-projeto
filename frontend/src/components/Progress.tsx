@@ -4,13 +4,20 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import { useApp } from '../core/store'
-import { materiasDoNivel } from '../core/catalogo'
-import { resultadosDaProva, subjectProgress } from '../core/stats'
+import { resultadosDaProva } from '../core/stats'
 import { formatDay, pct } from '../core/utils'
 import { urls } from '../core/urls'
 import { Icon } from './Icon'
 
-export function Bar({ done, total, rotulo }: { done: number; total: number; rotulo: string }) {
+export function Bar({
+  done,
+  total,
+  rotulo,
+}: {
+  done: number
+  total: number
+  rotulo: string
+}) {
   return (
     <div
       className="bar"
@@ -104,7 +111,11 @@ export function HistoryList({ limit }: { limit: number }) {
               ? (s.topics[r.topic]?.title ?? 'Tema')
               : 'Todos os temas'
         return (
-          <Link className={`history-item ${good ? 'ok' : 'bad'}`} to={urls.resultado(r.i)} key={r.i}>
+          <Link
+            className={`history-item ${good ? 'ok' : 'bad'}`}
+            to={urls.resultado(r.i)}
+            key={r.i}
+          >
             <span className="badge">
               <Icon name={good ? 'check' : 'x'} />
             </span>
@@ -124,31 +135,6 @@ export function HistoryList({ limit }: { limit: number }) {
   )
 }
 
-// Linhas de dados por matéria (Progresso): só leitura, sem link — o caminho
-// para estudar é o Início, para não repetir a mesma lista em duas telas.
-export function SubjectStats() {
-  const nivel = useApp((s) => s.nivel)
-  const subjects = useApp((s) => s.subjects)
-  return (
-    <>
-      {materiasDoNivel(subjects, nivel).map((s) => {
-        const p = subjectProgress(s.id)
-        const aulas = p.totalAulas ? `Aulas vistas: ${p.aulas} de ${p.totalAulas}` : 'Aulas: em breve'
-        return (
-          <div className="bar-row" key={s.id}>
-            <header>
-              <span>{s.name}</span>
-              <span>
-                {p.done} de {p.total} atividades
-              </span>
-            </header>
-            <Bar done={p.done} total={p.total} rotulo={`Atividades concluídas em ${s.name}`} />
-            <small>
-              {aulas} · Questões acertadas: {p.questoes} de {p.totalQuestoes}
-            </small>
-          </div>
-        )
-      })}
-    </>
-  )
-}
+// As linhas "X de Y atividades" por matéria saíram de uso: contavam tarefa
+// concluída, não aprendizagem. A evolução real por tema fica na tela
+// Meu aprendizado (comparador antes/depois sobre evidências confiáveis).

@@ -1,17 +1,35 @@
-/* Lição: até 5 questões de UM tema, com a correção logo após cada resposta */
+/* Lição: até 5 questões de UM tema, com a correção logo após cada resposta.
+   A ordem vem da seleção adaptativa (cobertura de habilidades, inéditas,
+   famílias); ?h=slug direciona para a habilidade em intervenção. */
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
+import {
+  Link,
+  Navigate,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom'
 import { Alternativas } from '../components/Alternativas'
 import { Enunciado } from '../components/Enunciado'
 import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
 import { Tex } from '../components/Tex'
 import { api } from '../core/api'
+import {
+  apresentar,
+  concluirSessao,
+  corrigir,
+  novaSessaoCaptura,
+  ordenarLicao,
+  questaoAprendizagem,
+  submeter,
+  tentativaId,
+} from '../core/capturaAprendizagem'
 import { carregarQuestoes } from '../core/catalogo'
 import { speak, stopSpeaking } from '../core/speech'
 import { useApp } from '../core/store'
 import type { QuestaoItem, QuizSession, RespostaApi } from '../types'
-import { LETTERS, shuffle } from '../core/utils'
+import { LETTERS } from '../core/utils'
 import { urls } from '../core/urls'
 
 const TAMANHO_LICAO = 5
@@ -28,7 +46,9 @@ const novaSessao = (subject: string, topic: number): QuizSession => ({
 
 export default function Quiz() {
   const { id = '', ti = '0' } = useParams()
+  const [params] = useSearchParams()
   const topic = +ti
+  const alvo = params.get('h')
   const subjects = useApp((s) => s.subjects)
   const quiz = useApp((s) => s.quiz)
   const setQuiz = useApp((s) => s.setQuiz)
@@ -53,7 +73,7 @@ export default function Quiz() {
   return (
     <Screen>
       {!ativa ? (
-        <QuizLoader subject={id} topic={topic} />
+        <QuizLoader subject={id} topic={topic} alvo={alvo} />
       ) : (
         <QuizQuestao quiz={quiz} />
       )}
@@ -62,7 +82,15 @@ export default function Quiz() {
 }
 
 /* ---------- Carregamento das questões ---------- */
-function QuizLoader({ subject, topic }: { subject: string; topic: number }) {
+function QuizLoader({
+  subject,
+  topic,
+  alvo,
+}: {
+  subject: string
+  topic: number
+  alvo: string | null
+}) {
   const subjects = useApp((s) => s.subjects)
   const [fase, setFase] = useState<'carregando' | 'vazio' | 'erro'>(
     'carregando',
@@ -73,23 +101,35 @@ function QuizLoader({ subject, topic }: { subject: string; topic: number }) {
   const load = useCallback(async () => {
     if (emVoo.current) return
     emVoo.current = true
+    await Promise.resolve()
+    const original = useApp.getState().quiz
     try {
       const all = await carregarQuestoes(subjects, subject, topic)
       const q = useApp.getState().quiz
+      if (q !== original) return
       // A pessoa já saiu da tela (sessão limpa ou outra lição).
       if (!q || q.subject !== subject || q.topic !== topic || q.finished) return
-      const questions = shuffle(all).slice(0, TAMANHO_LICAO)
+      const ordenadas = await ordenarLicao(
+        subject,
+        topic,
+        all,
+        alvo ?? undefined,
+      )
+      const questions = ordenadas.slice(0, TAMANHO_LICAO)
       if (!questions.length) {
         setFase('vazio')
         return
       }
-      useApp.getState().setQuiz({ ...q, questions })
+      const captura = await novaSessaoCaptura('licao')
+      const atual = useApp.getState().quiz
+      if (!atual || atual !== q || atual.finished) return
+      useApp.getState().setQuiz({ ...atual, questions, captura })
     } catch {
       setFase('erro')
     } finally {
       emVoo.current = false
     }
-  }, [subjects, subject, topic])
+  }, [subjects, subject, topic, alvo])
 
   useEffect(() => {
     // Busca de dados: os setState dentro de load() só acontecem depois do await.
@@ -152,7 +192,7 @@ function QuizLoader({ subject, topic }: { subject: string; topic: number }) {
 }
 
 /* ---------- A questão em si ---------- */
-function QuizQuestao({ quiz }: { quiz: QuizSession }) {
+export function QuizQuestao({ quiz }: { quiz: QuizSession }) {
   const subjects = useApp((s) => s.subjects)
   const setQuiz = useApp((s) => s.setQuiz)
   const pushResult = useApp((s) => s.pushResult)
@@ -160,8 +200,8 @@ function QuizQuestao({ quiz }: { quiz: QuizSession }) {
   const navigate = useNavigate()
 
   const s = subjects[quiz.subject]
-  const t = s.topics[quiz.topic]
   const item = quiz.questions![quiz.i]
+  const t = s.topics[item.topic] // o tema é de cada questão (rodada mistura)
   const total = quiz.questions!.length
   const chosen = quiz.chosen[quiz.i]
   const result = quiz.results[quiz.i]
@@ -182,6 +222,14 @@ function QuizQuestao({ quiz }: { quiz: QuizSession }) {
       ),
     [quiz.i, item],
   )
+
+  useEffect(() => {
+    void apresentar(
+      quiz.captura,
+      questaoAprendizagem(item, quiz.subject, t.slug),
+      tentativaId(quiz.captura, quiz.i),
+    )
+  }, [quiz.captura, quiz.i, quiz.subject, item, t.slug])
 
   // Avançou (Continuar): foca o h1 e rola para o topo (focusTitle antigo),
   // e lê a questão se "voz alta" estiver ligada.
@@ -205,40 +253,74 @@ function QuizQuestao({ quiz }: { quiz: QuizSession }) {
 
   const escolher = (k: number) => {
     const q = useApp.getState().quiz!
+    if (q.captura?.confiavel && q.pendente?.[q.i] !== undefined) return
     const chosen = q.chosen.slice()
     chosen[q.i] = k
     setQuiz({ ...q, chosen })
   }
 
   // Guarda o resumo da lição (com a correção que veio da API) e abre o resultado.
-  const finishLesson = () => {
-    const q = useApp.getState().quiz!
-    const items = q.questions!.map((item, k) => {
-      const r = q.results[k]!
-      return {
-        id: item.id, // conta como atividade concluída quando acertada (stats.ts)
-        ask: item.ask,
-        options: item.options,
-        chosen: q.chosen[k],
-        answer: item.options.indexOf(r.respostaCorreta),
-        why: r.resolucao,
-        topic: item.topic,
-        ok: r.acertou,
-      }
-    })
-    const correct = items.filter((x) => x.ok).length
-    pushResult({
-      v: 3, // lição por tema
-      subject: q.subject,
-      topic: q.topic,
-      date: Date.now(),
-      correct,
-      total: items.length,
-      items,
-      weakTopic: correct < items.length ? q.topic : null,
-    })
-    setQuiz({ ...q, finished: true })
-    navigate(urls.resultado(useApp.getState().results.length - 1))
+  const finishingRef = useRef(false)
+  const finishLesson = async () => {
+    const q = useApp.getState().quiz
+    if (
+      !q ||
+      q.questions !== quiz.questions ||
+      q.finished ||
+      finishingRef.current
+    )
+      return
+    finishingRef.current = true
+    try {
+      await concluirSessao(q.captura)
+      const depois = useApp.getState().quiz
+      if (depois?.questions !== q.questions || depois.finished) return
+      const items = q.questions!.map((item, k) => {
+        const r = q.results[k]!
+        return {
+          id: item.id, // conta como atividade concluída quando acertada (stats.ts)
+          ask: item.ask,
+          options: item.options,
+          chosen: q.chosen[k],
+          answer: item.options.indexOf(r.respostaCorreta),
+          why: r.resolucao,
+          topic: item.topic,
+          ok: r.acertou,
+        }
+      })
+      const correct = items.filter((x) => x.ok).length
+      // Rodada multi-tema: o tema fraco é o que mais errou (empate → menor
+      // índice). Na lição por tema, é o próprio tema quando houve erro.
+      const fraco = q.estudo
+        ? ([
+            ...items
+              .reduce(
+                (m, x) =>
+                  x.ok || x.topic === undefined
+                    ? m
+                    : m.set(x.topic, (m.get(x.topic) ?? 0) + 1),
+                new Map<number, number>(),
+              )
+              .entries(),
+          ].sort((a, b) => b[1] - a[1] || a[0] - b[0])[0]?.[0] ?? null)
+        : correct < items.length
+          ? q.topic
+          : null
+      pushResult({
+        v: q.estudo ? 4 : 3, // 3 = lição por tema; 4 = rodada multi-tema
+        subject: q.subject,
+        ...(q.estudo ? {} : { topic: q.topic }),
+        date: Date.now(),
+        correct,
+        total: items.length,
+        items,
+        weakTopic: fraco,
+      })
+      setQuiz({ ...q, finished: true })
+      navigate(urls.resultado(useApp.getState().results.length - 1))
+    } finally {
+      finishingRef.current = false
+    }
   }
 
   return (
@@ -312,10 +394,12 @@ function QuestaoBox({
   onNext: () => void
 }) {
   const [checking, setChecking] = useState(false)
+  const checkingRef = useRef(false)
   const [checkError, setCheckError] = useState(false)
   const checkRef = useRef<HTMLButtonElement>(null)
   const fbRef = useRef<HTMLHeadingElement>(null)
   const speakOn = useApp((s) => s.a11y.speak)
+  const subjects = useApp((s) => s.subjects)
 
   // Correção chegou: foca o título do feedback e lê em voz alta se ligado.
   useEffect(() => {
@@ -339,18 +423,54 @@ function QuestaoBox({
 
   // Conferir: manda o TEXTO da alternativa para a API e mostra a correção na hora.
   const conferir = async () => {
-    if (checking || chosen === undefined) return
+    if (checking || checkingRef.current || chosen === undefined) return
+    checkingRef.current = true
     setChecking(true)
     setCheckError(false)
     stopSpeaking()
+    const temaSlug = subjects[quiz.subject].topics[item.topic].slug
+    const questao = questaoAprendizagem(item, quiz.subject, temaSlug)
+    const sess = quiz.captura ?? null
+    const atual = () =>
+      useApp.getState().quiz?.questions === quiz.questions &&
+      !useApp.getState().quiz?.finished
+    if (!atual()) return
+    const tid = tentativaId(sess, quiz.i)
+    const texto =
+      useApp.getState().quiz?.pendente?.[quiz.i] ?? item.options[chosen]
+    if (sess) {
+      const gravada = await submeter(sess, questao, tid, true, false, texto)
+      if (!atual()) return
+      if (gravada) {
+        const q0 = useApp.getState().quiz!
+        const pendente = (q0.pendente ?? []).slice()
+        pendente[quiz.i] = texto
+        useApp.getState().setQuiz({ ...q0, pendente })
+      }
+    }
     try {
-      const r = await api.resposta(item.id, item.options[chosen])
+      if (!atual()) return
+      const r = await api.resposta(item.id, texto)
+      if (!atual()) return
+      if (sess)
+        await corrigir(
+          sess,
+          questao,
+          tid,
+          r.acertou,
+          false,
+          r.revisaoConteudo,
+          r.codigo,
+        )
+      if (!atual()) return
       const q = useApp.getState().quiz
-      if (!q || q.subject !== quiz.subject || q.topic !== quiz.topic) return
+      if (!q || q.questions !== quiz.questions) return
       const results = q.results.slice()
       results[quiz.i] = r
       useApp.getState().setQuiz({ ...q, results })
     } catch {
+      if (!atual()) return
+      checkingRef.current = false
       setCheckError(true)
       setChecking(false)
     }

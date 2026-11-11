@@ -53,6 +53,7 @@ public sealed class ApiFixture : IAsyncLifetime
 
         // ...mais uma questão em RASCUNHO, que nunca pode aparecer.
         var ctx = scope.ServiceProvider.GetRequiredService<EstudaeDbContext>();
+        await ctx.BloquearConteudoAsync();
         var equacoes = await ctx.Temas.SingleAsync(t => t.Slug == "equacoes");
         ctx.Questoes.Add(new Questao
         {

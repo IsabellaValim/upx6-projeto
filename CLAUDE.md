@@ -468,9 +468,11 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 
 ## Pontos de atenção para quem for continuar o projeto
 
-- Catálogo: 264 questões (só 2022 entre as oficiais). Os temas novos não têm
-  vídeo; os do Fundamental, nenhum. As 480 referências de outros anos do pacote
-  de questões não têm texto e ficaram de fora.
+- Catálogo (estado real do banco em 11/2026): 623 questões — EM: matematica
+  162 (150 oficiais 2019–2022 + 12 autorais), linguagens 161 (149 + 12); EF:
+  150 oficiais de 2022 por disciplina. Todos os 37 temas têm 2 videoaulas.
+  As 480 referências de outros anos do pacote de questões não têm texto e
+  ficaram de fora.
 - **Tela da questão** (`src/components/questao.js`, usado pela lição e pelo
   simulado): "Ouvir questão" no topo → imagem em largura total ("Toque para
   ampliar") → texto de apoio em cartão próprio, com `white-space: pre-line`
@@ -501,7 +503,42 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 - O SVG do modelo de dados ainda é o da v1 (o Mermaid do `.md` é o atual).
 - A imagem loga `Cannot load library libgssapi_krb5.so.2`: é o Npgsql
   procurando Kerberos, e não afeta nada.
-- Não há `package.json` na raiz (frontend não tem dependências de build).
+- Não há `package.json` na raiz; scripts e dependências React/Vite ficam em `frontend/`.
+- Aprendizagem adaptativa / jornada guiada: módulos puros e persistência em
+  `frontend/src/core/aprendizagem/`, ponte das telas em `core/capturaAprendizagem.ts`.
+  Legado não é promovido a evidência. `fake-indexeddb` é apenas dependência de teste,
+  não storage de produção. Para verificar: `npm test`, `npm run lint`, `npm run build`
+  em `frontend/`.
+  - **Jornada**: `jornada.ts` (`proximaAcao`) decide a próxima ação —
+    diagnóstico → aula/prática/verificação/revisar/simulado — a partir do
+    estado e das matrizes; `linkDaAcao()` traduz em rota. Início mostra
+    "Seu próximo estudo"; Resultado usa a mesma ação como CTA primário;
+    `/estudo/{matéria}` é a rodada multi-tema (`modalidade: 'rodada'`,
+    só conta evidência se a sessão concluir, como o simulado).
+  - **Domínio**: confirmação por **rodada independente**, não por relógio —
+    `dominio.ts` exige outra sessão com famílias novas; mesmo dia não prova
+    retenção. Estados internos: insuficiente → em-pratica → bom-desempenho →
+    dominio-confirmado; na tela só "Continue estudando" / "Você está
+    preparado(a)", sempre com escopo ("no conteúdo avaliado").
+  - **Seleção**: `selecao.ts` escolhe questões por cobertura de habilidade,
+    família inédita e dificuldade curada; `selecionarRodada` intercala
+    temas em round-robin e reporta `limitacao` quando o banco não cobre.
+  - **Meu aprendizado**: `/preparacao` (rota mantida) — dois estados por
+    matéria, detalhe histórico secundário.
+  - **Curadoria pedagógica**: `docs/conteudo/pedagogia/*.json` gerados por
+    `scripts/pedagogia/gerar-pedagogia.mjs` (exige cobertura 1:1 com o banco;
+    impressões SHA-256 saem do subcomando `impressoes` da API). Aplicar:
+    `docker compose run --rm -v "$PWD/docs/conteudo/pedagogia:/p:ro" api
+importar-pedagogia /p/pedagogia-matematica.json --aplicar`. Matriz
+    `estudae-em-2026-11` validada em dev; revisão humana pendente.
+- Demonstração por iterações sem relógio: `npx vitest run
+src/core/aprendizagem/dominio.test.ts --testNamePattern="demonstração por iterações"`.
+  Resultado demonstrativo isolado não concede domínio nem grava conquistas.
+- Integração backend deve usar Postgres isolado sem montar o volume real. O fixture
+  cria e apaga bancos `estudae_teste_<guid>`; confirmar autorização específica antes
+  dessa execução. Escritores de conteúdo/curadoria precisam adquirir o lock comum
+  de `EstudaeDbContext` antes de ler dados a alterar. UUID público de revisão não é
+  a impressão SHA-256 interna exigida para aprovação pedagógica.
 - `.gitignore` cobre padrões de Node/JS e artefatos de build do .NET
   (`bin/`, `obj/`, `.vs/`, `*.user`), e também ignora
   `appsettings.Development.json`.
