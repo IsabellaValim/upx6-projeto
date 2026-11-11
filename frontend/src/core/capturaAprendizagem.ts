@@ -4,10 +4,16 @@ import type {
   GravacaoAprendizagem,
   ServicoAprendizagem,
 } from './aprendizagem/servico'
+import { avaliarDominio } from './aprendizagem/dominio'
+import { avaliarPreparacao } from './aprendizagem/preparacao'
+import { recomendar } from './aprendizagem/recomendacao'
 import type {
-  DiagnosticoRecomendacao,
+  DiagnosticoDominio,
+  DiagnosticoPreparacao,
   MatrizTema,
+  MotivoRecomendacao,
   QuestaoAprendizagem,
+  RecomendacaoTema,
   SessaoAprendizagem,
 } from './aprendizagem/tipos'
 import { toast } from './toast'
@@ -204,12 +210,67 @@ export function matrizesAprendizagem(
   }))
 }
 
-export async function recomendarEstudo(
+export interface AvaliacaoEstudo {
+  recomendacao: RecomendacaoTema | null
+  preparacao: DiagnosticoPreparacao
+  dominios: Record<string, DiagnosticoDominio>
+}
+
+export const MOTIVO_TEXTO: Record<MotivoRecomendacao, string> = {
+  dificuldade: 'para reforçar onde ficou difícil',
+  revisao: 'para revisar antes de esquecer',
+  'nova-habilidade': 'um assunto novo para conhecer',
+  continuar: 'para continuar de onde você parou',
+}
+
+export const ESTADO_TEXTO: Record<DiagnosticoDominio['estado'], string> = {
+  insuficiente: 'Para começar',
+  'em-pratica': 'Em progresso',
+  'bom-desempenho': 'Indo bem',
+  'dominio-confirmado': 'Consolidado',
+}
+
+// Avaliação completa de UMA área: recomendação, preparo e estágio por tema.
+// Falha ou motor desligado devolvem null — a tela segue no modo tradicional.
+export async function avaliarArea(
   disciplina: string,
-): Promise<DiagnosticoRecomendacao | null> {
+): Promise<AvaliacaoEstudo | null> {
   try {
-    const pedagogia = await api.pedagogia(disciplina)
-    return await servico.recomendar(matrizesAprendizagem(pedagogia))
+    const [pedagogia, estado] = await Promise.all([
+      api.pedagogia(disciplina),
+      servico.ler(),
+    ])
+    if (!estado) return null
+    const matrizes = matrizesAprendizagem(pedagogia)
+    const dominios: Record<string, DiagnosticoDominio> = {}
+    for (const m of matrizes)
+      if (m.validada && m.habilidades.some((h) => h.essencial))
+        dominios[m.tema] = avaliarDominio(estado, m)
+    return {
+      recomendacao: recomendar(estado, matrizes, Date.now()).recomendacao,
+      preparacao: avaliarPreparacao(estado, matrizes),
+      dominios,
+    }
+  } catch {
+    return null
+  }
+}
+
+// A sugestão do Início cruza TODAS as matérias da prova escolhida.
+export async function sugestaoDoDia(
+  disciplinas: readonly string[],
+): Promise<RecomendacaoTema | null> {
+  try {
+    const [estado, pedagogias] = await Promise.all([
+      servico.ler(),
+      Promise.all(disciplinas.map((d) => api.pedagogia(d))),
+    ])
+    if (!estado) return null
+    return recomendar(
+      estado,
+      pedagogias.flatMap(matrizesAprendizagem),
+      Date.now(),
+    ).recomendacao
   } catch {
     return null
   }
