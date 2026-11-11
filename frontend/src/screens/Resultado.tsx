@@ -100,7 +100,15 @@ export default function Resultado() {
         const e = a.evolucoes.find(
           (e) => e.disciplina === r.subject && e.tema === temaEvolucao.slug,
         )
-        if (e && (e.referencia ?? e.ultima)) setEvolucao(e)
+        // Âncora: a evolução exibida pertence a ESTA sessão — a rodada mais
+        // recente tem de ser a que acabou de terminar; senão, esconde o
+        // cartão em vez de herdar avanços de outra atividade.
+        const sessaoId =
+          useApp.getState().quiz?.captura?.id ??
+          useApp.getState().simulado?.captura?.id
+        const destaSessao =
+          !sessaoId || (e?.ultima ?? e?.referencia)?.sessaoId === sessaoId
+        if (e && (e.referencia ?? e.ultima) && destaSessao) setEvolucao(e)
         const d = a.dominios[temaEvolucao.slug]
         if (d) setEstagio(ESTADO_TEXTO[d.estado])
       }

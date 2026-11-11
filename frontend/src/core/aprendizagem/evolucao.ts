@@ -99,6 +99,7 @@ export interface OpcoesComparacao {
   minGanho: number // melhora mínima em "questões equivalentes" p/ dizer "melhorou"
   taxaBoa: number // piso das duas taxas para dizer "manteve um bom desempenho"
   maxDifDificuldade: number // distância máxima entre as dificuldades médias
+  minCoberturaHabilidades: number // fração da rodada menor que a outra cobre
 }
 
 export const PARAMETROS_COMPARACAO: Readonly<OpcoesComparacao> = Object.freeze({
@@ -106,6 +107,7 @@ export const PARAMETROS_COMPARACAO: Readonly<OpcoesComparacao> = Object.freeze({
   minGanho: 1,
   taxaBoa: 0.8,
   maxDifDificuldade: 1,
+  minCoberturaHabilidades: 0.5,
 })
 
 const ORDEM_DIFICULDADE: Record<string, number> = {
@@ -174,7 +176,14 @@ function motivoNaoComparavel(
     return 'questoes-repetidas'
   if (ver.familias.some((f) => ref.familias.includes(f)))
     return 'familias-repetidas'
-  if (!ver.habilidades.some((h) => ref.habilidades.includes(h)))
+  // Uma habilidade em comum não basta: a rodada menor precisa ter metade
+  // das suas habilidades cobertas pela outra — senão comparamos conjuntos
+  // que, no resto, avaliam conhecimentos diferentes.
+  const comuns = ver.habilidades.filter((h) => ref.habilidades.includes(h))
+  if (
+    comuns.length === 0 ||
+    comuns.length * 2 < Math.min(ver.habilidades.length, ref.habilidades.length)
+  )
     return 'habilidades-distintas'
   if (
     ref.dificuldadeMedia !== null &&

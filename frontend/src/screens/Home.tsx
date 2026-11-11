@@ -110,15 +110,22 @@ export default function Home() {
       {materias.length ? (
         <div className="subject-list">
           {materias.map((s) => {
-            const pct = dados?.pctPorMateria[s.id]
+            const bons = dados?.bonsPorMateria[s.id] ?? []
+            const n = s.topics.filter((t) => bons.includes(t.slug)).length
+            const m = s.topics.length
+            const comecou = !!dados?.evolucoes.some(
+              (e) => e.disciplina === s.id && e.rodadas.length > 0,
+            )
             return (
               <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
                 <strong>{s.name}</strong>
                 <small>
-                  {!pct ? 'Ainda não começou.' : `${pct}% de aprendizado`}
+                  {!comecou
+                    ? 'Ainda não começou.'
+                    : `${n} de ${m} assuntos indo bem`}
                 </small>
                 <span className="mini-bar" aria-hidden="true">
-                  <i style={{ width: `${pct ?? 0}%` }} />
+                  <i style={{ width: `${m ? (100 * n) / m : 0}%` }} />
                 </span>
               </SubjectRow>
             )

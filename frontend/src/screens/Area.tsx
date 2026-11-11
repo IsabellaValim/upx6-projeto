@@ -53,24 +53,34 @@ export default function Area() {
         <BackBtn to={urls.home} />
       </div>
       <h1 className="title">{s.name}</h1>
-      {/* Primeiro a % de aprendizado (evidência do motor, não contagem);
-          depois a sugestão em destaque; o "continuar" fica mais abaixo. */}
-      {avaliacao?.aprendizado != null && (
-        <section
-          className="card progress-card"
-          aria-label={`Seu aprendizado em ${s.name}`}
-        >
-          <h2 className="card-title">Seu aprendizado</h2>
-          <p>
-            <strong>{avaliacao.aprendizado}%</strong> em {s.name}
-          </p>
-          <Bar
-            done={avaliacao.aprendizado}
-            total={100}
-            rotulo={`Aprendizado em ${s.name}: ${avaliacao.aprendizado}%`}
-          />
-        </section>
-      )}
+      {/* Primeiro o resumo verificável: quantos assuntos já vão bem
+          (motor), sobre TODOS os temas da matéria — sem % inventada. */}
+      {avaliacao &&
+        (() => {
+          const n = s.topics.filter((t) =>
+            avaliacao.bons.includes(t.slug),
+          ).length
+          const m = s.topics.length
+          return (
+            <section
+              className="card progress-card"
+              aria-label={`Seu aprendizado em ${s.name}`}
+            >
+              <h2 className="card-title">Seu aprendizado</h2>
+              <p>
+                <strong>
+                  {n} de {m}
+                </strong>{' '}
+                assuntos indo bem
+              </p>
+              <Bar
+                done={n}
+                total={m}
+                rotulo={`${n} de ${m} assuntos indo bem em ${s.name}`}
+              />
+            </section>
+          )
+        })()}
       {/* Uma ação principal por vez: com sugestão do motor ela é o próximo
           passo; sem sugestão, o "continuar" do catálogo assume. Dois botões
           com temas diferentes confundem — aqui nunca aparecem juntos. */}

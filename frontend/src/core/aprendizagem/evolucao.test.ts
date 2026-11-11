@@ -307,6 +307,31 @@ describe('comparação antes/depois por tema', () => {
     expect(e!.motivo).toBe('habilidades-distintas')
     expect(e!.ultima!.acertos).toBe(4) // mostrada separada, sem conclusão
   })
+  it('uma habilidade em comum não basta quando o resto é diferente', () => {
+    const { estado, matriz, rodada } = cenario()
+    const m = matriz('porcentagem', [
+      { slug: 'a' },
+      { slug: 'b' },
+      { slug: 'c' },
+      { slug: 'd' },
+      { slug: 'e' },
+      { slug: 'f' },
+      { slug: 'g' },
+    ])
+    rodada(m, [true, false, false, true], {
+      sessaoId: 'a',
+      habilidades: ['a', 'b', 'c', 'd'],
+    })
+    // A verificação divide só 1 habilidade com a referência (1 de 4 < 50%
+    // da rodada menor): conhecimentos diferentes — não compara.
+    rodada(m, [true, true, true, true, true], {
+      sessaoId: 'b',
+      habilidades: ['a', 'e', 'f', 'g', 'g'],
+    })
+    const [e] = compararDesempenho(estado, [m])
+    expect(e!.comparavel).toBe(false)
+    expect(e!.motivo).toBe('habilidades-distintas')
+  })
   it('refazer as mesmas questões não produz rodada nova nem melhora artificial', () => {
     const { estado, matriz, responder, rodada } = cenario()
     const m = matriz('porcentagem', [{ slug: 'calcular' }])
@@ -472,6 +497,7 @@ describe('habilidades já demonstradas', () => {
       minGanho: 1,
       taxaBoa: 0.8,
       maxDifDificuldade: 1,
+      minCoberturaHabilidades: 0.5,
     })
     expect(Object.isFrozen(PARAMETROS_COMPARACAO)).toBe(true)
   })

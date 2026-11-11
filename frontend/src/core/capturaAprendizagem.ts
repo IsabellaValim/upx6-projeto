@@ -12,7 +12,6 @@ import {
   habilidadesBoas,
 } from './aprendizagem/evolucao'
 import type { EvolucaoTema } from './aprendizagem/evolucao'
-import { aprendizadoPct } from './aprendizagem/recomendacao'
 import { selecionarQuestoes, selecionarRodada } from './aprendizagem/selecao'
 import { carregarQuestoes, materiasDoNivel } from './catalogo'
 import type {
@@ -442,12 +441,15 @@ export function linkDaAcao(acao: AcaoJornada | null): {
   }
 }
 
+const bomOuMelhor = (d?: DiagnosticoDominio) =>
+  d?.estado === 'bom-desempenho' || d?.estado === 'dominio-confirmado'
+
 export interface AvaliacaoEstudo {
   recomendacao: RecomendacaoTema | null
   preparacao: DiagnosticoPreparacao
   dominios: Record<string, DiagnosticoDominio>
   evolucoes: EvolucaoTema[]
-  aprendizado: number | null // % média dos temas avaliáveis (0–100)
+  bons: string[] // slugs dos temas "indo bem" ou concluídos (evidência real)
 }
 
 export const MOTIVO_TEXTO: Record<MotivoRecomendacao, string> = {
@@ -484,7 +486,9 @@ export async function avaliarArea(
       preparacao: av.preparacao,
       dominios: av.dominios,
       evolucoes: compararDesempenho(estado, matrizes),
-      aprendizado: aprendizadoPct(estado, matrizes),
+      bons: matrizes
+        .filter((m) => bomOuMelhor(av.dominios[m.tema]))
+        .map((m) => m.tema),
     }
   } catch {
     return null
@@ -501,7 +505,7 @@ export interface AprendizadoNivel {
   boasPorTema: Record<string, string[]> // "disc/tema" → slugs em situação "boa"
   dominios: Record<string, DiagnosticoDominio>
   preparacao: DiagnosticoPreparacao
-  pctPorMateria: Record<string, number> // disciplina → % de aprendizado
+  bonsPorMateria: Record<string, string[]> // disciplina → temas "indo bem"
 }
 
 export async function avaliarAprendizado(
@@ -523,13 +527,13 @@ export async function avaliarAprendizado(
       const boas = habilidadesBoas(estado, m)
       if (boas.length) boasPorTema[`${m.disciplina}/${m.tema}`] = boas
     }
-    const pctPorMateria: Record<string, number> = {}
+    const bonsPorMateria: Record<string, string[]> = {}
     for (const d of disciplinas) {
-      const p = aprendizadoPct(
-        estado,
-        matrizes.filter((m) => m.disciplina === d.id),
-      )
-      if (p !== null) pctPorMateria[d.id] = p
+      bonsPorMateria[d.id] = matrizes
+        .filter(
+          (m) => m.disciplina === d.id && bomOuMelhor(av.dominios[m.tema]),
+        )
+        .map((m) => m.tema)
     }
     return {
       evolucoes,
@@ -537,7 +541,7 @@ export async function avaliarAprendizado(
       boasPorTema,
       dominios: av.dominios,
       preparacao: av.preparacao,
-      pctPorMateria,
+      bonsPorMateria,
     }
   } catch {
     return null
