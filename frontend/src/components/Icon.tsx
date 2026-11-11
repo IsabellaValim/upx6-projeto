@@ -140,12 +140,6 @@ const ICONS: Record<string, ReactNode> = {
       <path d="M3.3 19a10 10 0 1 1 17.4 0" />
     </>
   ),
-  trendingUp: (
-    <>
-      <path d="m22 7-8.5 8.5-5-5L2 17" />
-      <path d="M16 7h6v6" />
-    </>
-  ),
   access: (
     <>
       <circle cx="12" cy="12" r="10" />

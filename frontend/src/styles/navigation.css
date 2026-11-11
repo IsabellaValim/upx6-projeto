@@ -11,7 +11,9 @@
   width: 100%;
   max-width: 430px;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* Uma coluna por item — o nav tem 3 abas desde a unificação
+     (auto-fit evita a coluna fantasma que desalinhava tudo à esquerda). */
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
   background: var(--lilac-soft);
   border-top: 1px solid var(--lilac);
   padding-bottom: env(safe-area-inset-bottom, 0px);
@@ -36,11 +38,11 @@
   box-sizing: content-box;
   border-radius: 999px;
 }
-.bottom-nav a[aria-current="page"] {
+.bottom-nav a[aria-current='page'] {
   color: var(--plum-dark);
   font-weight: 700;
 }
-.bottom-nav a[aria-current="page"] .ico {
+.bottom-nav a[aria-current='page'] .ico {
   background: var(--lilac);
   padding: 0.25rem 0.65rem;
 }
@@ -65,7 +67,7 @@
   animation: up 0.25s var(--ease);
 }
 .sheet::before {
-  content: "";
+  content: '';
   display: block;
   width: 2.5rem;
   height: 4px;

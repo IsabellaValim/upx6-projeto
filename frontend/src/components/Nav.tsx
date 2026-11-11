@@ -21,7 +21,7 @@ export function BackBtn({
 // "Progresso" e "Aprendizado" viraram uma só (Meu aprendizado).
 const ITEMS = [
   ['inicio', urls.home, 'home', 'Início'],
-  ['aprendizado', urls.aprendizado, 'trendingUp', 'Aprendizado'],
+  ['aprendizado', urls.aprendizado, 'trend', 'Aprendizado'],
   ['perfil', urls.perfil, 'user', 'Perfil'],
 ] as const
 
