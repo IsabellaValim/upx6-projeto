@@ -157,4 +157,50 @@ describe('serviço de aprendizagem', () => {
     const s = criarServicoAprendizagem(config, { persistencia: p })
     await expect(s.iniciarSessao('licao')).rejects.toThrow('bloqueado')
   })
+  it('recomendar respeita a flag e usa o ledger atual', async () => {
+    const matriz = {
+      disciplina: 'matematica',
+      tema: 'numeros',
+      validada: true,
+      habilidades: [{ slug: 'contar', essencial: true }],
+      questoes: [],
+    }
+    const desligado = criarServicoAprendizagem(undefined, {
+      persistencia: fronteira(),
+    })
+    expect(await desligado.recomendar([matriz])).toBeNull()
+    const p = fronteira()
+    p.ler.mockResolvedValue({
+      controle: {
+        id: 'principal',
+        geracao: 0,
+        resetPendente: false,
+        esquema: 1,
+        localLearnerId: 'aluno',
+        revisao: 0,
+        ultimaSequencia: 0,
+      },
+      eventos: [],
+      conclusoes: [],
+    })
+    const ligado = criarServicoAprendizagem(config, { persistencia: p })
+    expect(await ligado.recomendar([matriz])).toEqual({
+      recomendacao: {
+        disciplina: 'matematica',
+        tema: 'numeros',
+        motivo: 'nova-habilidade',
+        habilidade: 'contar',
+        revisarEm: null,
+      },
+      candidatos: [
+        {
+          disciplina: 'matematica',
+          tema: 'numeros',
+          motivo: 'nova-habilidade',
+          habilidade: 'contar',
+          revisarEm: null,
+        },
+      ],
+    })
+  })
 })

@@ -5,12 +5,15 @@ import type {
   ServicoAprendizagem,
 } from './aprendizagem/servico'
 import type {
+  DiagnosticoRecomendacao,
+  MatrizTema,
   QuestaoAprendizagem,
   SessaoAprendizagem,
 } from './aprendizagem/tipos'
 import { toast } from './toast'
+import { api } from './api'
 import { local, useApp } from './store'
-import type { QuestaoItem, Resultado } from '../types'
+import type { DisciplinaPedagogiaApi, QuestaoItem, Resultado } from '../types'
 
 let servico: ServicoAprendizagem = criarServicoAprendizagem()
 
@@ -175,6 +178,41 @@ export function concluirSessao(
   sessao: SessaoAprendizagem | null | undefined,
 ): Promise<boolean> {
   return chamar(sessao, null, () => servico.concluir(sessao!))
+}
+
+export function matrizesAprendizagem(
+  pedagogia: DisciplinaPedagogiaApi,
+): MatrizTema[] {
+  const validada = !!pedagogia.matriz?.validada
+  return pedagogia.temas.map((t) => ({
+    disciplina: pedagogia.disciplina,
+    tema: t.slug,
+    validada,
+    habilidades: t.habilidades.map((h) => ({
+      slug: h.slug,
+      essencial: h.essencial,
+    })),
+    questoes: t.questoes
+      .filter((q) => typeof q.codigo === 'string' && q.codigo.trim() !== '')
+      .map((q) => ({
+        codigo: q.codigo!,
+        disciplina: pedagogia.disciplina,
+        tema: t.slug,
+        revisaoApi: q.revisaoConteudo,
+        pedagogia: q.pedagogia,
+      })),
+  }))
+}
+
+export async function recomendarEstudo(
+  disciplina: string,
+): Promise<DiagnosticoRecomendacao | null> {
+  try {
+    const pedagogia = await api.pedagogia(disciplina)
+    return await servico.recomendar(matrizesAprendizagem(pedagogia))
+  } catch {
+    return null
+  }
 }
 
 const CHAVE_LIMPEZA = 'estudae:aprendizagem:limpeza'

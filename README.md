@@ -44,6 +44,12 @@ criam evidências independentes. Omissões de simulado não são tentativas fict
 O Perfil oferece exclusão confirmada do progresso de ambos os níveis, preservando
 identidade, prova escolhida e acessibilidade. Falha parcial não é anunciada como sucesso.
 
+Na Fase 3, o motor de recomendação (`recomendacao.ts`) calcula em shadow mode o
+que estudar agora: dificuldade recorrente, revisão vencida (`PARAMETROS_RECOMENDACAO`),
+habilidade essencial nova ou continuação da prática — nessa ordem. O cálculo é
+determinístico e não aparece na interface; `servico.recomendar` e
+`recomendarEstudo` existem apenas para verificação e para a futura superfície.
+
 Para demonstrar a avaliação por **iterações, sem esperar horas**, execute em `frontend/`:
 
 ```sh
