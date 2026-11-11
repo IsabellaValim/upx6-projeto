@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 //   dotnet Estudae.Api.dll importar <arquivo.json> [--publicar] [--validar]
 //   dotnet Estudae.Api.dll importar-imagens <pasta>
 //   dotnet Estudae.Api.dll importar-pedagogia <arquivo.json> [--validar] [--aplicar]
+//   dotnet Estudae.Api.dll impressoes <disciplina>
 //   dotnet Estudae.Api.dll migrar
 if (args is [ImportarComando.Nome, .. var argsImportar])
     return await ImportarComando.ExecutarAsync(argsImportar);
@@ -16,6 +17,8 @@ if (args is [ImportarImagensComando.Nome, .. var argsImagens])
     return await ImportarImagensComando.ExecutarAsync(argsImagens);
 if (args is [ImportarPedagogiaComando.Nome, .. var argsPedagogia])
     return await ImportarPedagogiaComando.ExecutarAsync(argsPedagogia);
+if (args is [ImpressoesComando.Nome, .. var argsImpressoes])
+    return await ImpressoesComando.ExecutarAsync(argsImpressoes);
 if (args is [MigrarComando.Nome])
     return await MigrarComando.ExecutarAsync();
 
