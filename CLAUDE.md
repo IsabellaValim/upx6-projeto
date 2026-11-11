@@ -502,15 +502,36 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 - A imagem loga `Cannot load library libgssapi_krb5.so.2`: é o Npgsql
   procurando Kerberos, e não afeta nada.
 - Não há `package.json` na raiz; scripts e dependências React/Vite ficam em `frontend/`.
-- Aprendizagem adaptativa (Fase 2): módulos puros e persistência em
+- Aprendizagem adaptativa / jornada guiada: módulos puros e persistência em
   `frontend/src/core/aprendizagem/`, ponte das telas em `core/capturaAprendizagem.ts`.
-  Flags desligadas e allowlist de temas vazia por padrão. Legado não é promovido a
-  evidência. `fake-indexeddb` é apenas dependência de teste, não storage de produção.
-  Para verificar: `npm test`, `npm run lint`, `npm run build` em `frontend/`.
+  Legado não é promovido a evidência. `fake-indexeddb` é apenas dependência de teste,
+  não storage de produção. Para verificar: `npm test`, `npm run lint`, `npm run build`
+  em `frontend/`.
+  - **Jornada**: `jornada.ts` (`proximaAcao`) decide a próxima ação —
+    diagnóstico → aula/prática/verificação/revisar/simulado — a partir do
+    estado e das matrizes; `linkDaAcao()` traduz em rota. Início mostra
+    "Seu próximo estudo"; Resultado usa a mesma ação como CTA primário;
+    `/estudo/{matéria}` é a rodada multi-tema (`modalidade: 'rodada'`,
+    só conta evidência se a sessão concluir, como o simulado).
+  - **Domínio**: confirmação por **rodada independente**, não por relógio —
+    `dominio.ts` exige outra sessão com famílias novas; mesmo dia não prova
+    retenção. Estados internos: insuficiente → em-pratica → bom-desempenho →
+    dominio-confirmado; na tela só "Continue estudando" / "Você está
+    preparado(a)", sempre com escopo ("no conteúdo avaliado").
+  - **Seleção**: `selecao.ts` escolhe questões por cobertura de habilidade,
+    família inédita e dificuldade curada; `selecionarRodada` intercala
+    temas em round-robin e reporta `limitacao` quando o banco não cobre.
+  - **Meu aprendizado**: `/preparacao` (rota mantida) — dois estados por
+    matéria, detalhe histórico secundário.
+  - **Curadoria pedagógica**: `docs/conteudo/pedagogia/*.json` gerados por
+    `scripts/pedagogia/gerar-pedagogia.mjs` (exige cobertura 1:1 com o banco;
+    impressões SHA-256 saem do subcomando `impressoes` da API). Aplicar:
+    `docker compose run --rm -v "$PWD/docs/conteudo/pedagogia:/p:ro" api
+importar-pedagogia /p/pedagogia-matematica.json --aplicar`. Matriz
+    `estudae-em-2026-11` validada em dev; revisão humana pendente.
 - Demonstração por iterações sem relógio: `npx vitest run
 src/core/aprendizagem/dominio.test.ts --testNamePattern="demonstração por iterações"`.
-  Resultado demonstrativo isolado não concede domínio temporal nem grava conquistas.
-  A UI adaptativa ainda depende da fase seguinte e da aprovação do piloto.
+  Resultado demonstrativo isolado não concede domínio nem grava conquistas.
 - Integração backend deve usar Postgres isolado sem montar o volume real. O fixture
   cria e apaga bancos `estudae_teste_<guid>`; confirmar autorização específica antes
   dessa execução. Escritores de conteúdo/curadoria precisam adquirir o lock comum

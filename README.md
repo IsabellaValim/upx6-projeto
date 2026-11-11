@@ -29,9 +29,26 @@ O simulado seleciona questões de diferentes temas da mesma matéria. Há cronô
 
 A seção **Progresso** apresenta atividades concluídas, dias de sequência de estudos e histórico de acertos. Nesta versão, a escolha de prova, as preferências e o progresso são guardados **localmente no navegador** (`localStorage`). Isso significa que os dados podem desaparecer se o armazenamento for apagado e **não são sincronizados entre aparelhos**.
 
+### Jornada guiada — o app escolhe o próximo passo
+
+Em vez de um catálogo para o estudante navegar sozinho, o app responde a
+pergunta "o que devo fazer agora?" com **uma ação principal**. No primeiro
+acesso é uma rodada de diagnóstico (questões de vários temas da matéria);
+depois, o orquestrador (`core/aprendizagem/jornada.ts`) escolhe entre
+continuar a prática, rever uma habilidade com dificuldade, assistir à aula
+ligada a ela, fazer uma rodada de verificação ou treinar com o simulado —
+sempre a partir das evidências reais gravadas no navegador.
+
+A mesma ação aparece no **Início** ("Seu próximo estudo") e como saída da
+tela de **Resultado**: a nota deixa de mandar no próximo passo. A aba
+**Meu aprendizado** mostra, por matéria, só dois estados honestos —
+"Continue estudando" ou "Você está preparado(a) **no conteúdo avaliado**" —
+com o detalhe histórico em segundo plano. O "preparado" é por tema e por
+matéria, nunca para o Encceja inteiro.
+
 ### Orientação adaptativa — motor local com superfície simples
 
-A classificação pedagógica é separada do conteúdo oficial. O novo histórico usa
+A classificação pedagógica é separada do conteúdo oficial. O histórico usa
 IndexedDB transacional (`estudae-aprendizagem`), sem substituir o legado em
 `localStorage`. A captura está ativa para as quatro disciplinas
 (`CONFIG_APRENDIZAGEM`); as evidências só contam onde a curadoria pedagógica
@@ -45,16 +62,42 @@ simulado não são tentativas fictícias. O Perfil oferece exclusão confirmada 
 progresso de ambos os níveis, preservando identidade, prova escolhida e
 acessibilidade. Falha parcial não é anunciada como sucesso.
 
-Na interface, o adaptativo aparece só onde a curadoria validou a matriz: o
-Início mostra **"Sugestão de hoje"** e a Área mostra **sugestão do tema**,
-**estágio por tema** (Para começar → Em progresso, com a contagem de boas
-práticas → Indo bem → Consolidado) e a frase de preparo. A evolução é visível
-desde a primeira lição; só "Consolidado" exige a confirmação temporal
-(uma segunda sessão boa em outro dia). Nada de pontos, rankings ou
-probabilidades: o motor decide nos bastidores (dificuldade recorrente,
-revisão vencida, habilidade essencial nova, continuar) e a indicação de
-preparo (`sem-dados`, `em-progresso`, `boa-preparacao`) nunca promete
+A confirmação de domínio não é por relógio: exige uma **rodada de verificação
+independente** (outra sessão, com questões de famílias ainda não usadas como
+evidência). Várias rodadas podem acontecer no mesmo dia, mas um mesmo dia
+não prova retenção — a regra é de independência da sessão, não do calendário.
+Várias questões da mesma **família** contam uma vez só; o seletor
+(`core/aprendizagem/selecao.ts`) espalha a rodada entre temas, habilidades
+e famílias e informa explicitamente quando o banco não cobre a seleção,
+em vez de disfarçar a limitação.
+
+Na interface, o adaptativo aparece só onde a curadoria validou a matriz.
+A Área mostra a sugestão do tema e o estágio interno (Para começar →
+Em progresso, com a contagem de boas práticas → Indo bem → Consolidado);
+o que o estudante vê como destino são sempre os dois estados simples.
+Nada de pontos, rankings ou probabilidades, e nenhuma promessa de
 aprovação.
+
+#### Curadoria pedagógica
+
+Os arquivos de curadoria de Matemática e Linguagens (Ensino Médio) ficam em
+`docs/conteudo/pedagogia/` e são gerados por
+`scripts/pedagogia/gerar-pedagogia.mjs`, que exige cobertura 1:1 com o banco:
+45 habilidades por tema, famílias de itens equivalentes, dificuldade e tipo
+das 323 questões das duas disciplinas, e o vínculo aula→habilidade das
+videoaulas. A impressão SHA-256 de cada questão sai do subcomando
+`impressoes` da API e vai no arquivo: se o conteúdo mudar depois, a
+aprovação é recusada na importação. Aplicar:
+
+```sh
+docker compose run --rm api impressoes matematica > backups/impressoes-matematica.json
+node scripts/pedagogia/gerar-pedagogia.mjs
+docker compose run --rm -v "$PWD/docs/conteudo/pedagogia:/p:ro" api importar-pedagogia /p/pedagogia-matematica.json --validar
+docker compose run --rm -v "$PWD/docs/conteudo/pedagogia:/p:ro" api importar-pedagogia /p/pedagogia-matematica.json --aplicar
+```
+
+A matriz `estudae-em-2026-11` está validada em desenvolvimento; a revisão
+por outra pessoa continua pendente antes de qualquer publicação.
 
 Para demonstrar a avaliação por **iterações, sem esperar horas**, execute em `frontend/`:
 
