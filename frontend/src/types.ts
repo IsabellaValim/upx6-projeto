@@ -109,6 +109,7 @@ export interface CatalogLesson {
   kind: string // título da videoaula
   min: number | null // duração em minutos, arredondada; null = não informada
   youtubeId: string
+  habilidades: string[] // vínculo curado (videoaula_habilidade), vazio = não ligada
 }
 
 export interface CatalogTopic {

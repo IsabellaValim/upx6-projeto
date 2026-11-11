@@ -25,8 +25,20 @@ const matematica: CatalogSubject = {
       videos: 2,
       totalQuestoes: 5,
       lessons: [
-        { id: 1, kind: 'Aula 1', min: 8, youtubeId: 'AAAAAAAAAAA' },
-        { id: 2, kind: 'Aula 2', min: null, youtubeId: 'BBBBBBBBBBB' },
+        {
+          id: 1,
+          kind: 'Aula 1',
+          min: 8,
+          youtubeId: 'AAAAAAAAAAA',
+          habilidades: [],
+        },
+        {
+          id: 2,
+          kind: 'Aula 2',
+          min: null,
+          youtubeId: 'BBBBBBBBBBB',
+          habilidades: [],
+        },
       ],
     },
     {
@@ -35,7 +47,15 @@ const matematica: CatalogSubject = {
       about: null,
       videos: 1,
       totalQuestoes: 3,
-      lessons: [{ id: 3, kind: 'Aula 3', min: 5, youtubeId: 'CCCCCCCCCCC' }],
+      lessons: [
+        {
+          id: 3,
+          kind: 'Aula 3',
+          min: 5,
+          youtubeId: 'CCCCCCCCCCC',
+          habilidades: [],
+        },
+      ],
     },
   ],
 }
@@ -63,9 +83,36 @@ describe('stats', () => {
       results: [
         licoes({
           items: [
-            { id: 10, topic: 0, ask: '', options: [], chosen: 0, answer: 0, why: '', ok: true },
-            { id: 10, topic: 0, ask: '', options: [], chosen: 0, answer: 0, why: '', ok: true },
-            { id: 11, topic: 0, ask: '', options: [], chosen: 0, answer: 0, why: '', ok: false },
+            {
+              id: 10,
+              topic: 0,
+              ask: '',
+              options: [],
+              chosen: 0,
+              answer: 0,
+              why: '',
+              ok: true,
+            },
+            {
+              id: 10,
+              topic: 0,
+              ask: '',
+              options: [],
+              chosen: 0,
+              answer: 0,
+              why: '',
+              ok: true,
+            },
+            {
+              id: 11,
+              topic: 0,
+              ask: '',
+              options: [],
+              chosen: 0,
+              answer: 0,
+              why: '',
+              ok: false,
+            },
           ],
         }),
       ],
@@ -92,19 +139,27 @@ describe('stats', () => {
       href: '/video/matematica/0/0',
     })
     useApp.setState({ watched: { 'matematica/0/0': 1, 'matematica/0/1': 2 } })
-    expect(nextActivity('matematica')).toMatchObject({ kind: 'pratica', href: '/quiz/matematica/0' })
+    expect(nextActivity('matematica')).toMatchObject({
+      kind: 'pratica',
+      href: '/quiz/matematica/0',
+    })
   })
 
   it('subjectScore: % de acertos somando lições e simulados', () => {
     useApp.setState({
-      results: [licoes({ correct: 3, total: 5 }), licoes({ kind: 'simulado', correct: 7, total: 10 })],
+      results: [
+        licoes({ correct: 3, total: 5 }),
+        licoes({ kind: 'simulado', correct: 7, total: 10 }),
+      ],
     })
     expect(subjectScore('matematica')).toBe(67)
     expect(subjectScore('inexistente' as string)).toBeNull()
   })
 
   it('watchedCount conta aulas da matéria', () => {
-    useApp.setState({ watched: { 'matematica/0/0': 1, 'matematica/1/0': 2, 'outra/0/0': 3 } })
+    useApp.setState({
+      watched: { 'matematica/0/0': 1, 'matematica/1/0': 2, 'outra/0/0': 3 },
+    })
     expect(watchedCount('matematica')).toBe(2)
   })
 

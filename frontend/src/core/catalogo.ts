@@ -55,6 +55,7 @@ async function carregarCatalogoDeFato(): Promise<void> {
             ? Math.max(1, Math.round(v.duracaoSegundos / 60))
             : null,
           youtubeId: v.youtubeId,
+          habilidades: v.habilidades ?? [],
         })),
       }))
       subjects[d.slug] = {

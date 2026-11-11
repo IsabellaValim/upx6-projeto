@@ -33,6 +33,7 @@ export const MATERIA: CatalogSubject = {
           kind: 'Porcentagem (Gis com Giz)',
           min: 5,
           youtubeId: 'abc123',
+          habilidades: [],
         },
       ],
     },
