@@ -15,6 +15,72 @@ public class EstudaeDbContext(DbContextOptions<EstudaeDbContext> options)
     public DbSet<Questao> Questoes => Set<Questao>();
     public DbSet<Imagem> Imagens => Set<Imagem>();
 
+    // Curadoria pedagógica (tabelas aditivas; ver Conteudo/MetadadosQuestao.cs).
+    public DbSet<Habilidade> Habilidades => Set<Habilidade>();
+    public DbSet<MetadadosQuestao> MetadadosQuestoes => Set<MetadadosQuestao>();
+    public DbSet<QuestaoHabilidadeSecundaria> QuestaoHabilidadesSecundarias => Set<QuestaoHabilidadeSecundaria>();
+    public DbSet<VideoaulaHabilidade> VideoaulaHabilidades => Set<VideoaulaHabilidade>();
+    public DbSet<ConfiguracaoPedagogicaDisciplina> ConfiguracoesPedagogicas => Set<ConfiguracaoPedagogicaDisciplina>();
+
+    private Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction? _transacaoConteudo;
+    private Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction? _bloqueioConteudo;
+
+    public async Task BloquearConteudoAsync(CancellationToken ct = default)
+    {
+        if (_bloqueioConteudo is not null && ReferenceEquals(_bloqueioConteudo, Database.CurrentTransaction))
+            return;
+        if (ChangeTracker.HasChanges())
+            throw new InvalidOperationException("Inicie a importação sem alterações pendentes no contexto.");
+        if (Database.CurrentTransaction is null)
+            _transacaoConteudo = await Database.BeginTransactionAsync(System.Data.IsolationLevel.ReadCommitted, ct);
+        else if (Microsoft.EntityFrameworkCore.Storage.DbContextTransactionExtensions.GetDbTransaction(Database.CurrentTransaction)
+                     .IsolationLevel != System.Data.IsolationLevel.ReadCommitted)
+            throw new InvalidOperationException("A importação exige uma transação ReadCommitted.");
+        await Database.ExecuteSqlRawAsync("SELECT pg_advisory_xact_lock(73682194012026)", ct);
+        ChangeTracker.Clear();
+        _bloqueioConteudo = Database.CurrentTransaction;
+    }
+
+    public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken ct = default)
+    {
+        var transacao = _transacaoConteudo;
+        try
+        {
+            var resultado = await base.SaveChangesAsync(acceptAllChangesOnSuccess, ct);
+            if (transacao is not null) await transacao.CommitAsync(ct);
+            return resultado;
+        }
+        finally
+        {
+            if (transacao is not null)
+            {
+                await transacao.DisposeAsync();
+                _transacaoConteudo = null;
+                _bloqueioConteudo = null;
+            }
+        }
+    }
+
+    public override int SaveChanges(bool acceptAllChangesOnSuccess)
+    {
+        var transacao = _transacaoConteudo;
+        try
+        {
+            var resultado = base.SaveChanges(acceptAllChangesOnSuccess);
+            transacao?.Commit();
+            return resultado;
+        }
+        finally
+        {
+            if (transacao is not null)
+            {
+                transacao.Dispose();
+                _transacaoConteudo = null;
+                _bloqueioConteudo = null;
+            }
+        }
+    }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         // Primeiro o Identity monta o modelo dele; depois sobrescrevemos os nomes.

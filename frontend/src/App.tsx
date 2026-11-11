@@ -16,6 +16,7 @@ import {
   useParams,
 } from 'react-router-dom'
 import { carregarCatalogo } from './core/catalogo'
+import { iniciarCaptura } from './core/capturaAprendizagem'
 import { applyA11y, useApp } from './core/store'
 import { urls } from './core/urls'
 import { Toaster } from './components/Toaster'
@@ -162,6 +163,7 @@ function AppRoutes() {
 }
 
 export default function App() {
+  useEffect(() => iniciarCaptura(), [])
   return (
     <BrowserRouter>
       <A11ySync />

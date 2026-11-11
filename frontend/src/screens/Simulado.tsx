@@ -11,11 +11,20 @@ import { BackBtn } from '../components/Nav'
 import { SubjectRow } from '../components/Progress'
 import { Screen } from '../components/Screen'
 import { api } from '../core/api'
+import {
+  apresentar,
+  concluirSessao,
+  corrigir,
+  novaSessaoCaptura,
+  questaoAprendizagem,
+  submeter,
+  tentativaId,
+} from '../core/capturaAprendizagem'
 import { carregarQuestoes, materiasDoNivel } from '../core/catalogo'
 import { speak, stopSpeaking } from '../core/speech'
 import { useApp } from '../core/store'
 import { toast } from '../core/toast'
-import type { RespostaApi, SimuladoSession } from '../types'
+import type { SimuladoSession } from '../types'
 import { LETTERS, shuffle } from '../core/utils'
 import { urls } from '../core/urls'
 
@@ -141,6 +150,8 @@ function SimLoader({ id }: { id: string }) {
     if (emVoo.current) return
     emVoo.current = true
     const s = subjects[id]
+    await Promise.resolve()
+    const original = useApp.getState().simulado
     try {
       const porTema = await Promise.all(
         s.topics.map((t, ti) =>
@@ -150,6 +161,7 @@ function SimLoader({ id }: { id: string }) {
         ),
       )
       const q = useApp.getState().simulado
+      if (q !== original) return
       if (!q || q.subject !== id || q.finished) return // a pessoa já saiu
       const todas = porTema.flat()
       // Prefere as questões do Encceja; sem quantidade suficiente, treina com as autorais.
@@ -163,9 +175,13 @@ function SimLoader({ id }: { id: string }) {
         setFase('vazio')
         return
       }
+      const captura = await novaSessaoCaptura('simulado')
+      const atual = useApp.getState().simulado
+      if (!atual || atual !== q || atual.finished) return
       setSimulado({
-        ...q,
+        ...atual,
         questions,
+        captura,
         treino: base !== oficiais || !oficiais.length,
         startedAt: Date.now(),
         limitMs: questions.length * SIMULADO.minutosPorQuestao * 60_000,
@@ -265,6 +281,15 @@ function ProvaQuestao({ sim }: { sim: SimuladoSession }) {
   const over = left <= 0
   const timerCls = `sim-timer${over ? ' is-over' : left <= SIMULADO.avisoMinutos * 60_000 ? ' is-warning' : ''}`
 
+  const temaAtual = s.topics[item.topic].slug
+  useEffect(() => {
+    void apresentar(
+      sim.captura,
+      questaoAprendizagem(item, sim.subject, temaAtual),
+      tentativaId(sim.captura, sim.i),
+    )
+  }, [sim.captura, sim.i, sim.subject, item, temaAtual])
+
   // Mudou de questão: foco no h1 e rola para o topo (focusTitle antigo).
   useEffect(() => {
     if (!montou.current) {
@@ -296,6 +321,7 @@ function ProvaQuestao({ sim }: { sim: SimuladoSession }) {
 
   const escolher = (k: number) => {
     const cur = useApp.getState().simulado!
+    if (cur.entrega) return
     const chosen = cur.chosen.slice()
     chosen[cur.i] = k
     setSimulado({ ...cur, chosen })
@@ -315,45 +341,108 @@ function ProvaQuestao({ sim }: { sim: SimuladoSession }) {
 
   // Entregar: avisa se ficou questão sem resposta; senão corrige direto.
   const pedirEntrega = () => {
-    if (faltam === 0) return entregar()
+    if (sim.entrega || faltam === 0) return entregar()
     setFinishOpen(true)
   }
 
   // Corrige tudo pela API (POST com o texto da alternativa) e abre o resultado.
+  const entregaEmVoo = useRef(false)
   const entregar = async () => {
-    if (finishing) return
+    if (finishing || entregaEmVoo.current) return
+    entregaEmVoo.current = true
     setFinishing(true)
     toast('Corrigindo o simulado…')
     const q = useApp.getState().simulado!
-    let corr: RespostaApi[]
+    if (!q || q.questions !== sim.questions || q.finished) return
+    const atual = () =>
+      useApp.getState().simulado?.questions === q.questions &&
+      !useApp.getState().simulado?.finished
+    const sess = q.captura ?? null
+    if (!q.entrega) {
+      setSimulado({
+        ...q,
+        entrega: {
+          congeladas: q.questions!.map((_, k) => q.chosen[k]),
+          correcoes: [],
+          registrado: false,
+        },
+      })
+    }
     try {
-      // Questão sem resposta também é consultada (com qualquer alternativa) só para
-      // trazer o gabarito e a resolução; ela conta como erro mesmo assim.
-      corr = await Promise.all(
-        q.questions!.map((item, k) =>
-          api.resposta(item.id, item.options[q.chosen[k] ?? 0]),
-        ),
-      )
+      for (let k = 0; k < q.questions!.length; k++) {
+        const cur = useApp.getState().simulado
+        if (!cur || cur.subject !== q.subject || !cur.entrega) return
+        const e = cur.entrega
+        if (e.correcoes[k]) continue
+        const item = q.questions![k]
+        const escolha = e.congeladas[k]
+        const respondida = escolha !== undefined
+        const tema = s.topics[item.topic].slug
+        const questao = questaoAprendizagem(item, q.subject, tema)
+        const tid = tentativaId(sess, k)
+        if (!atual()) return
+        if (sess)
+          await submeter(
+            sess,
+            questao,
+            tid,
+            respondida,
+            false,
+            respondida ? item.options[escolha] : undefined,
+          )
+        if (!atual()) return
+        // Questão sem resposta também é consultada (com qualquer alternativa) só para
+        // trazer o gabarito e a resolução; ela conta como erro mesmo assim.
+        const c = await api.resposta(item.id, item.options[escolha ?? 0])
+        if (!atual()) return
+        if (sess)
+          await corrigir(
+            sess,
+            questao,
+            tid,
+            respondida && c.acertou,
+            false,
+            c.revisaoConteudo,
+            c.codigo,
+          )
+        if (!atual()) return
+        const depois = useApp.getState().simulado
+        if (!depois || !depois.entrega) return
+        const correcoes = depois.entrega.correcoes.slice()
+        correcoes[k] = c
+        setSimulado({
+          ...depois,
+          entrega: { ...depois.entrega, correcoes },
+        })
+      }
     } catch {
       toast(
         'Não foi possível corrigir agora. Suas respostas foram mantidas. Tente de novo.',
       )
       setFinishing(false)
+      entregaEmVoo.current = false
       return
     }
+    if (!atual()) return
+    await concluirSessao(sess)
+    if (!atual()) return
+    const fim = useApp.getState().simulado
     if (
-      !useApp.getState().simulado ||
-      useApp.getState().simulado!.subject !== q.subject
+      !fim ||
+      fim.subject !== q.subject ||
+      !fim.entrega ||
+      fim.entrega.registrado
     )
       return
+    const entrega = fim.entrega
     const items = q.questions!.map((item, k) => {
-      const c = corr[k]
-      const respondida = q.chosen[k] !== undefined
+      const c = entrega.correcoes[k]!
+      const respondida = entrega.congeladas[k] !== undefined
       return {
         id: item.id,
         ask: item.ask,
         options: item.options,
-        chosen: q.chosen[k],
+        chosen: entrega.congeladas[k],
         answer: item.options.indexOf(c.respostaCorreta),
         why:
           (respondida ? '' : 'Você não respondeu esta questão. ') + c.resolucao,
@@ -381,7 +470,11 @@ function ProvaQuestao({ sim }: { sim: SimuladoSession }) {
       limitMs: q.limitMs,
       weakTopic: pior === undefined ? null : +pior,
     })
-    useApp.getState().setSimulado({ ...q, finished: true })
+    useApp.getState().setSimulado({
+      ...fim,
+      entrega: { ...entrega, registrado: true },
+      finished: true,
+    })
     stopSpeaking()
     navigate(urls.resultado(useApp.getState().results.length - 1))
   }

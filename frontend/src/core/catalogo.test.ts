@@ -46,8 +46,10 @@ const temas = [
         titulo: 'Aula (Canal X)',
         youtubeId: 'AAAAAAAAAAA',
         duracaoSegundos: 200,
+        habilidades: [],
       },
     ],
+    habilidades: [],
   },
 ]
 
@@ -91,11 +93,13 @@ describe('carregarQuestoes', () => {
     vi.mocked(api.questoes).mockResolvedValue([
       {
         id: 2,
+        codigo: 'Q2',
         textoBase: 'base',
         enunciado: 'pergunta',
         alternativas: ['a', 'b'],
         prova: { ano: 2024 },
         imagem: { url: 'conteudo/imagens/x.webp', descricao: 'figura' },
+        pedagogia: null,
       },
     ])
     await carregarCatalogo()
@@ -104,6 +108,8 @@ describe('carregarQuestoes', () => {
     expect(api.questoes).toHaveBeenCalledWith('matematica', 'porcentagem')
     expect(qs[0]).toEqual({
       id: 2,
+      codigo: 'Q2',
+      pedagogia: null,
       topic: 0,
       text: 'base',
       ask: 'pergunta',

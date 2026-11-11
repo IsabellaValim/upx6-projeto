@@ -3,12 +3,20 @@
    Sempre mesma origem: em dev, o proxy do Vite repassa /api e
    /conteudo para a API em :5151 (ver vite.config.ts).
    ========================================================== */
-import type { DisciplinaApi, QuestaoApi, RespostaApi, TemaApi } from '../types'
+import type {
+  DisciplinaApi,
+  DisciplinaPedagogiaApi,
+  QuestaoApi,
+  RespostaApi,
+  TemaApi,
+} from '../types'
 
 async function pedir<T>(caminho: string, opcoes?: RequestInit): Promise<T> {
   const r = await fetch('/api' + caminho, opcoes)
   if (!r.ok) {
-    const erro = new Error('Falha ao falar com a API (' + r.status + ')') as Error & {
+    const erro = new Error(
+      'Falha ao falar com a API (' + r.status + ')',
+    ) as Error & {
       status?: number
     }
     erro.status = r.status
@@ -26,7 +34,11 @@ export const api = {
   // imagem.url vem relativa à raiz da API ("conteudo/imagens/..."):
   // "/" + url resolve na mesma origem, em dev e em produção.
   questoes: (disciplina: string, tema: string) =>
-    pedir<QuestaoApi[]>(`/disciplinas/${seg(disciplina)}/temas/${seg(tema)}/questoes`),
+    pedir<QuestaoApi[]>(
+      `/disciplinas/${seg(disciplina)}/temas/${seg(tema)}/questoes`,
+    ),
+  pedagogia: (disciplina: string) =>
+    pedir<DisciplinaPedagogiaApi>(`/disciplinas/${seg(disciplina)}/pedagogia`),
   // Envia o TEXTO exato da alternativa, nunca a letra nem a posição.
   resposta: (id: number, alternativa: string) =>
     pedir<RespostaApi>(`/questoes/${seg(String(id))}/resposta`, {
