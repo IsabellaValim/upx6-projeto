@@ -1,19 +1,24 @@
 using Estudae.Domain.Conteudo;
 using Estudae.Infra.Identity;
+using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Estudae.Infra.Persistence;
 
+// IDataProtectionKeyContext: as chaves que assinam o cookie de sessão e os links
+// de e-mail moram no banco (tabela chave_protecao). Dentro do container elas se
+// perderiam a cada deploy, deslogando todo mundo e invalidando os links enviados.
 public class EstudaeDbContext(DbContextOptions<EstudaeDbContext> options)
-    : IdentityDbContext<Usuario>(options)
+    : IdentityDbContext<Usuario>(options), IDataProtectionKeyContext
 {
     public DbSet<Disciplina> Disciplinas => Set<Disciplina>();
     public DbSet<Tema> Temas => Set<Tema>();
     public DbSet<Videoaula> Videoaulas => Set<Videoaula>();
     public DbSet<Questao> Questoes => Set<Questao>();
     public DbSet<Imagem> Imagens => Set<Imagem>();
+    public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -32,6 +37,7 @@ public class EstudaeDbContext(DbContextOptions<EstudaeDbContext> options)
         builder.Entity<IdentityUserLogin<string>>().ToTable("usuario_login");
         builder.Entity<IdentityUserToken<string>>().ToTable("usuario_token");
         builder.Entity<IdentityRoleClaim<string>>().ToTable("papel_claim");
+        builder.Entity<DataProtectionKey>().ToTable("chave_protecao");
 
         // O Identity dá nomes fixos a três índices (EmailIndex, UserNameIndex,
         // RoleNameIndex), que a convenção de snake_case não alcança.

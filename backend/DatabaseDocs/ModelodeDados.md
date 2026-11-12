@@ -2,8 +2,9 @@
 
 > **Status:** v4 (10/11/2026). Existem as tabelas do Identity (migration `InicialIdentity`) e as
 > de conteúdo: `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`) e `imagem`
-> (migration `ImagensNoBanco`).
-> `tentativa` e `aula_assistida` continuam só no papel: login e tentativas ficaram fora do MVP.
+> (migration `ImagensNoBanco`). Para a conta do aluno (10/11/2026), `chave_protecao` (migration
+> `ChavesProtecao`), com as chaves de Data Protection que assinam o cookie e os links de e-mail.
+> `tentativa` e `aula_assistida` continuam só no papel: entram no ticket de progresso.
 > As tabelas nascem por migration, uma de cada vez, conforme cada ticket precisar delas.
 > O diagrama fica em `ModelodeDados.svg`, que **ainda é o da v1** (sem `codigo`): o bloco Mermaid
 > abaixo é a versão atual. Para regerar: colar o bloco em mermaid.live e exportar SVG.
@@ -178,6 +179,15 @@ migration (`InicialIdentity`).
 | `AspNetUserLogins` | `usuario_login` |
 | `AspNetUserTokens` | `usuario_token` |
 | `AspNetRoleClaims` | `papel_claim` |
+| `DataProtectionKeys` (não é do Identity) | `chave_protecao` |
+
+`chave_protecao` guarda as chaves do Data Protection do ASP.NET Core, que assinam e cifram o
+cookie de sessão e os tokens dos links de e-mail (confirmar e-mail, redefinir senha). Sem ela,
+as chaves ficariam num arquivo dentro do container e sumiriam a cada deploy: todo mundo seria
+deslogado e os links já enviados deixariam de funcionar. As chaves são gravadas **sem cifra**
+(aviso `No XML encryptor configured` no log): quem lê essa tabela consegue forjar sessões, mas
+quem lê o banco já tem acesso a tudo. Cifrar com certificado fica para quando houver mais de uma
+pessoa com acesso ao banco de produção.
 
 - **As sete tabelas ficam, mesmo as que ainda não usamos.** Isso foi verificado com um
   experimento (fase 3), tirando cada grupo do modelo com `Ignore<>()`. Em nenhum caso o modelo

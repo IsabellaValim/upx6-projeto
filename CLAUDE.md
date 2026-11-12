@@ -47,7 +47,12 @@ Docker, deploy e CI/CD. Ao trabalhar aqui:
   essa branch traz os dois.
 - **Backend:** fases 1 a 5 concluídas, mais o primeiro ticket de conteúdo:
   tabelas de conteúdo, importador, endpoints de leitura e correção,
-  Dockerfile, compose completo e CI. Fora do MVP: login e tentativas.
+  Dockerfile, compose completo e CI.
+- **Conta do aluno** (10/11/2026, branch `feat/autenticacao`): login com
+  conta entrou no escopo. Fase A (backend) pronta; ver "Conta do aluno"
+  abaixo. Próximas: B (front de login), C (modelagem do progresso, rascunho
+  da pessoa primeiro), D (progresso na API + migração do `localStorage`),
+  E (front lendo o progresso da API), F (Resend em produção, com domínio).
 - PRs já mergeados em `main`: #1 (componentização do frontend), #2
   (Postgres de dev), #3 (modelo de dados) e #4 (walking skeleton). O MVP do
   backend está na branch `feat/dockerfile-compose`.
@@ -364,6 +369,49 @@ Formato, regras e comandos: **`docs/conteudo/README.md`**. Resumo:
 - Qualquer erro aborta tudo (lista todos, com questão e campo). Reimportar
   atualiza por chave natural (`codigo`, slug, `youtube_id`); nada é apagado.
   Sem `--publicar` grava como rascunho, inclusive o que já estava publicado.
+
+### Conta do aluno (fase A, 10/11/2026)
+
+Decisões da pessoa: cadastro com **nome + e-mail + senha**; senha de **8 a 128**
+caracteres sem regra de composição (NIST SP 800-63B); **confirmação de e-mail
+obrigatória**; e-mail pelo **Resend** (domínio próprio virá depois); nenhum
+contato de terceiro guardado (o campo "pessoa responsável" sai); visitante
+continua igual e, ao criar conta, o progresso do `localStorage` migra (fase D);
+"onde parou" = próxima atividade calculada, sem tabela de sessão; sem área admin.
+
+- **Código:** regras em `Estudae.Infra/Identity/PoliticaConta.cs`, mensagens do
+  Identity em pt-BR em `ErrosIdentityPtBr.cs`; e-mail em `Estudae.Infra/Email/`
+  (`IEnviadorEmail`, `EnviadorEmailLog`, `EnviadorEmailResend`, `ConfigEmail`);
+  a parte web em `Estudae.Api/Conta/` (`ConfiguracaoConta` = Identity + cookie +
+  Data Protection; `ContaEndpoints`; textos em `EmailsConta`; `LinksConta`;
+  `ValidacaoConta`). Contrato: seção "Conta do aluno" de `docs/api.md`.
+- **Endpoints próprios, não `MapIdentityApi`:** ele não recebe `Nome`, não usa o
+  formato `{ "erro" }` e manda o link para a API, e não para uma tela do front.
+- **Privacidade:** a API nunca revela se um e-mail tem conta (cadastro, reenviar
+  e "esqueci" respondem sempre 202; o dono de uma conta existente recebe um
+  e-mail avisando). O login não usa `PasswordSignInAsync`, que checa a
+  confirmação **antes** da senha e vazaria a existência da conta.
+- **Cookie** `estudae_sessao`: HttpOnly, SameSite=Lax (defesa contra CSRF, junto
+  com os POSTs só em JSON), 30 dias renovados a cada uso, 401/403 em JSON em vez
+  de redirecionar. `SecurePolicy = SameAsRequest`: **no deploy atrás do Caddy,
+  ligar `UseForwardedHeaders`**, senão o cookie sai sem `Secure`.
+- **Data Protection no banco** (`chave_protecao`), para o cookie e os links
+  sobreviverem ao container recriado em cada deploy.
+- **Links dos e-mails** apontam para telas do front (`/confirmar-email`,
+  `/redefinir-senha`, com `u` e `t` na URL; token em Base64Url) e usam
+  `App:UrlPublica`, **nunca** o Host da requisição (host header injection).
+  Confirmação vale 3 dias (provedor de token próprio); redefinição, 1 dia.
+- **Cadastro fechado sem Resend:** fora de Development, com `Email:Provedor=log`,
+  cadastro, reenviar e "esqueci" respondem 503 e `GET /api/conta/opcoes` diz
+  `cadastroAberto: false` (o token nunca vai parar no log de produção).
+  Variáveis no `.env`: `URL_PUBLICA`, `EMAIL_PROVEDOR`, `EMAIL_REMETENTE`,
+  `RESEND_API_KEY` (ver `.env.example`).
+- **Testes:** unidade em `tests/Estudae.Tests/Conta/` (validação, política de
+  senha, links, textos, configuração, requisição do Resend com handler falso);
+  integração em `Api/ContaTests.cs`, com os e-mails capturados por
+  `EmailsMemoria` (o fixture troca o `IEnviadorEmail` por ela).
+- **Pendente para o deploy:** `UseForwardedHeaders`; limite de requisições nos
+  endpoints que enviam e-mail (hoje só o bloqueio do login protege contra abuso).
 
 ### Ordem de trabalho (fases)
 

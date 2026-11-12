@@ -1,3 +1,5 @@
+using System.Net.Http.Headers;
+using Estudae.Infra.Email;
 using Estudae.Infra.Importacao;
 using Estudae.Infra.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +29,33 @@ public static class DependencyInjection
 
         services.AddScoped<ImportadorConteudo>();
         services.AddScoped<GravadorImagens>();
+
+        services.AddEmail(config);
+
+        return services;
+    }
+
+    // Provedor de e-mail escolhido pela configuração (ver ConfigEmail).
+    public static IServiceCollection AddEmail(this IServiceCollection services, IConfiguration config)
+    {
+        var email = ConfigEmail.Ler(config);
+        services.AddSingleton(email);
+
+        if (email.EntregaDeVerdade)
+        {
+            // AddHttpClient: o HttpClient vem de uma fábrica que reaproveita as
+            // conexões (criar um "new HttpClient()" por envio esgota as portas).
+            services.AddHttpClient<IEnviadorEmail, EnviadorEmailResend>(http =>
+            {
+                http.BaseAddress = new Uri("https://api.resend.com/");
+                http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", email.ResendApiKey);
+                http.Timeout = TimeSpan.FromSeconds(15);
+            });
+        }
+        else
+        {
+            services.AddSingleton<IEnviadorEmail, EnviadorEmailLog>();
+        }
 
         return services;
     }
