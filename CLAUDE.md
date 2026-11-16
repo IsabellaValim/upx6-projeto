@@ -8,17 +8,6 @@ Acessibilidade é requisito central, não um extra: textos grandes, poucos
 cliques, alto contraste, leitura em voz alta. Qualquer mudança de UI deve
 preservar isso.
 
-## Combinados de trabalho
-
-Projeto de estudante, feito principalmente para aprender — em especial
-Docker, deploy e CI/CD. Ao trabalhar aqui:
-
-- **Explicar o conceito antes de usá-lo.**
-- **Mostrar os comandos antes de rodá-los.**
-- **Uma fase por vez**, e esperar o "pode seguir" entre uma fase e outra.
-- **Decisões de modelagem e design:** a pessoa rascunha a própria versão
-  primeiro; depois comparamos com a minha.
-
 ## Estado atual do repositório
 
 - **Meta:** MVP até 09/11/2026 (segunda à noite). Deploy na segunda à
