@@ -66,6 +66,8 @@ interface AppState {
   simulado: SimuladoSession | null
   subjects: Record<string, CatalogSubject>
   catalogoStatus: CatalogoStatus
+  // GET /api/conta/opcoes. null = ainda não sabe (mostra os links de conta).
+  cadastroAberto: boolean | null
 
   setUser: (user: User | null) => void
   setNivel: (nivel: Nivel) => void
@@ -77,6 +79,7 @@ interface AppState {
   setSimulado: (s: SimuladoSession | null) => void
   setSubjects: (subjects: Record<string, CatalogSubject>) => void
   setCatalogoStatus: (s: CatalogoStatus) => void
+  setCadastroAberto: (aberto: boolean) => void
 }
 
 export const useApp = create<AppState>()((set, get) => ({
@@ -91,6 +94,7 @@ export const useApp = create<AppState>()((set, get) => ({
   simulado: null,
   subjects: {},
   catalogoStatus: 'loading',
+  cadastroAberto: null,
 
   setUser: (user) => {
     set({ user })
@@ -126,6 +130,7 @@ export const useApp = create<AppState>()((set, get) => ({
   setSimulado: (simulado) => set({ simulado }),
   setSubjects: (subjects) => set({ subjects }),
   setCatalogoStatus: (catalogoStatus) => set({ catalogoStatus }),
+  setCadastroAberto: (cadastroAberto) => set({ cadastroAberto }),
 }))
 
 /* applyA11y do state.js antigo: reflete as preferências no <html>.

@@ -39,9 +39,10 @@ preservar isso.
   Dockerfile, compose completo e CI.
 - **Conta do aluno** (10/11/2026, branch `feat/autenticacao`): login com
   conta entrou no escopo. Fase A (backend) pronta; ver "Conta do aluno"
-  abaixo. Próximas: B (front de login), C (modelagem do progresso, rascunho
-  da pessoa primeiro), D (progresso na API + migração do `localStorage`),
-  E (front lendo o progresso da API), F (Resend em produção, com domínio).
+  abaixo. F (Resend em produção, domínio `estudaeapp.com.br`) e B (front de
+  login, 16/11/2026, branch `feat/login-front`) prontas. Próximas: C
+  (modelagem do progresso, rascunho da pessoa primeiro), D (progresso na API
+  + migração do `localStorage`), E (front lendo o progresso da API).
 - PRs já mergeados em `main`: #1 (componentização do frontend), #2
   (Postgres de dev), #3 (modelo de dados) e #4 (walking skeleton). O MVP do
   backend está na branch `feat/dockerfile-compose`.
@@ -57,7 +58,9 @@ navigation, responsive); o app monta em `#app` e os SVGs da marca moram em
 `frontend/public/branding/`.
 
 - **Roteamento:** `src/App.tsx` — `<BrowserRouter>` com `<Routes>`. Públicas:
-  `/boas-vindas`, `/login`, `/cadastro`. `RequireUser` guarda o resto;
+  `/boas-vindas`, `/login`, `/cadastro` e as de conta (`/verifique-email`,
+  `/confirmar-email` e `/redefinir-senha` — estas duas são os links dos
+  e-mails —, `/esqueci-senha`). `RequireUser` guarda o resto;
   `RequireNivel` exige a prova escolhida (exceto `/nivel` e `/acessibilidade`,
   como antes). `/videos/:id` e `/quiz/:id` legados redirecionam para a área.
   Novas URLs entram em `src/core/urls.ts` (mapa central). A API devolve o
@@ -92,9 +95,20 @@ class="screen ...">`, monta a bottom-nav se `nav` definido, rola ao topo,
   Legendas (recarrega o player com `cc_load_policy`) e Velocidade calma
   (`setPlaybackRate` pela API de iframe, `enablejsapi=1`). O YouTube em outra
   aba ficou como link pequeno de plano B. O "Voz alta" da descrição saiu.
-- **O que fica no `localStorage` hoje:** tudo existe só no navegador, sem
-  conta real por trás, então **não há progresso para migrar** para o banco.
-  - `estudae:user`: visitante ou um usuário de mentira do login/cadastro.
+- **Conta no front** (fase B, `src/core/conta.ts`): a sessão é o cookie
+  HttpOnly; `estudae:user` guarda só o espelho (`{ name, email }`, ou
+  `{ name: 'Visitante', guest: true }`). No boot o `SessaoSync` do App chama
+  `verificarSessao()` (`/api/conta/eu`, sem segurar a tela: 401 desloga,
+  sem resposta não mexe, visitante nem pergunta) e `carregarOpcoes()`
+  (`cadastroAberto` no store; `false` esconde "Criar conta" e "Esqueci").
+  `api.ts` lança `ErroApi` (`status`, mensagem da API, `codigo`; status 0 =
+  sem rede). Telas: Login (403 `email-nao-confirmado` → reenviar), Cadastro
+  (nome, e-mail, senha ≥ 8) → VerifiqueEmail, ConfirmarEmail, EsqueciSenha,
+  RedefinirSenha; componentes `CampoSenha` e `FormEmail`. Sair chama
+  `/api/conta/sair`. O progresso continua no aparelho com ou sem conta.
+- **O que fica no `localStorage` hoje:** o progresso ainda existe só no
+  navegador (inclusive de quem tem conta), até a fase D.
+  - `estudae:user`: visitante ou o espelho da conta (ver acima).
   - `estudae:a11y`: preferências de acessibilidade (fonte, contraste etc.).
     Não é progresso — **continua no navegador para todo mundo**, inclusive
     visitante.
@@ -108,8 +122,8 @@ class="screen ...">`, monta a bottom-nav se `nav` definido, rola ao topo,
     liga/desliga (desmarcar apaga a chave), ou seja, uma marca por aula,
     como o `AulaAssistida` atual.
 - **Decisão do MVP para o frontend (revista em 10/11/2026):** manter as telas
-  e o visual originais (login, progresso e perfil continuam só no
-  `localStorage`). Fluxo sem redundância: Início ("Continuar estudando" + os
+  e o visual originais (progresso e perfil continuam só no `localStorage`;
+  o login é de verdade desde a fase B). Fluxo sem redundância: Início ("Continuar estudando" + os
   cartões de matéria com "X de Y atividades") → Área (título, "Continuar
   estudando", "Seu progresso" e os temas como lista que abre — `<details
 name="temas">`, um aberto por vez, com uma frase de descrição, "Praticar"

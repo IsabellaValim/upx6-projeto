@@ -5,6 +5,7 @@ import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
 import { AjusteRow } from '../components/Switch'
 import { NIVEIS } from '../core/catalogo'
+import { sairDaConta } from '../core/conta'
 import { useApp } from '../core/store'
 import { streakDays } from '../core/stats'
 import { initials } from '../core/utils'
@@ -19,15 +20,22 @@ export default function Perfil() {
   useApp((s) => s.results)
 
   const streak = streakDays()
+  // Visitante: só volta às boas-vindas (para entrar ou criar conta).
+  // Conta: desloga também no servidor. O progresso fica neste aparelho.
   const sair = () => {
-    setUser(null)
+    if (user.guest) setUser(null)
+    else void sairDaConta()
     navigate(urls.boasVindas)
   }
 
   return (
     <Screen cls="screen--nav" nav="perfil">
       <div className="topbar topbar--split">
-        <Link className="icon-btn icon-btn--solid" to={urls.home} aria-label="Voltar ao início">
+        <Link
+          className="icon-btn icon-btn--solid"
+          to={urls.home}
+          aria-label="Voltar ao início"
+        >
           <Icon name="arrowLeft" />
         </Link>
         <h1>Meu perfil</h1>
@@ -42,7 +50,7 @@ export default function Perfil() {
           <small className="profile-note">
             {user.guest
               ? 'Estudando sem conta — o progresso fica salvo neste aparelho.'
-              : (user.login ?? '')}
+              : (user.email ?? '')}
           </small>
           <span className="streak">
             <Icon name="flame" />
@@ -53,7 +61,12 @@ export default function Perfil() {
         </div>
       </div>
       {user.guest && (
-        <button className="btn btn--primary" id="sair" style={{ marginTop: '1rem' }} onClick={sair}>
+        <button
+          className="btn btn--primary"
+          id="sair"
+          style={{ marginTop: '1rem' }}
+          onClick={sair}
+        >
           <Icon name="user" />
           Entrar ou criar conta
         </button>
@@ -74,7 +87,12 @@ export default function Perfil() {
         />
       </div>
       {!user.guest && (
-        <button className="btn btn--outline" id="sair" style={{ marginTop: '1.5rem' }} onClick={sair}>
+        <button
+          className="btn btn--outline"
+          id="sair"
+          style={{ marginTop: '1.5rem' }}
+          onClick={sair}
+        >
           <Icon name="logout" />
           Sair da conta
         </button>

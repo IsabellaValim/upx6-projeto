@@ -5,6 +5,11 @@ export const urls = {
   boasVindas: '/boas-vindas',
   login: '/login',
   cadastro: '/cadastro',
+  // Conta: as duas primeiras são os links dos e-mails (backend LinksConta.cs).
+  confirmarEmail: '/confirmar-email',
+  redefinirSenha: '/redefinir-senha',
+  esqueciSenha: '/esqueci-senha',
+  verifiqueEmail: '/verifique-email', // depois do cadastro
   home: '/home',
   nivel: '/nivel', // escolha da prova (Fundamental ou Médio)
   progresso: '/progresso',
