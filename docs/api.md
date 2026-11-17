@@ -293,7 +293,7 @@ usa o mínimo possível de fórmula, então a maior parte é texto puro.
   devolve a resolução logo após cada resposta.
 - **Player de verdade** com o embed do YouTube, no lugar do player simulado.
 - **Rotas por slug**. O `src/data.js` continua, mas preenchido pela API (sem conteúdo fixo).
-- Login e cadastro de mentira (só no `localStorage`) saem: entram as rotas de [Conta](#conta-do-aluno).
+- ~~Login e cadastro de mentira saem~~: feito (fase B), as telas usam as rotas de [Conta](#conta-do-aluno).
 
 ## Fora do contrato por enquanto
 

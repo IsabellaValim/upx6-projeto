@@ -6,6 +6,7 @@ import { urls } from '../core/urls'
 
 export default function BoasVindas() {
   const setUser = useApp((s) => s.setUser)
+  const cadastroAberto = useApp((s) => s.cadastroAberto)
   const navigate = useNavigate()
   return (
     <Screen>
@@ -14,12 +15,17 @@ export default function BoasVindas() {
           <img src="/branding/logo-primary.svg" alt="Estudaê" />
         </h1>
         <p className="display">Estudar para o Encceja, no seu ritmo.</p>
-        <p>Questões e vídeo-aulas com telas simples e textos grandes, pensadas para você.</p>
+        <p>
+          Questões e vídeo-aulas com telas simples e textos grandes, pensadas
+          para você.
+        </p>
       </div>
       <div className="stack">
-        <Link className="btn btn--primary" to={urls.cadastro}>
-          Criar conta
-        </Link>
+        {cadastroAberto !== false && (
+          <Link className="btn btn--primary" to={urls.cadastro}>
+            Criar conta
+          </Link>
+        )}
         <Link className="btn btn--soft" to={urls.login}>
           Já tenho conta
         </Link>

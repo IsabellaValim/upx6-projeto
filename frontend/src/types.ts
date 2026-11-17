@@ -95,11 +95,12 @@ export interface QuestaoItem {
 // ---------- Estado persistido (localStorage estudae:*) ----------
 export type Nivel = 'fundamental' | 'medio'
 
+// Visitante: { name: 'Visitante', guest: true }. Conta: nome e e-mail da API
+// (a sessão de verdade é o cookie; isto é só o espelho para as telas).
 export interface User {
   name: string
   guest?: boolean
-  login?: string | null
-  guardian?: string | null
+  email?: string
 }
 
 export type FontSize = 'padrao' | 'grande' | 'extragrande'
@@ -162,4 +163,14 @@ export interface SimuladoSession {
   warned: boolean // toast "Faltam N minutos" já foi
   overWarned?: boolean // toast "tempo esgotado" já foi
   finished: boolean
+}
+
+// ---------- Conta (docs/api.md, "Conta do aluno") ----------
+export interface UsuarioApi {
+  nome: string
+  email: string
+}
+
+export interface OpcoesContaApi {
+  cadastroAberto: boolean
 }
