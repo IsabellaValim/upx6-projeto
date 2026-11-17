@@ -45,14 +45,14 @@ public static class ContaEndpoints
     {
         var conta = app.MapGroup("/api/conta");
         conta.MapGet("/opcoes", (ConfigConta c) => new OpcoesDto(c.CadastroAberto));
-        conta.MapPost("/cadastro", Cadastrar);
-        conta.MapPost("/confirmar-email", ConfirmarEmail);
-        conta.MapPost("/reenviar-confirmacao", ReenviarConfirmacao);
-        conta.MapPost("/entrar", Entrar);
+        conta.MapPost("/cadastro", Cadastrar).RequireRateLimiting(LimitesConta.EnvioEmail);
+        conta.MapPost("/confirmar-email", ConfirmarEmail).RequireRateLimiting(LimitesConta.Conta);
+        conta.MapPost("/reenviar-confirmacao", ReenviarConfirmacao).RequireRateLimiting(LimitesConta.EnvioEmail);
+        conta.MapPost("/entrar", Entrar).RequireRateLimiting(LimitesConta.Conta);
         conta.MapPost("/sair", Sair);
         conta.MapGet("/eu", Eu).RequireAuthorization();
-        conta.MapPost("/esqueci-senha", EsqueciSenha);
-        conta.MapPost("/redefinir-senha", RedefinirSenha);
+        conta.MapPost("/esqueci-senha", EsqueciSenha).RequireRateLimiting(LimitesConta.EnvioEmail);
+        conta.MapPost("/redefinir-senha", RedefinirSenha).RequireRateLimiting(LimitesConta.Conta);
         conta.MapPost("/excluir", Excluir).RequireAuthorization();
     }
 

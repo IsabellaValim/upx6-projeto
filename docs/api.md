@@ -193,6 +193,12 @@ Login por **e-mail e senha**, com **confirmação de e-mail obrigatória**. Regr
 - **Sessão:** 30 dias, renovada a cada uso. O cookie é `HttpOnly` e `SameSite=Lax`, e o front
   usa `fetch` normal na mesma origem (o cookie vai sozinho, sem `credentials` especial).
 - **Bloqueio:** depois de 5 senhas erradas seguidas, 5 minutos sem conseguir entrar.
+- **Limite por IP:** `cadastro`, `reenviar-confirmacao` e `esqueci-senha` somados, 5 a cada 15
+  minutos; `entrar`, `confirmar-email` e `redefinir-senha`, 20 por minuto. Acima disso, `429` com
+  `{ "erro" }` e o cabeçalho `Retry-After` (segundos).
+- **Limite de e-mails (silencioso):** no máximo 3 e-mails por endereço por hora e 90 por dia no
+  total. Acima disso a API responde `202` como sempre, mas o e-mail não sai (um erro revelaria quem
+  tem conta). O front pode dizer "não chegou? espere alguns minutos e peça de novo".
 - **A API nunca diz se um e-mail tem conta.** Cadastro, reenviar e "esqueci a senha" respondem
   sempre `202`. Login com e-mail inexistente ou senha errada dá a mesma mensagem.
 
@@ -223,14 +229,14 @@ Usuário logado (resposta de `confirmar-email`, `entrar`, `redefinir-senha` e `e
 
 | Rota | Corpo | Sucesso | Erros |
 |---|---|---|---|
-| `cadastro` | `{ "nome", "email", "senha" }` | `202 { "mensagem" }` | `400` campo inválido, `503` fechado ou e-mail fora do ar |
-| `confirmar-email` | `{ "usuarioId": u, "token": t }` | `200` usuário (já logado) | `400` link inválido ou vencido |
-| `reenviar-confirmacao` | `{ "email" }` | `202 { "mensagem" }` | `400`, `503` |
-| `entrar` | `{ "email", "senha" }` | `200` usuário | `401` e-mail ou senha incorretos, `403` falta confirmar, `429` bloqueado |
+| `cadastro` | `{ "nome", "email", "senha" }` | `202 { "mensagem" }` | `400` campo inválido, `429` muitas tentativas, `503` fechado ou e-mail fora do ar |
+| `confirmar-email` | `{ "usuarioId": u, "token": t }` | `200` usuário (já logado) | `400` link inválido ou vencido, `429` |
+| `reenviar-confirmacao` | `{ "email" }` | `202 { "mensagem" }` | `400`, `429`, `503` |
+| `entrar` | `{ "email", "senha" }` | `200` usuário | `401` e-mail ou senha incorretos, `403` falta confirmar, `429` bloqueado ou muitas tentativas |
 | `sair` | — | `204` | — |
 | `eu` | — | `200` usuário | `401` |
-| `esqueci-senha` | `{ "email" }` | `202 { "mensagem" }` | `400`, `503` |
-| `redefinir-senha` | `{ "usuarioId": u, "token": t, "senha" }` | `200` usuário (já logado) | `400` link inválido ou senha curta |
+| `esqueci-senha` | `{ "email" }` | `202 { "mensagem" }` | `400`, `429`, `503` |
+| `redefinir-senha` | `{ "usuarioId": u, "token": t, "senha" }` | `200` usuário (já logado) | `400` link inválido ou senha curta, `429` |
 | `excluir` | `{ "senha" }` | `204` (e desloga) | `401` sem login ou senha incorreta |
 
 O `403` do login (senha certa, e-mail não confirmado) traz um **código**, para o front mostrar
@@ -260,7 +266,7 @@ Todo erro tem o mesmo formato, com uma mensagem em português que pode ser mostr
 | `401` | rota de conta sem login, ou e-mail/senha incorretos |
 | `403` | e-mail ainda não confirmado (com `"codigo"`, ver Conta) |
 | `404` | disciplina, tema ou questão não encontrados |
-| `429` | conta bloqueada por senhas erradas (5 minutos) |
+| `429` | conta bloqueada por senhas erradas (5 minutos), ou muitas tentativas do mesmo IP (`Retry-After`) |
 | `503` | cadastro fechado, ou o e-mail não pôde ser enviado |
 | `500` | erro interno (`"Erro interno. Tente de novo em instantes."`) |
 

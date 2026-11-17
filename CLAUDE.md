@@ -382,8 +382,8 @@ continua igual e, ao criar conta, o progresso do `localStorage` migra (fase D);
   confirmação **antes** da senha e vazaria a existência da conta.
 - **Cookie** `estudae_sessao`: HttpOnly, SameSite=Lax (defesa contra CSRF, junto
   com os POSTs só em JSON), 30 dias renovados a cada uso, 401/403 em JSON em vez
-  de redirecionar. `SecurePolicy = SameAsRequest`: **no deploy atrás do Caddy,
-  ligar `UseForwardedHeaders`**, senão o cookie sai sem `Secure`.
+  de redirecionar. `Secure` sempre fora de Development (`SameAsRequest` só em
+  dev), porque no Render o container recebe HTTP.
 - **Data Protection no banco** (`chave_protecao`), para o cookie e os links
   sobreviverem ao container recriado em cada deploy.
 - **Links dos e-mails** apontam para telas do front (`/confirmar-email`,
@@ -399,8 +399,18 @@ continua igual e, ao criar conta, o progresso do `localStorage` migra (fase D);
   senha, links, textos, configuração, requisição do Resend com handler falso);
   integração em `Api/ContaTests.cs`, com os e-mails capturados por
   `EmailsMemoria` (o fixture troca o `IEnviadorEmail` por ela).
-- **Pendente para o deploy:** `UseForwardedHeaders`; limite de requisições nos
-  endpoints que enviam e-mail (hoje só o bloqueio do login protege contra abuso).
+- **Limites** (16/11/2026, `Conta/LimitesConta.cs`): por IP, 429 com
+  `Retry-After` — envio de e-mail (cadastro, reenviar, esqueci) 5 a cada 15 min,
+  e entrar/confirmar/redefinir 20 por minuto (seção `Limites`). O IP vem do
+  `X-Forwarded-For` (`UseForwardedHeaders`, primeiro middleware; `Proxy:Saltos`
+  = quantos proxies contar, padrão 1; caminho em produção: Vercel → Render).
+  Como o IP dá para forjar chamando o Render direto, o envio também tem limite
+  próprio (`Infra/Email/EnviadorEmailLimitado.cs`, seção `Email:Limites`): 3
+  por endereço por hora e 90 por dia (cota grátis do Resend = 100), **silencioso**
+  (202 mesmo assim, para não revelar quem tem conta). Tudo em memória.
+- **Pendente para ligar o Resend no Render:** conferir em produção se o IP do
+  aluno chega certo (senão `Proxy__Saltos=2`) e pôr `Email__Provedor`,
+  `Email__ResendApiKey`, `Email__Remetente` e `App__UrlPublica` no Render.
 
 ### Ordem de trabalho (fases)
 

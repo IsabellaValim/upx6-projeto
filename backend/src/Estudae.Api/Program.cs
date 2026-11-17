@@ -23,6 +23,10 @@ builder.Services.AddInfra(builder.Configuration);
 // (tudo em Conta/ConfiguracaoConta.cs; regras em Infra/Identity/PoliticaConta.cs).
 builder.Services.AddConta(builder.Configuration, builder.Environment);
 
+// Cabeçalhos do proxy (IP e https originais) e limite de requisições por IP
+// nas rotas de conta (Conta/LimitesConta.cs).
+builder.Services.AddLimitesConta(builder.Configuration);
+
 // AddIdentity registra a autenticação, mas não a autorização (exigida por UseAuthorization).
 builder.Services.AddAuthorization();
 
@@ -48,6 +52,9 @@ if (builder.Environment.IsDevelopment())
 
 var app = builder.Build();
 
+// Primeiro de todos: o resto do pipeline já enxerga o IP e o esquema do aluno.
+app.UseForwardedHeaders();
+
 app.UseErrosPadronizados();
 
 if (app.Environment.IsDevelopment()) app.UseCors(CorsDev);
@@ -68,6 +75,7 @@ app.UseStaticFiles(new StaticFileOptions
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseRateLimiter();
 
 app.MapHealthChecks("/health");
 app.MapConteudo();

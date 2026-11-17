@@ -1,3 +1,4 @@
+using Estudae.Api.Conta;
 using Estudae.Domain.Conteudo;
 using Estudae.Infra.Email;
 using Estudae.Infra.Importacao;
@@ -51,6 +52,13 @@ public sealed class ApiFixture : IAsyncLifetime
         {
             s.RemoveAll<IEnviadorEmail>();
             s.AddSingleton<IEnviadorEmail>(Emails);
+            // Todos os testes saem do mesmo "IP": sem isto, o limite por IP
+            // derrubaria os fluxos de conta. O limite tem testes próprios.
+            s.Configure<OpcoesLimites>(o =>
+            {
+                o.EnvioEmailPorIp = 100_000;
+                o.ContaPorIpPorMinuto = 100_000;
+            });
         }));
         Client = Factory.CreateClient();
 

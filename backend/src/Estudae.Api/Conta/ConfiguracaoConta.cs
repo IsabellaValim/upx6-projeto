@@ -60,9 +60,13 @@ public static class ConfiguracaoConta
             // Lax: o navegador não manda o cookie em POST disparado por outro site
             // (defesa principal contra CSRF; os POSTs também exigem corpo JSON).
             o.Cookie.SameSite = SameSiteMode.Lax;
-            // Secure quando a requisição é HTTPS. Atrás do Caddy, a API precisa
-            // saber que a requisição original era HTTPS (ForwardedHeaders, no deploy).
-            o.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+            // Fora de desenvolvimento, sempre Secure. No Render o container recebe
+            // HTTP (o TLS termina no proxy), e SameAsRequest dependeria de o
+            // X-Forwarded-Proto chegar certo. Chrome e Firefox aceitam cookie Secure
+            // em http://localhost, então o compose local continua funcionando.
+            o.Cookie.SecurePolicy = ambiente.IsDevelopment()
+                ? CookieSecurePolicy.SameAsRequest
+                : CookieSecurePolicy.Always;
             o.ExpireTimeSpan = PoliticaConta.DuracaoSessao;
             o.SlidingExpiration = true;
 
