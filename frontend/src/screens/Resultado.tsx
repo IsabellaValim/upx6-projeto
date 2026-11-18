@@ -1,9 +1,10 @@
 /* Resultado da lição ou do simulado */
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Icon } from '../components/Icon'
 import { Screen } from '../components/Screen'
 import { Tex } from '../components/Tex'
+import { carregarCorrecao, chaveDe } from '../core/progresso'
 import { topicProgress } from '../core/stats'
 import { useApp } from '../core/store'
 import { LETTERS, pct } from '../core/utils'
@@ -13,14 +14,25 @@ const C = 2 * Math.PI * 42 // circunferência do donut (r=42)
 const minutos = (ms: number) => Math.max(1, Math.round(ms / 60000))
 
 export default function Resultado() {
-  const { idx = '0' } = useParams()
+  // Chave da sessão; só dígitos = posição em results (links de antes da conta).
+  const { id = '' } = useParams()
   const results = useApp((s) => s.results)
   const subjects = useApp((s) => s.subjects)
   const valueRef = useRef<SVGCircleElement>(null)
 
   const watched = useApp((s) => s.watched)
-  const r = results[+idx]
+  const r = /^\d+$/.test(id)
+    ? results[+id]
+    : results.find((x) => chaveDe(x) === id)
   const s = r && subjects[r.subject]
+
+  // Veio de outro aparelho só com o resumo: a correção carrega agora.
+  const incompleto = !!r?.incompleto
+  const chave = r ? chaveDe(r) : ''
+  const [falhou, setFalhou] = useState<string | null>(null) // chave que falhou
+  useEffect(() => {
+    if (incompleto) carregarCorrecao(chave).catch(() => setFalhou(chave))
+  }, [incompleto, chave])
 
   // Anima o donut (o stroke-dashoffset sai do círculo cheio para o valor).
   useEffect(() => {
@@ -29,7 +41,7 @@ export default function Resultado() {
       requestAnimationFrame(() =>
         v.style.setProperty('stroke-dashoffset', v.dataset.offset!),
       )
-  }, [idx])
+  }, [id])
 
   if (!r || !s) return <Navigate to={urls.progresso} replace />
 
@@ -173,25 +185,33 @@ export default function Resultado() {
             ? 'Ver a correção das questões'
             : `Correção das questões — ${r.total - r.correct} errada${r.total - r.correct > 1 ? 's' : ''}`}
         </summary>
-        {r.items.map((x, k) => (
-          // A correção (resposta certa e explicação) veio da API e foi guardada no resultado.
-          <div className={`review-item ${x.ok ? 'ok' : 'bad'}`} key={k}>
-            <p>
-              <span className="mark">{x.ok ? 'Acertou' : 'Errou'}</span> —{' '}
-              {k + 1}. <Tex>{x.ask}</Tex>
-            </p>
-            <p>
-              Resposta certa: {LETTERS[x.answer]}){' '}
-              <Tex>{x.options[x.answer]}</Tex>
-              {!x.ok && x.chosen !== undefined
-                ? ` · Você marcou ${LETTERS[x.chosen]}`
-                : ''}
-            </p>
-            <p>
-              <Tex>{x.why}</Tex>
-            </p>
-          </div>
-        ))}
+        {incompleto && (
+          <p className="small" role="status">
+            {falhou === chave
+              ? 'Não foi possível carregar a correção. Confira sua internet e abra o resultado de novo.'
+              : 'Carregando a correção…'}
+          </p>
+        )}
+        {!incompleto &&
+          r.items.map((x, k) => (
+            // A correção (resposta certa e explicação) veio da API e foi guardada no resultado.
+            <div className={`review-item ${x.ok ? 'ok' : 'bad'}`} key={k}>
+              <p>
+                <span className="mark">{x.ok ? 'Acertou' : 'Errou'}</span> —{' '}
+                {k + 1}. <Tex>{x.ask}</Tex>
+              </p>
+              <p>
+                Resposta certa: {LETTERS[x.answer]}){' '}
+                <Tex>{x.options[x.answer]}</Tex>
+                {!x.ok && x.chosen !== undefined
+                  ? ` · Você marcou ${LETTERS[x.chosen]}`
+                  : ''}
+              </p>
+              <p>
+                <Tex>{x.why}</Tex>
+              </p>
+            </div>
+          ))}
       </details>
       {/* Um único CTA primário, sempre o próximo passo certo, e vem primeiro:
           com erro -> praticar de novo / estudar os temas; gabaritou -> seguir em

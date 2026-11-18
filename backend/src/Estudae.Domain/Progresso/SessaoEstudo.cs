@@ -14,6 +14,10 @@ public class SessaoEstudo
     // (com cascade ao excluir a conta) fica na configuração da Infra.
     public string UsuarioId { get; set; } = string.Empty;
 
+    // Gerada pelo front (única por aluno): reenviar a mesma sessão (rede ruim,
+    // migração do localStorage repetida) não duplica.
+    public string Chave { get; set; } = string.Empty;
+
     // TipoSessao.Licao ou TipoSessao.Simulado.
     public string Tipo { get; set; } = TipoSessao.Licao;
 

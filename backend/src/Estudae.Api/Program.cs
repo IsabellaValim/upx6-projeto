@@ -1,8 +1,10 @@
 using Estudae.Api.Cli;
 using Estudae.Api.Conta;
 using Estudae.Api.Endpoints;
+using Estudae.Api.Progresso;
 using Estudae.Infra;
 using Estudae.Infra.Persistence;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // Subcomandos: rodam e saem, sem subir o servidor web (ver Cli/).
 //   dotnet Estudae.Api.dll importar <arquivo.json> [--publicar] [--validar]
@@ -37,6 +39,9 @@ builder.Services
     .AddDbContextCheck<EstudaeDbContext>();
 
 builder.Services.AddErrosPadronizados();
+
+// Relógio injetável: o progresso confere datas contra ele (testes trocam).
+builder.Services.TryAddSingleton(TimeProvider.System);
 
 // Só em desenvolvimento: libera o front servido em outra porta do localhost
 // (python -m http.server, npx serve). Em produção o front sai do wwwroot da
@@ -80,6 +85,7 @@ app.UseRateLimiter();
 app.MapHealthChecks("/health");
 app.MapConteudo();
 app.MapConta();
+app.MapProgresso();
 
 // /api/* que não casou com endpoint nenhum: 404 de verdade — nunca o index.html
 // do fallback de SPA. Endpoints exatos de /api ganham deste catch-all pela

@@ -166,7 +166,7 @@ function AppRoutes() {
             <Route path="/quiz/:id/:ti" element={<Quiz />} />
             <Route path="/simulado" element={<Simulado />} />
             <Route path="/simulado/:id" element={<Simulado />} />
-            <Route path="/resultado/:idx" element={<Resultado />} />
+            <Route path="/resultado/:id" element={<Resultado />} />
             <Route path="/progresso" element={<Progresso />} />
             <Route path="/perfil" element={<Perfil />} />
           </Route>

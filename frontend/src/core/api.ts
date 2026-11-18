@@ -6,9 +6,14 @@
    ========================================================== */
 import type {
   DisciplinaApi,
+  ImportacaoApi,
   OpcoesContaApi,
+  ProgressoApi,
   QuestaoApi,
   RespostaApi,
+  SessaoDetalheApi,
+  SessaoEnvioApi,
+  SessaoResumoApi,
   TemaApi,
   UsuarioApi,
 } from '../types'
@@ -105,6 +110,24 @@ export const api = {
       postar<MensagemApi>('/conta/esqueci-senha', { email }),
     redefinirSenha: (usuarioId: string, token: string, senha: string) =>
       postar<UsuarioApi>('/conta/redefinir-senha', { usuarioId, token, senha }),
+  },
+
+  // Progresso de quem tem conta (docs/api.md, "Progresso do aluno").
+  progresso: {
+    listar: () => pedir<ProgressoApi>('/progresso'),
+    // 201 nova, 200 chave já gravada: os dois devolvem o resumo.
+    gravar: (sessao: SessaoEnvioApi) =>
+      postar<SessaoResumoApi>('/progresso/sessoes', sessao),
+    detalhe: (id: number) =>
+      pedir<SessaoDetalheApi>(`/progresso/sessoes/${seg(String(id))}`),
+    marcarAula: (videoaulaId: number) =>
+      pedir<void>(`/progresso/aulas/${seg(String(videoaulaId))}`, {
+        method: 'PUT',
+      }),
+    importar: (
+      sessoes: SessaoEnvioApi[],
+      aulas: { videoaulaId: number; assistidaEm: string }[],
+    ) => postar<ImportacaoApi>('/progresso/importar', { sessoes, aulas }),
   },
 }
 

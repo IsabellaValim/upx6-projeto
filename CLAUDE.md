@@ -42,8 +42,9 @@ preservar isso.
   abaixo. F (Resend em produção, domínio `estudaeapp.com.br`) e B (front de
   login, 16/11/2026, branch `feat/login-front`) prontas. C (modelagem do
   progresso, 17/11/2026, branch `feat/progresso-modelo`) pronta: só tabelas,
-  sem endpoint (ver "Progresso no banco"). Próximas: D (progresso na API +
-  migração do `localStorage`), E (front lendo o progresso da API).
+  sem endpoint (ver "Progresso no banco"). D e E (17/11/2026, branch
+  `feat/progresso-api`): API do progresso (ver "API do progresso") e front
+  sincronizando com ela (ver "Progresso na conta", no Frontend).
 - PRs já mergeados em `main`: #1 (componentização do frontend), #2
   (Postgres de dev), #3 (modelo de dados) e #4 (walking skeleton). O MVP do
   backend está na branch `feat/dockerfile-compose`.
@@ -107,8 +108,24 @@ class="screen ...">`, monta a bottom-nav se `nav` definido, rola ao topo,
   (nome, e-mail, senha ≥ 8) → VerifiqueEmail, ConfirmarEmail, EsqueciSenha,
   RedefinirSenha; componentes `CampoSenha` e `FormEmail`. Sair chama
   `/api/conta/sair`. O progresso continua no aparelho com ou sem conta.
-- **O que fica no `localStorage` hoje:** o progresso ainda existe só no
-  navegador (inclusive de quem tem conta), até a fase D.
+- **Progresso na conta** (`src/core/progresso.ts`, 17/11/2026): as telas
+  continuam lendo `results`/`watched` do store (e do `localStorage`). Com
+  conta, `registrarResultado` (Quiz e Simulado) manda a sessão para a API e
+  `marcarAula` (Vídeo) faz o `PUT`; `sincronizarProgresso` roda em todo
+  `entrarNaConta` (login, confirmação, redefinição e a cada boot via
+  `verificarSessao`): sobe pelo `/importar` o que só existe no aparelho e
+  junta o que veio de outro (`mesclar`, nada some). Cada resultado tem
+  `chave` (UUID; antigos usam `local:<date>`, ver `chaveDe`), `remoto` (id
+  na API), `incompleto` (veio só o resumo: o Resultado busca a correção ao
+  abrir) e `semSync` (a API recusou: não reenvia). Falha de rede não perde
+  nada: a próxima sincronização reenvia (a API é idempotente pela chave).
+  **URL do Resultado = chave** (`/resultado/<chave>`), porque a posição muda
+  quando chegam sessões antigas; só dígitos continua sendo posição.
+  Visitante não chama a API. Sair **não apaga** o progresso do aparelho
+  (decisão da fase B, em aberto agora que ele está na conta). Desmarcar
+  aula ainda não existe na UI. Testes: `src/test/progresso.test.tsx`.
+- **O que fica no `localStorage` hoje:** o progresso continua no navegador
+  para todo mundo; com conta, ele é também uma cópia do que está na API.
   - `estudae:user`: visitante ou o espelho da conta (ver acima).
   - `estudae:a11y`: preferências de acessibilidade (fonte, contraste etc.).
     Não é progresso — **continua no navegador para todo mundo**, inclusive
@@ -300,7 +317,8 @@ lá, no mesmo commit da migration.
 - **Tabelas existentes:** Identity (migration `InicialIdentity`), conteúdo
   — `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`),
   `imagem` (`ImagensNoBanco`) —, `chave_protecao` (`ChavesProtecao`) e
-  progresso — `sessao_estudo`, `tentativa`, `aula_assistida` (`Progresso`).
+  progresso — `sessao_estudo`, `tentativa`, `aula_assistida` (`Progresso`;
+  `sessao_estudo.chave` veio na `ChaveSessao`).
 - **Convenções de conteúdo** (matemática em LaTeX renderizado com KaTeX,
   delimitadores `\( \)` e `\[ \]` em vez de `$`, tabelas como imagem,
   fluxo de importação com script Python fora da app): ver a seção
@@ -459,6 +477,31 @@ Modelo completo em `ModelodeDados.md` (v5).
     `videoaula_id` sai do catálogo); entradas sem `v >= 2` seguem ignoradas.
   - "Dias seguidos" no fuso do aluno (no front ou com o fuso no pedido).
 
+### API do progresso (fase D, backend, 17/11/2026)
+
+Contrato: seção "Progresso do aluno" de `docs/api.md`. Código em
+`Estudae.Api/Progresso/`: `ProgressoEndpoints` (rotas), `ValidacaoProgresso`
+(formato, pura) e `ConteudoDasSessoes` (confere contra o conteúdo, lido em
+três consultas por lote, e calcula o `acertou`).
+
+- Tudo em `/api/progresso`, com `RequireAuthorization`; o usuário vem do
+  cookie e é conferido no banco (cookie de conta excluída dá 401).
+- `GET /api/progresso` (resumos + aulas), `POST /sessoes`, `GET /sessoes/{id}`
+  (detalhe com gabarito, para o Resultado), `PUT`/`DELETE /aulas/{videoaulaId}`
+  e `POST /importar` (até 500 sessões e 1000 aulas; item ruim é ignorado e
+  listado, o resto entra numa transação).
+- **O servidor corrige**: o front manda o texto escolhido, nunca o acerto.
+- **Idempotência pela `chave`** do front (única por aluno, `ck_sessao_estudo_chave`
+  com o mesmo regex da validação): reenviar devolve a já gravada (200).
+- Datas com fuso (`DateTimeOffset` no pedido); recusa antes de 2026, mais de
+  10 min no futuro e sessão de mais de 24 h. `TimeProvider` registrado no
+  `Program.cs`. `respondida_em` = `concluida_em` (o front não guarda a hora de
+  cada resposta).
+- Testes: `Progresso/ValidacaoProgressoTests.cs` e
+  `Progresso/ModeloProgressoTests.cs` (unidade, sem banco) e
+  `Api/ProgressoApiTests.cs` (integração).
+- Pendente: paginação do histórico e limite de requisições nessas rotas.
+
 ### Ordem de trabalho (fases)
 
 1. **Postgres em Docker** — ✅ **concluída**: `docker-compose.yml` na raiz,
@@ -546,6 +589,11 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
   ficam para o ticket de autenticação.
 
 ### Decisões em aberto
+
+- **Sair da conta e o progresso no aparelho** (17/11/2026): hoje fica (fase
+  B). Agora que ele está na conta, apagar ao sair protegeria quem divide o
+  celular; e outra conta entrando no mesmo aparelho vê o histórico da
+  anterior. Decidir com a pessoa.
 
 - Registrar em `docs/decisoes/` (ADRs) as decisões "frontend no `wwwroot`
   com cookie" e "Clean Architecture gradual". Formato combinado: Status /

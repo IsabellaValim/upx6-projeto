@@ -18,6 +18,7 @@ import { toast } from '../core/toast'
 import type { RespostaApi, SimuladoSession } from '../types'
 import { LETTERS, shuffle } from '../core/utils'
 import { urls } from '../core/urls'
+import { registrarResultado } from '../core/progresso'
 
 // Configuração única. Ajustar ao edital do Encceja quando houver questões oficiais.
 const SIMULADO = {
@@ -221,7 +222,6 @@ function SimLoader({ id }: { id: string }) {
 function ProvaQuestao({ sim }: { sim: SimuladoSession }) {
   const subjects = useApp((s) => s.subjects)
   const setSimulado = useApp((s) => s.setSimulado)
-  const pushResult = useApp((s) => s.pushResult)
   const navigate = useNavigate()
 
   const [panel, setPanel] = useState(false)
@@ -368,7 +368,7 @@ function ProvaQuestao({ sim }: { sim: SimuladoSession }) {
         erros[x.topic] = (erros[x.topic] ?? 0) + 1
     })
     const pior = Object.keys(erros).sort((a, b) => erros[+b] - erros[+a])[0]
-    pushResult({
+    const chave = registrarResultado({
       v: 3,
       kind: 'simulado',
       subject: q.subject,
@@ -383,7 +383,7 @@ function ProvaQuestao({ sim }: { sim: SimuladoSession }) {
     })
     useApp.getState().setSimulado({ ...q, finished: true })
     stopSpeaking()
-    navigate(urls.resultado(useApp.getState().results.length - 1))
+    navigate(urls.resultado(chave))
   }
 
   return (

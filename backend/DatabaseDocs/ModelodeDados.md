@@ -17,7 +17,8 @@
 > `questao.imagem_descricao` e uso de `questao.imagem_url` (migration `NivelEImagem`); v4 (10/11)
 > tabela `imagem` com os bytes das imagens, e o conteúdo passa a morar só no banco (migration
 > `ImagensNoBanco`); v5 (17/11) progresso: `sessao_estudo` (lição ou simulado) dona das
-> `tentativa`s, `aula_assistida` como marca única (migration `Progresso`).
+> `tentativa`s, `aula_assistida` como marca única (migration `Progresso`); adendo (17/11)
+`sessao_estudo.chave`, gerada pelo front para reenviar sem duplicar (migration `ChaveSessao`).
 
 ## O que o sistema guarda
 
@@ -117,6 +118,7 @@ erDiagram
     SESSAO_ESTUDO {
         bigint id PK
         string usuario_id FK "cascade"
+        string chave "do front; unica por aluno"
         string tipo "licao ou simulado (CHECK)"
         int disciplina_id FK
         int tema_id FK "so na licao (CHECK)"
@@ -179,7 +181,9 @@ Principais campos:
 (`tipo = 'simulado'`, sem tema; `tempo_limite_seg` é o relógio dado e `treino` diz que foi
 montado com questões autorais). É o que as telas de histórico e Resultado mostram. **Só sessão
 concluída é gravada**, como no front, onde a sessão em andamento não persiste: por isso
-`concluida_em` é obrigatória. O tempo usado é `concluida_em - iniciada_em`.
+`concluida_em` é obrigatória. O tempo usado é `concluida_em - iniciada_em`. A `chave` é gerada
+pelo front (única por aluno, com `CHECK` de formato): reenviar a mesma sessão, ou importar o
+`localStorage` duas vezes, não duplica.
 
 **Tentativa:** cada resposta dentro de uma sessão, na `ordem` em que apareceu. **Todas** são
 guardadas, inclusive repetições da mesma questão em sessões diferentes (dentro da mesma sessão,
@@ -282,7 +286,8 @@ pessoa com acesso ao banco de produção.
   **usuário logado**, nunca pelo id que vem na URL.
 - **Restrições do progresso no banco:** `ck_sessao_estudo_tipo`, `ck_sessao_estudo_tema` (lição ⇔
   tem tema), `ck_sessao_estudo_tempo_limite` (só simulado, > 0), `ck_sessao_estudo_datas`
-  (`concluida_em >= iniciada_em`), `ck_tentativa_ordem` (> 0); únicos (`sessao_estudo_id`,
+  (`concluida_em >= iniciada_em`), `ck_sessao_estudo_chave` (1 a 64 de `[A-Za-z0-9_.:-]`),
+  `ck_tentativa_ordem` (> 0); únicos (`usuario_id`, `chave`), (`sessao_estudo_id`,
   `questao_id`) e (`sessao_estudo_id`, `ordem`); índice (`usuario_id`, `concluida_em`) para o
   histórico. Testes em `tests/Estudae.Tests/Api/ProgressoModeloTests.cs`.
 - **"Dias seguidos":** as datas ficam em UTC; o dia de cada sessão é calculado no fuso do aluno
