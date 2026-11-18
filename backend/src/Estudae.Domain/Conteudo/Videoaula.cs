@@ -13,4 +13,7 @@ public class Videoaula
     public string? Tipo { get; set; }
     public int? DuracaoSegundos { get; set; }
     public int Ordem { get; set; }
+
+    // Habilidades que a aula cobre (vínculo revisado; ver VideoaulaHabilidade).
+    public List<VideoaulaHabilidade> Habilidades { get; set; } = [];
 }

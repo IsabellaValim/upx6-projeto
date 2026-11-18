@@ -14,6 +14,9 @@ public class Disciplina
     public string Nivel { get; set; } = NivelEnsino.Medio;
 
     public List<Tema> Temas { get; set; } = [];
+
+    // Configuração pedagógica da área (1:1; ver ConfiguracaoPedagogicaDisciplina).
+    public ConfiguracaoPedagogicaDisciplina? Pedagogia { get; set; }
 }
 
 public static class NivelEnsino

@@ -1,27 +1,21 @@
 # API do Estudaê: contrato para o frontend
 
-Versão do MVP (08/11/2026), com a conta do aluno (10/11/2026) e o progresso no servidor
-(17/11/2026). O conteúdo é público e o visitante usa tudo sem conta. Quem tem conta
-([Conta](#conta-do-aluno)) grava o progresso na API ([Progresso](#progresso-do-aluno)).
+Versão do MVP (08/11/2026), com a conta do aluno (10/11/2026), o progresso no servidor
+(17/11/2026) e os contratos pedagógicos aditivos da curadoria. O conteúdo é público e o
+visitante usa tudo sem conta. Quem tem conta ([Conta](#conta-do-aluno)) grava o progresso
+na API ([Progresso](#progresso-do-aluno)). A captura adaptativa usa IndexedDB separado
+quando explicitamente habilitada para um tema curado.
 
 ## Onde a API está
 
-| Ambiente | Base | Observação |
-|---|---|---|
-| Produção / `docker compose` | mesma origem do site (`/api/...`) | o front é servido pela própria API |
-| Desenvolvimento | `http://localhost:5151` | `dotnet run --project src/Estudae.Api` dentro de `backend/` |
+| Ambiente                    | Base                              | Observação                                                  |
+| --------------------------- | --------------------------------- | ----------------------------------------------------------- |
+| Produção / `docker compose` | mesma origem do site (`/api/...`) | o front é servido pela própria API                          |
+| Desenvolvimento             | `http://localhost:5151`           | `dotnet run --project src/Estudae.Api` dentro de `backend/` |
 
-Em desenvolvimento, o front pode continuar sendo servido em outra porta
-(`python -m http.server`, `npx serve .`): a API aceita CORS de qualquer `http://localhost:<porta>`.
-Para não espalhar a URL pelas telas, use uma constante só. O padrão é a mesma origem (produção e
-compose). Quem roda o front em outra porta configura uma vez, no console do navegador:
-`localStorage.setItem("estudae:api", "http://localhost:5151")`.
-
-```js
-// src/core/api.js
-let BASE = "";
-try { BASE = localStorage.getItem("estudae:api") ?? ""; } catch { /* sem storage: mesma origem */ }
-```
+Em desenvolvimento, execute `npm run dev` em `frontend/`: o Vite encaminha `/api`
+e `/conteudo` à API em `localhost:5151`. `frontend/src/core/api.ts` usa sempre a
+mesma origem. A antiga chave `estudae:api` não é utilizada.
 
 - Corpo e respostas em **JSON**, chaves em **camelCase**, textos em **UTF-8**.
 - Conteúdo: sem autenticação. Conta: sessão por **cookie HttpOnly** (`estudae_sessao`), que o
@@ -31,28 +25,29 @@ Os exemplos de resposta abaixo são **ilustrativos**: valores reais vêm do cont
 
 ## Resumo
 
-| Método | Rota | Para quê |
-|---|---|---|
-| `GET` | `/api/disciplinas` | Tela de escolha de matéria |
-| `GET` | `/api/disciplinas/{disciplina}/temas` | Temas da matéria, com os vídeos |
-| `GET` | `/api/disciplinas/{disciplina}/temas/{tema}/questoes` | Quiz de um tema (sem gabarito) |
-| `POST` | `/api/questoes/{id}/resposta` | Corrigir uma resposta |
-| `GET` | `/api/conta/opcoes` | O cadastro está aberto? |
-| `POST` | `/api/conta/cadastro` | Criar conta (manda e-mail de confirmação) |
-| `POST` | `/api/conta/confirmar-email` | Tela aberta pelo link do e-mail; já entra |
-| `POST` | `/api/conta/reenviar-confirmacao` | "Não recebi o e-mail" |
-| `POST` | `/api/conta/entrar` | Login |
-| `POST` | `/api/conta/sair` | Logout |
-| `GET` | `/api/conta/eu` | Quem está logado (401 se ninguém) |
-| `POST` | `/api/conta/esqueci-senha` | Manda o link para criar senha nova |
-| `POST` | `/api/conta/redefinir-senha` | Tela aberta pelo link; troca a senha e já entra |
-| `POST` | `/api/conta/excluir` | Apagar a conta (pede a senha) |
-| `GET` | `/api/progresso` | Lições, simulados e aulas vistas de quem está logado |
-| `POST` | `/api/progresso/sessoes` | Gravar uma lição ou simulado terminado |
-| `GET` | `/api/progresso/sessoes/{id}` | Detalhe de uma sessão (tela de Resultado) |
-| `PUT` / `DELETE` | `/api/progresso/aulas/{videoaulaId}` | Marcar / desmarcar aula como vista |
-| `POST` | `/api/progresso/importar` | Levar o progresso do `localStorage` para a conta |
-| `GET` | `/health` | Saúde da API e do banco (não é para as telas) |
+| Método           | Rota                                                  | Para quê                                             |
+| ---------------- | ----------------------------------------------------- | ---------------------------------------------------- | --------------------- |
+| `GET`            | `/api/disciplinas`                                    | Tela de escolha de matéria                           |
+| `GET`            | `/api/disciplinas/{disciplina}/temas`                 | Temas da matéria, com os vídeos                      |
+| `GET`            | `/api/disciplinas/{disciplina}/temas/{tema}/questoes` | Quiz de um tema (sem gabarito)                       |
+| `GET`            | `/api/disciplinas/{disciplina}/pedagogia`             | Matriz pedagógica (habilidades por tema)             |
+| `POST`           | `/api/questoes/{id}/resposta`                         | Corrigir uma resposta                                | Corrigir uma resposta |
+| `GET`            | `/api/conta/opcoes`                                   | O cadastro está aberto?                              |
+| `POST`           | `/api/conta/cadastro`                                 | Criar conta (manda e-mail de confirmação)            |
+| `POST`           | `/api/conta/confirmar-email`                          | Tela aberta pelo link do e-mail; já entra            |
+| `POST`           | `/api/conta/reenviar-confirmacao`                     | "Não recebi o e-mail"                                |
+| `POST`           | `/api/conta/entrar`                                   | Login                                                |
+| `POST`           | `/api/conta/sair`                                     | Logout                                               |
+| `GET`            | `/api/conta/eu`                                       | Quem está logado (401 se ninguém)                    |
+| `POST`           | `/api/conta/esqueci-senha`                            | Manda o link para criar senha nova                   |
+| `POST`           | `/api/conta/redefinir-senha`                          | Tela aberta pelo link; troca a senha e já entra      |
+| `POST`           | `/api/conta/excluir`                                  | Apagar a conta (pede a senha)                        |
+| `GET`            | `/api/progresso`                                      | Lições, simulados e aulas vistas de quem está logado |
+| `POST`           | `/api/progresso/sessoes`                              | Gravar uma lição ou simulado terminado               |
+| `GET`            | `/api/progresso/sessoes/{id}`                         | Detalhe de uma sessão (tela de Resultado)            |
+| `PUT` / `DELETE` | `/api/progresso/aulas/{videoaulaId}`                  | Marcar / desmarcar aula como vista                   |
+| `POST`           | `/api/progresso/importar`                             | Levar o progresso do `localStorage` para a conta     |
+| `GET`            | `/health`                                             | Saúde da API e do banco (não é para as telas)        |
 
 `{disciplina}` e `{tema}` são **slugs** (`matematica`, `porcentagem-e-proporcao`), que são
 estáveis. Use os slugs nas rotas do front (`#/tema/matematica/equacoes`), não posições de lista
@@ -66,17 +61,23 @@ Lista as disciplinas, em ordem alfabética do nome.
 
 ```json
 [
-  { "slug": "matematica", "nome": "Matemática", "icone": "percent", "nivel": "medio", "totalQuestoes": 2 }
+  {
+    "slug": "matematica",
+    "nome": "Matemática",
+    "icone": "percent",
+    "nivel": "medio",
+    "totalQuestoes": 2
+  }
 ]
 ```
 
-| Campo | Tipo | Nota |
-|---|---|---|
-| `slug` | string | usar nas próximas chamadas |
-| `nome` | string | para exibir |
-| `icone` | string \| null | nome do ícone do front (`pen`, `percent`) |
-| `nivel` | string | `"medio"` ou `"fundamental"`: a prova do Encceja. O front mostra só as da prova escolhida |
-| `totalQuestoes` | number | só questões publicadas, somando todos os temas |
+| Campo           | Tipo           | Nota                                                                                      |
+| --------------- | -------------- | ----------------------------------------------------------------------------------------- |
+| `slug`          | string         | usar nas próximas chamadas                                                                |
+| `nome`          | string         | para exibir                                                                               |
+| `icone`         | string \| null | nome do ícone do front (`pen`, `percent`)                                                 |
+| `nivel`         | string         | `"medio"` ou `"fundamental"`: a prova do Encceja. O front mostra só as da prova escolhida |
+| `totalQuestoes` | number         | só questões publicadas, somando todos os temas                                            |
 
 ## `GET /api/disciplinas/{disciplina}/temas`
 
@@ -90,18 +91,23 @@ Temas na ordem definida pelo conteúdo, cada um com seus vídeos já na ordem.
     "sobre": "Como calcular descontos, aumentos e partes de um total, com exemplos do dia a dia.",
     "totalQuestoes": 1,
     "videos": [
-      { "id": 1, "titulo": "Porcentagem no dia a dia", "youtubeId": "AAAAAAAAAAA", "duracaoSegundos": 480 }
+      {
+        "id": 1,
+        "titulo": "Porcentagem no dia a dia",
+        "youtubeId": "AAAAAAAAAAA",
+        "duracaoSegundos": 480
+      }
     ]
   }
 ]
 ```
 
-| Campo | Tipo | Nota |
-|---|---|---|
-| `totalQuestoes` | number | pode ser `0`: tema só com vídeo. Esconder o botão de quiz nesse caso |
-| `videos` | array | pode ser vazio |
-| `videos[].youtubeId` | string | sempre 11 caracteres |
-| `videos[].duracaoSegundos` | number \| null | `null` = não informado; não mostrar a duração |
+| Campo                      | Tipo           | Nota                                                                 |
+| -------------------------- | -------------- | -------------------------------------------------------------------- |
+| `totalQuestoes`            | number         | pode ser `0`: tema só com vídeo. Esconder o botão de quiz nesse caso |
+| `videos`                   | array          | pode ser vazio                                                       |
+| `videos[].youtubeId`       | string         | sempre 11 caracteres                                                 |
+| `videos[].duracaoSegundos` | number \| null | `null` = não informado; não mostrar a duração                        |
 
 **Player:** `https://www.youtube-nocookie.com/embed/{youtubeId}` num `<iframe>`, com `title`
 descritivo (leitor de tela). O vídeo nunca é hospedado por nós.
@@ -119,19 +125,24 @@ Questões **publicadas** do tema, em ordem fixa. **Não traz gabarito nem resolu
     "textoBase": "Pensei em um número. Multipliquei esse número por 3 e somei 5 ao resultado. No final, obtive 20.",
     "enunciado": "Em que número eu pensei?",
     "alternativas": ["25", "15", "5", "3"],
-    "prova": { "ano": 2024, "edicao": "Nacional", "nivel": "Ensino Médio", "numero": 2 }
+    "prova": {
+      "ano": 2024,
+      "edicao": "Nacional",
+      "nivel": "Ensino Médio",
+      "numero": 2
+    }
   }
 ]
 ```
 
-| Campo | Tipo | Nota |
-|---|---|---|
-| `id` | number | usar no `POST` de resposta |
-| `textoBase` | string \| null | texto de apoio; mostrar antes do enunciado quando houver |
-| `enunciado` | string | |
-| `alternativas` | string[] | de 2 a 5. **Já vêm embaralhadas**, em ordem nova a cada pedido. **Exceção:** questão com `imagem` vem na ordem da prova, porque o recorte mostra as letras originais |
-| `imagem` | objeto \| null | recorte da prova (figura, tabela, gráfico...): `{ "url": "conteudo/imagens/2022/x.webp", "descricao": "..." }`. `url` é relativa à raiz da API (o `GET /conteudo/imagens/{caminho}` lê da tabela `imagem`, com `ETag`; 404 se não existir); `descricao` é o texto alternativo (`alt` e leitura em voz alta) |
-| `prova` | objeto \| null | origem da questão. Exibir como fonte: *"Encceja {ano}, {edicao}, questão {numero}"*. **`null` = questão autoral** (escrita pela equipe): exibir "Questão autoral Estudaê" |
+| Campo          | Tipo           | Nota                                                                                                                                                                                                                                                                                                        |
+| -------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`           | number         | usar no `POST` de resposta                                                                                                                                                                                                                                                                                  |
+| `textoBase`    | string \| null | texto de apoio; mostrar antes do enunciado quando houver                                                                                                                                                                                                                                                    |
+| `enunciado`    | string         |                                                                                                                                                                                                                                                                                                             |
+| `alternativas` | string[]       | de 2 a 5. **Já vêm embaralhadas**, em ordem nova a cada pedido. **Exceção:** questão com `imagem` vem na ordem da prova, porque o recorte mostra as letras originais                                                                                                                                        |
+| `imagem`       | objeto \| null | recorte da prova (figura, tabela, gráfico...): `{ "url": "conteudo/imagens/2022/x.webp", "descricao": "..." }`. `url` é relativa à raiz da API (o `GET /conteudo/imagens/{caminho}` lê da tabela `imagem`, com `ETag`; 404 se não existir); `descricao` é o texto alternativo (`alt` e leitura em voz alta) |
+| `prova`        | objeto \| null | origem da questão. Exibir como fonte: _"Encceja {ano}, {edicao}, questão {numero}"_. **`null` = questão autoral** (escrita pela equipe): exibir "Questão autoral Estudaê"                                                                                                                                   |
 
 - Lista vazia (`[]`) quando o tema ainda não tem questões publicadas.
 - Se quiser embaralhar também a ordem das questões, faça no front.
@@ -165,11 +176,11 @@ Resposta `200`:
 }
 ```
 
-| Campo | Tipo | Nota |
-|---|---|---|
-| `acertou` | boolean | |
-| `respostaCorreta` | string | texto da alternativa certa, para destacar na tela |
-| `resolucao` | string | explicação; pode ter fórmula (ver "Textos com fórmula") |
+| Campo             | Tipo    | Nota                                                    |
+| ----------------- | ------- | ------------------------------------------------------- |
+| `acertou`         | boolean |                                                         |
+| `respostaCorreta` | string  | texto da alternativa certa, para destacar na tela       |
+| `resolucao`       | string  | explicação; pode ter fórmula (ver "Textos com fórmula") |
 
 Erros: `400` se faltar `alternativa`, se ela não for uma das alternativas da questão ou se o
 corpo não for JSON; `404` se a questão não existe (ou ainda é rascunho).
@@ -177,7 +188,7 @@ corpo não for JSON; `404` se a questão não existe (ou ainda é rascunho).
 Exemplo com `fetch`:
 
 ```js
-const r = await fetch(`${BASE}/api/questoes/${id}/resposta`, {
+const r = await fetch(`/api/questoes/${id}/resposta`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ alternativa: textoEscolhido }),
@@ -216,11 +227,11 @@ aparece no log da API (`docker compose logs api` ou o terminal do `dotnet run`),
 **Links dos e-mails.** Os e-mails apontam para **telas do front**, que leem `u` e `t` da URL e
 chamam a API:
 
-| Link no e-mail | Tela do front | Chama |
-|---|---|---|
-| `/confirmar-email?u=<id>&t=<token>` | "Confirmando seu e-mail..." | `POST /api/conta/confirmar-email` |
-| `/redefinir-senha?u=<id>&t=<token>` | campo de senha nova | `POST /api/conta/redefinir-senha` |
-| `/login`, `/esqueci-senha` | (do e-mail "você já tem conta") | |
+| Link no e-mail                      | Tela do front                   | Chama                             |
+| ----------------------------------- | ------------------------------- | --------------------------------- |
+| `/confirmar-email?u=<id>&t=<token>` | "Confirmando seu e-mail..."     | `POST /api/conta/confirmar-email` |
+| `/redefinir-senha?u=<id>&t=<token>` | campo de senha nova             | `POST /api/conta/redefinir-senha` |
+| `/login`, `/esqueci-senha`          | (do e-mail "você já tem conta") |                                   |
 
 O link de confirmação vale **3 dias**; o de senha, **1 dia** e **uma vez só**.
 
@@ -232,23 +243,26 @@ Usuário logado (resposta de `confirmar-email`, `entrar`, `redefinir-senha` e `e
 { "nome": "Maria da Silva", "email": "maria@gmail.com" }
 ```
 
-| Rota | Corpo | Sucesso | Erros |
-|---|---|---|---|
-| `cadastro` | `{ "nome", "email", "senha" }` | `202 { "mensagem" }` | `400` campo inválido, `429` muitas tentativas, `503` fechado ou e-mail fora do ar |
-| `confirmar-email` | `{ "usuarioId": u, "token": t }` | `200` usuário (já logado) | `400` link inválido ou vencido, `429` |
-| `reenviar-confirmacao` | `{ "email" }` | `202 { "mensagem" }` | `400`, `429`, `503` |
-| `entrar` | `{ "email", "senha" }` | `200` usuário | `401` e-mail ou senha incorretos, `403` falta confirmar, `429` bloqueado ou muitas tentativas |
-| `sair` | — | `204` | — |
-| `eu` | — | `200` usuário | `401` |
-| `esqueci-senha` | `{ "email" }` | `202 { "mensagem" }` | `400`, `429`, `503` |
-| `redefinir-senha` | `{ "usuarioId": u, "token": t, "senha" }` | `200` usuário (já logado) | `400` link inválido ou senha curta, `429` |
-| `excluir` | `{ "senha" }` | `204` (e desloga) | `401` sem login ou senha incorreta |
+| Rota                   | Corpo                                     | Sucesso                   | Erros                                                                                         |
+| ---------------------- | ----------------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------- |
+| `cadastro`             | `{ "nome", "email", "senha" }`            | `202 { "mensagem" }`      | `400` campo inválido, `429` muitas tentativas, `503` fechado ou e-mail fora do ar             |
+| `confirmar-email`      | `{ "usuarioId": u, "token": t }`          | `200` usuário (já logado) | `400` link inválido ou vencido, `429`                                                         |
+| `reenviar-confirmacao` | `{ "email" }`                             | `202 { "mensagem" }`      | `400`, `429`, `503`                                                                           |
+| `entrar`               | `{ "email", "senha" }`                    | `200` usuário             | `401` e-mail ou senha incorretos, `403` falta confirmar, `429` bloqueado ou muitas tentativas |
+| `sair`                 | —                                         | `204`                     | —                                                                                             |
+| `eu`                   | —                                         | `200` usuário             | `401`                                                                                         |
+| `esqueci-senha`        | `{ "email" }`                             | `202 { "mensagem" }`      | `400`, `429`, `503`                                                                           |
+| `redefinir-senha`      | `{ "usuarioId": u, "token": t, "senha" }` | `200` usuário (já logado) | `400` link inválido ou senha curta, `429`                                                     |
+| `excluir`              | `{ "senha" }`                             | `204` (e desloga)         | `401` sem login ou senha incorreta                                                            |
 
 O `403` do login (senha certa, e-mail não confirmado) traz um **código**, para o front mostrar
 "Reenviar e-mail" em vez de só a mensagem:
 
 ```json
-{ "erro": "Falta confirmar seu e-mail. Abra o e-mail que enviamos e toque no botão.", "codigo": "email-nao-confirmado" }
+{
+  "erro": "Falta confirmar seu e-mail. Abra o e-mail que enviamos e toque no botão.",
+  "codigo": "email-nao-confirmado"
+}
 ```
 
 ```js
@@ -278,14 +292,14 @@ id de usuário vai na URL ou no corpo. O visitante continua só no `localStorage
   `iniciadaEm` ou sessão de mais de 24 horas. "Dias seguidos" é calculado pelo front, no fuso do
   aparelho.
 
-| Método | Rota | Sucesso | Erros |
-|---|---|---|---|
-| `GET` | `/api/progresso` | `200` com `{ sessoes, aulas }` | `401` |
-| `POST` | `/api/progresso/sessoes` | `201` (nova) ou `200` (chave já gravada), com o resumo | `400`, `401` |
-| `GET` | `/api/progresso/sessoes/{id}` | `200` com o detalhe (tela de Resultado) | `401`, `404` (inclusive de outra pessoa) |
-| `PUT` | `/api/progresso/aulas/{videoaulaId}` | `204` (marcar de novo mantém a primeira data) | `401`, `404` |
-| `DELETE` | `/api/progresso/aulas/{videoaulaId}` | `204` (também se não estava marcada) | `401` |
-| `POST` | `/api/progresso/importar` | `200` com o que entrou e o que não | `400` (lote grande demais), `401`, `409` |
+| Método   | Rota                                 | Sucesso                                                | Erros                                    |
+| -------- | ------------------------------------ | ------------------------------------------------------ | ---------------------------------------- |
+| `GET`    | `/api/progresso`                     | `200` com `{ sessoes, aulas }`                         | `401`                                    |
+| `POST`   | `/api/progresso/sessoes`             | `201` (nova) ou `200` (chave já gravada), com o resumo | `400`, `401`                             |
+| `GET`    | `/api/progresso/sessoes/{id}`        | `200` com o detalhe (tela de Resultado)                | `401`, `404` (inclusive de outra pessoa) |
+| `PUT`    | `/api/progresso/aulas/{videoaulaId}` | `204` (marcar de novo mantém a primeira data)          | `401`, `404`                             |
+| `DELETE` | `/api/progresso/aulas/{videoaulaId}` | `204` (também se não estava marcada)                   | `401`                                    |
+| `POST`   | `/api/progresso/importar`            | `200` com o que entrou e o que não                     | `400` (lote grande demais), `401`, `409` |
 
 ### Gravar uma sessão
 
@@ -319,11 +333,24 @@ Resposta (`201`/`200`), o mesmo formato de cada item de `sessoes` no `GET /api/p
 
 ```json
 {
-  "id": 41, "chave": "3f2a9c1e-…", "tipo": "simulado", "disciplina": "matematica", "tema": null,
-  "treino": false, "iniciadaEm": "2026-11-17T17:00:00Z", "concluidaEm": "2026-11-17T17:52:10Z",
-  "tempoLimiteSeg": 5400, "acertos": 1, "total": 2,
+  "id": 41,
+  "chave": "3f2a9c1e-…",
+  "tipo": "simulado",
+  "disciplina": "matematica",
+  "tema": null,
+  "treino": false,
+  "iniciadaEm": "2026-11-17T17:00:00Z",
+  "concluidaEm": "2026-11-17T17:52:10Z",
+  "tempoLimiteSeg": 5400,
+  "acertos": 1,
+  "total": 2,
   "tentativas": [
-    { "questaoId": 12, "tema": "porcentagem-e-proporcao", "acertou": true, "emBranco": false },
+    {
+      "questaoId": 12,
+      "tema": "porcentagem-e-proporcao",
+      "acertou": true,
+      "emBranco": false
+    },
     { "questaoId": 31, "tema": "equacoes", "acertou": false, "emBranco": true }
   ]
 }
@@ -342,11 +369,17 @@ gabarito, para a resposta continuar pequena.
 
 ```json
 {
-  "questaoId": 12, "ordem": 1, "tema": "porcentagem-e-proporcao",
-  "textoBase": null, "enunciado": "Uma loja anunciou 20% de desconto…",
+  "questaoId": 12,
+  "ordem": 1,
+  "tema": "porcentagem-e-proporcao",
+  "textoBase": null,
+  "enunciado": "Uma loja anunciou 20% de desconto…",
   "alternativas": ["R$ 30,00", "R$ 120,00", "R$ 130,00", "R$ 170,00"],
-  "imagem": null, "escolhida": "R$ 120,00", "respostaCorreta": "R$ 120,00",
-  "resolucao": "20% de 150 é…", "acertou": true
+  "imagem": null,
+  "escolhida": "R$ 120,00",
+  "respostaCorreta": "R$ 120,00",
+  "resolucao": "20% de 150 é…",
+  "acertou": true
 }
 ```
 
@@ -367,9 +400,17 @@ POST /api/progresso/importar
 
 ```json
 {
-  "sessoesNovas": 7, "sessoesRepetidas": 2,
-  "sessoesIgnoradas": [ { "posicao": 3, "chave": "local:1731850000000", "erro": "Questão 999 não encontrada." } ],
-  "aulasNovas": 4, "aulasIgnoradas": 0
+  "sessoesNovas": 7,
+  "sessoesRepetidas": 2,
+  "sessoesIgnoradas": [
+    {
+      "posicao": 3,
+      "chave": "local:1731850000000",
+      "erro": "Questão 999 não encontrada."
+    }
+  ],
+  "aulasNovas": 4,
+  "aulasIgnoradas": 0
 }
 ```
 
@@ -390,15 +431,15 @@ Todo erro tem o mesmo formato, com uma mensagem em português que pode ser mostr
 { "erro": "Tema \"nao-existe\" não encontrado em \"matematica\"." }
 ```
 
-| Status | Quando |
-|---|---|
-| `400` | corpo inválido no `POST` |
-| `401` | rota de conta sem login, ou e-mail/senha incorretos |
-| `403` | e-mail ainda não confirmado (com `"codigo"`, ver Conta) |
-| `404` | disciplina, tema ou questão não encontrados |
-| `429` | conta bloqueada por senhas erradas (5 minutos), ou muitas tentativas do mesmo IP (`Retry-After`) |
-| `503` | cadastro fechado, ou o e-mail não pôde ser enviado |
-| `500` | erro interno (`"Erro interno. Tente de novo em instantes."`) |
+| Status | Quando                                                                                           |
+| ------ | ------------------------------------------------------------------------------------------------ |
+| `400`  | corpo inválido no `POST`                                                                         |
+| `401`  | rota de conta sem login, ou e-mail/senha incorretos                                              |
+| `403`  | e-mail ainda não confirmado (com `"codigo"`, ver Conta)                                          |
+| `404`  | disciplina, tema ou questão não encontrados                                                      |
+| `429`  | conta bloqueada por senhas erradas (5 minutos), ou muitas tentativas do mesmo IP (`Retry-After`) |
+| `503`  | cadastro fechado, ou o e-mail não pôde ser enviado                                               |
+| `500`  | erro interno (`"Erro interno. Tente de novo em instantes."`)                                     |
 
 Rota que não existe (`/api/qualquer-coisa`) responde `404` **sem corpo**. Falha de rede (API
 fora do ar) não tem corpo nenhum. Trate os dois casos com uma mensagem genérica.
@@ -415,17 +456,42 @@ usa o mínimo possível de fórmula, então a maior parte é texto puro.
   "barra dfrac..."). O mínimo aceitável é trocar cada fórmula por "fórmula" ou pelo texto
   acessível que o KaTeX gera.
 
-## O que o front precisa mudar (decisões do MVP)
+## Frontend e histórico local
 
-- **Esconder Progresso e Perfil** da navegação. Visitante não grava nada, então
-  `estudae:results` e `estudae:watched` deixam de ser escritos. `estudae:a11y` continua.
-- **Quiz por tema** (não mais por disciplina), corrigido questão a questão pelo `POST`, que
-  devolve a resolução logo após cada resposta.
-- **Player de verdade** com o embed do YouTube, no lugar do player simulado.
-- **Rotas por slug**. O `src/data.js` continua, mas preenchido pela API (sem conteúdo fixo).
-- ~~Login e cadastro de mentira saem~~: feito (fase B), as telas usam as rotas de [Conta](#conta-do-aluno).
+O frontend é React 19 + TypeScript + Vite + Zustand. Progresso e Perfil continuam
+acessíveis a visitantes, que gravam só neste navegador; quem tem conta grava na API
+([Progresso](#progresso-do-aluno)) e o aparelho guarda uma cópia. `estudae:results` e
+`estudae:watched` preservam o histórico legado; preferências ficam em `estudae:a11y`.
+As rotas tradicionais podem usar posições de tema; novos fatos adaptativos usam
+nível, disciplina, tema slug e código estável de questão, nunca posições.
+
+## Curadoria pedagógica aditiva
+
+`GET /api/disciplinas/{disciplina}/pedagogia` retorna a disciplina, a matriz
+(`versao`, `validada`) e temas com habilidades (`slug`, `titulo`, `essencial`) e
+índice de questões publicadas (`codigo`, `pedagogia`). Não retorna enunciado,
+gabarito ou resolução. Disciplina desconhecida responde 404.
+
+Nos GETs de questões, `codigo` identifica o item entre ambientes. `pedagogia` é
+nulo antes da classificação; quando presente contém `habilidade`, `secundarias`,
+`familia`, `dificuldade`, `tipo`, `revisao`, `elegivel` e `versao`. Publicação sozinha
+não significa elegibilidade. Famílias equivalentes não multiplicam evidência.
+O GET de temas inclui habilidades; cada vídeo inclui seus vínculos de habilidades.
+GET de questões, índice pedagógico e correção incluem `revisaoConteudo`: um UUID
+opaco e não derivado do gabarito. O cliente guarda a revisão antes do envio e compara
+com a correção; se divergir, a resposta não pode comprovar domínio. A revisão muda
+quando o conteúdo ou a imagem muda, não numa reimportação sem alterações.
+A correção também acrescenta `codigo` para identificar o conteúdo corrigido.
+Campos aditivos não alteram a comparação da resposta pelo texto.
+
+A classificação é importada por CLI, nunca por endpoint público de escrita.
+A matriz precisa representar a área inteira; banco insuficiente não permite
+concluir que o estudante está despreparado. A ativação do motor e a aprovação
+pedagógica são decisões separadas. O exemplo de curadoria contém dados fictícios,
+não aprovação de questões reais.
 
 ## Fora do contrato por enquanto
 
 Paginação do histórico em `GET /api/progresso` (hoje vem tudo) e limite de requisições nas
-rotas de progresso: entram quando o volume pedir.
+rotas de progresso: entram quando o volume pedir. O histórico local do visitante pode ser
+apagado ou modificado pelo navegador e não constitui certificação.

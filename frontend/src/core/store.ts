@@ -79,6 +79,7 @@ interface AppState {
   clearWatched: (key: string) => void
   setQuiz: (q: QuizSession | null) => void
   setSimulado: (s: SimuladoSession | null) => void
+  limparProgresso: () => void
   setSubjects: (subjects: Record<string, CatalogSubject>) => void
   setCatalogoStatus: (s: CatalogoStatus) => void
   setCadastroAberto: (aberto: boolean) => void
@@ -138,6 +139,11 @@ export const useApp = create<AppState>()((set, get) => ({
   },
   setQuiz: (quiz) => set({ quiz }),
   setSimulado: (simulado) => set({ simulado }),
+  limparProgresso: () => {
+    set({ results: [], watched: {}, quiz: null, simulado: null })
+    local.remove('results')
+    local.remove('watched')
+  },
   setSubjects: (subjects) => set({ subjects }),
   setCatalogoStatus: (catalogoStatus) => set({ catalogoStatus }),
   setCadastroAberto: (cadastroAberto) => set({ cadastroAberto }),

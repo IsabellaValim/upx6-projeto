@@ -1,10 +1,19 @@
-/* Início: logo, continuar, estudar por matéria e testar com o simulado */
+/* Início: logo, a próxima ação da jornada guiada (o orquestrador decide),
+   estudar por matéria e testar com o simulado */
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { ContinueBtn, SubjectRow } from '../components/Progress'
 import { Screen } from '../components/Screen'
+import {
+  avaliarAprendizado,
+  linkDaAcao,
+  proximaAcaoNivel,
+} from '../core/capturaAprendizagem'
+import type { AprendizadoNivel } from '../core/capturaAprendizagem'
+import type { AcaoJornada } from '../core/aprendizagem/jornada'
 import { NIVEIS, materiasDoNivel } from '../core/catalogo'
 import { useApp } from '../core/store'
-import { nextActivity, subjectProgress } from '../core/stats'
+import { nextActivity } from '../core/stats'
 import { urls } from '../core/urls'
 
 export default function Home() {
@@ -31,6 +40,47 @@ export default function Home() {
     .sort((a, b) => quando[b] - quando[a])[0]
   const next = ultima ? nextActivity(ultima) : null
 
+  // Ação única: o orquestrador decide a próxima coisa certa agora
+  // (diagnóstico, aula, prática dirigida, verificação, revisão ou simulado).
+  const idsMaterias = materias.map((m) => m.id).join(',')
+  const [acao, setAcao] = useState<{ k: string; a: AcaoJornada | null } | null>(
+    null,
+  )
+  useEffect(() => {
+    let ativo = true
+    if (!idsMaterias) return
+    void proximaAcaoNivel(nivel).then((a) => {
+      if (ativo) setAcao({ k: idsMaterias, a })
+    })
+    return () => {
+      ativo = false
+    }
+    // results/watched mudam junto com o estudo; a ação reflete o estado novo.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [idsMaterias, nivel, results, watched])
+  const jornada = acao?.k === idsMaterias ? linkDaAcao(acao.a) : null
+  // % de aprendizado sob cada matéria (o motor, não o contador de atividades).
+  const [dados, setDados] = useState<AprendizadoNivel | null>(null)
+  useEffect(() => {
+    let ativo = true
+    void avaliarAprendizado(nivel).then((a) => {
+      if (ativo) setDados(a)
+    })
+    return () => {
+      ativo = false
+    }
+  }, [nivel, results.length])
+  const proxima =
+    jornada ??
+    (next && ultima
+      ? {
+          href: next.href,
+          kind: next.kind,
+          titulo: 'Continuar estudando',
+          sub: `${subjects[ultima].name} · ${next.titulo}`,
+        }
+      : null)
+
   return (
     <Screen cls="screen--nav" nav="inicio">
       <img
@@ -48,31 +98,34 @@ export default function Home() {
           Trocar
         </Link>
       </p>
-      {next && ultima && (
+      {proxima && (
         <ContinueBtn
-          to={next.href}
-          kind={next.kind}
-          titulo="Continuar estudando"
-          sub={`${subjects[ultima].name} · ${next.titulo}`}
+          to={proxima.href}
+          kind={proxima.kind}
+          titulo={proxima.titulo}
+          sub={proxima.sub}
         />
       )}
       <h2 className="section-label">Estudar por matéria</h2>
       {materias.length ? (
         <div className="subject-list">
           {materias.map((s) => {
-            const p = subjectProgress(s.id)
+            const bons = dados?.bonsPorMateria[s.id] ?? []
+            const n = s.topics.filter((t) => bons.includes(t.slug)).length
+            const m = s.topics.length
+            const comecou = !!dados?.evolucoes.some(
+              (e) => e.disciplina === s.id && e.rodadas.length > 0,
+            )
             return (
               <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
                 <strong>{s.name}</strong>
                 <small>
-                  {p.done} de {p.total} atividades
+                  {!comecou
+                    ? 'Ainda não começou.'
+                    : `${n} de ${m} assuntos indo bem`}
                 </small>
                 <span className="mini-bar" aria-hidden="true">
-                  <i
-                    style={{
-                      width: `${p.total ? (p.done / p.total) * 100 : 0}%`,
-                    }}
-                  />
+                  <i style={{ width: `${m ? (100 * n) / m : 0}%` }} />
                 </span>
               </SubjectRow>
             )

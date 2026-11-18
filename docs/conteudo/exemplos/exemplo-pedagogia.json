@@ -1,0 +1,58 @@
+{
+  "formato": 1,
+  "revisor": "Equipe Estudaê (exemplo)",
+  "disciplina": "matematica",
+  "matriz": {
+    "versao": "exemplo-2026 (não é matriz oficial)",
+    "validada": false
+  },
+  "temas": [
+    {
+      "slug": "porcentagem-e-proporcao",
+      "habilidades": [
+        {
+          "slug": "porcentagem-de-quantidades",
+          "titulo": "Calcular porcentagem de quantidades e saldos",
+          "essencial": true
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "AAAAAAAAAAA",
+          "habilidades": ["porcentagem-de-quantidades"]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "exemplo-mat-porcentagem-001",
+          "habilidade": "porcentagem-de-quantidades",
+          "familia": "desconto-direto-em-preco",
+          "dificuldade": "introdutoria",
+          "tipo": "contextual",
+          "revisao": "pendente",
+          "elegivel": false
+        }
+      ]
+    },
+    {
+      "slug": "equacoes",
+      "habilidades": [
+        {
+          "slug": "equacao-primeiro-grau",
+          "titulo": "Montar e resolver equação de primeiro grau",
+          "essencial": true
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "exemplo-mat-equacoes-001",
+          "habilidade": "equacao-primeiro-grau",
+          "secundarias": [],
+          "familia": "equacao-soma-e-produto",
+          "dificuldade": "intermediaria",
+          "revisao": "pendente"
+        }
+      ]
+    }
+  ]
+}

@@ -40,7 +40,10 @@ const MAT: CatalogSubject = {
       about: null,
       videos: 1,
       totalQuestoes: 2,
-      lessons: [{ id: 11, kind: 'Aula 1', min: 5, youtubeId: 'a' }],
+      habilidades: [],
+      lessons: [
+        { id: 11, kind: 'Aula 1', min: 5, youtubeId: 'a', habilidades: [] },
+      ],
     },
     {
       slug: 'equacoes',
@@ -48,9 +51,10 @@ const MAT: CatalogSubject = {
       about: null,
       videos: 2,
       totalQuestoes: 2,
+      habilidades: [],
       lessons: [
-        { id: 21, kind: 'Aula 2', min: 5, youtubeId: 'b' },
-        { id: 22, kind: 'Aula 3', min: 5, youtubeId: 'c' },
+        { id: 21, kind: 'Aula 2', min: 5, youtubeId: 'b', habilidades: [] },
+        { id: 22, kind: 'Aula 3', min: 5, youtubeId: 'c', habilidades: [] },
       ],
     },
   ],
@@ -593,7 +597,7 @@ describe('Resultado: sessão de outro aparelho', () => {
     })
     abrir('/resultado/remota-1')
     expect(
-      await screen.findByRole('heading', { name: 'Resultado do simulado' }),
+      await screen.findByRole('heading', { name: 'Simulado concluído' }),
     ).toBeInTheDocument()
     expect(await screen.findByText(/Quanto é 20% de 150\?/)).toBeInTheDocument()
     expect(useApp.getState().results[0].incompleto).toBe(false)
@@ -612,7 +616,7 @@ describe('Resultado: sessão de outro aparelho', () => {
     reset({ user: { name: 'Visitante', guest: true }, results: [LICAO] })
     abrir('/resultado/0')
     expect(
-      await screen.findByRole('heading', { name: 'Resultado da lição' }),
+      await screen.findByRole('heading', { name: 'Atividade concluída' }),
     ).toBeInTheDocument()
   })
 })

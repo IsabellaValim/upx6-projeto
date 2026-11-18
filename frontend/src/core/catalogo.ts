@@ -48,6 +48,7 @@ async function carregarCatalogoDeFato(): Promise<void> {
         about: t.sobre,
         videos: t.videos.length,
         totalQuestoes: t.totalQuestoes,
+        habilidades: t.habilidades,
         lessons: t.videos.map((v) => ({
           id: v.id,
           kind: v.titulo,
@@ -55,6 +56,7 @@ async function carregarCatalogoDeFato(): Promise<void> {
             ? Math.max(1, Math.round(v.duracaoSegundos / 60))
             : null,
           youtubeId: v.youtubeId,
+          habilidades: v.habilidades ?? [],
         })),
       }))
       subjects[d.slug] = {
@@ -86,12 +88,15 @@ export async function carregarQuestoes(
   const questoes = await api.questoes(id, t.slug)
   return questoes.map((q) => ({
     id: q.id,
+    codigo: q.codigo,
+    revisaoConteudo: q.revisaoConteudo,
     topic: ti,
     text: q.textoBase,
     ask: q.enunciado,
     options: q.alternativas,
     prova: q.prova,
     imagem: q.imagem, // { url, descricao } ou null: recorte da prova (figura, tabela...)
+    pedagogia: q.pedagogia,
   }))
 }
 

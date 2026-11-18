@@ -10,6 +10,8 @@ public sealed class ResumoImagens
     public int Criadas { get; set; }
     public int Atualizadas { get; set; }
     public int Iguais { get; set; }
+    // Revisões pedagógicas invalidadas porque os bytes da imagem mudaram.
+    public int RevisoesInvalidadas { get; set; }
 }
 
 // Grava imagens de conteúdo na tabela imagem, pela chave natural Caminho.
@@ -32,6 +34,7 @@ public sealed class GravadorImagens(EstudaeDbContext db)
     // caminho = chave no banco (ex.: "2022/x.webp"); dados = bytes do arquivo.
     public async Task GravarAsync(IReadOnlyList<(string Caminho, byte[] Dados)> imagens, ResumoImagens resumo, CancellationToken ct = default)
     {
+        await db.BloquearConteudoAsync(ct);
         var caminhos = imagens.Select(i => i.Caminho).ToList();
         var existentes = await db.Imagens
             .Where(i => caminhos.Contains(i.Caminho))
@@ -39,6 +42,7 @@ public sealed class GravadorImagens(EstudaeDbContext db)
             .ToDictionaryAsync(i => i.Caminho, ct);
 
         var agora = DateTime.UtcNow;
+        var caminhosAlterados = new List<string>();
         foreach (var (caminho, dados) in imagens)
         {
             var tipo = TipoMime(caminho) ?? throw new ArgumentException($"extensão não suportada: {caminho}");
@@ -57,12 +61,32 @@ public sealed class GravadorImagens(EstudaeDbContext db)
                 img.Sha256 = hash;
                 img.AtualizadaEm = agora;
                 resumo.Atualizadas++;
+                caminhosAlterados.Add(caminho);
             }
             else
             {
                 db.Imagens.Add(new Imagem { Caminho = caminho, TipoMime = tipo, Dados = dados, Sha256 = hash, AtualizadaEm = agora });
                 resumo.Criadas++;
+                caminhosAlterados.Add(caminho);
             }
+        }
+
+        // Imagem que mudou de bytes desatualiza a impressão das revisões
+        // pedagógicas das questões que a usam (elas saem da elegibilidade até
+        // nova revisão). Entra no mesmo SaveChanges de quem chamou.
+        if (caminhosAlterados.Count > 0)
+        {
+            var questoes = await db.Questoes
+                .Where(q => q.ImagemUrl != null && caminhosAlterados.Contains(q.ImagemUrl))
+                .ToListAsync(ct);
+            foreach (var q in questoes) q.RevisaoConteudo = Guid.NewGuid();
+            var metadados = await db.MetadadosQuestoes
+                .Where(m => m.ConteudoConfere
+                            && m.Questao.ImagemUrl != null
+                            && caminhosAlterados.Contains(m.Questao.ImagemUrl))
+                .ToListAsync(ct);
+            foreach (var m in metadados) m.ConteudoConfere = false;
+            resumo.RevisoesInvalidadas = metadados.Count;
         }
     }
 

@@ -6,6 +6,7 @@
    ========================================================== */
 import type {
   DisciplinaApi,
+  DisciplinaPedagogiaApi,
   ImportacaoApi,
   OpcoesContaApi,
   ProgressoApi,
@@ -87,6 +88,8 @@ export const api = {
     pedir<QuestaoApi[]>(
       `/disciplinas/${seg(disciplina)}/temas/${seg(tema)}/questoes`,
     ),
+  pedagogia: (disciplina: string) =>
+    pedir<DisciplinaPedagogiaApi>(`/disciplinas/${seg(disciplina)}/pedagogia`),
   // Envia o TEXTO exato da alternativa, nunca a letra nem a posição.
   resposta: (id: number, alternativa: string) =>
     postar<RespostaApi>(`/questoes/${seg(String(id))}/resposta`, {

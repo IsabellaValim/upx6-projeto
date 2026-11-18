@@ -29,6 +29,7 @@ public sealed class ImportadorConteudo(EstudaeDbContext db)
 {
     public async Task<ResumoImportacao> ImportarAsync(ArquivoConteudo arquivo, bool publicar, CancellationToken ct = default)
     {
+        await db.BloquearConteudoAsync(ct);
         var resumo = new ResumoImportacao();
         var dj = arquivo.Disciplina!;
         var status = publicar ? StatusQuestao.Publicada : StatusQuestao.Rascunho;
@@ -51,11 +52,17 @@ public sealed class ImportadorConteudo(EstudaeDbContext db)
         // (o código é único no banco todo; mudar de tema no JSON move a questão).
         var codigos = arquivo.Temas!.SelectMany(t => t.Questoes ?? []).Select(q => q.Codigo!).ToList();
         var existentes = await db.Questoes
+            .Include(q => q.Metadados)
             .Where(q => codigos.Contains(q.Codigo))
             .ToDictionaryAsync(q => q.Codigo, ct);
 
         var agora = DateTime.UtcNow;
         var publicadasQueViraramRascunho = 0;
+        var caminhos = arquivo.Temas!.SelectMany(t => t.Questoes ?? [])
+            .Select(q => q.Imagem?.Arquivo).OfType<string>().ToList();
+        var shas = await db.Imagens
+            .Where(i => caminhos.Contains(i.Caminho))
+            .ToDictionaryAsync(i => i.Caminho, i => i.Sha256, ct);
 
         for (var i = 0; i < arquivo.Temas!.Count; i++)
         {
@@ -111,6 +118,13 @@ public sealed class ImportadorConteudo(EstudaeDbContext db)
                 else
                 {
                     if (questao.Status == StatusQuestao.Publicada && !publicar) publicadasQueViraramRascunho++;
+                    var antes = ImpressaoConteudo.Calcular(questao, disciplina.Slug, questao.Tema.Slug,
+                        questao.ImagemUrl is null ? null : shas.GetValueOrDefault(questao.ImagemUrl));
+                    var depois = ImpressaoConteudo.Calcular(
+                        dj.Slug!, tj.Slug!, qj.TextoBase, qj.Enunciado!, qj.Alternativas!.Select(a => a!).ToList(),
+                        qj.RespostaCorreta!, qj.Resolucao!, qj.Imagem?.Arquivo, qj.Imagem?.Descricao,
+                        qj.Imagem?.Arquivo is null ? null : shas.GetValueOrDefault(qj.Imagem.Arquivo));
+                    if (antes != depois) questao.RevisaoConteudo = Guid.NewGuid();
                     resumo.QuestoesAtualizadas++;
                 }
 
@@ -136,6 +150,32 @@ public sealed class ImportadorConteudo(EstudaeDbContext db)
         if (publicadasQueViraramRascunho > 0)
             resumo.Avisos.Add($"{publicadasQueViraramRascunho} questão(ões) que estavam publicadas voltaram a rascunho " +
                               "e saíram do site (importação sem --publicar)");
+
+        // Curadoria pedagógica: se o conteúdo mudou depois da aprovação, a
+        // impressão deixa de conferir e a questão sai da elegibilidade até uma
+        // nova revisão (a classificação não é apagada — só desvalidada).
+        var comMetadados = existentes.Values.Where(q => q.Metadados is not null).ToList();
+        if (comMetadados.Count > 0)
+        {
+            caminhos = comMetadados.Select(q => q.ImagemUrl).OfType<string>().ToList();
+            shas = await db.Imagens
+                .Where(i => caminhos.Contains(i.Caminho))
+                .ToDictionaryAsync(i => i.Caminho, i => i.Sha256, ct);
+            foreach (var q in comMetadados)
+            {
+                var meta = q.Metadados!;
+                var atual = ImpressaoConteudo.Calcular(
+                    q, disciplina.Slug, q.Tema.Slug,
+                    q.ImagemUrl is null ? null : shas.GetValueOrDefault(q.ImagemUrl));
+                if (atual != meta.ImpressaoConteudo && meta.ConteudoConfere)
+                {
+                    meta.ConteudoConfere = false;
+                    if (meta.StatusRevisao == StatusRevisao.Aprovada)
+                        resumo.Avisos.Add($"questão \"{q.Codigo}\": o conteúdo mudou depois da aprovação pedagógica; " +
+                                          "a classificação ficou inválida até nova revisão");
+                }
+            }
+        }
 
         await db.SaveChangesAsync(ct);
         return resumo;

@@ -89,6 +89,8 @@ public class QuestaoConfig : IEntityTypeConfiguration<Questao>
         e.Property(q => q.ProvaEdicao).HasMaxLength(40);
         e.Property(q => q.ProvaNivel).HasMaxLength(40);
 
+        e.Property(q => q.RevisaoConteudo).HasDefaultValueSql("gen_random_uuid()");
+
         // Enum no C#, texto legível no banco ("rascunho"/"publicada").
         e.Property(q => q.Status)
             .HasMaxLength(20)

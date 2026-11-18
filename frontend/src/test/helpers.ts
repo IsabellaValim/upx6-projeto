@@ -27,12 +27,14 @@ export const MATERIA: CatalogSubject = {
       about: 'Aprenda a calcular porcentagem.',
       videos: 1,
       totalQuestoes: 3,
+      habilidades: [],
       lessons: [
         {
           id: 1,
           kind: 'Porcentagem (Gis com Giz)',
           min: 5,
           youtubeId: 'abc123',
+          habilidades: [],
         },
       ],
     },

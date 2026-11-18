@@ -6,6 +6,8 @@ import { Alternativas } from './Alternativas'
 
 const item: QuestaoItem = {
   id: 1,
+  codigo: 'Q1',
+  pedagogia: null,
   topic: 0,
   text: null,
   ask: 'Quanto é 2 + 2?',
@@ -69,6 +71,8 @@ describe('Alternativas', () => {
           acertou: false,
           respostaCorreta: '4',
           resolucao: 'Porque 2+2=4.',
+          codigo: 'Q1',
+          revisaoConteudo: 'rev1',
         }}
       />,
     )

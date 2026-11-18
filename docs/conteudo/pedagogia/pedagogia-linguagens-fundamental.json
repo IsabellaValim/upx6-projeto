@@ -1,0 +1,1991 @@
+{
+  "formato": 1,
+  "revisor": "Equipe Estudaê — curadoria inicial assistida (revisar antes de publicar)",
+  "disciplina": "linguagens-fundamental",
+  "matriz": {
+    "versao": "estudae-ef-2026-11",
+    "validada": true
+  },
+  "temas": [
+    {
+      "slug": "interpretacao-de-texto",
+      "habilidades": [
+        {
+          "slug": "compreender-ideia-central",
+          "titulo": "Compreender a ideia central e as informações do texto",
+          "essencial": true
+        },
+        {
+          "slug": "inferir-sentido-e-intencao",
+          "titulo": "Inferir sentido e intenção além do que está escrito",
+          "essencial": true
+        },
+        {
+          "slug": "reconhecer-estrategia-argumentativa",
+          "titulo": "Reconhecer estratégias usadas para convencer",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "pHRXFkx7pes",
+          "habilidades": [
+            "compreender-ideia-central",
+            "inferir-sentido-e-intencao"
+          ]
+        },
+        {
+          "youtube": "y5jvOIM3XNo",
+          "habilidades": [
+            "compreender-ideia-central",
+            "inferir-sentido-e-intencao"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-01",
+          "habilidade": "compreender-ideia-central",
+          "secundarias": [],
+          "familia": "proposito-do-texto",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "e9a600c45f0c73c6921706b571db90daba834421855825a8ac7fd6d275a89c0d"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-02",
+          "habilidade": "compreender-ideia-central",
+          "secundarias": [],
+          "familia": "proposito-do-texto",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b3d4cdb66eb229582c76b8d97a3ec590f21d8ac1cfbfdcc163478893fcf454cb"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-03",
+          "habilidade": "compreender-ideia-central",
+          "secundarias": [],
+          "familia": "ideia-central",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "6b0a048bf4e638913db1d0ec7da60f0f526195278815d8fdbeb495ce3b2e955d"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-08",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "inferencia-e-intencao",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "cfc28a4c3af5838ed4522057ff06f02c43bb456c2f8f0e62b804129de1c65a49"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-09",
+          "habilidade": "compreender-ideia-central",
+          "secundarias": [],
+          "familia": "ideia-central",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5924d2a99e462c3df86a0461de98d73938752ee2a66d9ff73ba574aa53757971"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-11",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "inferencia-e-intencao",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "cc8ec6282d6777fdfe914f49186d18f2fc7277ce35a3cf50ccebce84739308de"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-19",
+          "habilidade": "reconhecer-estrategia-argumentativa",
+          "secundarias": [],
+          "familia": "estrategia-argumentativa",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "595ee9c53bdcba108efad5bbb5612199f2b4f23f86ea489c3582bc58321ac97f"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-22",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "relacao-entre-textos",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "78addced5bc20fad35c9890b7aef67a94036d2ae99e42bf6b54417602797a3d1"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-24",
+          "habilidade": "reconhecer-estrategia-argumentativa",
+          "secundarias": [],
+          "familia": "estrategia-argumentativa",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "e4ffa6074b4afa20175b7d9c553f5b4bd917cb0f6071b5a69533784b57d17381"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-27",
+          "habilidade": "compreender-ideia-central",
+          "secundarias": [],
+          "familia": "palavras-e-sentido",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "fdb335c52d352d62234dba5f654ad235ad2ae6972e078af4e308c65b74eed50e"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-28",
+          "habilidade": "compreender-ideia-central",
+          "secundarias": [],
+          "familia": "palavras-e-sentido",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "1e5024df487fa78779440f66a5f0ea7ad7e432ca84b393a0ccc4dba3816e688d"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-29",
+          "habilidade": "reconhecer-estrategia-argumentativa",
+          "secundarias": [],
+          "familia": "estrategia-argumentativa",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "fd881547ab9ed5e3497e86be08d5c40efa1f9fbb8c14548a92ce74df0aec767d"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-30",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "inferencia-e-intencao",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a8d29e835f5a5da9c015f11a7750f9c10e753e5802684886c31069291427c243"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-001",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "inferencia-e-intencao",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "6d675c0ecbe4c43521007cc76d63b19ff8a8b259c9aff150e1884c8e56841b93"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-003",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "inferencia-e-intencao",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "59157dd8df4b1522cd6496900d2441c3c516f3821fe16e96bacfb69efb7da9a9"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-020",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "sentido-da-palavra",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5dcc9113b2ba92b92c1fda1e533f888647c282966c1502ef9e9e9d125b43c342"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-022",
+          "habilidade": "reconhecer-estrategia-argumentativa",
+          "secundarias": [],
+          "familia": "estrategia-argumentativa",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "afdbe821016943928b2a4cfe0c5c99344c3bd7b2b1338a5c9c6a68f88b5e7580"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-025",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "inferencia-e-intencao",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d9f6d34714c24f06f49346b9076c78d48fdace5ccb2f17a419a112f4d4a6aacf"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-027",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "inferencia-e-intencao",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0ceb7e3e5ef95f320c8a8539622e9a72c577877861d0be90c55d0cf2aacd1955"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-030",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "evidencia-no-trecho",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "eda0dc150ecd825ec33a1800ecc3de0a8dbe37abb334940dcd782c705e024273"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-011",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "evidencia-no-trecho",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "aec689a120bc7be2ca13aa17e1225fc77d85cb8e3b6b358f8b86a3da0363824c"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-012",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "relacao-entre-textos",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a0e20190392ac6f6045b1da06e2a672f64fcae988e81ef9c6a3f831da86a60e5"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-017",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "evidencia-no-trecho",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "6e54a091af4481b1bb923a083be46e6523e4331bc5bb1c2f583947c0ed3a42f5"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-018",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "intertextualidade",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "806bc65ccedf677d6dd053fbcb337477c0c6c828d85cba449ed431e6484a34fc"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-022",
+          "habilidade": "reconhecer-estrategia-argumentativa",
+          "secundarias": [],
+          "familia": "estrategia-argumentativa",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "94bb5dd88433e125c910455282ceba87808396e9c61828cc3963632c83511e21"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-028",
+          "habilidade": "compreender-ideia-central",
+          "secundarias": [],
+          "familia": "palavras-e-sentido",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "ffcd3d58eb56a6c08dbd8f3b0ec02e03a8be88c530e1a02ec64f68ddf1db8e29"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-002",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "evidencia-no-trecho",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "4be98878871230022b3fe530131914e62df6c238b67eb321098264558e67e2cc"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-003",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "sentido-da-palavra",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b29ae45b16d11bf56b28adbfc7f38833efd0c9adc8ebdbdcef0eaaf9f3bfd141"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-004",
+          "habilidade": "compreender-ideia-central",
+          "secundarias": [],
+          "familia": "ideia-central",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2ad949b8bbe44f77fdc5aeded24a5bbfc8ccfb9820945fe06fb422fe1cafa8ad"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-005",
+          "habilidade": "inferir-sentido-e-intencao",
+          "secundarias": [],
+          "familia": "relacao-entre-textos",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "30a4f43553c6b643233877ba4b36fe9a3963f253d7376efabd55ffdb680b1b3f"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-010",
+          "habilidade": "reconhecer-estrategia-argumentativa",
+          "secundarias": [],
+          "familia": "estrategia-argumentativa",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "fbaeb1944578dd206fbd30327ffc6d8f02fd5efe1c0b6b644c77fad670d55337"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-027",
+          "habilidade": "compreender-ideia-central",
+          "secundarias": [],
+          "familia": "ideia-central",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f6feba8457ba26f6e2b9e288230bb3f94a7d99b58c35823d185fc1a0fac31265"
+        }
+      ]
+    },
+    {
+      "slug": "generos-textuais",
+      "habilidades": [
+        {
+          "slug": "reconhecer-genero-textual",
+          "titulo": "Reconhecer o gênero de um texto pelas características",
+          "essencial": true
+        },
+        {
+          "slug": "identificar-finalidade-do-genero",
+          "titulo": "Identificar para que serve cada gênero textual",
+          "essencial": true
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "YZ_xKcTuIAw",
+          "habilidades": [
+            "reconhecer-genero-textual",
+            "identificar-finalidade-do-genero"
+          ]
+        },
+        {
+          "youtube": "1LKtJ1aOAc0",
+          "habilidades": [
+            "reconhecer-genero-textual",
+            "identificar-finalidade-do-genero"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-16",
+          "habilidade": "reconhecer-genero-textual",
+          "secundarias": [],
+          "familia": "caracterizar-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a2b880c33418f18c045eee371fd479ba341da7da7e2ae8c56de9e95a13ca44e9"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-17",
+          "habilidade": "identificar-finalidade-do-genero",
+          "secundarias": [],
+          "familia": "finalidade-do-genero",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "058a702486df4ca1cc1e062a7aedde50a93d664c1007cdecab542854e78aeebb"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-024",
+          "habilidade": "reconhecer-genero-textual",
+          "secundarias": [],
+          "familia": "caracterizar-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a9dccd3bae5b6bda6bc8cf46059fcffa61611ca5b5effe00e8f997cfbcd7d519"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-026",
+          "habilidade": "identificar-finalidade-do-genero",
+          "secundarias": [],
+          "familia": "finalidade-do-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5f4d61e49c4f302be3d7b14207a01c0f491bae47d4f84e08621c83b51ad980b2"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-005",
+          "habilidade": "reconhecer-genero-textual",
+          "secundarias": [],
+          "familia": "caracterizar-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "1aaf07105045e598c1f615b93e8d8e009e47d60e93b4ef9f54f8c91ff01eb5da"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-008",
+          "habilidade": "reconhecer-genero-textual",
+          "secundarias": [],
+          "familia": "caracterizar-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "3a6e24dcaadf6d95d5f9a79f9b750d541aa90b2f156da63bf2153afb3ace8ccb"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-014",
+          "habilidade": "reconhecer-genero-textual",
+          "secundarias": [],
+          "familia": "caracterizar-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5f3e832814e19dc38d59e863d04ad5e350ab04a87e540a7e2b7aa7ac466526cd"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-025",
+          "habilidade": "identificar-finalidade-do-genero",
+          "secundarias": [],
+          "familia": "finalidade-do-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0d1f4aea129ecfd1918c5452748f742420eb2d724b505559d421a2dcbbe82af0"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-014",
+          "habilidade": "reconhecer-genero-textual",
+          "secundarias": [],
+          "familia": "evidencia-do-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "38ee6b5dab76a91ccbb207c7653736743e671e46b6b6c99157f71bf8ec903372"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-016",
+          "habilidade": "identificar-finalidade-do-genero",
+          "secundarias": [],
+          "familia": "finalidade-do-genero",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "194ea605de8869d0bed563bde19d88f975397d9c32373499d9427012fb19df81"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-017",
+          "habilidade": "identificar-finalidade-do-genero",
+          "secundarias": [],
+          "familia": "finalidade-do-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "93a3957a22a6b43986fce57aa14c1a1848d92b0b476f85bf1b635cd5272df8bd"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-018",
+          "habilidade": "reconhecer-genero-textual",
+          "secundarias": [],
+          "familia": "caracterizar-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2421897db20e54f752ed914ad049e3bce7e586e9a5d0e1bb5b57cb361fb671b0"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-019",
+          "habilidade": "identificar-finalidade-do-genero",
+          "secundarias": [],
+          "familia": "finalidade-do-genero",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "8701c71c018f75e63a490d08437624fb665467b94e032ecebdfbf05fde0493f7"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-021",
+          "habilidade": "reconhecer-genero-textual",
+          "secundarias": [],
+          "familia": "recurso-do-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "50c27a3fb2afe4b3c08d8031860b33e693c9bcba12c236e238ed30a327032e4b"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-018",
+          "habilidade": "reconhecer-genero-textual",
+          "secundarias": [],
+          "familia": "caracterizar-genero",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "ec471fdd8640570c4ba20ce1a0ef3f0ec83a6a9e74d1fe26979fb51fce3bfe5b"
+        }
+      ]
+    },
+    {
+      "slug": "variacao-linguistica",
+      "habilidades": [
+        {
+          "slug": "reconhecer-variedades-da-lingua",
+          "titulo": "Reconhecer variedades da língua e seus usos",
+          "essencial": true
+        },
+        {
+          "slug": "refletir-sobre-preconceito-linguistico",
+          "titulo": "Refletir sobre o preconceito linguístico",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "6fBOVygtNoU",
+          "habilidades": [
+            "reconhecer-variedades-da-lingua"
+          ]
+        },
+        {
+          "youtube": "Ks6GACE5DDA",
+          "habilidades": [
+            "reconhecer-variedades-da-lingua",
+            "refletir-sobre-preconceito-linguistico"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-23",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "registro-e-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5750fdb27cb0cd9205da2c4199f17ca5ec98b5cb343a7f046f92676c07910db7"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-019",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "variedades-e-origem",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f32727b6f7e22ed844e2d8d39a09309ffef0ae3bfad5d63b38b3b98b510ddc2e"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-023",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "registro-e-contexto",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a36d55ba7fccc88b8fc7b37a3d19b90c738ad947ece841b1b5d4dea671825058"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-021",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "variedades-e-origem",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "90a9299e3693d01cbecd9d4481e0df8200faa1e7ad7376e8ea562862a592f649"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-028",
+          "habilidade": "refletir-sobre-preconceito-linguistico",
+          "secundarias": [],
+          "familia": "preconceito-linguistico",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b64722621f28b694d7435963bf0fa6c1fe60cc0a381c7d609c447d703a1aef4b"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-029",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "registro-e-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "521092cbdf530187a124f4a24d72c4b94fc305c58d12018ca97cb815f568ced0"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-020",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "variedades-e-origem",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b3b108ad7441e5c82317798bb84130ce060b5ed2c392e830dee3ca57ddcc29eb"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-024",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "variedades-e-origem",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "cc57f7f07d0522d69aa70ea8c997d2acd32a1fd07e5e94a51d9330f4789a3c55"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-025",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "registro-e-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "11281ecb642f19ce7c337b2f7ba3feea276aa52c326b6caba24fb965f57f10c9"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-026",
+          "habilidade": "refletir-sobre-preconceito-linguistico",
+          "secundarias": [],
+          "familia": "preconceito-linguistico",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "315c70db6df9306010644923bdf1b7d49e71afd511160128ced9bf0926dbd55f"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-006",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "variedades-e-origem",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "1f5f028aee5ef757f716e6bdbe11f9228e91f382761cd315ccee8e079e332bb4"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-007",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "variedades-e-origem",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2461b322906d9d795ca7c9ad0e65fd49a06313b9c871af0fd755838773cd12da"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-008",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "registro-e-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2274ea4dfc5486711da2aaf04f2493b4f6016c2f80b20a91834b66703c204570"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-009",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "registro-e-contexto",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "581eb0efeed188e5f277eced1c8beb9719b3b1b7b9512eca2ac39a3bcd59fabb"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-011",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "variedades-e-origem",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a37e086b7c5039739e6a1b63e41157d167b0f49fb921b15ee96a0eed1f4a4be5"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-014",
+          "habilidade": "reconhecer-variedades-da-lingua",
+          "secundarias": [],
+          "familia": "registro-e-contexto",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "ec6134e757292800d5d08ff26e0cf322281bd44776ec45b8ecc000d1b9141c2a"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-019",
+          "habilidade": "refletir-sobre-preconceito-linguistico",
+          "secundarias": [],
+          "familia": "preconceito-linguistico",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d7d2c20de6c828817f5cd93bd1eea47d5e8b3bbac63fd46d5cf45b221fbfac77"
+        }
+      ]
+    },
+    {
+      "slug": "gramatica",
+      "habilidades": [
+        {
+          "slug": "reconhecer-conectivos-e-coesao",
+          "titulo": "Reconhecer o papel de conectivos na coesão do texto",
+          "essencial": false
+        },
+        {
+          "slug": "interpretar-referentes",
+          "titulo": "Identificar o que uma palavra retoma ou significa",
+          "essencial": true
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "eehRPa7e8T4",
+          "habilidades": [
+            "reconhecer-conectivos-e-coesao",
+            "interpretar-referentes"
+          ]
+        },
+        {
+          "youtube": "FYjTTHVuRJA",
+          "habilidades": [
+            "interpretar-referentes"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-016",
+          "habilidade": "interpretar-referentes",
+          "secundarias": [],
+          "familia": "sentido-de-palavras",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f4bb959111d3364d35c3314c65a8c90a7d1817f716d7601d7e8efeecd89a3a87"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-021",
+          "habilidade": "interpretar-referentes",
+          "secundarias": [],
+          "familia": "referentes-e-funcao",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "05dbe7329e92627c941a43b99e59df6dc3e9c5aaad99cca2b431170b04149a26"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-003",
+          "habilidade": "interpretar-referentes",
+          "secundarias": [],
+          "familia": "sentido-de-palavras",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "6b617eb1bda1e254950fe891aca1eed33cdbeecf9d4b2728f3ba505627e21709"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-027",
+          "habilidade": "interpretar-referentes",
+          "secundarias": [],
+          "familia": "sentido-de-palavras",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5bffba60f16db98227f24c64983ab0ddfe56ecd8c6ac8f957a88a0f31ed9d60e"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-029",
+          "habilidade": "reconhecer-conectivos-e-coesao",
+          "secundarias": [],
+          "familia": "conectivos",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "9506d11e4fbc2a2a206f7176cc173f3a9e21aacaad301e0a58871735f5b458cb"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-015",
+          "habilidade": "interpretar-referentes",
+          "secundarias": [],
+          "familia": "referentes-e-funcao",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "4d0fef588bbeff810ea8f1de996fcba9324ed728f710f03e1d40630c2276539f"
+        }
+      ]
+    },
+    {
+      "slug": "literatura",
+      "habilidades": [
+        {
+          "slug": "analisar-texto-literario",
+          "titulo": "Analisar sentido e tema de textos literários",
+          "essencial": true
+        },
+        {
+          "slug": "reconhecer-recurso-expressivo",
+          "titulo": "Reconhecer recursos expressivos da linguagem literária",
+          "essencial": true
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "G1O9WMNUU4g",
+          "habilidades": [
+            "analisar-texto-literario",
+            "reconhecer-recurso-expressivo"
+          ]
+        },
+        {
+          "youtube": "n4X1AG0pY8U",
+          "habilidades": [
+            "analisar-texto-literario"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-10",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "5e28ea22638970f8faf1f3e8356f8ee8ad815f4a382b5e1a095e0932bfb1774d"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-12",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "c84261871e5c3776c3ac2b80ac314876ef123b0258735e3b7f295ba547a3eed5"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-13",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "9a3390d099dd7d43e8e08bbe9812ae9bfa401f9c50b5eb363aaf5204eb3c4df9"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-14",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "c4f5b34d449caa3deb1312a3b853119a2406a3243df3698e10c8b077b92f831e"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-15",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "673b9753e015bd8ade82b3c5bfc32f80284797b429dc8c9bec2273594b5c2fb4"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-18",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d8e2c92e5c5c2b6ac5524c7290cf2db589408f905f5bbf057f08a42883cda93c"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-20",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "03f77192aed64513486d654e85b85fb1da7ae4223b1a690ea2ed610744f48307"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-25",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "87c6f454d55f7631da42a3ab1d526983924876ff2538bf700717c2770e277835"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-002",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "dc2bf6059a8505f81e07dc2d8c6676c59ddbe9a90888ffbd9444724dca334148"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-004",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d34c5c462b0699497a813a4c63a05ea620d6ef421364a262e104d2584033dd39"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-007",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f03d4a976a00bf349ffa596fc91ac5e1166f789f849b5c346cecbbf1eade5630"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-017",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0b57147763ce5bf7ff05591e6a7a5907109d1b1b22dc49fe50707082a2114a71"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-013",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "bee3ea72240bb9b746f64fec7fddb8e024d2504a68fb3aceab33fbfaa3f4ae19"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-015",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "929ac6dd9a59f954ffb05257574713085ff3b6c0c4ef3941909993453fe2e6cb"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-019",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "97f3924eb46fa0db9f1f974cc14afec205a19e2d559f947aa628d130112ebad6"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-026",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "e4fc29948a4654130f1b639e51b3aa588cb8e0bba633d42fd8ae1d8a1b149d5a"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-030",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "c4c6eaf84146d1a6414b2a4a3cab0d0825200014c7b0f1f8db6924a9c68765d9"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-011",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0c56ef575ccfddb23da5bb791c389d3c33fce9ec6dbc5f88ba331839ca85fb3c"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-012",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "91ee749f58917bc22147c2b982e600fc1814e7272348052a4eb10c5f217fe09b"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-013",
+          "habilidade": "reconhecer-recurso-expressivo",
+          "secundarias": [],
+          "familia": "linguagem-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "972aa5e1ee53e9a20cfa528291c42672fbe17bd942ec9d1b3d843dd8d7687a21"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-013",
+          "habilidade": "analisar-texto-literario",
+          "secundarias": [],
+          "familia": "sentido-e-tema",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "af6bdac0fb33f1d44e8674c3fc34147a782c48a14a8ee6fa9866d181bf7a4daf"
+        }
+      ]
+    },
+    {
+      "slug": "comunicacao-e-midias",
+      "habilidades": [
+        {
+          "slug": "analisar-texto-publicitario",
+          "titulo": "Analisar propagandas, cartazes e recursos de persuasão",
+          "essencial": true
+        },
+        {
+          "slug": "refletir-sobre-midias",
+          "titulo": "Refletir sobre o impacto das mídias na vida cotidiana",
+          "essencial": false
+        },
+        {
+          "slug": "identificar-finalidade-do-texto",
+          "titulo": "Identificar a finalidade de um texto",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "YZ_xKcTuIAw",
+          "habilidades": [
+            "analisar-texto-publicitario"
+          ]
+        },
+        {
+          "youtube": "32t-A3lIO2s",
+          "habilidades": [
+            "analisar-texto-publicitario"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-04",
+          "habilidade": "analisar-texto-publicitario",
+          "secundarias": [],
+          "familia": "verbale-nao-verbal",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "30ad18b5578e0a42450e2445dd5a0aad7912026dc341809906a62f46fbd8964a"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-015",
+          "habilidade": "identificar-finalidade-do-texto",
+          "secundarias": [],
+          "familia": "finalidade-do-texto",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a5919cc9e487fea6870a4b756424e4ddcdcc8178ec513d52a39c7d3d8b4305e8"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-018",
+          "habilidade": "analisar-texto-publicitario",
+          "secundarias": [],
+          "familia": "persuasao-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "fdceca6cb6f888fb366894ccd964a253e5f6b8d4cfebf520f9db7a1cf38e9328"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-028",
+          "habilidade": "analisar-texto-publicitario",
+          "secundarias": [],
+          "familia": "verbale-nao-verbal",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "32201a460afd0d9055127890b375afd774d65faa4846ced6319d1e8cc8cb93a7"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-029",
+          "habilidade": "analisar-texto-publicitario",
+          "secundarias": [],
+          "familia": "complemento-entre-textos",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f17e90c5228f6663ec3c8593f7d7157c4243d4adc6970d68e6345e5f26534aee"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-016",
+          "habilidade": "identificar-finalidade-do-texto",
+          "secundarias": [],
+          "familia": "finalidade-do-texto",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "1cbaaab90906f0896aa45de2b2c10186620d825067648b9cb389f30dbfb87802"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-023",
+          "habilidade": "analisar-texto-publicitario",
+          "secundarias": [],
+          "familia": "persuasao-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d46afea422260c9a0d9765ff07cd5c125a0b1f10f4f22e21f97db153217a8693"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-015",
+          "habilidade": "analisar-texto-publicitario",
+          "secundarias": [],
+          "familia": "persuasao-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f8b3b76c5d3ccb0ca17a8b3525a6ac61ea0bf18a2160c0e8c548b7781f85d72b"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-022",
+          "habilidade": "analisar-texto-publicitario",
+          "secundarias": [],
+          "familia": "persuasao-e-recurso",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f4fbbff6ff5020fa06230a20e3ea1c7ace0b6d2b7d4ce5fb9748fa87d2a23721"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-023",
+          "habilidade": "refletir-sobre-midias",
+          "secundarias": [],
+          "familia": "impacto-das-midias",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "9b48d1fb1be258821c34a51065098ab23a5f99fa60864a78c47d129c5e4a72e8"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-022",
+          "habilidade": "analisar-texto-publicitario",
+          "secundarias": [],
+          "familia": "verbale-nao-verbal",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "add005f29b266b61001e25b17590c272fec1d08c4b23f1d0923a2f2d88aaaffd"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-028",
+          "habilidade": "analisar-texto-publicitario",
+          "secundarias": [],
+          "familia": "verbale-nao-verbal",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "48c5891de7969135cf25e137b40a49d1b4093de2c9bcee89586bf30e4cd580a8"
+        }
+      ]
+    },
+    {
+      "slug": "lingua-inglesa",
+      "habilidades": [
+        {
+          "slug": "interpretar-texto-em-ingles",
+          "titulo": "Interpretar a ideia e a finalidade de textos em inglês",
+          "essencial": true
+        },
+        {
+          "slug": "reconhecer-vocabulo-em-ingles",
+          "titulo": "Reconhecer palavras e expressões em inglês",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "73EBFdt5r7E",
+          "habilidades": [
+            "interpretar-texto-em-ingles"
+          ]
+        },
+        {
+          "youtube": "SKK_Q3RJqh0",
+          "habilidades": [
+            "reconhecer-vocabulo-em-ingles"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-06",
+          "habilidade": "reconhecer-vocabulo-em-ingles",
+          "secundarias": [],
+          "familia": "palavras-e-expressoes-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "e7541fe364a97944a53a3b6df471c8a6f3dc3ad188c3d4078c1d754fc44d8430"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-07",
+          "habilidade": "reconhecer-vocabulo-em-ingles",
+          "secundarias": [],
+          "familia": "palavras-e-expressoes-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "cff191952ab06bb04116635e0596f0b58ce695d63f9099945a6ce68e7a56451c"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-013",
+          "habilidade": "interpretar-texto-em-ingles",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a8625f2b69908dfd65d6898fd08780d3648434593e6a7fce781b6122f7d23c2f"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-014",
+          "habilidade": "reconhecer-vocabulo-em-ingles",
+          "secundarias": [],
+          "familia": "palavras-e-expressoes-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "9ba571e010bcfd8ab6ec1e3182861f8a49d3c233b1ea20eef98b3a375ee6b4b6"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-006",
+          "habilidade": "interpretar-texto-em-ingles",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a63e7addde6634a22ddd9773467503c990ea2099e9708360c80a4ad9b9f2cc02"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-020",
+          "habilidade": "reconhecer-vocabulo-em-ingles",
+          "secundarias": [],
+          "familia": "palavras-e-expressoes-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "407844e85a4285f71ab135d85cff96bc9fb09736701a1614f4db7c6e0563ca0d"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-001",
+          "habilidade": "interpretar-texto-em-ingles",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "68d23f8741a25697f64544c7a0abed4187d3230d1a193c67b3baa54dcd5aae00"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-004",
+          "habilidade": "reconhecer-vocabulo-em-ingles",
+          "secundarias": [],
+          "familia": "palavras-e-expressoes-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "42d8ebe6e31da92c11a33c947add03e27617708952bffa8a68e715fb04751725"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-012",
+          "habilidade": "interpretar-texto-em-ingles",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "64dea8168ec0f4bba2c48c6ec8f22c996c0dd5d4af2a2967f33828fb1eaac167"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-016",
+          "habilidade": "interpretar-texto-em-ingles",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "4430778edf6d7ea67eab39cb7870f333ac20a0225407fc27f19b89c67fff6886"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-017",
+          "habilidade": "interpretar-texto-em-ingles",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-in",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "45220af7e7b6cb49f740516ee8c727cf1e704e8a444d7698eb63728ce95287b2"
+        }
+      ]
+    },
+    {
+      "slug": "lingua-espanhola",
+      "habilidades": [
+        {
+          "slug": "interpretar-texto-em-espanhol",
+          "titulo": "Interpretar a ideia e a finalidade de textos em espanhol",
+          "essencial": true
+        },
+        {
+          "slug": "localizar-informacao-em-espanhol",
+          "titulo": "Localizar informações e elementos em textos em espanhol",
+          "essencial": false
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "yJ0XQkdhEfc",
+          "habilidades": [
+            "interpretar-texto-em-espanhol",
+            "localizar-informacao-em-espanhol"
+          ]
+        },
+        {
+          "youtube": "4J_dYPUMFsM",
+          "habilidades": [
+            "interpretar-texto-em-espanhol",
+            "localizar-informacao-em-espanhol"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-05",
+          "habilidade": "interpretar-texto-em-espanhol",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-es",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "94ea232d9ba3cdf70cf6fb10652a22f2ad356dfc6953668375d701e87441107c"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-011",
+          "habilidade": "interpretar-texto-em-espanhol",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-es",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "6e87f69ab69848ac685bc38be1efb6dda6ddbc809151d3fc1719d4b3df70091d"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-012",
+          "habilidade": "interpretar-texto-em-espanhol",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-es",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "02c4b027e5c30768a922118a3bde30315802cb74d9ef4f85b168856d7026d795"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-001",
+          "habilidade": "interpretar-texto-em-espanhol",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-es",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "b1f7f22ebeba3880b29955cb2bc3a22198893516931929cef92b3ba682dbc1fd"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-024",
+          "habilidade": "localizar-informacao-em-espanhol",
+          "secundarias": [],
+          "familia": "informacao-e-elementos-es",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "df3f122678803aa818e7acdb588c8c19d138e35aa8787b8db32675a764fb3d21"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-002",
+          "habilidade": "interpretar-texto-em-espanhol",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-es",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "26ec27f2df216d26cbae8dab581cdcd29b5a47f9009cf186df842a824ff3aae3"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-003",
+          "habilidade": "localizar-informacao-em-espanhol",
+          "secundarias": [],
+          "familia": "informacao-e-elementos-es",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f3a7b69e9d8700461fe02ddf45a6854fb5f5a594af352045709026d555ac0afd"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-020",
+          "habilidade": "localizar-informacao-em-espanhol",
+          "secundarias": [],
+          "familia": "informacao-e-elementos-es",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "3cb5973c42cc9941d712daf1c864c3013e6052903666de5f93fb7c70866a0088"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-030",
+          "habilidade": "interpretar-texto-em-espanhol",
+          "secundarias": [],
+          "familia": "finalidade-e-ideia-es",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "618034fcdf46ca70ab30f172c7d9627f70272ec50f4746b1c64413101119447b"
+        }
+      ]
+    },
+    {
+      "slug": "arte",
+      "habilidades": [
+        {
+          "slug": "analisar-obra-artistica",
+          "titulo": "Analisar o sentido de obras e imagens artísticas",
+          "essencial": true
+        },
+        {
+          "slug": "relacionar-arte-e-contexto",
+          "titulo": "Relacionar arte e contexto social e histórico",
+          "essencial": true
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "ksblph0NNNM",
+          "habilidades": [
+            "analisar-obra-artistica"
+          ]
+        },
+        {
+          "youtube": "JShfqng4lGU",
+          "habilidades": [
+            "relacionar-arte-e-contexto"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-21",
+          "habilidade": "analisar-obra-artistica",
+          "secundarias": [],
+          "familia": "sentido-da-obra",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "982470b831f62fd889f6c6e298e3d669367a861b437d62ea6dbe193164626e94"
+        },
+        {
+          "codigo": "encceja-ef-2019-regular-linguagens-26",
+          "habilidade": "analisar-obra-artistica",
+          "secundarias": [],
+          "familia": "sentido-da-obra",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "0a06a027700dde9cc430d82e80f39768f377bfd03c6344da4c9d0ce468586a26"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-005",
+          "habilidade": "analisar-obra-artistica",
+          "secundarias": [],
+          "familia": "conceito-e-tecnica",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "cee6ed35471b31bd4fb061754b35ec61b898bb4f2425596da7d4ae191383bf5e"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-006",
+          "habilidade": "analisar-obra-artistica",
+          "secundarias": [],
+          "familia": "conceito-e-tecnica",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "4f56d86457fa35b778dc7c93084d2511b80055a931af99119b9ceeb47b932e5b"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-004",
+          "habilidade": "analisar-obra-artistica",
+          "secundarias": [],
+          "familia": "sentido-da-obra",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "8b7184c15df1f89950fa06d54092c6bb839de7aace11d181f52bf81f6015cd6e"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-007",
+          "habilidade": "analisar-obra-artistica",
+          "secundarias": [],
+          "familia": "conceito-e-tecnica",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "939728fd77b9ee6a9ace1a511d0c842adbc703c936f325ffa44e36065c80c697"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-027",
+          "habilidade": "relacionar-arte-e-contexto",
+          "secundarias": [],
+          "familia": "arte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a5fc56b50dbba6008b54b83f81f6aee3a342cc00849b64d6054be00729e372d3"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-008",
+          "habilidade": "relacionar-arte-e-contexto",
+          "secundarias": [],
+          "familia": "arte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "eea33bd1f18927d8a129604d95ef003127716966354e5e2aa40c1b7d0ddbe4d1"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-009",
+          "habilidade": "relacionar-arte-e-contexto",
+          "secundarias": [],
+          "familia": "arte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "10bc0c8d1f9dd22dcbddce243e7a8764011703f736a7b2c97ebca80882bb14c3"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-010",
+          "habilidade": "analisar-obra-artistica",
+          "secundarias": [],
+          "familia": "sentido-da-obra",
+          "dificuldade": "avancada",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2a7b1e25ed4ddf31449ec22099870dee10aab4b9422119dff6eddc9065321705"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-030",
+          "habilidade": "analisar-obra-artistica",
+          "secundarias": [],
+          "familia": "conceito-e-tecnica",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d685266852f28dbb5b79897ab820b6a9ea3a8c0470ee224d09f72d3783f2daca"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-001",
+          "habilidade": "relacionar-arte-e-contexto",
+          "secundarias": [],
+          "familia": "arte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d97335041997e79034dd06a709db0531a2511978e82c03bb73648288556c392f"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-024",
+          "habilidade": "relacionar-arte-e-contexto",
+          "secundarias": [],
+          "familia": "arte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "22d6f1a998c93bb198c08d072481486cbe8b81eb0e82586d7c6aa42685a91247"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-025",
+          "habilidade": "analisar-obra-artistica",
+          "secundarias": [],
+          "familia": "sentido-da-obra",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "7a3b908a663ac02cb3d5800c052ae7096459b10b0268fbd19e3d4953541dcd74"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-026",
+          "habilidade": "relacionar-arte-e-contexto",
+          "secundarias": [],
+          "familia": "arte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2a4587b3fb057ad53ca10791e54aa8a6f7adc95aa7cd4c33ada337905da2a7e3"
+        }
+      ]
+    },
+    {
+      "slug": "educacao-fisica",
+      "habilidades": [
+        {
+          "slug": "entender-esporte-como-cultura",
+          "titulo": "Entender o esporte como prática cultural e social",
+          "essencial": true
+        },
+        {
+          "slug": "entender-saude-e-habitos",
+          "titulo": "Entender textos sobre saúde, corpo e hábitos de vida",
+          "essencial": true
+        }
+      ],
+      "videos": [
+        {
+          "youtube": "NxCtyHFVJko",
+          "habilidades": [
+            "entender-esporte-como-cultura",
+            "entender-saude-e-habitos"
+          ]
+        },
+        {
+          "youtube": "1ldFZtxknhk",
+          "habilidades": [
+            "entender-esporte-como-cultura"
+          ]
+        }
+      ],
+      "questoes": [
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-008",
+          "habilidade": "entender-esporte-como-cultura",
+          "secundarias": [],
+          "familia": "conceito-de-esporte-e-jogo",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "7db7c782e35cd6b956156bd0b39e285245d51f88cb201139268f513f9b5f9bd1"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-009",
+          "habilidade": "entender-esporte-como-cultura",
+          "secundarias": [],
+          "familia": "esporte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "f5869d2bc69f464591601c02dd3911742312465026cb7573646bec98d6dbdb6e"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2020-ling-010",
+          "habilidade": "entender-esporte-como-cultura",
+          "secundarias": [],
+          "familia": "esporte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "2a2503b435705381e9c234d23303e82c848d68a9578ea3864df1813d3f4f90ff"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-002",
+          "habilidade": "entender-saude-e-habitos",
+          "secundarias": [],
+          "familia": "saude-e-corpo",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "6e37592183d3fe300a591d5d0305184988e5bc18adbab4bd84a3554b57f3eff4"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-009",
+          "habilidade": "entender-esporte-como-cultura",
+          "secundarias": [],
+          "familia": "conceito-de-esporte-e-jogo",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "79461a2464a3cc84f34c87539aaf0f278f99e8ecfb5abc275f6e979d6f10b042"
+        },
+        {
+          "codigo": "encceja-ef-nacional-2022-ling-010",
+          "habilidade": "entender-esporte-como-cultura",
+          "secundarias": [],
+          "familia": "esporte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "d04c3503da305f70ba36cdaa57ff8233a1dcb0dc2ce0a5693879709116a67520"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-005",
+          "habilidade": "entender-esporte-como-cultura",
+          "secundarias": [],
+          "familia": "esporte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "68d0aded3b6543f88b8f8310b99ca685f3f6fbdf41a131deb9b421cf3f8da94e"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-006",
+          "habilidade": "entender-esporte-como-cultura",
+          "secundarias": [],
+          "familia": "esporte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "7823cd64a5d68db7d7b90d96cd690430a614e41e00eeee9aadda177a9857aca7"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2020-ling-007",
+          "habilidade": "entender-saude-e-habitos",
+          "secundarias": [],
+          "familia": "saude-e-corpo",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "8c1a8e3d0dd961c61b877dac4bf57e77543a13c79f7efd213c499b742d3fb4a4"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-021",
+          "habilidade": "entender-esporte-como-cultura",
+          "secundarias": [],
+          "familia": "esporte-e-sociedade",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "a6fef0c007130d7fcae84a1813c20e961b0a2aa0e2bbe9cedf557a7aa31383bd"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-023",
+          "habilidade": "entender-esporte-como-cultura",
+          "secundarias": [],
+          "familia": "etica-no-esporte",
+          "dificuldade": "intermediaria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "7a901c9c5da98de470bfa4ccbd0d50761145ceab941b3377bafbd027653808c8"
+        },
+        {
+          "codigo": "encceja-ef-ppl-2022-ling-029",
+          "habilidade": "entender-saude-e-habitos",
+          "secundarias": [],
+          "familia": "saude-e-corpo",
+          "dificuldade": "introdutoria",
+          "tipo": "interpretacao",
+          "revisao": "aprovada",
+          "elegivel": true,
+          "impressao": "753798e6f3685a9b240c1f924023297351143ad9026c9f755f4b57fa3fbd0341"
+        }
+      ]
+    }
+  ]
+}

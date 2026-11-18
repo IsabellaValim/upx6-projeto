@@ -19,13 +19,29 @@ public static class ConteudoEndpoints
     public sealed record DisciplinaDto(string Slug, string Nome, string? Icone, string Nivel, int TotalQuestoes);
     // Url relativa à raiz do site ("conteudo/imagens/..."), como o front usa.
     public sealed record ImagemDto(string Url, string? Descricao);
-    public sealed record VideoDto(int Id, string Titulo, string YoutubeId, int? DuracaoSegundos);
-    public sealed record TemaDto(string Slug, string Titulo, string Sobre, int TotalQuestoes, List<VideoDto> Videos);
+    public sealed record VideoDto(int Id, string Titulo, string YoutubeId, int? DuracaoSegundos, List<string> Habilidades);
+    public sealed record HabilidadeDto(string Slug, string Titulo, bool Essencial);
+    public sealed record TemaDto(string Slug, string Titulo, string Sobre, int TotalQuestoes, List<VideoDto> Videos, List<HabilidadeDto> Habilidades);
     public sealed record ProvaDto(int? Ano, string? Edicao, string? Nivel, int? Numero);
+    // Classificação pedagógica da questão (null = ainda não curada).
+    // Revisao: "pendente" | "aprovada" | "rejeitada". Elegivel já é o resultado
+    // final: aprovada + conteúdo conferindo + imagem válida + pedido do revisor.
+    public sealed record PedagogiaQuestaoDto(
+        string Habilidade, List<string> Secundarias, string Familia,
+        string? Dificuldade, string? Tipo, string Revisao, bool Elegivel, int Versao);
     // Prova = null: questão autoral (sem origem no INEP).
-    public sealed record QuestaoDto(int Id, string? TextoBase, string Enunciado, List<string> Alternativas, ProvaDto? Prova, ImagemDto? Imagem);
+    public sealed record QuestaoDto(int Id, string Codigo, string RevisaoConteudo, string? TextoBase, string Enunciado, List<string> Alternativas, ProvaDto? Prova, ImagemDto? Imagem, PedagogiaQuestaoDto? Pedagogia);
     public sealed record RespostaRequest(string? Alternativa);
-    public sealed record CorrecaoDto(bool Acertou, string RespostaCorreta, string Resolucao);
+    // RevisaoConteudo é o mesmo UUID opaco devolvido no GET, para o cliente
+    // perceber se a questão mudou no meio de uma sessão sem revelar o conteúdo.
+    public sealed record CorrecaoDto(bool Acertou, string RespostaCorreta, string Resolucao, string Codigo, string RevisaoConteudo);
+
+    // Índice leve de curadoria para o motor adaptativo: habilidades por tema e,
+    // por questão publicada, a classificação (sem enunciados, gabarito ou resolução).
+    public sealed record MatrizDto(string? Versao, bool Validada);
+    public sealed record QuestaoIndiceDto(string Codigo, string RevisaoConteudo, PedagogiaQuestaoDto? Pedagogia);
+    public sealed record TemaPedagogiaDto(string Slug, List<HabilidadeDto> Habilidades, List<QuestaoIndiceDto> Questoes);
+    public sealed record PedagogiaDto(string Disciplina, MatrizDto? Matriz, List<TemaPedagogiaDto> Temas);
 
     public static void MapConteudo(this IEndpointRouteBuilder app)
     {
@@ -33,6 +49,7 @@ public static class ConteudoEndpoints
         api.MapGet("/disciplinas", ListarDisciplinas);
         api.MapGet("/disciplinas/{disciplina}/temas", ListarTemas);
         api.MapGet("/disciplinas/{disciplina}/temas/{tema}/questoes", ListarQuestoes);
+        api.MapGet("/disciplinas/{disciplina}/pedagogia", Pedagogia);
         api.MapPost("/questoes/{id:int}/resposta", Responder);
 
         // Imagens das questões, lidas da tabela imagem. Fora de /api porque o
@@ -78,7 +95,11 @@ public static class ConteudoEndpoints
                 t.Slug, t.Titulo, t.Sobre,
                 t.Questoes.Count(q => q.Status == StatusQuestao.Publicada),
                 t.Videoaulas.OrderBy(v => v.Ordem)
-                    .Select(v => new VideoDto(v.Id, v.Titulo, v.YoutubeId, v.DuracaoSegundos))
+                    .Select(v => new VideoDto(v.Id, v.Titulo, v.YoutubeId, v.DuracaoSegundos,
+                        v.Habilidades.OrderBy(h => h.Habilidade.Ordem).Select(h => h.Habilidade.Slug).ToList()))
+                    .ToList(),
+                t.Habilidades.OrderBy(h => h.Ordem)
+                    .Select(h => new HabilidadeDto(h.Slug, h.Titulo, h.Essencial))
                     .ToList()))
             .AsSplitQuery()
             .ToListAsync(ct);
@@ -96,9 +117,24 @@ public static class ConteudoEndpoints
                         && q.Tema.Slug == tema && q.Tema.Disciplina.Slug == disciplina)
             .OrderBy(q => q.Id)
             .Select(q => new QuestaoDto(
-                q.Id, q.TextoBase, q.Enunciado, q.Alternativas,
+                q.Id, q.Codigo, q.RevisaoConteudo.ToString(), q.TextoBase, q.Enunciado, q.Alternativas,
                 q.ProvaAno == null ? null : new ProvaDto(q.ProvaAno, q.ProvaEdicao, q.ProvaNivel, q.ProvaNumero),
-                q.ImagemUrl == null ? null : new ImagemDto("conteudo/imagens/" + q.ImagemUrl, q.ImagemDescricao)))
+                q.ImagemUrl == null ? null : new ImagemDto("conteudo/imagens/" + q.ImagemUrl, q.ImagemDescricao),
+                q.Metadados == null ? null : new PedagogiaQuestaoDto(
+                    q.Metadados.HabilidadePrincipal.Slug,
+                    q.Metadados.Secundarias.Select(s => s.Habilidade.Slug).ToList(),
+                    q.Metadados.Familia,
+                    q.Metadados.Dificuldade == DificuldadeCuratorial.Introdutoria ? "introdutoria"
+                        : q.Metadados.Dificuldade == DificuldadeCuratorial.Intermediaria ? "intermediaria"
+                        : q.Metadados.Dificuldade == DificuldadeCuratorial.Avancada ? "avancada" : null,
+                    q.Metadados.Tipo,
+                    RevisaoTexto(q.Metadados.StatusRevisao),
+                    q.Metadados.StatusRevisao == StatusRevisao.Aprovada
+                        && q.Metadados.ConteudoConfere
+                        && q.Metadados.ElegibilidadeSolicitada
+                        && (q.ImagemUrl == null || db.Imagens.Any(i => i.Caminho == q.ImagemUrl)),
+                    q.Metadados.Versao)))
+            .AsSplitQuery()
             .ToListAsync(ct);
 
         // Embaralha as alternativas a cada pedido. É seguro porque a correção
@@ -116,15 +152,70 @@ public static class ConteudoEndpoints
         return TypedResults.Ok(questoes);
     }
 
+    // "pendente" | "aprovada" | "rejeitada" — texto fixo do contrato, não o nome do enum.
+    private static string RevisaoTexto(StatusRevisao s) => s switch
+    {
+        StatusRevisao.Aprovada => "aprovada",
+        StatusRevisao.Rejeitada => "rejeitada",
+        _ => "pendente",
+    };
+
+    private static async Task<Results<Ok<PedagogiaDto>, NotFound<ProblemaDto>>> Pedagogia(
+        string disciplina, EstudaeDbContext db, CancellationToken ct)
+    {
+        var d = await db.Disciplinas
+            .Where(x => x.Slug == disciplina)
+            .Select(x => new
+            {
+                Matriz = x.Pedagogia == null ? null : new MatrizDto(x.Pedagogia.VersaoMatriz, x.Pedagogia.MatrizValidada),
+                Temas = x.Temas.OrderBy(t => t.Ordem).Select(t => new TemaPedagogiaDto(
+                    t.Slug,
+                    t.Habilidades.OrderBy(h => h.Ordem)
+                        .Select(h => new HabilidadeDto(h.Slug, h.Titulo, h.Essencial)).ToList(),
+                    t.Questoes.Where(q => q.Status == StatusQuestao.Publicada)
+                        .OrderBy(q => q.Id)
+                        .Select(q => new QuestaoIndiceDto(
+                            q.Codigo, q.RevisaoConteudo.ToString(),
+                            q.Metadados == null ? null : new PedagogiaQuestaoDto(
+                                q.Metadados.HabilidadePrincipal.Slug,
+                                q.Metadados.Secundarias.Select(s => s.Habilidade.Slug).ToList(),
+                                q.Metadados.Familia,
+                                q.Metadados.Dificuldade == DificuldadeCuratorial.Introdutoria ? "introdutoria"
+                                    : q.Metadados.Dificuldade == DificuldadeCuratorial.Intermediaria ? "intermediaria"
+                                    : q.Metadados.Dificuldade == DificuldadeCuratorial.Avancada ? "avancada" : null,
+                                q.Metadados.Tipo,
+                                RevisaoTexto(q.Metadados.StatusRevisao),
+                                q.Metadados.StatusRevisao == StatusRevisao.Aprovada
+                                    && q.Metadados.ConteudoConfere
+                                    && q.Metadados.ElegibilidadeSolicitada
+                                    && (q.ImagemUrl == null || db.Imagens.Any(i => i.Caminho == q.ImagemUrl)),
+                                q.Metadados.Versao)))
+                        .ToList()))
+                    .ToList(),
+            })
+            .AsSplitQuery()
+            .SingleOrDefaultAsync(ct);
+        if (d is null)
+            return TypedResults.NotFound(new ProblemaDto($"Disciplina \"{disciplina}\" não encontrada."));
+
+        return TypedResults.Ok(new PedagogiaDto(disciplina, d.Matriz, d.Temas));
+    }
+
     private static async Task<Results<Ok<CorrecaoDto>, NotFound<ProblemaDto>, BadRequest<ProblemaDto>>> Responder(
         int id, RespostaRequest corpo, EstudaeDbContext db, CancellationToken ct)
     {
         var q = await db.Questoes
             .Where(x => x.Id == id && x.Status == StatusQuestao.Publicada)
-            .Select(x => new { x.Alternativas, x.RespostaCorreta, x.Resolucao })
+            .Select(x => new
+            {
+                x.Codigo, x.Enunciado, x.Alternativas, x.RespostaCorreta, x.Resolucao,
+                x.RevisaoConteudo,
+            })
             .SingleOrDefaultAsync(ct);
         if (q is null)
             return TypedResults.NotFound(new ProblemaDto($"Questão {id} não encontrada."));
+
+        var revisaoConteudo = q.RevisaoConteudo.ToString();
 
         // Mesma normalização do importador (trim, quebras de linha, NFC).
         var escolhida = LeitorConteudo.NormalizarTexto(corpo.Alternativa);
@@ -137,6 +228,8 @@ public static class ConteudoEndpoints
         return TypedResults.Ok(new CorrecaoDto(
             string.Equals(escolhida, q.RespostaCorreta, StringComparison.Ordinal),
             q.RespostaCorreta,
-            q.Resolucao));
+            q.Resolucao,
+            q.Codigo,
+            revisaoConteudo));
     }
 }

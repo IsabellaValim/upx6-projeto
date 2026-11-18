@@ -29,6 +29,7 @@ public static class DependencyInjection
             .UseSnakeCaseNamingConvention());
 
         services.AddScoped<ImportadorConteudo>();
+        services.AddScoped<ImportadorPedagogia>();
         services.AddScoped<GravadorImagens>();
 
         services.AddEmail(config);
