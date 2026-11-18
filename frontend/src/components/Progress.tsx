@@ -9,6 +9,7 @@ import { resultadosDaProva, subjectProgress } from '../core/stats'
 import { formatDay, pct } from '../core/utils'
 import { urls } from '../core/urls'
 import { Icon } from './Icon'
+import { chaveDe } from '../core/progresso'
 
 export function Bar({ done, total, rotulo }: { done: number; total: number; rotulo: string }) {
   return (
@@ -104,7 +105,7 @@ export function HistoryList({ limit }: { limit: number }) {
               ? (s.topics[r.topic]?.title ?? 'Tema')
               : 'Todos os temas'
         return (
-          <Link className={`history-item ${good ? 'ok' : 'bad'}`} to={urls.resultado(r.i)} key={r.i}>
+          <Link className={`history-item ${good ? 'ok' : 'bad'}`} to={urls.resultado(chaveDe(r))} key={r.i}>
             <span className="badge">
               <Icon name={good ? 'check' : 'x'} />
             </span>

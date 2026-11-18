@@ -22,5 +22,6 @@ export const urls = {
   quiz: (id: string, ti: number) => `/quiz/${id}/${ti}`,
   // Simulado: sem matéria = tela de instruções; com matéria = a prova.
   simulado: (id?: string) => (id ? `/simulado/${id}` : '/simulado'),
-  resultado: (i: number) => `/resultado/${i}`,
+  // chave da sessão (chaveDe); número = posição em results (links antigos)
+  resultado: (chave: string) => `/resultado/${encodeURIComponent(chave)}`,
 }

@@ -73,6 +73,8 @@ interface AppState {
   setNivel: (nivel: Nivel) => void
   setA11y: (patch: Partial<A11y>) => void
   pushResult: (r: Resultado) => void
+  setResults: (results: Resultado[]) => void
+  setWatchedTodos: (watched: Record<string, number>) => void
   setWatched: (key: string) => void
   clearWatched: (key: string) => void
   setQuiz: (q: QuizSession | null) => void
@@ -114,6 +116,14 @@ export const useApp = create<AppState>()((set, get) => ({
     const results = [...get().results, r]
     set({ results })
     local.set('results', results)
+  },
+  setResults: (results) => {
+    set({ results })
+    local.set('results', results)
+  },
+  setWatchedTodos: (watched) => {
+    set({ watched })
+    local.set('watched', watched)
   },
   setWatched: (key) => {
     const watched = { ...get().watched, [key]: Date.now() }

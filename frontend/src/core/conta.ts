@@ -4,17 +4,22 @@
    (nome e e-mail), guardado em estudae:user como antes.
    ========================================================== */
 import { api, ErroApi } from './api'
+import { sincronizarProgresso } from './progresso'
 import { useApp } from './store'
 import type { UsuarioApi } from '../types'
 
 export const SENHA_MINIMA = 8 // PoliticaConta do backend (8 a 128, sem regra de composição)
 
+/* Também a cada abertura do app (verificarSessao): junta o progresso do
+   aparelho com o da conta, sem segurar a tela. */
 export function entrarNaConta(u: UsuarioApi): void {
   useApp.getState().setUser({ name: u.nome, email: u.email })
+  void sincronizarProgresso()
 }
 
-/* Desloga no servidor e no aparelho. O progresso (results, watched) fica:
-   ainda mora só no navegador. Falha de rede não impede sair daqui. */
+/* Desloga no servidor e no aparelho. O progresso (results, watched) fica
+   no aparelho, como antes (decisão da fase B). Falha de rede não impede
+   sair daqui. */
 export async function sairDaConta(): Promise<void> {
   useApp.getState().setUser(null)
   try {

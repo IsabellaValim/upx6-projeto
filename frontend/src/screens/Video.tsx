@@ -7,6 +7,7 @@ import { SwitchRow } from '../components/Switch'
 import { useApp } from '../core/store'
 import { toast } from '../core/toast'
 import { urls } from '../core/urls'
+import { marcarAula } from '../core/progresso'
 
 // Embed do YouTube (nunca hospedamos o vídeo). Legenda em português quando
 // "Legendas" está ligado; enablejsapi permite mudar a velocidade.
@@ -68,7 +69,6 @@ export default function Video() {
   const a11y = useApp((s) => s.a11y)
   const setA11y = useApp((s) => s.setA11y)
   const watched = useApp((s) => s.watched)
-  const setWatched = useApp((s) => s.setWatched)
   const navigate = useNavigate()
 
   const s = subjects[id]
@@ -83,9 +83,7 @@ export default function Video() {
   const meta = [canal, `Tema ${+ti + 1} de ${s.topics.length}`, l.min && `${l.min} min`].filter(Boolean)
 
   // Concluir a aula conta como atividade (stats.ts).
-  const marcar = () => {
-    if (!watched[key]) setWatched(key)
-  }
+  const marcar = () => marcarAula(key)
 
   const alternar = (k: 'subs' | 'slow') => {
     setA11y({ [k]: !a11y[k] })
