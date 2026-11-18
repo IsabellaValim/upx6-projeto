@@ -89,6 +89,12 @@ services:
     container_name: estudae-api
     environment:
       <<: *conexao
+      # Conta do aluno (ver .env.example). Sem RESEND_API_KEY o e-mail vai so
+      # para o log e o cadastro fica FECHADO (o site segue so com visitante).
+      App__UrlPublica: ${URL_PUBLICA:-http://localhost:8080}
+      Email__Provedor: ${EMAIL_PROVEDOR:-log}
+      Email__Remetente: ${EMAIL_REMETENTE:-}
+      Email__ResendApiKey: ${RESEND_API_KEY:-}
     ports:
       # So em 127.0.0.1: em producao quem fica na frente e o proxy (Caddy).
       - "127.0.0.1:${API_PORT:-8080}:8080"

@@ -8,6 +8,7 @@ import { resultadosDaProva } from '../core/stats'
 import { formatDay, pct } from '../core/utils'
 import { urls } from '../core/urls'
 import { Icon } from './Icon'
+import { chaveDe } from '../core/progresso'
 
 export function Bar({
   done,
@@ -113,7 +114,7 @@ export function HistoryList({ limit }: { limit: number }) {
         return (
           <Link
             className={`history-item ${good ? 'ok' : 'bad'}`}
-            to={urls.resultado(r.i)}
+            to={urls.resultado(chaveDe(r))}
             key={r.i}
           >
             <span className="badge">

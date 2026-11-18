@@ -17,6 +17,7 @@ import {
 } from 'react-router-dom'
 import { carregarCatalogo } from './core/catalogo'
 import { iniciarCaptura } from './core/capturaAprendizagem'
+import { carregarOpcoes, verificarSessao } from './core/conta'
 import { applyA11y, useApp } from './core/store'
 import { urls } from './core/urls'
 import { Toaster } from './components/Toaster'
@@ -24,6 +25,10 @@ import Loading from './screens/Loading'
 import BoasVindas from './screens/BoasVindas'
 import Login from './screens/Login'
 import Cadastro from './screens/Cadastro'
+import VerifiqueEmail from './screens/VerifiqueEmail'
+import ConfirmarEmail from './screens/ConfirmarEmail'
+import EsqueciSenha from './screens/EsqueciSenha'
+import RedefinirSenha from './screens/RedefinirSenha'
 import Nivel from './screens/Nivel'
 import Home from './screens/Home'
 import Area from './screens/Area'
@@ -40,6 +45,16 @@ import Acessibilidade from './screens/Acessibilidade'
 function A11ySync() {
   const a11y = useApp((s) => s.a11y)
   useEffect(() => applyA11y(a11y), [a11y])
+  return null
+}
+
+/* Conta: confere o cookie e pergunta se o cadastro está aberto, uma vez
+   no boot. Não segura a tela (ver core/conta.ts). */
+function SessaoSync() {
+  useEffect(() => {
+    void verificarSessao()
+    void carregarOpcoes()
+  }, [])
   return null
 }
 
@@ -132,6 +147,10 @@ function AppRoutes() {
         <Route path="/boas-vindas" element={<BoasVindas />} />
         <Route path="/login" element={<Login />} />
         <Route path="/cadastro" element={<Cadastro />} />
+        <Route path="/verifique-email" element={<VerifiqueEmail />} />
+        <Route path="/confirmar-email" element={<ConfirmarEmail />} />
+        <Route path="/esqueci-senha" element={<EsqueciSenha />} />
+        <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
         {/* Legados */}
         <Route path="/videos/:id" element={<LegadoArea />} />
@@ -150,7 +169,7 @@ function AppRoutes() {
             <Route path="/estudo/:id" element={<Estudo />} />
             <Route path="/simulado" element={<Simulado />} />
             <Route path="/simulado/:id" element={<Simulado />} />
-            <Route path="/resultado/:idx" element={<Resultado />} />
+            <Route path="/resultado/:id" element={<Resultado />} />
             <Route path="/aprendizado" element={<Aprendizado />} />
             {/* As duas visões antigas viraram a tela única Meu aprendizado. */}
             <Route
@@ -178,6 +197,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <A11ySync />
+      <SessaoSync />
       <CatalogoGate />
     </BrowserRouter>
   )

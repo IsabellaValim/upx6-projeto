@@ -149,11 +149,12 @@ export interface QuestaoItem {
 // ---------- Estado persistido (localStorage estudae:*) ----------
 export type Nivel = 'fundamental' | 'medio'
 
+// Visitante: { name: 'Visitante', guest: true }. Conta: nome e e-mail da API
+// (a sessão de verdade é o cookie; isto é só o espelho para as telas).
 export interface User {
   name: string
   guest?: boolean
-  login?: string | null
-  guardian?: string | null
+  email?: string
 }
 
 export type FontSize = 'padrao' | 'grande' | 'extragrande'
@@ -192,6 +193,12 @@ export interface Resultado {
   treino?: boolean // simulado com questões autorais
   usedMs?: number
   limitMs?: number
+  // Progresso na conta (core/progresso.ts). chave: única por aluno, gerada
+  // aqui (resultado antigo sem chave usa "local:<date>", ver chaveDe).
+  chave?: string
+  remoto?: number // id da sessão na API: já está na conta
+  incompleto?: boolean // veio da API só com o resumo; a correção carrega ao abrir
+  semSync?: boolean // a API recusou (ou não dá para converter): não reenvia
 }
 
 // ---------- Sessões voláteis (não persistidas) ----------
@@ -227,4 +234,90 @@ export interface SimuladoSession {
   entrega?: EntregaSimulado | null
   captura?: SessaoAprendizagem | null
   finished: boolean
+}
+
+// ---------- Conta (docs/api.md, "Conta do aluno") ----------
+export interface UsuarioApi {
+  nome: string
+  email: string
+}
+
+export interface OpcoesContaApi {
+  cadastroAberto: boolean
+}
+
+// ---------- Progresso (docs/api.md, "Progresso do aluno") ----------
+export interface RespostaSessaoApi {
+  questaoId: number
+  alternativa: string | null // null = em branco (só no simulado)
+}
+
+export interface SessaoEnvioApi {
+  chave: string
+  tipo: 'licao' | 'simulado'
+  disciplina: string
+  tema: string | null
+  treino: boolean
+  iniciadaEm: string
+  concluidaEm: string
+  tempoLimiteSeg: number | null
+  respostas: RespostaSessaoApi[]
+}
+
+export interface TentativaResumoApi {
+  questaoId: number
+  tema: string
+  acertou: boolean
+  emBranco: boolean
+}
+
+export interface SessaoResumoApi {
+  id: number
+  chave: string
+  tipo: 'licao' | 'simulado'
+  disciplina: string
+  tema: string | null
+  treino: boolean
+  iniciadaEm: string
+  concluidaEm: string
+  tempoLimiteSeg: number | null
+  acertos: number
+  total: number
+  tentativas: TentativaResumoApi[]
+}
+
+export interface AulaApi {
+  videoaulaId: number
+  assistidaEm: string
+}
+
+export interface ProgressoApi {
+  sessoes: SessaoResumoApi[]
+  aulas: AulaApi[]
+}
+
+export interface TentativaDetalheApi {
+  questaoId: number
+  ordem: number
+  tema: string
+  textoBase: string | null
+  enunciado: string
+  alternativas: string[]
+  imagem: ImagemApi | null
+  escolhida: string | null
+  respostaCorreta: string
+  resolucao: string
+  acertou: boolean
+}
+
+export interface SessaoDetalheApi extends Omit<SessaoResumoApi, 'tentativas'> {
+  questoes: TentativaDetalheApi[]
+}
+
+export interface ImportacaoApi {
+  sessoesNovas: number
+  sessoesRepetidas: number
+  sessoesIgnoradas: { posicao: number; chave: string | null; erro: string }[]
+  aulasNovas: number
+  aulasIgnoradas: number
 }

@@ -1,9 +1,12 @@
 # Modelo de dados: Estudaê
 
-> **Status:** v4 (10/11/2026). Existem as tabelas do Identity (migration `InicialIdentity`) e as
+> **Status:** v5 (17/11/2026). Existem as tabelas do Identity (migration `InicialIdentity`) e as
 > de conteúdo: `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`) e `imagem`
-> (migration `ImagensNoBanco`).
-> `tentativa` e `aula_assistida` continuam só no papel: login e tentativas ficaram fora do MVP.
+> (migration `ImagensNoBanco`). Para a conta do aluno (10/11/2026), `chave_protecao` (migration
+> `ChavesProtecao`), com as chaves de Data Protection que assinam o cookie e os links de e-mail.
+> Para o progresso do aluno (fase C, 17/11/2026): `sessao_estudo`, `tentativa` e
+> `aula_assistida` (migration `Progresso`). Ainda sem endpoint: a API e a migração do
+> `localStorage` são a fase D.
 > As tabelas nascem por migration, uma de cada vez, conforme cada ticket precisar delas.
 > O diagrama fica em `ModelodeDados.svg`, que **ainda é o da v1** (sem `codigo`): o bloco Mermaid
 > abaixo é a versão atual. Para regerar: colar o bloco em mermaid.live e exportar SVG.
@@ -13,12 +16,15 @@
 > escopo do MVP e a migration `Conteudo`; v3 (10/11) `disciplina.nivel`,
 > `questao.imagem_descricao` e uso de `questao.imagem_url` (migration `NivelEImagem`); v4 (10/11)
 > tabela `imagem` com os bytes das imagens, e o conteúdo passa a morar só no banco (migration
-> `ImagensNoBanco`).
+> `ImagensNoBanco`); v5 (17/11) progresso: `sessao_estudo` (lição ou simulado) dona das
+> `tentativa`s, `aula_assistida` como marca única (migration `Progresso`); adendo (17/11)
+`sessao_estudo.chave`, gerada pelo front para reenviar sem duplicar (migration `ChaveSessao`).
 
 ## O que o sistema guarda
 
 - **Conteúdo** (cadastrado por administradores): disciplinas, temas, vídeo-aulas e questões.
-- **Progresso do aluno** (só para quem tem conta): tentativas de questões e aulas assistidas.
+- **Progresso do aluno** (só para quem tem conta): lições e simulados concluídos (sessões), as
+  respostas de cada um (tentativas) e as aulas marcadas como vistas.
 - **Visitante** usa o site sem conta e **não grava nada**, então não existe no banco.
 
 ## Glossário
@@ -29,7 +35,8 @@
 | Tema | Assunto dentro de uma disciplina | Porcentagem e proporção, Interpretação de texto |
 | Questão | Pergunta de múltipla escolha de uma prova anterior | |
 | Vídeo-aula | Vídeo do YouTube ligado a um tema | |
-| Tentativa | Uma resposta dada por um aluno a uma questão | |
+| Sessão de estudo | Uma lição (um tema) ou um simulado (a disciplina toda) que o aluno terminou | Lição de Equações, 5 questões |
+| Tentativa | Uma resposta dada por um aluno a uma questão, dentro de uma sessão | |
 
 ## Diagrama
 
@@ -39,7 +46,10 @@ erDiagram
     TEMA ||--o{ VIDEOAULA : "tem"
     TEMA ||--o{ QUESTAO : "classifica"
     IMAGEM |o--o{ QUESTAO : "caminho = imagem_url (sem FK)"
-    USUARIO ||--o{ TENTATIVA : "faz"
+    USUARIO ||--o{ SESSAO_ESTUDO : "faz"
+    DISCIPLINA ||--o{ SESSAO_ESTUDO : "de"
+    TEMA |o--o{ SESSAO_ESTUDO : "licao de"
+    SESSAO_ESTUDO ||--|{ TENTATIVA : "tem"
     QUESTAO ||--o{ TENTATIVA : "recebe"
     USUARIO ||--o{ AULA_ASSISTIDA : "marca"
     VIDEOAULA ||--o{ AULA_ASSISTIDA : "e marcada"
@@ -105,11 +115,25 @@ erDiagram
         string nome
     }
 
+    SESSAO_ESTUDO {
+        bigint id PK
+        string usuario_id FK "cascade"
+        string chave "do front; unica por aluno"
+        string tipo "licao ou simulado (CHECK)"
+        int disciplina_id FK
+        int tema_id FK "so na licao (CHECK)"
+        bool treino "simulado com autorais"
+        datetime iniciada_em "UTC"
+        datetime concluida_em "UTC"
+        int tempo_limite_seg "so simulado"
+    }
+
     TENTATIVA {
         bigint id PK
-        string usuario_id FK
+        bigint sessao_estudo_id FK "cascade"
         int questao_id FK
-        string alternativa_escolhida "texto"
+        smallint ordem "posicao na sessao"
+        string alternativa_escolhida "texto; null = em branco"
         bool acertou "gravado na hora da resposta"
         datetime respondida_em "UTC"
     }
@@ -153,10 +177,22 @@ Principais campos:
   por outra pessoa. O importador grava como `rascunho` por padrão e como `publicada` só com a
   flag `--publicar`.
 
-**Tentativa:** cada resposta dada por um aluno. **Todas** são guardadas, inclusive repetições
-da mesma questão. O desempenho (% de acertos por tema ou disciplina) é **calculado** a partir daqui.
+**Sessão de estudo:** uma lição (`tipo = 'licao'`, sempre com `tema_id`) ou um simulado
+(`tipo = 'simulado'`, sem tema; `tempo_limite_seg` é o relógio dado e `treino` diz que foi
+montado com questões autorais). É o que as telas de histórico e Resultado mostram. **Só sessão
+concluída é gravada**, como no front, onde a sessão em andamento não persiste: por isso
+`concluida_em` é obrigatória. O tempo usado é `concluida_em - iniciada_em`. A `chave` é gerada
+pelo front (única por aluno, com `CHECK` de formato): reenviar a mesma sessão, ou importar o
+`localStorage` duas vezes, não duplica.
 
-**Aula assistida:** liga um aluno a uma vídeo-aula que ele marcou como vista.
+**Tentativa:** cada resposta dentro de uma sessão, na `ordem` em que apareceu. **Todas** são
+guardadas, inclusive repetições da mesma questão em sessões diferentes (dentro da mesma sessão,
+não). `alternativa_escolhida` nula = deixada em branco no simulado (`acertou = false`). Não tem
+`usuario_id`: o dono vem da sessão. Acertos, total, % por tema, tema mais fraco e "dias seguidos"
+são **calculados** a partir daqui e das datas; nada derivado é guardado.
+
+**Aula assistida:** liga um aluno a uma vídeo-aula que ele marcou como vista. Uma marca só, sem
+histórico: desmarcar apaga a linha (como o liga/desliga da tela).
 
 **Usuário:** a tabela `usuario` (Identity). `email` e o `id` vêm do Identity; `nome` **não é
 coluna padrão do Identity**: é uma propriedade nossa numa classe de usuário que estende
@@ -178,6 +214,15 @@ migration (`InicialIdentity`).
 | `AspNetUserLogins` | `usuario_login` |
 | `AspNetUserTokens` | `usuario_token` |
 | `AspNetRoleClaims` | `papel_claim` |
+| `DataProtectionKeys` (não é do Identity) | `chave_protecao` |
+
+`chave_protecao` guarda as chaves do Data Protection do ASP.NET Core, que assinam e cifram o
+cookie de sessão e os tokens dos links de e-mail (confirmar e-mail, redefinir senha). Sem ela,
+as chaves ficariam num arquivo dentro do container e sumiriam a cada deploy: todo mundo seria
+deslogado e os links já enviados deixariam de funcionar. As chaves são gravadas **sem cifra**
+(aviso `No XML encryptor configured` no log): quem lê essa tabela consegue forjar sessões, mas
+quem lê o banco já tem acesso a tudo. Cifrar com certificado fica para quando houver mais de uma
+pessoa com acesso ao banco de produção.
 
 - **As sete tabelas ficam, mesmo as que ainda não usamos.** Isso foi verificado com um
   experimento (fase 3), tirando cada grupo do modelo com `Ignore<>()`. Em nenhum caso o modelo
@@ -223,7 +268,13 @@ migration (`InicialIdentity`).
 | `questao.codigo` único | Sem uma chave natural, rodar o importador duas vezes duplicaria tudo; o `id` muda entre ambientes |
 | Vídeo único por (`tema_id`, `youtube_id`) | Mesmo motivo, para os vídeos |
 | FKs de conteúdo com `ON DELETE RESTRICT` | Apagar um tema com questões dá erro, em vez de levar as questões junto sem aviso |
-| Chaves `int` no conteúdo, `bigint` em tentativas, padrão do Identity no usuário | Simples e legível; dados pessoais protegidos por dono, não por segredo |
+| Sessão de estudo dona das tentativas | O histórico e o Resultado são por lição ou simulado (tempo, limite, "treino"); tentativa solta não guarda isso |
+| Tentativa sem `usuario_id` | O dono vem da sessão: um dado só, sem risco de os dois discordarem |
+| Só sessão concluída é gravada | É o que o front faz hoje; sessão pela metade não tem resultado para mostrar |
+| Regras do progresso também no banco (`CHECK`s, únicos) | Lição sem tema, simulado com tema ou questão repetida na sessão não entram nem por bug da API |
+| FKs do progresso: `CASCADE` do usuário e da sessão, `RESTRICT` do conteúdo | Excluir a conta apaga tudo do aluno (LGPD); conteúdo com progresso de alguém não some por engano |
+| Aula assistida como marca única | Decisão de 17/11/2026: a tela é um liga/desliga, histórico não teria uso |
+| Chaves `int` no conteúdo, `bigint` em sessões e tentativas, padrão do Identity no usuário | Simples e legível; dados pessoais protegidos por dono, não por segredo |
 
 ## Regras e cuidados
 
@@ -231,8 +282,16 @@ migration (`InicialIdentity`).
   **exatamente igual a uma delas**. Validar isso no cadastro e no importador.
 - **Embaralhar:** só é seguro se nenhuma alternativa se referir a outra por posição
   ("as alternativas A e B estão corretas"). Se isso aparecer, a questão precisa de tratamento à parte.
-- **Dados do aluno:** todo endpoint de tentativas e aulas assistidas filtra pelo **usuário logado**,
-  nunca pelo id que vem na URL.
+- **Dados do aluno:** todo endpoint de sessões, tentativas e aulas assistidas filtra pelo
+  **usuário logado**, nunca pelo id que vem na URL.
+- **Restrições do progresso no banco:** `ck_sessao_estudo_tipo`, `ck_sessao_estudo_tema` (lição ⇔
+  tem tema), `ck_sessao_estudo_tempo_limite` (só simulado, > 0), `ck_sessao_estudo_datas`
+  (`concluida_em >= iniciada_em`), `ck_sessao_estudo_chave` (1 a 64 de `[A-Za-z0-9_.:-]`),
+  `ck_tentativa_ordem` (> 0); únicos (`usuario_id`, `chave`), (`sessao_estudo_id`,
+  `questao_id`) e (`sessao_estudo_id`, `ordem`); índice (`usuario_id`, `concluida_em`) para o
+  histórico. Testes em `tests/Estudae.Tests/Api/ProgressoModeloTests.cs`.
+- **"Dias seguidos":** as datas ficam em UTC; o dia de cada sessão é calculado no fuso do aluno
+  (no front, ou com o fuso no pedido, na fase D).
 - **Importador de conteúdo:** referencia disciplina e tema pelo `slug`, para o mesmo arquivo funcionar
   em desenvolvimento e em produção, onde os `id` serão diferentes.
 - **Datas** sempre em UTC.
@@ -286,8 +345,8 @@ migration (`InicialIdentity`).
 - Quatro temas por disciplina (ajustáveis só no JSON de conteúdo):
   - **Português:** `interpretacao-de-texto`, `generos-textuais`, `variacao-linguistica`, `gramatica`.
   - **Matemática:** `porcentagem-e-proporcao`, `equacoes`, `geometria-plana`, `estatistica-basica`.
-- Quiz por tema. Sem login e sem gravação de tentativas: `tentativa` e `aula_assistida` ficam
-  para depois.
+- Quiz por tema. Sem login e sem gravação de tentativas no MVP; as tabelas do progresso
+  vieram depois, na fase C (17/11/2026).
 
 ## Fora do escopo agora
 
@@ -298,7 +357,7 @@ migration (`InicialIdentity`).
 ## Pontos a confirmar
 
 - [ ] `videoaula.tipo`: a tela precisa distinguir tipos (introdutório, aprofundando...) ou isso pode sair?
-- [ ] `aula_assistida`: basta marcar uma vez por aluno (modelo atual), ou queremos histórico de cada vez que ele assiste?
+- [x] `aula_assistida`: uma marca por aluno e vídeo, sem histórico (17/11/2026).
 - [x] `questao.imagem_url`: recortes na tabela `imagem`, servidos pela API (10/11/2026).
 - [ ] `prova_edicao`: texto ou número? Conferir como o INEP identifica as edições.
 - [ ] Termos de uso das provas do INEP para reaproveitar as questões.

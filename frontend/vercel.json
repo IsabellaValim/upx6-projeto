@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "https://estudae-pdq7.onrender.com/api/:path*" },
+    { "source": "/conteudo/:path*", "destination": "https://estudae-pdq7.onrender.com/conteudo/:path*" },
+    { "source": "/((?!assets/).*)", "destination": "/index.html" }
+  ]
+}

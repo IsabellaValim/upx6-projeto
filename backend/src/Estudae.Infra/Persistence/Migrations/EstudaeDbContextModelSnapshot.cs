@@ -506,6 +506,162 @@ namespace Estudae.Infra.Persistence.Migrations
                     b.ToTable("videoaula_habilidade", (string)null);
                 });
 
+            modelBuilder.Entity("Estudae.Domain.Progresso.AulaAssistida", b =>
+                {
+                    b.Property<string>("UsuarioId")
+                        .HasColumnType("text")
+                        .HasColumnName("usuario_id");
+
+                    b.Property<int>("VideoaulaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("videoaula_id");
+
+                    b.Property<DateTime>("AssistidaEm")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("assistida_em");
+
+                    b.HasKey("UsuarioId", "VideoaulaId")
+                        .HasName("pk_aula_assistida");
+
+                    b.HasIndex("VideoaulaId")
+                        .HasDatabaseName("ix_aula_assistida_videoaula_id");
+
+                    b.ToTable("aula_assistida", (string)null);
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Progresso.SessaoEstudo", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("Chave")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("chave");
+
+                    b.Property<DateTime>("ConcluidaEm")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("concluida_em");
+
+                    b.Property<int>("DisciplinaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("disciplina_id");
+
+                    b.Property<DateTime>("IniciadaEm")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("iniciada_em");
+
+                    b.Property<int?>("TemaId")
+                        .HasColumnType("integer")
+                        .HasColumnName("tema_id");
+
+                    b.Property<int?>("TempoLimiteSeg")
+                        .HasColumnType("integer")
+                        .HasColumnName("tempo_limite_seg");
+
+                    b.Property<string>("Tipo")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("tipo");
+
+                    b.Property<bool>("Treino")
+                        .HasColumnType("boolean")
+                        .HasColumnName("treino");
+
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("usuario_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_sessao_estudo");
+
+                    b.HasIndex("DisciplinaId")
+                        .HasDatabaseName("ix_sessao_estudo_disciplina_id");
+
+                    b.HasIndex("TemaId")
+                        .HasDatabaseName("ix_sessao_estudo_tema_id");
+
+                    b.HasIndex("UsuarioId", "Chave")
+                        .IsUnique()
+                        .HasDatabaseName("ix_sessao_estudo_usuario_id_chave");
+
+                    b.HasIndex("UsuarioId", "ConcluidaEm")
+                        .HasDatabaseName("ix_sessao_estudo_usuario_id_concluida_em");
+
+                    b.ToTable("sessao_estudo", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_sessao_estudo_chave", "chave ~ '^[A-Za-z0-9_.:-]{1,64}$'");
+
+                            t.HasCheckConstraint("ck_sessao_estudo_datas", "concluida_em >= iniciada_em");
+
+                            t.HasCheckConstraint("ck_sessao_estudo_tema", "(tipo = 'licao') = (tema_id IS NOT NULL)");
+
+                            t.HasCheckConstraint("ck_sessao_estudo_tempo_limite", "tempo_limite_seg IS NULL OR (tipo = 'simulado' AND tempo_limite_seg > 0)");
+
+                            t.HasCheckConstraint("ck_sessao_estudo_tipo", "tipo IN ('licao', 'simulado')");
+                        });
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Progresso.Tentativa", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("Acertou")
+                        .HasColumnType("boolean")
+                        .HasColumnName("acertou");
+
+                    b.Property<string>("AlternativaEscolhida")
+                        .HasColumnType("text")
+                        .HasColumnName("alternativa_escolhida");
+
+                    b.Property<short>("Ordem")
+                        .HasColumnType("smallint")
+                        .HasColumnName("ordem");
+
+                    b.Property<int>("QuestaoId")
+                        .HasColumnType("integer")
+                        .HasColumnName("questao_id");
+
+                    b.Property<DateTime>("RespondidaEm")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("respondida_em");
+
+                    b.Property<long>("SessaoEstudoId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("sessao_estudo_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_tentativa");
+
+                    b.HasIndex("QuestaoId")
+                        .HasDatabaseName("ix_tentativa_questao_id");
+
+                    b.HasIndex("SessaoEstudoId", "Ordem")
+                        .IsUnique()
+                        .HasDatabaseName("ix_tentativa_sessao_estudo_id_ordem");
+
+                    b.HasIndex("SessaoEstudoId", "QuestaoId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_tentativa_sessao_estudo_id_questao_id");
+
+                    b.ToTable("tentativa", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_tentativa_ordem", "ordem > 0");
+                        });
+                });
+
             modelBuilder.Entity("Estudae.Infra.Identity.Usuario", b =>
                 {
                     b.Property<string>("Id")
@@ -590,6 +746,29 @@ namespace Estudae.Infra.Persistence.Migrations
                         .HasDatabaseName("ix_usuario_normalized_user_name");
 
                     b.ToTable("usuario", (string)null);
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.DataProtection.EntityFrameworkCore.DataProtectionKey", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("FriendlyName")
+                        .HasColumnType("text")
+                        .HasColumnName("friendly_name");
+
+                    b.Property<string>("Xml")
+                        .HasColumnType("text")
+                        .HasColumnName("xml");
+
+                    b.HasKey("Id")
+                        .HasName("pk_chave_protecao");
+
+                    b.ToTable("chave_protecao", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -879,6 +1058,73 @@ namespace Estudae.Infra.Persistence.Migrations
                     b.Navigation("Videoaula");
                 });
 
+            modelBuilder.Entity("Estudae.Domain.Progresso.AulaAssistida", b =>
+                {
+                    b.HasOne("Estudae.Infra.Identity.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_aula_assistida_usuario_usuario_id");
+
+                    b.HasOne("Estudae.Domain.Conteudo.Videoaula", "Videoaula")
+                        .WithMany()
+                        .HasForeignKey("VideoaulaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_aula_assistida_videoaula_videoaula_id");
+
+                    b.Navigation("Videoaula");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Progresso.SessaoEstudo", b =>
+                {
+                    b.HasOne("Estudae.Domain.Conteudo.Disciplina", "Disciplina")
+                        .WithMany()
+                        .HasForeignKey("DisciplinaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_sessao_estudo_disciplina_disciplina_id");
+
+                    b.HasOne("Estudae.Domain.Conteudo.Tema", "Tema")
+                        .WithMany()
+                        .HasForeignKey("TemaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_sessao_estudo_tema_tema_id");
+
+                    b.HasOne("Estudae.Infra.Identity.Usuario", null)
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_sessao_estudo_usuario_usuario_id");
+
+                    b.Navigation("Disciplina");
+
+                    b.Navigation("Tema");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Progresso.Tentativa", b =>
+                {
+                    b.HasOne("Estudae.Domain.Conteudo.Questao", "Questao")
+                        .WithMany()
+                        .HasForeignKey("QuestaoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_tentativa_questao_questao_id");
+
+                    b.HasOne("Estudae.Domain.Progresso.SessaoEstudo", "SessaoEstudo")
+                        .WithMany("Tentativas")
+                        .HasForeignKey("SessaoEstudoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_tentativa_sessao_estudo_sessao_estudo_id");
+
+                    b.Navigation("Questao");
+
+                    b.Navigation("SessaoEstudo");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -972,6 +1218,11 @@ namespace Estudae.Infra.Persistence.Migrations
             modelBuilder.Entity("Estudae.Domain.Conteudo.Videoaula", b =>
                 {
                     b.Navigation("Habilidades");
+                });
+
+            modelBuilder.Entity("Estudae.Domain.Progresso.SessaoEstudo", b =>
+                {
+                    b.Navigation("Tentativas");
                 });
 #pragma warning restore 612, 618
         }

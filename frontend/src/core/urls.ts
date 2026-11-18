@@ -5,6 +5,11 @@ export const urls = {
   boasVindas: '/boas-vindas',
   login: '/login',
   cadastro: '/cadastro',
+  // Conta: as duas primeiras são os links dos e-mails (backend LinksConta.cs).
+  confirmarEmail: '/confirmar-email',
+  redefinirSenha: '/redefinir-senha',
+  esqueciSenha: '/esqueci-senha',
+  verifiqueEmail: '/verifique-email', // depois do cadastro
   home: '/home',
   nivel: '/nivel', // escolha da prova (Fundamental ou Médio)
   // A única visão de evolução; /progresso e /preparacao redirecionam para cá.
@@ -20,5 +25,6 @@ export const urls = {
   estudo: (id: string) => `/estudo/${id}`,
   // Simulado: sem matéria = tela de instruções; com matéria = a prova.
   simulado: (id?: string) => (id ? `/simulado/${id}` : '/simulado'),
-  resultado: (i: number) => `/resultado/${i}`,
+  // chave da sessão (chaveDe); número = posição em results (links antigos)
+  resultado: (chave: string) => `/resultado/${encodeURIComponent(chave)}`,
 }

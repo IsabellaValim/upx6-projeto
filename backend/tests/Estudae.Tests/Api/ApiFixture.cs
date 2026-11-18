@@ -1,10 +1,14 @@
+using Estudae.Api.Conta;
 using Estudae.Domain.Conteudo;
+using Estudae.Infra.Email;
 using Estudae.Infra.Importacao;
 using Estudae.Infra.Persistence;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Npgsql;
 
 namespace Estudae.Tests.Api;
@@ -20,6 +24,8 @@ public sealed class ApiFixture : IAsyncLifetime
 
     public WebApplicationFactory<Program> Factory { get; private set; } = null!;
     public HttpClient Client { get; private set; } = null!;
+    // E-mails "enviados" pela API durante os testes (nada sai de verdade).
+    public EmailsMemoria Emails { get; } = new();
     private string _conexao = null!;
 
     public async Task InitializeAsync()
@@ -42,7 +48,18 @@ public sealed class ApiFixture : IAsyncLifetime
         await using (var db = NovoContexto())
             await db.Database.MigrateAsync(); // cria o banco vazio e aplica todas as migrations
 
-        Factory = new WebApplicationFactory<Program>();
+        Factory = new WebApplicationFactory<Program>().WithWebHostBuilder(b => b.ConfigureTestServices(s =>
+        {
+            s.RemoveAll<IEnviadorEmail>();
+            s.AddSingleton<IEnviadorEmail>(Emails);
+            // Todos os testes saem do mesmo "IP": sem isto, o limite por IP
+            // derrubaria os fluxos de conta. O limite tem testes próprios.
+            s.Configure<OpcoesLimites>(o =>
+            {
+                o.EnvioEmailPorIp = 100_000;
+                o.ContaPorIpPorMinuto = 100_000;
+            });
+        }));
         Client = Factory.CreateClient();
 
         // Conteúdo: o exemplo da documentação, pelo próprio importador, publicado...

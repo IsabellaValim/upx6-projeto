@@ -31,6 +31,7 @@ import { useApp } from '../core/store'
 import type { QuestaoItem, QuizSession, RespostaApi } from '../types'
 import { LETTERS } from '../core/utils'
 import { urls } from '../core/urls'
+import { registrarResultado } from '../core/progresso'
 
 const TAMANHO_LICAO = 5
 
@@ -195,7 +196,6 @@ function QuizLoader({
 export function QuizQuestao({ quiz }: { quiz: QuizSession }) {
   const subjects = useApp((s) => s.subjects)
   const setQuiz = useApp((s) => s.setQuiz)
-  const pushResult = useApp((s) => s.pushResult)
   const speakOn = useApp((s) => s.a11y.speak)
   const navigate = useNavigate()
 
@@ -306,7 +306,7 @@ export function QuizQuestao({ quiz }: { quiz: QuizSession }) {
         : correct < items.length
           ? q.topic
           : null
-      pushResult({
+      const chave = registrarResultado({
         v: q.estudo ? 4 : 3, // 3 = lição por tema; 4 = rodada multi-tema
         subject: q.subject,
         ...(q.estudo ? {} : { topic: q.topic }),
@@ -317,7 +317,7 @@ export function QuizQuestao({ quiz }: { quiz: QuizSession }) {
         weakTopic: fraco,
       })
       setQuiz({ ...q, finished: true })
-      navigate(urls.resultado(useApp.getState().results.length - 1))
+      navigate(urls.resultado(chave))
     } finally {
       finishingRef.current = false
     }

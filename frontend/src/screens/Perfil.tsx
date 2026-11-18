@@ -7,6 +7,7 @@ import { Screen } from '../components/Screen'
 import { AjusteRow } from '../components/Switch'
 import { NIVEIS } from '../core/catalogo'
 import { resetAprendizagem } from '../core/capturaAprendizagem'
+import { sairDaConta } from '../core/conta'
 import { useApp } from '../core/store'
 import { streakDays } from '../core/stats'
 import { toast } from '../core/toast'
@@ -22,8 +23,11 @@ export default function Perfil() {
   useApp((s) => s.results)
 
   const streak = streakDays()
+  // Visitante: só volta às boas-vindas (para entrar ou criar conta).
+  // Conta: desloga também no servidor. O progresso fica neste aparelho.
   const sair = () => {
-    setUser(null)
+    if (user.guest) setUser(null)
+    else void sairDaConta()
     navigate(urls.boasVindas)
   }
 
@@ -68,7 +72,7 @@ export default function Perfil() {
           <small className="profile-note">
             {user.guest
               ? 'Estudando sem conta — o progresso fica salvo neste aparelho.'
-              : (user.login ?? '')}
+              : (user.email ?? '')}
           </small>
           <span className="streak">
             <Icon name="flame" />

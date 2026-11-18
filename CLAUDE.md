@@ -8,17 +8,6 @@ Acessibilidade é requisito central, não um extra: textos grandes, poucos
 cliques, alto contraste, leitura em voz alta. Qualquer mudança de UI deve
 preservar isso.
 
-## Combinados de trabalho
-
-Projeto de estudante, feito principalmente para aprender — em especial
-Docker, deploy e CI/CD. Ao trabalhar aqui:
-
-- **Explicar o conceito antes de usá-lo.**
-- **Mostrar os comandos antes de rodá-los.**
-- **Uma fase por vez**, e esperar o "pode seguir" entre uma fase e outra.
-- **Decisões de modelagem e design:** a pessoa rascunha a própria versão
-  primeiro; depois comparamos com a minha.
-
 ## Estado atual do repositório
 
 - **Meta:** MVP até 09/11/2026 (segunda à noite). Deploy na segunda à
@@ -47,7 +36,15 @@ Docker, deploy e CI/CD. Ao trabalhar aqui:
   essa branch traz os dois.
 - **Backend:** fases 1 a 5 concluídas, mais o primeiro ticket de conteúdo:
   tabelas de conteúdo, importador, endpoints de leitura e correção,
-  Dockerfile, compose completo e CI. Fora do MVP: login e tentativas.
+  Dockerfile, compose completo e CI.
+- **Conta do aluno** (10/11/2026, branch `feat/autenticacao`): login com
+  conta entrou no escopo. Fase A (backend) pronta; ver "Conta do aluno"
+  abaixo. F (Resend em produção, domínio `estudaeapp.com.br`) e B (front de
+  login, 16/11/2026, branch `feat/login-front`) prontas. C (modelagem do
+  progresso, 17/11/2026, branch `feat/progresso-modelo`) pronta: só tabelas,
+  sem endpoint (ver "Progresso no banco"). D e E (17/11/2026, branch
+  `feat/progresso-api`): API do progresso (ver "API do progresso") e front
+  sincronizando com ela (ver "Progresso na conta", no Frontend).
 - PRs já mergeados em `main`: #1 (componentização do frontend), #2
   (Postgres de dev), #3 (modelo de dados) e #4 (walking skeleton). O MVP do
   backend está na branch `feat/dockerfile-compose`.
@@ -63,7 +60,9 @@ navigation, responsive); o app monta em `#app` e os SVGs da marca moram em
 `frontend/public/branding/`.
 
 - **Roteamento:** `src/App.tsx` — `<BrowserRouter>` com `<Routes>`. Públicas:
-  `/boas-vindas`, `/login`, `/cadastro`. `RequireUser` guarda o resto;
+  `/boas-vindas`, `/login`, `/cadastro` e as de conta (`/verifique-email`,
+  `/confirmar-email` e `/redefinir-senha` — estas duas são os links dos
+  e-mails —, `/esqueci-senha`). `RequireUser` guarda o resto;
   `RequireNivel` exige a prova escolhida (exceto `/nivel` e `/acessibilidade`,
   como antes). `/videos/:id` e `/quiz/:id` legados redirecionam para a área.
   Novas URLs entram em `src/core/urls.ts` (mapa central). A API devolve o
@@ -98,9 +97,36 @@ class="screen ...">`, monta a bottom-nav se `nav` definido, rola ao topo,
   Legendas (recarrega o player com `cc_load_policy`) e Velocidade calma
   (`setPlaybackRate` pela API de iframe, `enablejsapi=1`). O YouTube em outra
   aba ficou como link pequeno de plano B. O "Voz alta" da descrição saiu.
-- **O que fica no `localStorage` hoje:** tudo existe só no navegador, sem
-  conta real por trás, então **não há progresso para migrar** para o banco.
-  - `estudae:user`: visitante ou um usuário de mentira do login/cadastro.
+- **Conta no front** (fase B, `src/core/conta.ts`): a sessão é o cookie
+  HttpOnly; `estudae:user` guarda só o espelho (`{ name, email }`, ou
+  `{ name: 'Visitante', guest: true }`). No boot o `SessaoSync` do App chama
+  `verificarSessao()` (`/api/conta/eu`, sem segurar a tela: 401 desloga,
+  sem resposta não mexe, visitante nem pergunta) e `carregarOpcoes()`
+  (`cadastroAberto` no store; `false` esconde "Criar conta" e "Esqueci").
+  `api.ts` lança `ErroApi` (`status`, mensagem da API, `codigo`; status 0 =
+  sem rede). Telas: Login (403 `email-nao-confirmado` → reenviar), Cadastro
+  (nome, e-mail, senha ≥ 8) → VerifiqueEmail, ConfirmarEmail, EsqueciSenha,
+  RedefinirSenha; componentes `CampoSenha` e `FormEmail`. Sair chama
+  `/api/conta/sair`. O progresso continua no aparelho com ou sem conta.
+- **Progresso na conta** (`src/core/progresso.ts`, 17/11/2026): as telas
+  continuam lendo `results`/`watched` do store (e do `localStorage`). Com
+  conta, `registrarResultado` (Quiz e Simulado) manda a sessão para a API e
+  `marcarAula` (Vídeo) faz o `PUT`; `sincronizarProgresso` roda em todo
+  `entrarNaConta` (login, confirmação, redefinição e a cada boot via
+  `verificarSessao`): sobe pelo `/importar` o que só existe no aparelho e
+  junta o que veio de outro (`mesclar`, nada some). Cada resultado tem
+  `chave` (UUID; antigos usam `local:<date>`, ver `chaveDe`), `remoto` (id
+  na API), `incompleto` (veio só o resumo: o Resultado busca a correção ao
+  abrir) e `semSync` (a API recusou: não reenvia). Falha de rede não perde
+  nada: a próxima sincronização reenvia (a API é idempotente pela chave).
+  **URL do Resultado = chave** (`/resultado/<chave>`), porque a posição muda
+  quando chegam sessões antigas; só dígitos continua sendo posição.
+  Visitante não chama a API. Sair **não apaga** o progresso do aparelho
+  (decisão da fase B, em aberto agora que ele está na conta). Desmarcar
+  aula ainda não existe na UI. Testes: `src/test/progresso.test.tsx`.
+- **O que fica no `localStorage` hoje:** o progresso continua no navegador
+  para todo mundo; com conta, ele é também uma cópia do que está na API.
+  - `estudae:user`: visitante ou o espelho da conta (ver acima).
   - `estudae:a11y`: preferências de acessibilidade (fonte, contraste etc.).
     Não é progresso — **continua no navegador para todo mundo**, inclusive
     visitante.
@@ -114,8 +140,8 @@ class="screen ...">`, monta a bottom-nav se `nav` definido, rola ao topo,
     liga/desliga (desmarcar apaga a chave), ou seja, uma marca por aula,
     como o `AulaAssistida` atual.
 - **Decisão do MVP para o frontend (revista em 10/11/2026):** manter as telas
-  e o visual originais (login, progresso e perfil continuam só no
-  `localStorage`). Fluxo sem redundância: Início ("Continuar estudando" + os
+  e o visual originais (progresso e perfil continuam só no `localStorage`;
+  o login é de verdade desde a fase B). Fluxo sem redundância: Início ("Continuar estudando" + os
   cartões de matéria com "X de Y atividades") → Área (título, "Continuar
   estudando", "Seu progresso" e os temas como lista que abre — `<details
 name="temas">`, um aberto por vez, com uma frase de descrição, "Praticar"
@@ -264,8 +290,9 @@ docker compose down -v                   # APAGA os dados (e todo o conteúdo)
 em `ModelodeDados.svg` ao lado). Aqui fica só o resumo; qualquer mudança vai para
 lá, no mesmo commit da migration.
 
-- **Entidades:** `Disciplina` → `Tema` → `Videoaula` e `Questao`; `Tentativa`
-  e `AulaAssistida` ligam o usuário (`usuario`, do Identity) ao conteúdo.
+- **Entidades:** `Disciplina` → `Tema` → `Videoaula` e `Questao`;
+  `SessaoEstudo` (com as `Tentativa`s) e `AulaAssistida` ligam o usuário
+  (`usuario`, do Identity) ao conteúdo.
   As tabelas do Identity ganham nomes em português (`usuario`, `papel`,
   `usuario_papel`...), configurados na fase 3 antes da primeira migration.
 - **Escopo:** Ensino Fundamental e Médio (`disciplina.nivel`), Linguagens e
@@ -287,9 +314,11 @@ lá, no mesmo commit da migration.
     publicada), `prova_numero` (opcional) e `codigo` (texto único, chave
     natural do importador: reimportar o mesmo código atualiza, não duplica).
     `videoaula` é única por (`tema_id`, `youtube_id`).
-- **Tabelas existentes:** Identity (migration `InicialIdentity`) e conteúdo
-  — `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`).
-  `tentativa` e `aula_assistida` ainda não existem (fora do MVP).
+- **Tabelas existentes:** Identity (migration `InicialIdentity`), conteúdo
+  — `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`),
+  `imagem` (`ImagensNoBanco`) —, `chave_protecao` (`ChavesProtecao`) e
+  progresso — `sessao_estudo`, `tentativa`, `aula_assistida` (`Progresso`;
+  `sessao_estudo.chave` veio na `ChaveSessao`).
 - **Convenções de conteúdo** (matemática em LaTeX renderizado com KaTeX,
   delimitadores `\( \)` e `\[ \]` em vez de `$`, tabelas como imagem,
   fluxo de importação com script Python fora da app): ver a seção
@@ -364,6 +393,114 @@ Formato, regras e comandos: **`docs/conteudo/README.md`**. Resumo:
 - Qualquer erro aborta tudo (lista todos, com questão e campo). Reimportar
   atualiza por chave natural (`codigo`, slug, `youtube_id`); nada é apagado.
   Sem `--publicar` grava como rascunho, inclusive o que já estava publicado.
+
+### Conta do aluno (fase A, 10/11/2026)
+
+Decisões da pessoa: cadastro com **nome + e-mail + senha**; senha de **8 a 128**
+caracteres sem regra de composição (NIST SP 800-63B); **confirmação de e-mail
+obrigatória**; e-mail pelo **Resend** (domínio próprio virá depois); nenhum
+contato de terceiro guardado (o campo "pessoa responsável" sai); visitante
+continua igual e, ao criar conta, o progresso do `localStorage` migra (fase D);
+"onde parou" = próxima atividade calculada, sem tabela de sessão; sem área admin.
+
+- **Código:** regras em `Estudae.Infra/Identity/PoliticaConta.cs`, mensagens do
+  Identity em pt-BR em `ErrosIdentityPtBr.cs`; e-mail em `Estudae.Infra/Email/`
+  (`IEnviadorEmail`, `EnviadorEmailLog`, `EnviadorEmailResend`, `ConfigEmail`);
+  a parte web em `Estudae.Api/Conta/` (`ConfiguracaoConta` = Identity + cookie +
+  Data Protection; `ContaEndpoints`; textos em `EmailsConta`; `LinksConta`;
+  `ValidacaoConta`). Contrato: seção "Conta do aluno" de `docs/api.md`.
+- **Endpoints próprios, não `MapIdentityApi`:** ele não recebe `Nome`, não usa o
+  formato `{ "erro" }` e manda o link para a API, e não para uma tela do front.
+- **Privacidade:** a API nunca revela se um e-mail tem conta (cadastro, reenviar
+  e "esqueci" respondem sempre 202; o dono de uma conta existente recebe um
+  e-mail avisando). O login não usa `PasswordSignInAsync`, que checa a
+  confirmação **antes** da senha e vazaria a existência da conta.
+- **Cookie** `estudae_sessao`: HttpOnly, SameSite=Lax (defesa contra CSRF, junto
+  com os POSTs só em JSON), 30 dias renovados a cada uso, 401/403 em JSON em vez
+  de redirecionar. `Secure` sempre fora de Development (`SameAsRequest` só em
+  dev), porque no Render o container recebe HTTP.
+- **Data Protection no banco** (`chave_protecao`), para o cookie e os links
+  sobreviverem ao container recriado em cada deploy.
+- **Links dos e-mails** apontam para telas do front (`/confirmar-email`,
+  `/redefinir-senha`, com `u` e `t` na URL; token em Base64Url) e usam
+  `App:UrlPublica`, **nunca** o Host da requisição (host header injection).
+  Confirmação vale 3 dias (provedor de token próprio); redefinição, 1 dia.
+- **Cadastro fechado sem Resend:** fora de Development, com `Email:Provedor=log`,
+  cadastro, reenviar e "esqueci" respondem 503 e `GET /api/conta/opcoes` diz
+  `cadastroAberto: false` (o token nunca vai parar no log de produção).
+  Variáveis no `.env`: `URL_PUBLICA`, `EMAIL_PROVEDOR`, `EMAIL_REMETENTE`,
+  `RESEND_API_KEY` (ver `.env.example`).
+- **Testes:** unidade em `tests/Estudae.Tests/Conta/` (validação, política de
+  senha, links, textos, configuração, requisição do Resend com handler falso);
+  integração em `Api/ContaTests.cs`, com os e-mails capturados por
+  `EmailsMemoria` (o fixture troca o `IEnviadorEmail` por ela).
+- **Limites** (16/11/2026, `Conta/LimitesConta.cs`): por IP, 429 com
+  `Retry-After` — envio de e-mail (cadastro, reenviar, esqueci) 5 a cada 15 min,
+  e entrar/confirmar/redefinir 20 por minuto (seção `Limites`). O IP vem do
+  `X-Forwarded-For` (`UseForwardedHeaders`, primeiro middleware; `Proxy:Saltos`
+  = quantos proxies contar, padrão 1; caminho em produção: Vercel → Render).
+  Como o IP dá para forjar chamando o Render direto, o envio também tem limite
+  próprio (`Infra/Email/EnviadorEmailLimitado.cs`, seção `Email:Limites`): 3
+  por endereço por hora e 90 por dia (cota grátis do Resend = 100), **silencioso**
+  (202 mesmo assim, para não revelar quem tem conta). Tudo em memória.
+- **Pendente para ligar o Resend no Render:** conferir em produção se o IP do
+  aluno chega certo (senão `Proxy__Saltos=2`) e pôr `Email__Provedor`,
+  `Email__ResendApiKey`, `Email__Remetente` e `App__UrlPublica` no Render.
+
+### Progresso no banco (fase C, 17/11/2026)
+
+Decisões da pessoa: a proposta foi minha; **sessão + tentativas** (o histórico
+e o Resultado continuam por lição/simulado); aula assistida = **marca única**.
+Modelo completo em `ModelodeDados.md` (v5).
+
+- **Código:** `Estudae.Domain/Progresso/` (`SessaoEstudo` + `TipoSessao`,
+  `Tentativa`, `AulaAssistida`; usuário só por `UsuarioId`) e
+  `Infra/Persistence/Configuracoes/ProgressoConfig.cs` (FK para `Usuario`
+  fica lá, com `HasConstraintName` para não sair `asp_net_users`).
+- `sessao_estudo`: `tipo` `licao` (com `tema_id`) ou `simulado` (sem tema,
+  com `tempo_limite_seg` e `treino`), `iniciada_em`/`concluida_em`. Só sessão
+  concluída é gravada. `tentativa`: `sessao_estudo_id`, `questao_id`,
+  `ordem`, `alternativa_escolhida` (texto; nula = em branco), `acertou`; sem
+  `usuario_id` (vem da sessão). `aula_assistida`: PK (`usuario_id`,
+  `videoaula_id`). Nada derivado é guardado (acertos, tempo usado, tema fraco,
+  dias seguidos saem das tentativas e datas).
+- Regras no banco: CHECKs de tipo/tema/tempo/datas/ordem, únicos
+  (sessão, questão) e (sessão, ordem). Cascade do usuário e da sessão
+  (`/api/conta/excluir` apaga o progresso); Restrict do conteúdo.
+  Testes em `tests/Estudae.Tests/Api/ProgressoModeloTests.cs`.
+- **Guia para a fase D** (`localStorage` → banco):
+  - `estudae:results` v3 (`topic`) → sessão `licao` + tentativas;
+  - `kind: 'simulado'` (`usedMs`, `limitMs`, `treino`) → sessão `simulado`
+    (`concluida_em = iniciada_em + usedMs`), em branco = `null`;
+  - `items[].id` + `chosen` → `questao_id` + `options[chosen]` (texto);
+  - `estudae:watched` `"materia/tema/aula"` → `aula_assistida` (o
+    `videoaula_id` sai do catálogo); entradas sem `v >= 2` seguem ignoradas.
+  - "Dias seguidos" no fuso do aluno (no front ou com o fuso no pedido).
+
+### API do progresso (fase D, backend, 17/11/2026)
+
+Contrato: seção "Progresso do aluno" de `docs/api.md`. Código em
+`Estudae.Api/Progresso/`: `ProgressoEndpoints` (rotas), `ValidacaoProgresso`
+(formato, pura) e `ConteudoDasSessoes` (confere contra o conteúdo, lido em
+três consultas por lote, e calcula o `acertou`).
+
+- Tudo em `/api/progresso`, com `RequireAuthorization`; o usuário vem do
+  cookie e é conferido no banco (cookie de conta excluída dá 401).
+- `GET /api/progresso` (resumos + aulas), `POST /sessoes`, `GET /sessoes/{id}`
+  (detalhe com gabarito, para o Resultado), `PUT`/`DELETE /aulas/{videoaulaId}`
+  e `POST /importar` (até 500 sessões e 1000 aulas; item ruim é ignorado e
+  listado, o resto entra numa transação).
+- **O servidor corrige**: o front manda o texto escolhido, nunca o acerto.
+- **Idempotência pela `chave`** do front (única por aluno, `ck_sessao_estudo_chave`
+  com o mesmo regex da validação): reenviar devolve a já gravada (200).
+- Datas com fuso (`DateTimeOffset` no pedido); recusa antes de 2026, mais de
+  10 min no futuro e sessão de mais de 24 h. `TimeProvider` registrado no
+  `Program.cs`. `respondida_em` = `concluida_em` (o front não guarda a hora de
+  cada resposta).
+- Testes: `Progresso/ValidacaoProgressoTests.cs` e
+  `Progresso/ModeloProgressoTests.cs` (unidade, sem banco) e
+  `Api/ProgressoApiTests.cs` (integração).
+- Pendente: paginação do histórico e limite de requisições nessas rotas.
 
 ### Ordem de trabalho (fases)
 
@@ -453,12 +590,18 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
 
 ### Decisões em aberto
 
+- **Sair da conta e o progresso no aparelho** (17/11/2026): hoje fica (fase
+  B). Agora que ele está na conta, apagar ao sair protegeria quem divide o
+  celular; e outra conta entrando no mesmo aparelho vê o histórico da
+  anterior. Decidir com a pessoa.
+
 - Registrar em `docs/decisoes/` (ADRs) as decisões "frontend no `wwwroot`
   com cookie" e "Clean Architecture gradual". Formato combinado: Status /
   Data / Contexto / Decisão / Alternativas consideradas / Consequências / O
   que nos faria mudar de ideia. Preencher juntos.
 - `videoaula.tipo` é mesmo necessário?
-- `aula_assistida`: uma marca só por aluno e vídeo, ou manter histórico?
+- ~~`aula_assistida`: uma marca só por aluno e vídeo, ou manter histórico?~~
+  Marca única (17/11/2026).
 - ~~As questões terão imagens?~~ Sim (10/11/2026): recorte da prova + texto
   alternativo; ver `ModelodeDados.md`.
 - Formato de `prova_edicao` (hoje texto: `"Nacional"` ou `"Reaplicação (PPL)"`)

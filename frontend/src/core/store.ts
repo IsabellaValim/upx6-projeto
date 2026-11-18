@@ -66,11 +66,15 @@ interface AppState {
   simulado: SimuladoSession | null
   subjects: Record<string, CatalogSubject>
   catalogoStatus: CatalogoStatus
+  // GET /api/conta/opcoes. null = ainda não sabe (mostra os links de conta).
+  cadastroAberto: boolean | null
 
   setUser: (user: User | null) => void
   setNivel: (nivel: Nivel) => void
   setA11y: (patch: Partial<A11y>) => void
   pushResult: (r: Resultado) => void
+  setResults: (results: Resultado[]) => void
+  setWatchedTodos: (watched: Record<string, number>) => void
   setWatched: (key: string) => void
   clearWatched: (key: string) => void
   setQuiz: (q: QuizSession | null) => void
@@ -78,6 +82,7 @@ interface AppState {
   limparProgresso: () => void
   setSubjects: (subjects: Record<string, CatalogSubject>) => void
   setCatalogoStatus: (s: CatalogoStatus) => void
+  setCadastroAberto: (aberto: boolean) => void
 }
 
 export const useApp = create<AppState>()((set, get) => ({
@@ -92,6 +97,7 @@ export const useApp = create<AppState>()((set, get) => ({
   simulado: null,
   subjects: {},
   catalogoStatus: 'loading',
+  cadastroAberto: null,
 
   setUser: (user) => {
     set({ user })
@@ -111,6 +117,14 @@ export const useApp = create<AppState>()((set, get) => ({
     const results = [...get().results, r]
     set({ results })
     local.set('results', results)
+  },
+  setResults: (results) => {
+    set({ results })
+    local.set('results', results)
+  },
+  setWatchedTodos: (watched) => {
+    set({ watched })
+    local.set('watched', watched)
   },
   setWatched: (key) => {
     const watched = { ...get().watched, [key]: Date.now() }
@@ -132,6 +146,7 @@ export const useApp = create<AppState>()((set, get) => ({
   },
   setSubjects: (subjects) => set({ subjects }),
   setCatalogoStatus: (catalogoStatus) => set({ catalogoStatus }),
+  setCadastroAberto: (cadastroAberto) => set({ cadastroAberto }),
 }))
 
 /* applyA11y do state.js antigo: reflete as preferências no <html>.

@@ -122,7 +122,14 @@ jobs:
 
       - name: Smoke test
         run: |
-          curl --fail --silent --show-error http://localhost:8080/health | grep -x Healthy
+          # O --wait so espera a api ficar "running" (ela nao tem healthcheck), mas
+          # o Kestrel so abre a porta depois de carregar as chaves de Data Protection
+          # do banco (~5 s num banco vazio). Ate la a conexao e resetada (curl 56),
+          # entao o /health insiste ate responder; ele e o portao do resto do teste.
+          # --retry-all-errors: sem ele o curl nao repete o erro 56 nem o 503.
+          curl --fail --silent --show-error \
+            --retry 30 --retry-delay 2 --retry-max-time 90 --retry-all-errors \
+            http://localhost:8080/health | grep -x Healthy
           # O shell do app React sobe na raiz e em qualquer URL limpa (fallback de SPA).
           curl --fail --silent --show-error http://localhost:8080/ | grep -q 'id="app"'
           curl --fail --silent --show-error http://localhost:8080/home | grep -q 'id="app"'

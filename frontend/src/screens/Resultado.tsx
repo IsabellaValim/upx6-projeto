@@ -17,6 +17,7 @@ import {
 } from '../core/capturaAprendizagem'
 import type { AcaoJornada } from '../core/aprendizagem/jornada'
 import type { EvolucaoTema } from '../core/aprendizagem/evolucao'
+import { carregarCorrecao, chaveDe } from '../core/progresso'
 import { useApp } from '../core/store'
 import { LETTERS, pct } from '../core/utils'
 import { urls } from '../core/urls'
@@ -68,12 +69,15 @@ function Donut({ correct, total }: { correct: number; total: number }) {
 }
 
 export default function Resultado() {
-  const { idx = '0' } = useParams()
+  // Chave da sessão; só dígitos = posição em results (links de antes da conta).
+  const { id = '' } = useParams()
   const results = useApp((s) => s.results)
   const subjects = useApp((s) => s.subjects)
   const nivel = useApp((s) => s.nivel)
 
-  const r = results[+idx]
+  const r = /^\d+$/.test(id)
+    ? results[+id]
+    : results.find((x) => chaveDe(x) === id)
   const s = r && subjects[r.subject]
   const tema =
     r && s && r.topic !== undefined && r.kind !== 'simulado'
@@ -87,6 +91,14 @@ export default function Resultado() {
   const [estagio, setEstagio] = useState<string | null>(null)
   const [evolucao, setEvolucao] = useState<EvolucaoTema | null>(null)
   const [acao, setAcao] = useState<AcaoJornada | null>(null)
+
+  // Veio de outro aparelho só com o resumo: a correção carrega agora.
+  const incompleto = !!r?.incompleto
+  const chave = r ? chaveDe(r) : ''
+  const [falhou, setFalhou] = useState<string | null>(null) // chave que falhou
+  useEffect(() => {
+    if (incompleto) carregarCorrecao(chave).catch(() => setFalhou(chave))
+  }, [incompleto, chave])
 
   useEffect(() => {
     if (!r || !s) return
@@ -118,7 +130,7 @@ export default function Resultado() {
     }
     // A matéria/tema do resultado é estável por montagem.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [idx, nivel])
+  }, [id, nivel])
   const proxima = linkDaAcao(acao)
 
   if (!r || !s) return <Navigate to={urls.aprendizado} replace />
@@ -196,25 +208,33 @@ export default function Resultado() {
             ? 'Ver a correção das questões'
             : `Correção das questões — ${r.total - r.correct} errada${r.total - r.correct > 1 ? 's' : ''}`}
         </summary>
-        {r.items.map((x, k) => (
-          // A correção (resposta certa e explicação) veio da API e foi guardada no resultado.
-          <div className={`review-item ${x.ok ? 'ok' : 'bad'}`} key={k}>
-            <p>
-              <span className="mark">{x.ok ? 'Acertou' : 'Errou'}</span> —{' '}
-              {k + 1}. <Tex>{x.ask}</Tex>
-            </p>
-            <p>
-              Resposta certa: {LETTERS[x.answer]}){' '}
-              <Tex>{x.options[x.answer]}</Tex>
-              {!x.ok && x.chosen !== undefined
-                ? ` · Você marcou ${LETTERS[x.chosen]}`
-                : ''}
-            </p>
-            <p>
-              <Tex>{x.why}</Tex>
-            </p>
-          </div>
-        ))}
+        {incompleto && (
+          <p className="small" role="status">
+            {falhou === chave
+              ? 'Não foi possível carregar a correção. Confira sua internet e abra o resultado de novo.'
+              : 'Carregando a correção…'}
+          </p>
+        )}
+        {!incompleto &&
+          r.items.map((x, k) => (
+            // A correção (resposta certa e explicação) veio da API e foi guardada no resultado.
+            <div className={`review-item ${x.ok ? 'ok' : 'bad'}`} key={k}>
+              <p>
+                <span className="mark">{x.ok ? 'Acertou' : 'Errou'}</span> —{' '}
+                {k + 1}. <Tex>{x.ask}</Tex>
+              </p>
+              <p>
+                Resposta certa: {LETTERS[x.answer]}){' '}
+                <Tex>{x.options[x.answer]}</Tex>
+                {!x.ok && x.chosen !== undefined
+                  ? ` · Você marcou ${LETTERS[x.chosen]}`
+                  : ''}
+              </p>
+              <p>
+                <Tex>{x.why}</Tex>
+              </p>
+            </div>
+          ))}
       </details>
       {/* Um único CTA primário: a próxima ação da jornada decidida pelo
           orquestrador a partir do estado que esta sessão deixou. Sem motor
