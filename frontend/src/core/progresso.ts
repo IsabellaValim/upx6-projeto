@@ -229,8 +229,9 @@ let emVoo: Promise<void> | null = null
 export function sincronizarProgresso(): Promise<void> {
   if (!logado()) return Promise.resolve()
   emVoo ??= sincronizar()
-    .catch(() => {
-      /* fica para a próxima vez */
+    .catch((e) => {
+      // Fica para a próxima sincronização; o warn deixa a falha visível.
+      console.warn('[progresso] sincronização falhou:', e)
     })
     .finally(() => {
       emVoo = null
@@ -317,8 +318,9 @@ async function enviar(r: Resultado): Promise<void> {
         x.chave === r.chave ? { ...x, remoto: salvo.id } : x,
       ),
     )
-  } catch {
-    /* sem rede: continua só no aparelho e sobe na próxima sincronização */
+  } catch (e) {
+    // Sem rede: continua só no aparelho e sobe na próxima sincronização.
+    console.warn('[progresso] envio da sessão falhou:', e)
   }
 }
 
@@ -329,8 +331,9 @@ export function marcarAula(key: string): void {
   setWatched(key)
   const id = aulaDaChave(key, subjects)
   if (logado() && id !== null)
-    api.progresso.marcarAula(id).catch(() => {
-      /* idem */
+    api.progresso.marcarAula(id).catch((e) => {
+      // Idem: sobe na próxima sincronização.
+      console.warn('[progresso] marcação de aula falhou:', e)
     })
 }
 
