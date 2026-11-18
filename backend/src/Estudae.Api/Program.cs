@@ -88,6 +88,15 @@ app.MapConteudo();
 app.MapConta();
 app.MapProgresso();
 
+// Diagnóstico de deploy: qual commit/branch está no ar, sem acesso ao
+// painel (o Render injeta RENDER_GIT_COMMIT e RENDER_GIT_BRANCH em builds
+// de repositório git; fora dele, "desconhecido").
+app.MapGet("/api/versao", () => new
+{
+    commit = Environment.GetEnvironmentVariable("RENDER_GIT_COMMIT") ?? "desconhecido",
+    branch = Environment.GetEnvironmentVariable("RENDER_GIT_BRANCH") ?? "desconhecido",
+});
+
 // /api/* que não casou com endpoint nenhum: 404 de verdade — nunca o index.html
 // do fallback de SPA. Endpoints exatos de /api ganham deste catch-all pela
 // precedência de rotas (literal > parâmetro > catch-all).
