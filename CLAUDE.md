@@ -40,9 +40,10 @@ preservar isso.
 - **Conta do aluno** (10/11/2026, branch `feat/autenticacao`): login com
   conta entrou no escopo. Fase A (backend) pronta; ver "Conta do aluno"
   abaixo. F (Resend em produção, domínio `estudaeapp.com.br`) e B (front de
-  login, 16/11/2026, branch `feat/login-front`) prontas. Próximas: C
-  (modelagem do progresso, rascunho da pessoa primeiro), D (progresso na API
-  + migração do `localStorage`), E (front lendo o progresso da API).
+  login, 16/11/2026, branch `feat/login-front`) prontas. C (modelagem do
+  progresso, 17/11/2026, branch `feat/progresso-modelo`) pronta: só tabelas,
+  sem endpoint (ver "Progresso no banco"). Próximas: D (progresso na API +
+  migração do `localStorage`), E (front lendo o progresso da API).
 - PRs já mergeados em `main`: #1 (componentização do frontend), #2
   (Postgres de dev), #3 (modelo de dados) e #4 (walking skeleton). O MVP do
   backend está na branch `feat/dockerfile-compose`.
@@ -272,8 +273,9 @@ docker compose down -v                   # APAGA os dados (e todo o conteúdo)
 em `ModelodeDados.svg` ao lado). Aqui fica só o resumo; qualquer mudança vai para
 lá, no mesmo commit da migration.
 
-- **Entidades:** `Disciplina` → `Tema` → `Videoaula` e `Questao`; `Tentativa`
-  e `AulaAssistida` ligam o usuário (`usuario`, do Identity) ao conteúdo.
+- **Entidades:** `Disciplina` → `Tema` → `Videoaula` e `Questao`;
+  `SessaoEstudo` (com as `Tentativa`s) e `AulaAssistida` ligam o usuário
+  (`usuario`, do Identity) ao conteúdo.
   As tabelas do Identity ganham nomes em português (`usuario`, `papel`,
   `usuario_papel`...), configurados na fase 3 antes da primeira migration.
 - **Escopo:** Ensino Fundamental e Médio (`disciplina.nivel`), Linguagens e
@@ -295,9 +297,10 @@ lá, no mesmo commit da migration.
     publicada), `prova_numero` (opcional) e `codigo` (texto único, chave
     natural do importador: reimportar o mesmo código atualiza, não duplica).
     `videoaula` é única por (`tema_id`, `youtube_id`).
-- **Tabelas existentes:** Identity (migration `InicialIdentity`) e conteúdo
-  — `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`).
-  `tentativa` e `aula_assistida` ainda não existem (fora do MVP).
+- **Tabelas existentes:** Identity (migration `InicialIdentity`), conteúdo
+  — `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`),
+  `imagem` (`ImagensNoBanco`) —, `chave_protecao` (`ChavesProtecao`) e
+  progresso — `sessao_estudo`, `tentativa`, `aula_assistida` (`Progresso`).
 - **Convenções de conteúdo** (matemática em LaTeX renderizado com KaTeX,
   delimitadores `\( \)` e `\[ \]` em vez de `$`, tabelas como imagem,
   fluxo de importação com script Python fora da app): ver a seção
@@ -426,6 +429,36 @@ continua igual e, ao criar conta, o progresso do `localStorage` migra (fase D);
   aluno chega certo (senão `Proxy__Saltos=2`) e pôr `Email__Provedor`,
   `Email__ResendApiKey`, `Email__Remetente` e `App__UrlPublica` no Render.
 
+### Progresso no banco (fase C, 17/11/2026)
+
+Decisões da pessoa: a proposta foi minha; **sessão + tentativas** (o histórico
+e o Resultado continuam por lição/simulado); aula assistida = **marca única**.
+Modelo completo em `ModelodeDados.md` (v5).
+
+- **Código:** `Estudae.Domain/Progresso/` (`SessaoEstudo` + `TipoSessao`,
+  `Tentativa`, `AulaAssistida`; usuário só por `UsuarioId`) e
+  `Infra/Persistence/Configuracoes/ProgressoConfig.cs` (FK para `Usuario`
+  fica lá, com `HasConstraintName` para não sair `asp_net_users`).
+- `sessao_estudo`: `tipo` `licao` (com `tema_id`) ou `simulado` (sem tema,
+  com `tempo_limite_seg` e `treino`), `iniciada_em`/`concluida_em`. Só sessão
+  concluída é gravada. `tentativa`: `sessao_estudo_id`, `questao_id`,
+  `ordem`, `alternativa_escolhida` (texto; nula = em branco), `acertou`; sem
+  `usuario_id` (vem da sessão). `aula_assistida`: PK (`usuario_id`,
+  `videoaula_id`). Nada derivado é guardado (acertos, tempo usado, tema fraco,
+  dias seguidos saem das tentativas e datas).
+- Regras no banco: CHECKs de tipo/tema/tempo/datas/ordem, únicos
+  (sessão, questão) e (sessão, ordem). Cascade do usuário e da sessão
+  (`/api/conta/excluir` apaga o progresso); Restrict do conteúdo.
+  Testes em `tests/Estudae.Tests/Api/ProgressoModeloTests.cs`.
+- **Guia para a fase D** (`localStorage` → banco):
+  - `estudae:results` v3 (`topic`) → sessão `licao` + tentativas;
+  - `kind: 'simulado'` (`usedMs`, `limitMs`, `treino`) → sessão `simulado`
+    (`concluida_em = iniciada_em + usedMs`), em branco = `null`;
+  - `items[].id` + `chosen` → `questao_id` + `options[chosen]` (texto);
+  - `estudae:watched` `"materia/tema/aula"` → `aula_assistida` (o
+    `videoaula_id` sai do catálogo); entradas sem `v >= 2` seguem ignoradas.
+  - "Dias seguidos" no fuso do aluno (no front ou com o fuso no pedido).
+
 ### Ordem de trabalho (fases)
 
 1. **Postgres em Docker** — ✅ **concluída**: `docker-compose.yml` na raiz,
@@ -519,7 +552,8 @@ dotnet run --project src/Estudae.Api     # GET /health → 200 Healthy / 503 Unh
   Data / Contexto / Decisão / Alternativas consideradas / Consequências / O
   que nos faria mudar de ideia. Preencher juntos.
 - `videoaula.tipo` é mesmo necessário?
-- `aula_assistida`: uma marca só por aluno e vídeo, ou manter histórico?
+- ~~`aula_assistida`: uma marca só por aluno e vídeo, ou manter histórico?~~
+  Marca única (17/11/2026).
 - ~~As questões terão imagens?~~ Sim (10/11/2026): recorte da prova + texto
   alternativo; ver `ModelodeDados.md`.
 - Formato de `prova_edicao` (hoje texto: `"Nacional"` ou `"Reaplicação (PPL)"`)

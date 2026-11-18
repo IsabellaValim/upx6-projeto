@@ -1,4 +1,5 @@
 using Estudae.Domain.Conteudo;
+using Estudae.Domain.Progresso;
 using Estudae.Infra.Identity;
 using Microsoft.AspNetCore.DataProtection.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,9 @@ public class EstudaeDbContext(DbContextOptions<EstudaeDbContext> options)
     public DbSet<Videoaula> Videoaulas => Set<Videoaula>();
     public DbSet<Questao> Questoes => Set<Questao>();
     public DbSet<Imagem> Imagens => Set<Imagem>();
+    public DbSet<SessaoEstudo> SessoesEstudo => Set<SessaoEstudo>();
+    public DbSet<Tentativa> Tentativas => Set<Tentativa>();
+    public DbSet<AulaAssistida> AulasAssistidas => Set<AulaAssistida>();
     public DbSet<DataProtectionKey> DataProtectionKeys => Set<DataProtectionKey>();
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -25,7 +29,7 @@ public class EstudaeDbContext(DbContextOptions<EstudaeDbContext> options)
         // Primeiro o Identity monta o modelo dele; depois sobrescrevemos os nomes.
         base.OnModelCreating(builder);
 
-        // Conteúdo: um IEntityTypeConfiguration por entidade, em Configuracoes/.
+        // Conteúdo e progresso: um IEntityTypeConfiguration por entidade, em Configuracoes/.
         builder.ApplyConfigurationsFromAssembly(typeof(EstudaeDbContext).Assembly);
 
         // Nomes em português (ver backend/DatabaseDocs/ModelodeDados.md). Só as
