@@ -12,14 +12,14 @@
     transition-duration: 0.01ms !important;
   }
 }
-html[data-motion="reduce"] *,
-html[data-motion="reduce"] *::before,
-html[data-motion="reduce"] *::after {
+html[data-motion='reduce'] *,
+html[data-motion='reduce'] *::before,
+html[data-motion='reduce'] *::after {
   animation-duration: 0.01ms !important;
   animation-iteration-count: 1 !important;
   transition-duration: 0.01ms !important;
 }
-html[data-motion="reduce"] .spinner {
+html[data-motion='reduce'] .spinner {
   animation: spin 3s linear infinite !important;
 }
 
@@ -55,5 +55,54 @@ html[data-motion="reduce"] .spinner {
   .sheet-backdrop,
   #toast {
     position: absolute;
+  }
+}
+
+/* ---------- Tablet: tela cheia, sem moldura de celular ----------
+   Entre 520px e ~1440px (tablets e notebooks menores) o app ocupa a
+   viewport inteira: sem padding do body, sem raio/sombra. O conteúdo
+   continua uma coluna única e confortável (--col), centrada, e a fonte
+   sobe um degrau em cada nível de acessibilidade. Acima de ~1440px
+   volta a moldura de "celular" do bloco anterior. */
+@media (min-width: 520px) and (max-width: 1439.98px) {
+  :root {
+    --col: 36rem;
+  }
+  html {
+    font-size: 118.75%;
+  }
+  html[data-font='grande'] {
+    font-size: 125%;
+  }
+  html[data-font='extragrande'] {
+    font-size: 137.5%;
+  }
+  body {
+    padding: 0;
+  }
+  .shell {
+    max-width: none;
+    height: 100vh;
+    height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  /* Telas lilás: o fundo cobre a viewport inteira, não só a coluna. */
+  .shell:has(.screen--lilac) {
+    background: var(--lilac-soft);
+  }
+  .screen {
+    width: 100%;
+    max-width: var(--col);
+    margin-inline: auto;
+  }
+  /* Barra continua full-bleed, mas os itens ficam compactos e centrados. */
+  .bottom-nav {
+    max-width: none;
+    grid-template-columns: repeat(auto-fit, minmax(0, 12rem));
+    justify-content: center;
+  }
+  .sheet {
+    max-width: var(--col);
   }
 }

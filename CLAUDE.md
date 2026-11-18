@@ -57,7 +57,10 @@ React Router com **URLs limpas** e KaTeX para as fórmulas `\( \)`/`\[ \]` que
 a API manda. O design é o mesmo dos seis arquivos CSS originais, copiados sem
 mudança para `frontend/src/styles/` (base, layout, components, screens,
 navigation, responsive); o app monta em `#app` e os SVGs da marca moram em
-`frontend/public/branding/`.
+`frontend/public/branding/`. Abaixo de 520px é a coluna de celular; de
+520px a ~1440px é o **modo tablet** (tela cheia, sem moldura, coluna de
+36rem centrada e fonte um degrau acima); acima disso vira a "moldura de
+celular" de desktop (regras em `responsive.css`).
 
 - **Roteamento:** `src/App.tsx` — `<BrowserRouter>` com `<Routes>`. Públicas:
   `/boas-vindas`, `/login`, `/cadastro` e as de conta (`/verifique-email`,
