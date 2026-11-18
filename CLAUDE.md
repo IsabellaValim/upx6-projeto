@@ -541,9 +541,24 @@ Por que essa ordem:
   80/443 (HTTPS automático; dá para usar `<ip>.sslip.io` sem domínio). O
   banco não publica porta. Backup é manual: cron com `pg_dump`, e testar uma
   restauração. Por ser uma VM só, a operação (atualizações, backup) fica com a gente.
-- **Plano B (Render):** usa só o Dockerfile. O Postgres grátis expira em 30
-  dias e o serviço grátis "dorme" sem tráfego. As migrations rodariam pelo
-  `migrar` antes do start.
+- **Plano B (Render) — é o que está no ar:** usa só o Dockerfile; o front
+  fica na Vercel (`frontend/vercel.json` reescreve `/api` e `/conteudo`
+  para `estudae-pdq7.onrender.com`) no domínio `estudaeapp.com.br`.
+  - **Migrations:** não existe comando de pré-deploy no plano grátis
+    (recurso pago), então a própria API aplica as pendentes no start, antes
+    de abrir a porta (`Program.cs`, `Migrar:AoSubir`, ligado por padrão).
+    O subcomando `migrar` continua valendo para o compose e usos manuais.
+  - **Diagnóstico:** `GET /api/versao` devolve `RENDER_GIT_COMMIT` e
+    `RENDER_GIT_BRANCH` — responde de fora qual commit/branch está no ar.
+  - **Deploy:** serviço ligado por URL de repositório público não tem
+    auto-deploy — é "Manual Deploy" no painel (ou ligar auto-deploy com o
+    provedor git conectado). `/api/versao` é a prova de que subiu.
+  - **Limites do grátis:** o serviço "dorme" sem tráfego (~50 s para
+    acordar) e **o Postgres grátis expira 30 dias após a criação** (+14
+    dias de graça para upgrade; depois apaga tudo, conteúdo e progresso).
+    Decisão pendente: Neon free (~0,5 GB, sem expiração) ou upgrade de
+    ~US$6/mês no próprio Render. Enquanto isso: backup com `pg_dump -Fc`
+    na External Database URL, guardado em `backups/` (fora do git).
 - Em qualquer caso: alerta de orçamento desde o primeiro dia.
 
 ### Requisitos e restrições

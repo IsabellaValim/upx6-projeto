@@ -44,8 +44,11 @@ export async function verificarSessao(): Promise<void> {
     if (!mudou()) entrarNaConta(u)
   } catch (e) {
     // 401 = cookie vencido ou nunca existiu.
-    if (e instanceof ErroApi && e.status === 401 && salvo && !mudou())
-      useApp.getState().setUser(null)
+    if (e instanceof ErroApi && e.status === 401) {
+      if (salvo && !mudou()) useApp.getState().setUser(null)
+    } else {
+      console.warn('[conta] verificarSessao falhou:', e)
+    }
   }
 }
 
@@ -57,8 +60,9 @@ export function carregarOpcoes(): Promise<void> {
   opcoesEmVoo ??= api.conta
     .opcoes()
     .then((o) => useApp.getState().setCadastroAberto(o.cadastroAberto))
-    .catch(() => {
-      /* sem resposta: continua null e as telas mostram os links */
+    .catch((e) => {
+      // Sem resposta: continua null e as telas mostram os links.
+      console.warn('[conta] opções de cadastro não carregaram:', e)
     })
     .finally(() => {
       opcoesEmVoo = null

@@ -4,6 +4,7 @@ using Estudae.Api.Endpoints;
 using Estudae.Api.Progresso;
 using Estudae.Infra;
 using Estudae.Infra.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 // Subcomandos: rodam e saem, sem subir o servidor web (ver Cli/).
@@ -87,6 +88,15 @@ app.MapConteudo();
 app.MapConta();
 app.MapProgresso();
 
+// Diagnóstico de deploy: qual commit/branch está no ar, sem acesso ao
+// painel (o Render injeta RENDER_GIT_COMMIT e RENDER_GIT_BRANCH em builds
+// de repositório git; fora dele, "desconhecido").
+app.MapGet("/api/versao", () => new
+{
+    commit = Environment.GetEnvironmentVariable("RENDER_GIT_COMMIT") ?? "desconhecido",
+    branch = Environment.GetEnvironmentVariable("RENDER_GIT_BRANCH") ?? "desconhecido",
+});
+
 // /api/* que não casou com endpoint nenhum: 404 de verdade — nunca o index.html
 // do fallback de SPA. Endpoints exatos de /api ganham deste catch-all pela
 // precedência de rotas (literal > parâmetro > catch-all).
@@ -99,6 +109,25 @@ app.MapFallbackToFile("index.html", new StaticFileOptions
 {
     OnPrepareResponse = ctx => ctx.Context.Response.Headers.CacheControl = "no-cache",
 });
+
+// Migrations no start: no plano grátis do Render não existe comando de
+// pré-deploy, então a própria API aplica as pendentes antes de aceitar
+// tráfego (o EF trava a tabela de histórico — subidas simultâneas são
+// seguras). No compose é redundante com o serviço "migrate" (sem
+// pendências = só uma consulta). Desligar com Migrar__AoSubir=false.
+if (app.Configuration.GetValue("Migrar:AoSubir", true))
+{
+    await using var escopoMigracao = app.Services.CreateAsyncScope();
+    var banco = escopoMigracao.ServiceProvider.GetRequiredService<EstudaeDbContext>();
+    var pendentes = (await banco.Database.GetPendingMigrationsAsync()).ToList();
+    if (pendentes.Count > 0)
+    {
+        app.Logger.LogInformation(
+            "Aplicando {N} migration(s): {Lista}", pendentes.Count, string.Join(", ", pendentes));
+        await banco.Database.MigrateAsync();
+        app.Logger.LogInformation("Migrations aplicadas.");
+    }
+}
 
 app.Run();
 return 0;
