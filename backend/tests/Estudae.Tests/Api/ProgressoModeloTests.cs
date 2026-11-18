@@ -40,6 +40,7 @@ public class ProgressoModeloTests(ApiFixture f)
     private static SessaoEstudo Licao(string usuarioId, Conteudo c) => new()
     {
         UsuarioId = usuarioId,
+        Chave = Guid.NewGuid().ToString("N"),
         Tipo = TipoSessao.Licao,
         DisciplinaId = c.DisciplinaId,
         TemaId = c.TemaId,
@@ -70,6 +71,7 @@ public class ProgressoModeloTests(ApiFixture f)
         var simulado = new SessaoEstudo
         {
             UsuarioId = usuario,
+            Chave = Guid.NewGuid().ToString("N"),
             Tipo = TipoSessao.Simulado,
             DisciplinaId = c.DisciplinaId,
             Treino = true,

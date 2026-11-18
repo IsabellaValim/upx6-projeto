@@ -49,7 +49,8 @@ public class ModeloProgressoTests : IDisposable
         var checks = Entidade<SessaoEstudo>().GetCheckConstraints().ToDictionary(c => c.ModelName, c => c.Sql);
 
         Assert.Equal(
-            ["ck_sessao_estudo_datas", "ck_sessao_estudo_tema", "ck_sessao_estudo_tempo_limite", "ck_sessao_estudo_tipo"],
+            ["ck_sessao_estudo_chave", "ck_sessao_estudo_datas", "ck_sessao_estudo_tema",
+                "ck_sessao_estudo_tempo_limite", "ck_sessao_estudo_tipo"],
             checks.Keys.Order());
         Assert.Equal("(tipo = 'licao') = (tema_id IS NOT NULL)", checks["ck_sessao_estudo_tema"]);
         Assert.Equal("concluida_em >= iniciada_em", checks["ck_sessao_estudo_datas"]);
@@ -64,6 +65,21 @@ public class ModeloProgressoTests : IDisposable
         Assert.Equal([TipoSessao.Licao, TipoSessao.Simulado], TipoSessao.Todos);
         Assert.All(TipoSessao.Todos, t => Assert.Contains($"'{t}'", sql));
         Assert.Equal(TipoSessao.Todos.Length, sql.Count(ch => ch == '\'') / 2);
+    }
+
+    [Fact]
+    public void Chave_da_sessao_e_unica_por_aluno_com_o_formato_da_api()
+    {
+        var e = Entidade<SessaoEstudo>();
+        var ix = Assert.Single(e.GetIndexes(), i => Colunas(i.Properties).SequenceEqual(["usuario_id", "chave"]));
+        Assert.True(ix.IsUnique);
+        Assert.Equal(64, e.FindProperty(nameof(SessaoEstudo.Chave))!.GetMaxLength());
+
+        // O CHECK do banco e a ValidacaoProgresso usam o mesmo padrão.
+        var sql = e.GetCheckConstraints().Single(c => c.ModelName == "ck_sessao_estudo_chave").Sql;
+        var regex = sql[(sql.IndexOf('\'') + 1)..sql.LastIndexOf('\'')];
+        foreach (var chave in new[] { "local:1731850000000", "a", new string('b', 64), "", "com espaço", new string('c', 65) })
+            Assert.Equal(System.Text.RegularExpressions.Regex.IsMatch(chave, regex), Estudae.Api.Progresso.ValidacaoProgresso.ChaveValida(chave));
     }
 
     [Fact]

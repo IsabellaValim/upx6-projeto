@@ -1,8 +1,8 @@
 # API do Estudaê: contrato para o frontend
 
-Versão do MVP (08/11/2026), com a conta do aluno (10/11/2026). O conteúdo é público e o
-visitante usa tudo sem conta. A conta (seção [Conta](#conta-do-aluno)) existe, mas o progresso
-ainda não é gravado no servidor: isso entra num próximo ticket.
+Versão do MVP (08/11/2026), com a conta do aluno (10/11/2026) e o progresso no servidor
+(17/11/2026). O conteúdo é público e o visitante usa tudo sem conta. Quem tem conta
+([Conta](#conta-do-aluno)) grava o progresso na API ([Progresso](#progresso-do-aluno)).
 
 ## Onde a API está
 
@@ -47,6 +47,11 @@ Os exemplos de resposta abaixo são **ilustrativos**: valores reais vêm do cont
 | `POST` | `/api/conta/esqueci-senha` | Manda o link para criar senha nova |
 | `POST` | `/api/conta/redefinir-senha` | Tela aberta pelo link; troca a senha e já entra |
 | `POST` | `/api/conta/excluir` | Apagar a conta (pede a senha) |
+| `GET` | `/api/progresso` | Lições, simulados e aulas vistas de quem está logado |
+| `POST` | `/api/progresso/sessoes` | Gravar uma lição ou simulado terminado |
+| `GET` | `/api/progresso/sessoes/{id}` | Detalhe de uma sessão (tela de Resultado) |
+| `PUT` / `DELETE` | `/api/progresso/aulas/{videoaulaId}` | Marcar / desmarcar aula como vista |
+| `POST` | `/api/progresso/importar` | Levar o progresso do `localStorage` para a conta |
 | `GET` | `/health` | Saúde da API e do banco (não é para as telas) |
 
 `{disciplina}` e `{tema}` são **slugs** (`matematica`, `porcentagem-e-proporcao`), que são
@@ -252,6 +257,131 @@ const r = await fetch("/api/conta/eu");
 const usuario = r.ok ? await r.json() : null; // 401 = visitante
 ```
 
+## Progresso do aluno
+
+Só para quem tem **conta**: todas as rotas exigem o cookie de sessão e respondem `401`
+(`{ "erro" }`) sem ele, ou se a conta foi excluída. O dono é **sempre** o usuário do cookie; nenhum
+id de usuário vai na URL ou no corpo. O visitante continua só no `localStorage`.
+
+- **Sessão** = uma lição (`tipo: "licao"`, um tema) ou um simulado (`tipo: "simulado"`, a
+  disciplina toda) **já terminada**. Sessão em andamento não é enviada.
+- **O servidor corrige.** O front manda só o **texto** da alternativa escolhida; `acertou` é
+  calculado na API, com a mesma normalização do `POST /api/questoes/{id}/resposta`.
+- **`chave`**: gerada pelo front, única **por aluno** (1 a 64 caracteres: letras, números e
+  `_ . : -`; um UUID serve). Reenviar a mesma chave **não duplica**: a API devolve a sessão já
+  gravada (`200` em vez de `201`), mesmo que o corpo venha diferente. Assim é seguro repetir o
+  envio quando a rede falha ou o servidor demora a acordar.
+- **Slugs e ids, nunca posições:** `disciplina` e `tema` são slugs, `questaoId` vem da lista de
+  questões e `videoaulaId` vem de `videos[].id` em `GET .../temas`.
+- **Datas** em ISO 8601 com fuso (`2026-11-17T14:30:00-03:00` ou `...Z`); voltam sempre em UTC
+  (`Z`). Recusadas: antes de 2026, mais de 10 minutos no futuro, `concluidaEm` antes de
+  `iniciadaEm` ou sessão de mais de 24 horas. "Dias seguidos" é calculado pelo front, no fuso do
+  aparelho.
+
+| Método | Rota | Sucesso | Erros |
+|---|---|---|---|
+| `GET` | `/api/progresso` | `200` com `{ sessoes, aulas }` | `401` |
+| `POST` | `/api/progresso/sessoes` | `201` (nova) ou `200` (chave já gravada), com o resumo | `400`, `401` |
+| `GET` | `/api/progresso/sessoes/{id}` | `200` com o detalhe (tela de Resultado) | `401`, `404` (inclusive de outra pessoa) |
+| `PUT` | `/api/progresso/aulas/{videoaulaId}` | `204` (marcar de novo mantém a primeira data) | `401`, `404` |
+| `DELETE` | `/api/progresso/aulas/{videoaulaId}` | `204` (também se não estava marcada) | `401` |
+| `POST` | `/api/progresso/importar` | `200` com o que entrou e o que não | `400` (lote grande demais), `401`, `409` |
+
+### Gravar uma sessão
+
+```json
+POST /api/progresso/sessoes
+{
+  "chave": "3f2a9c1e-7b4d-4e8a-9f00-1c2d3e4f5a6b",
+  "tipo": "simulado",
+  "disciplina": "matematica",
+  "tema": null,
+  "treino": false,
+  "iniciadaEm": "2026-11-17T14:00:00-03:00",
+  "concluidaEm": "2026-11-17T14:52:10-03:00",
+  "tempoLimiteSeg": 5400,
+  "respostas": [
+    { "questaoId": 12, "alternativa": "R$ 120,00" },
+    { "questaoId": 31, "alternativa": null }
+  ]
+}
+```
+
+- `respostas` na ordem em que apareceram (de 1 a 100, sem questão repetida).
+- `alternativa: null` = **em branco**, só no simulado (conta como erro). Na lição toda questão
+  tem resposta.
+- Lição: `tema` obrigatório, sem `treino` nem `tempoLimiteSeg`. Simulado: sem `tema`;
+  `tempoLimiteSeg` (1 a 86400) é opcional, e `treino: true` = montado com questões autorais.
+- `400` também quando o conteúdo não combina: disciplina ou tema que não existe, questão fora do
+  tema (lição) ou da disciplina (simulado), questão em rascunho, alternativa que não é da questão.
+
+Resposta (`201`/`200`), o mesmo formato de cada item de `sessoes` no `GET /api/progresso`:
+
+```json
+{
+  "id": 41, "chave": "3f2a9c1e-…", "tipo": "simulado", "disciplina": "matematica", "tema": null,
+  "treino": false, "iniciadaEm": "2026-11-17T17:00:00Z", "concluidaEm": "2026-11-17T17:52:10Z",
+  "tempoLimiteSeg": 5400, "acertos": 1, "total": 2,
+  "tentativas": [
+    { "questaoId": 12, "tema": "porcentagem-e-proporcao", "acertou": true, "emBranco": false },
+    { "questaoId": 31, "tema": "equacoes", "acertou": false, "emBranco": true }
+  ]
+}
+```
+
+O tempo usado é `concluidaEm - iniciadaEm`; o tema com mais erros sai de `tentativas[].tema`.
+
+### Ler o progresso
+
+`GET /api/progresso` → `{ "sessoes": [ ...resumos, da mais antiga para a mais nova ], "aulas": [
+{ "videoaulaId": 5, "assistidaEm": "2026-11-16T22:10:00Z" } ] }`. O resumo não traz enunciado nem
+gabarito, para a resposta continuar pequena.
+
+`GET /api/progresso/sessoes/{id}` (tela de Resultado) traz os mesmos campos do resumo, mas com
+`questoes` no lugar de `tentativas`:
+
+```json
+{
+  "questaoId": 12, "ordem": 1, "tema": "porcentagem-e-proporcao",
+  "textoBase": null, "enunciado": "Uma loja anunciou 20% de desconto…",
+  "alternativas": ["R$ 30,00", "R$ 120,00", "R$ 130,00", "R$ 170,00"],
+  "imagem": null, "escolhida": "R$ 120,00", "respostaCorreta": "R$ 120,00",
+  "resolucao": "20% de 150 é…", "acertou": true
+}
+```
+
+Aqui o gabarito aparece porque o aluno já respondeu. As `alternativas` vêm na ordem do banco (não
+embaralhadas); o front marca `escolhida` e `respostaCorreta` pelo texto.
+
+### Importar o `localStorage`
+
+No primeiro login em um aparelho que já tem progresso de visitante, o front manda tudo de uma vez:
+
+```json
+POST /api/progresso/importar
+{
+  "sessoes": [ /* até 500, no mesmo formato do POST /sessoes */ ],
+  "aulas": [ { "videoaulaId": 5, "assistidaEm": "2026-11-16T19:10:00-03:00" } ]
+}
+```
+
+```json
+{
+  "sessoesNovas": 7, "sessoesRepetidas": 2,
+  "sessoesIgnoradas": [ { "posicao": 3, "chave": "local:1731850000000", "erro": "Questão 999 não encontrada." } ],
+  "aulasNovas": 4, "aulasIgnoradas": 0
+}
+```
+
+- Ao contrário do `POST /sessoes`, um item ruim **não derruba o lote**: ele vai para
+  `sessoesIgnoradas` (`posicao` = índice em `sessoes`) e o resto entra, tudo numa transação.
+- Repetir o pedido é seguro: sessões pela `chave`, aulas porque já estão marcadas. Para o
+  `estudae:results` antigo, que não tem chave, use uma derivada da entrada (ex.:
+  `local:<date>`), sempre a mesma para a mesma entrada.
+- Aulas: até 1000; `assistidaEm` opcional (sem ela, vale a hora do pedido). Vídeo que não existe
+  ou data fora do intervalo conta em `aulasIgnoradas`.
+- `409`: outro aparelho estava importando ao mesmo tempo. Basta repetir.
+
 ## Erros
 
 Todo erro tem o mesmo formato, com uma mensagem em português que pode ser mostrada ao usuário:
@@ -297,5 +427,5 @@ usa o mínimo possível de fórmula, então a maior parte é texto puro.
 
 ## Fora do contrato por enquanto
 
-Tentativas gravadas, aulas assistidas e progresso no servidor (próximo ticket). Quando
-entrarem, serão rotas novas; as rotas acima não mudam.
+Paginação do histórico em `GET /api/progresso` (hoje vem tudo) e limite de requisições nas
+rotas de progresso: entram quando o volume pedir.

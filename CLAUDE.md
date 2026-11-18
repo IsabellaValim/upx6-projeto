@@ -42,8 +42,10 @@ preservar isso.
   abaixo. F (Resend em produção, domínio `estudaeapp.com.br`) e B (front de
   login, 16/11/2026, branch `feat/login-front`) prontas. C (modelagem do
   progresso, 17/11/2026, branch `feat/progresso-modelo`) pronta: só tabelas,
-  sem endpoint (ver "Progresso no banco"). Próximas: D (progresso na API +
-  migração do `localStorage`), E (front lendo o progresso da API).
+  sem endpoint (ver "Progresso no banco"). D: a **API** está pronta
+  (17/11/2026, branch `feat/progresso-api`, ver "API do progresso"); falta o
+  front gravar nela e migrar o `localStorage`. Depois, E (front lendo o
+  progresso da API).
 - PRs já mergeados em `main`: #1 (componentização do frontend), #2
   (Postgres de dev), #3 (modelo de dados) e #4 (walking skeleton). O MVP do
   backend está na branch `feat/dockerfile-compose`.
@@ -300,7 +302,8 @@ lá, no mesmo commit da migration.
 - **Tabelas existentes:** Identity (migration `InicialIdentity`), conteúdo
   — `disciplina`, `tema`, `videoaula`, `questao` (migration `Conteudo`),
   `imagem` (`ImagensNoBanco`) —, `chave_protecao` (`ChavesProtecao`) e
-  progresso — `sessao_estudo`, `tentativa`, `aula_assistida` (`Progresso`).
+  progresso — `sessao_estudo`, `tentativa`, `aula_assistida` (`Progresso`;
+  `sessao_estudo.chave` veio na `ChaveSessao`).
 - **Convenções de conteúdo** (matemática em LaTeX renderizado com KaTeX,
   delimitadores `\( \)` e `\[ \]` em vez de `$`, tabelas como imagem,
   fluxo de importação com script Python fora da app): ver a seção
@@ -458,6 +461,31 @@ Modelo completo em `ModelodeDados.md` (v5).
   - `estudae:watched` `"materia/tema/aula"` → `aula_assistida` (o
     `videoaula_id` sai do catálogo); entradas sem `v >= 2` seguem ignoradas.
   - "Dias seguidos" no fuso do aluno (no front ou com o fuso no pedido).
+
+### API do progresso (fase D, backend, 17/11/2026)
+
+Contrato: seção "Progresso do aluno" de `docs/api.md`. Código em
+`Estudae.Api/Progresso/`: `ProgressoEndpoints` (rotas), `ValidacaoProgresso`
+(formato, pura) e `ConteudoDasSessoes` (confere contra o conteúdo, lido em
+três consultas por lote, e calcula o `acertou`).
+
+- Tudo em `/api/progresso`, com `RequireAuthorization`; o usuário vem do
+  cookie e é conferido no banco (cookie de conta excluída dá 401).
+- `GET /api/progresso` (resumos + aulas), `POST /sessoes`, `GET /sessoes/{id}`
+  (detalhe com gabarito, para o Resultado), `PUT`/`DELETE /aulas/{videoaulaId}`
+  e `POST /importar` (até 500 sessões e 1000 aulas; item ruim é ignorado e
+  listado, o resto entra numa transação).
+- **O servidor corrige**: o front manda o texto escolhido, nunca o acerto.
+- **Idempotência pela `chave`** do front (única por aluno, `ck_sessao_estudo_chave`
+  com o mesmo regex da validação): reenviar devolve a já gravada (200).
+- Datas com fuso (`DateTimeOffset` no pedido); recusa antes de 2026, mais de
+  10 min no futuro e sessão de mais de 24 h. `TimeProvider` registrado no
+  `Program.cs`. `respondida_em` = `concluida_em` (o front não guarda a hora de
+  cada resposta).
+- Testes: `Progresso/ValidacaoProgressoTests.cs` e
+  `Progresso/ModeloProgressoTests.cs` (unidade, sem banco) e
+  `Api/ProgressoApiTests.cs` (integração).
+- Pendente: paginação do histórico e limite de requisições nessas rotas.
 
 ### Ordem de trabalho (fases)
 

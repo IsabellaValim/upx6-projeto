@@ -338,6 +338,12 @@ namespace Estudae.Infra.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<string>("Chave")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("chave");
+
                     b.Property<DateTime>("ConcluidaEm")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("concluida_em");
@@ -382,11 +388,17 @@ namespace Estudae.Infra.Persistence.Migrations
                     b.HasIndex("TemaId")
                         .HasDatabaseName("ix_sessao_estudo_tema_id");
 
+                    b.HasIndex("UsuarioId", "Chave")
+                        .IsUnique()
+                        .HasDatabaseName("ix_sessao_estudo_usuario_id_chave");
+
                     b.HasIndex("UsuarioId", "ConcluidaEm")
                         .HasDatabaseName("ix_sessao_estudo_usuario_id_concluida_em");
 
                     b.ToTable("sessao_estudo", null, t =>
                         {
+                            t.HasCheckConstraint("ck_sessao_estudo_chave", "chave ~ '^[A-Za-z0-9_.:-]{1,64}$'");
+
                             t.HasCheckConstraint("ck_sessao_estudo_datas", "concluida_em >= iniciada_em");
 
                             t.HasCheckConstraint("ck_sessao_estudo_tema", "(tipo = 'licao') = (tema_id IS NOT NULL)");

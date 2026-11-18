@@ -27,9 +27,13 @@ public class SessaoEstudoConfig : IEntityTypeConfiguration<SessaoEstudo>
             t.HasCheckConstraint("ck_sessao_estudo_tempo_limite",
                 "tempo_limite_seg IS NULL OR (tipo = 'simulado' AND tempo_limite_seg > 0)");
             t.HasCheckConstraint("ck_sessao_estudo_datas", "concluida_em >= iniciada_em");
+            // Mesmo formato que a API aceita (ValidacaoProgresso.Chave).
+            t.HasCheckConstraint("ck_sessao_estudo_chave", "chave ~ '^[A-Za-z0-9_.:-]{1,64}$'");
         });
 
         e.Property(s => s.Tipo).HasMaxLength(20);
+        e.Property(s => s.Chave).HasMaxLength(64);
+        e.HasIndex(s => new { s.UsuarioId, s.Chave }).IsUnique();
 
         e.HasOne<Usuario>()
             .WithMany()
