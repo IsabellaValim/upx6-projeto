@@ -1,3 +1,6 @@
+import { CONFIG_APRENDIZAGEM } from './aprendizagem/config'
+import { criarPersistencia } from './aprendizagem/persistencia'
+import { estadoComConta } from './aprendizagem/reconstrucao'
 import { criarServicoAprendizagem } from './aprendizagem/servico'
 import type {
   ContextoTentativa,
@@ -29,7 +32,24 @@ import { urls } from './urls'
 import { local, useApp } from './store'
 import type { DisciplinaPedagogiaApi, QuestaoItem, Resultado } from '../types'
 
-let servico: ServicoAprendizagem = criarServicoAprendizagem()
+/* A leitura do motor traz também as evidências reconstruídas do
+   histórico (conta/aparelho): chega a avaliar, recomendar, ler e à
+   seleção — sem escrever nada no IndexedDB. */
+const persistenciaComConta = () => {
+  const base = criarPersistencia()
+  return {
+    ...base,
+    ler: async () => {
+      const e = await base.ler()
+      return e ? estadoComConta(e) : e
+    },
+  }
+}
+
+let servico: ServicoAprendizagem = criarServicoAprendizagem(
+  CONFIG_APRENDIZAGEM,
+  { persistencia: persistenciaComConta() },
+)
 
 const apresentadas = new Set<string>()
 const avisadas = new Set<string>()
