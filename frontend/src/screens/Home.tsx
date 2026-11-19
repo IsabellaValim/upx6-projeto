@@ -13,7 +13,7 @@ import type { AprendizadoNivel } from '../core/capturaAprendizagem'
 import type { AcaoJornada } from '../core/aprendizagem/jornada'
 import { NIVEIS, materiasDoNivel } from '../core/catalogo'
 import { useApp } from '../core/store'
-import { nextActivity } from '../core/stats'
+import { nextActivity, subjectProgress } from '../core/stats'
 import { urls } from '../core/urls'
 
 export default function Home() {
@@ -113,19 +113,32 @@ export default function Home() {
             const bons = dados?.bonsPorMateria[s.id] ?? []
             const n = s.topics.filter((t) => bons.includes(t.slug)).length
             const m = s.topics.length
-            const comecou = !!dados?.evolucoes.some(
+            const rodadas = !!dados?.evolucoes.some(
               (e) => e.disciplina === s.id && e.rodadas.length > 0,
             )
+            // Idem Meu aprendizado: sem evidência no motor (sessões
+            // degradadas ou vindas só da conta), o cartão mostra o
+            // contador de atividades em vez de "não começou".
+            const atividades = subjectProgress(s.id)
+            const comecou = rodadas || atividades.done > 0
+            const rotulo = rodadas
+              ? `${n} de ${m} assuntos indo bem`
+              : comecou
+                ? `${atividades.done} de ${atividades.total} atividades`
+                : 'Ainda não começou.'
+            const pct = rodadas
+              ? m
+                ? n / m
+                : 0
+              : atividades.total
+                ? atividades.done / atividades.total
+                : 0
             return (
               <SubjectRow key={s.id} to={urls.area(s.id)} icon={s.icon}>
                 <strong>{s.name}</strong>
-                <small>
-                  {!comecou
-                    ? 'Ainda não começou.'
-                    : `${n} de ${m} assuntos indo bem`}
-                </small>
+                <small>{rotulo}</small>
                 <span className="mini-bar" aria-hidden="true">
-                  <i style={{ width: `${m ? (100 * n) / m : 0}%` }} />
+                  <i style={{ width: `${100 * pct}%` }} />
                 </span>
               </SubjectRow>
             )
