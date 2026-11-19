@@ -202,6 +202,9 @@ export function mesclar(
     const s = porChave.get(k)
     if (s) return { ...r, chave: k, remoto: s.id }
     if (recusadas.has(k)) return { ...r, semSync: true }
+    // A conta não tem mais a sessão que o remoto apontava (perda de dados
+    // lá): a marca sai e o resultado volta a subir na próxima ida.
+    if (r.remoto !== undefined) return { ...r, remoto: undefined }
     return r
   })
   const locais = new Set(juntos.map(chaveDe))
@@ -253,7 +256,9 @@ async function sincronizar(): Promise<void> {
   const recusadas = new Set<string>()
   const envio: SessaoEnvioApi[] = []
   for (const r of results) {
-    if (r.remoto !== undefined || r.semSync || naConta.has(chaveDe(r))) continue
+    // remoto obsoleto não bloqueia: se a conta não tem a chave, reenvia.
+    // incompleto é resumo vindo da conta — sem dados para reenviar de volta.
+    if (r.semSync || r.incompleto || naConta.has(chaveDe(r))) continue
     const s = paraSessao(r, subjects)
     if (s) envio.push(s)
     else recusadas.add(chaveDe(r))

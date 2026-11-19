@@ -286,8 +286,9 @@ describe('progresso: conversões', () => {
     const local1 = { ...LICAO, chave: 'na-conta' }
     const local2 = { ...LICAO, date: DATA + 1000 } // só no aparelho, sem chave
     const recusada = { ...LICAO, chave: 'ruim', date: DATA + 2000 }
+    const obsoleto = { ...LICAO, chave: 'sumiu', remoto: 5, date: DATA + 3000 }
     const { results, watched } = mesclar(
-      [local1, local2, recusada],
+      [local1, local2, recusada, obsoleto],
       { 'matematica/0/0': 123 },
       {
         sessoes: [{ ...RESUMO, id: 7, chave: 'na-conta' }, RESUMO],
@@ -305,6 +306,7 @@ describe('progresso: conversões', () => {
       ['na-conta', 7, undefined],
       [`local:${DATA + 1000}`, undefined, undefined], // sobe na próxima vez
       ['ruim', undefined, true],
+      ['sumiu', undefined, undefined], // remoto obsoleto: volta a pendente
     ])
     expect(watched).toEqual({
       'matematica/0/0': 123,
@@ -482,6 +484,59 @@ describe('progresso: sincronização', () => {
     expect(useApp.getState().results[0].semSync).toBe(true)
     await sincronizarProgresso()
     expect(chamadas(f, 'POST /api/progresso/importar')).toHaveLength(1)
+  })
+
+  it('conta perdeu a sessão: o remoto obsoleto sobe de novo', async () => {
+    reset({
+      results: [{ ...LICAO, chave: 'sumiu-da-conta', remoto: 5 }],
+    })
+    let listou = 0
+    const f = fetchFalso({
+      'GET /progresso': () => ({
+        status: 200,
+        corpo:
+          listou++ === 0
+            ? VAZIO // a conta não tem mais a sessão
+            : {
+                sessoes: [
+                  {
+                    ...RESUMO,
+                    id: 9,
+                    chave: 'sumiu-da-conta',
+                    tipo: 'licao',
+                    tema: 'equacoes',
+                  },
+                ],
+                aulas: [],
+              },
+      }),
+      'POST /progresso/importar': {
+        status: 200,
+        corpo: { ...IMPORTOU, sessoesNovas: 1 },
+      },
+    })
+
+    await sincronizarProgresso()
+
+    const corpo = corpoDe(f, 'POST /api/progresso/importar')
+    expect(corpo.sessoes).toHaveLength(1)
+    expect(corpo.sessoes[0].chave).toBe('sumiu-da-conta')
+    expect(useApp.getState().results[0].remoto).toBe(9)
+  })
+
+  it('resumo da conta sem sessão no servidor não é reenviado (sem os dados)', async () => {
+    reset({
+      results: [{ ...LICAO, chave: 'era-remota', remoto: 5, incompleto: true }],
+    })
+    const f = fetchFalso({
+      'GET /progresso': { status: 200, corpo: VAZIO },
+      'POST /progresso/importar': { status: 200, corpo: IMPORTOU },
+    })
+
+    await sincronizarProgresso()
+
+    expect(chamadas(f, 'POST /api/progresso/importar')).toHaveLength(0)
+    expect(useApp.getState().results[0].remoto).toBeUndefined()
   })
 
   it('sem rede não mexe em nada', async () => {
