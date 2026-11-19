@@ -105,7 +105,8 @@ export function sintetizarSessao(
   geracao: number,
 ): { eventos: EventoAprendizagem[]; conclusao: ConclusaoAprendizagem } {
   const sessaoId = `conta:${chaveDe(r)}`
-  const modalidade = r.kind === 'simulado' ? 'simulado' : 'licao'
+  const modalidade: EventoAprendizagem['modalidade'] =
+    r.kind === 'simulado' ? 'simulado' : 'licao'
   const dataLocal = dataDe(r.date)
   const eventos: EventoAprendizagem[] = []
   for (const [i, it] of itens.entries()) {
